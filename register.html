@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>[DEMO] Register · Wendy Fest</title><meta name="theme-color" content="#CD2028"><link rel="icon" href="./assets/cameo.png"><link rel="stylesheet" href="./css/guest.css?v=mwgqdong">
+<title>[DEMO] Register · Wendy Fest</title><meta name="theme-color" content="#CD2028"><link rel="icon" href="./assets/cameo.png"><link rel="stylesheet" href="./css/guest.css?v=mwgqf3o1">
 </head>
 <body>
 <div class="app">
@@ -74,7 +74,7 @@
   </section>
   <div id="foot"></div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js?v=mwgqdong"></script><script src="./js/i18n.js?v=mwgqdong"></script><script src="./js/app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js?v=mwgqf3o1"></script><script src="./js/i18n.js?v=mwgqf3o1"></script><script src="./js/app.js"></script>
 <script>
   document.querySelectorAll(".langbox").forEach((el) => el.innerHTML = langSwitcher()); document.getElementById("foot").outerHTML = brandFoot(); applyLang();
   const $ = (id) => document.getElementById(id);
@@ -94,10 +94,10 @@
   form.addEventListener("submit", (e) => { e.preventDefault(); sendOtp(); });
   async function sendOtp(isResend) {
     const name = form.name.value.trim(), phone = form.phone.value.trim();
-    const digits = phone.replace(/\D/g, "");
-    form.name.classList.toggle("err", name.length < 2); form.phone.classList.toggle("err", !/^07\d{8}$/.test(digits));
+    const phoneDigits = phone.replace(/\D/g, "");
+    form.name.classList.toggle("err", name.length < 2); form.phone.classList.toggle("err", !/^07\d{8}$/.test(phoneDigits));
     if (name.length < 2) return toast(t("errName"));
-    if (!/^07\d{8}$/.test(digits)) return toast(t("errPhone"));
+    if (!/^07\d{8}$/.test(phoneDigits)) return toast(t("errPhone"));
     const dob = dobIso(); dobEl.classList.toggle("err", dob === null); if (dob === null) return toast(t("errDob"));
     const btn = $("submit"); btn.disabled = true; btn.querySelector("span").textContent = t("sending");
     try {
@@ -107,6 +107,7 @@
       $("demo-otp").classList.toggle("hidden", !r.devOtp); if (r.devOtp) $("demo-otp-code").textContent = r.devOtp;
       show("s-otp"); setTimeout(() => $("otp-boxes").querySelector("input").focus(), 200);
     } catch (err) {
+      console.error(err);
       if (err.data?.error === "wait") { toast(`${t("resendIn")} ${err.data.retryIn}s`); if (pending) show("s-otp"); }
       else toast(err.message === "phone" ? t("errPhone") : err.message === "name" ? t("errName") : t("errGeneric"));
     }

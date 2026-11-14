@@ -157,7 +157,7 @@ const roastS = () => Object.assign({ attemptsPerPerson: 99 }, DB.settings.roast 
 const profileUrl = (p) => BASE + "/profile.html?t=" + p.token;
 const roastUrl = (r) => BASE + "/roast.html?t=" + r.token;
 const first = (p) => p.name.split(" ")[0];
-function sendSms(phone, body) { DB.sms.push({ phone, body, at: now() }); save(); console.log("📱 SMS → +" + phone + "\n" + body); window.demoToast && window.demoToast("📱 SMS (simulated): " + body.slice(0, 110)); }
+function sendSms(phone, body) { DB.sms.push({ phone, body, at: now() }); save(); console.log("📱 SMS → +" + phone + "\n" + body); }
 function publicProfile(p) {
   const screams = DB.screams.filter((s) => s.participant_id === p.id).reverse().map((s) => ({ ...s, won: !!s.won, coupon: s.coupon_code ? { code: s.coupon_code, label: coupon().valueLabel } : null }));
   const roasts = DB.roasts.filter((r) => r.participant_id === p.id).reverse().map((r) => ({ token: r.token, url: roastUrl(r), title: r.title, roast: r.roast, vibe: r.vibe, at: r.at, photo: r.photo }));
@@ -183,7 +183,7 @@ async function route(method, url, body) {
     const pend = DB.pending; const phone = normalisePhone(body.phone);
     if (!pend || pend.phone !== phone) return json({ error: "otp" }, 400);
     if (Date.now() > pend.expires) { DB.pending = null; save(); return json({ error: "expired" }, 400); }
-    if (!/^d{4}$/.test(String(body.code))) return json({ error: "otp" }, 400); // demo: any 4 digits verify
+    if (!/^\d{4}$/.test(String(body.code))) return json({ error: "otp" }, 400); // demo: any 4 digits verify
     let pt = DB.participants.find((x) => x.phone === phone), created = false;
     if (!pt) { let code; do { code = shortCode2(6); } while (byCode(code)); pt = { id: DB.participants.length + 1, code, token: token2(), name: pend.payload.name, phone, email: pend.payload.email, dob: pend.payload.dob, lang: pend.payload.lang, created_at: now() }; DB.participants.push(pt); created = true; }
     else { pt.lang = pend.payload.lang; pt.name = pend.payload.name; }

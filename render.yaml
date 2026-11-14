@@ -1,0 +1,29 @@
+# One-click deploy: https://render.com/deploy?repo=https://github.com/Hirusha25/wendyfest
+services:
+  - type: web
+    name: wendyfest
+    runtime: docker
+    plan: starter          # starter is needed for the persistent disk (guest data + photos)
+    region: singapore      # closest Render region to Sri Lanka
+    healthCheckPath: /api/config
+    disk:
+      name: wendyfest-data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: BASE_URL
+        sync: false        # set to the Render URL after first deploy, e.g. https://wendyfest.onrender.com
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: SMS_PROVIDER
+        value: console
+      - key: SMS_SENDER_ID
+        value: Wendys
+      - key: KIOSK_PIN
+        generateValue: true
+      - key: ADMIN_PIN
+        generateValue: true
+      - key: DB_PATH
+        value: /data/wendyfest.sqlite
+      - key: PHOTO_DIR
+        value: /data/photos

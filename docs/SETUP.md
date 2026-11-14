@@ -67,3 +67,15 @@
 ## Privacy
 
 Photos and roasts are stored under `data/photos` and linked to the guest's profile. Consent text is on the kiosk in all three languages. Delete `data/` after the campaign's retention window agreed with the client.
+
+## Hosting (get a public link)
+
+The app is one container (`Dockerfile`). Data lives in `/data` (SQLite + photos), so mount a persistent disk there.
+
+**Render (recommended, Singapore region):** https://render.com/deploy?repo=https://github.com/Hirusha25/wendyfest — connect GitHub, accept the blueprint (`render.yaml`), then in the service's Environment set `BASE_URL` to the URL Render gives you (e.g. `https://wendyfest.onrender.com`) and add `ANTHROPIC_API_KEY` + SMS credentials. The starter plan is required for the persistent disk; the free plan loses the database on every restart.
+
+**Railway:** New project → Deploy from GitHub repo → add a Volume mounted at `/data` → set the same env vars. `railway.json` is included.
+
+**Any VPS:** `docker build -t wendyfest . && docker run -d -p 80:3000 -v wendyfest-data:/data --env-file .env wendyfest` behind Caddy/nginx for HTTPS.
+
+HTTPS matters: kiosk microphone and camera only work on `https://` (or localhost).

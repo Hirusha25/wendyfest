@@ -50,6 +50,10 @@ Paste the client's codes into `/admin` (one per line, optional `,label`). Codes 
 
 `SMS_PROVIDER=console` prints to the terminal. Providers wired: `notifylk`, `shoutout`, `dialog` (eSMS, endpoint per account), `http` (generic JSON POST). Sender ID `Wendys` **must be pre-approved** with the gateway/operators (see `docs/REMINDERS.md`).
 
+## Deploy
+
+One container, data on a `/data` volume. One-click: https://render.com/deploy?repo=https://github.com/Hirusha25/wendyfest (then set `BASE_URL` to the service URL). Details in `docs/SETUP.md` → Hosting.
+
 ## Files
 
 ```

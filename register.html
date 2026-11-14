@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>[DEMO] Register · Wendy Fest</title><meta name="theme-color" content="#CD2028"><link rel="icon" href="./assets/cameo.png"><link rel="stylesheet" href="./css/guest.css?v=mwgosxgr">
+<title>[DEMO] Register · Wendy Fest</title><meta name="theme-color" content="#CD2028"><link rel="icon" href="./assets/cameo.png"><link rel="stylesheet" href="./css/guest.css?v=mwgovyb3">
 </head>
 <body>
 <div class="app">
@@ -20,7 +20,7 @@
         <div class="field"><label for="email"><span data-t="email">Email</span> <small>(<span data-t="optional">optional</span>)</small></label><input class="input" id="email" name="email" type="email" inputmode="email" autocomplete="email"></div>
         <div class="field"><label for="dob" data-t="dob">Date of birth</label><input class="input" id="dob" name="dob" type="text" inputmode="numeric" autocomplete="bday" placeholder="DD / MM / YYYY" maxlength="14"></div>
         <label class="consent"><input type="checkbox" id="consent" checked><span data-t="consent"></span></label>
-        <button class="btn" id="submit" type="submit" data-t="getCode">Get my code</button>
+        <button class="btn" id="submit" type="submit"><span data-t="getCode">Get my code</span><svg class="arr" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </form>
     </main>
   </section>
@@ -40,7 +40,7 @@
         </div>
         <div class="otp" id="otp-boxes"></div>
         <div class="timer"><span><span data-t="expires">Code expires in</span> <b id="otp-ttl">02:00</b></span><button type="button" id="otp-resend" disabled><span data-t="resendIn">Resend in</span> <span id="otp-resend-in">0:30</span></button></div>
-        <button class="btn" id="verify" type="button" data-t="verify">Verify &amp; get my pass</button>
+        <button class="btn" id="verify" type="button"><span data-t="verify">Verify &amp; get my pass</span><svg class="arr" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </div>
       <div class="link"><span data-t="wrongNumber">Wrong number?</span> <a href="#" id="otp-back" data-t="goBack">Go back</a></div>
     </main>
@@ -65,14 +65,14 @@
       </div>
       <div class="note rise-2"><b data-t="showCode">Show this code at the kiosk.</b><span data-t="codeSms">We’ve also sent it to your phone.</span></div>
       <div style="margin-top:auto;display:grid;gap:10px;padding-top:10px">
-        <a class="btn" href="./profile.html" data-t="openPass">Open my pass</a>
+        <a class="btn" href="./profile.html"><span data-t="openPass">Open my pass</span><svg class="arr" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         <div class="link"><span data-t="noSms">Didn’t get the SMS?</span> <a href="#" id="resend-welcome" data-t="resend">Resend</a></div>
       </div>
     </main>
   </section>
   <div id="foot"></div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js?v=mwgosxgr"></script><script src="./js/i18n.js?v=mwgosxgr"></script><script src="./js/app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js?v=mwgovyb3"></script><script src="./js/i18n.js?v=mwgovyb3"></script><script src="./js/app.js"></script>
 <script>
   document.querySelectorAll(".langbox").forEach((el) => el.innerHTML = langSwitcher()); document.getElementById("foot").outerHTML = brandFoot(); applyLang();
   const $ = (id) => document.getElementById(id);
@@ -91,7 +91,7 @@
     if (name.length < 2) return toast(t("errName"));
     if (!/^(\+?94|0)?7\d{8}$/.test(phone.replace(/[\s-]/g, ""))) return toast(t("errPhone"));
     const dob = dobIso(); dobEl.classList.toggle("err", dob === null); if (dob === null) return toast(t("errDob"));
-    const btn = $("submit"); btn.disabled = true; btn.textContent = t("sending");
+    const btn = $("submit"); btn.disabled = true; btn.querySelector("span").textContent = t("sending");
     try {
       const r = await api("/api/register", { method: "POST", body: { name, phone, email: form.email.value.trim(), dob, lang: window.lang, consentMarketing: $("consent").checked } });
       pending = { phone, ...r }; digits = r.digits || 4; buildOtp();
@@ -102,7 +102,7 @@
       if (err.data?.error === "wait") { toast(`${t("resendIn")} ${err.data.retryIn}s`); if (pending) show("s-otp"); }
       else toast(err.message === "phone" ? t("errPhone") : err.message === "name" ? t("errName") : t("errGeneric"));
     }
-    btn.disabled = false; btn.textContent = t("getCode");
+    btn.disabled = false; btn.querySelector("span").textContent = t("getCode");
   }
 
   // ---- step 2 ----

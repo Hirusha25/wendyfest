@@ -232,7 +232,9 @@ button, input, select { font:inherit; }
 .track .s.on.b i { border-color:var(--blue); background:var(--blue); box-shadow:0 3px 0 var(--blue-dark); }
 .track .s b { font-size:9.5px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:#B5B5B5; text-align:center; }
 .track .s.on b { color:var(--ink); }
-.card2 { background:#fff; border-radius:16px; border:1.5px solid var(--line); box-shadow:0 4px 0 var(--line); overflow:hidden; }
+.card2 { background:#fff; border-radius:16px; border:2px solid rgba(255,255,255,.75); overflow:hidden; }
+.card2.red { box-shadow:0 4px 0 var(--red-dark); border-color:var(--red); }
+.card2.blue { box-shadow:0 4px 0 var(--blue-dark); border-color:var(--blue); }
 .card2 .top { padding:12px 14px; color:#fff; display:flex; justify-content:space-between; align-items:center; gap:8px; }
 .card2.red .top { background:linear-gradient(135deg, #E02C34, var(--red)); }
 .card2.blue .top { background:linear-gradient(135deg, #1FAAE0, var(--blue)); }

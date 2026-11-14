@@ -82,19 +82,25 @@ body { font-family: Poppins, system-ui, sans-serif; color:var(--ink); background
 .note span { font-style:italic; font-size:15px; color:#3A3331; font-weight:500; }
 
 /* profile pass */
-.ppass { position:relative; margin-top:18px; border-radius:18px; overflow:hidden; padding:20px 20px 22px; color:#fff; border:2px solid rgba(255,255,255,.85);
-  background: linear-gradient(118deg, #D9262E 0%, #C7212A 48%, #A61D27 100%); box-shadow:0 16px 30px -14px rgba(0,0,0,.5); }
-.ppass .wf { font-weight:800; font-style:italic; text-transform:uppercase; font-size:16px; letter-spacing:.02em; display:flex; align-items:center; gap:12px; }
-.ppass .wf::after { content:""; width:44px; height:2px; background:rgba(255,255,255,.85); }
-.ppass .pn { font-weight:700; letter-spacing:.14em; text-transform:uppercase; font-size:13px; margin-top:8px; }
-.ppass .name { font-size:34px; margin-top:10px; width:250px; line-height:.95; }
-.ppass .rule { height:1.5px; background:rgba(255,255,255,.8); margin:16px 0 14px; width:62%; }
-.ppass .ec { display:flex; align-items:center; gap:16px; }
+.ppass { position:relative; margin:0 0 -64px; border-radius:20px; overflow:hidden; padding:22px 22px 24px; color:#fff; border:1.5px solid rgba(255,255,255,.92); z-index:3;
+  background: linear-gradient(180deg, #C8202A 0%, #BB1C25 100%); box-shadow:0 18px 30px -16px rgba(0,0,0,.45); }
+.ppass .wf { font-weight:800; text-transform:uppercase; font-size:17px; letter-spacing:.06em; display:flex; align-items:center; gap:12px; }
+.ppass .wf::after { content:""; width:44px; height:2px; background:rgba(255,255,255,.9); }
+.ppass .pn { font-weight:700; letter-spacing:.14em; text-transform:uppercase; font-size:13.5px; margin-top:10px; }
+.ppass .name { font-size:36px; margin-top:12px; width:260px; line-height:.95; letter-spacing:-.01em; }
+.ppass .rule { height:2px; background:rgba(255,255,255,.9); margin:18px 0 16px; width:100%; }
+.ppass .ec { display:flex; align-items:center; gap:18px; }
 .ppass .ec .l { font-weight:800; letter-spacing:.14em; text-transform:uppercase; font-size:14px; }
-.ppass .ec .c { font-weight:900; font-style:italic; font-size:34px; letter-spacing:.01em; line-height:1.05; }
-.ppass .copy { width:52px; height:52px; border:2px solid rgba(255,255,255,.9); background:rgba(255,255,255,.06); color:#fff; border-radius:12px; box-shadow:none; }
-.ppass .ghost { position:absolute; right:-60px; top:-4px; height:114%; opacity:.55; filter:grayscale(1) contrast(1.05) brightness(1.05); mix-blend-mode:multiply; pointer-events:none; }
+.ppass .ec .c { font-weight:900; font-style:italic; font-size:36px; letter-spacing:.01em; line-height:1.05; margin-top:2px; }
+.ppass .copy { width:54px; height:54px; border:2px solid rgba(255,255,255,.95); background:transparent; color:#fff; border-radius:12px; box-shadow:none; }
+.ppass .ghost { position:absolute; right:-70px; top:30px; width:300px; height:auto; opacity:.5; filter:grayscale(1) contrast(1.1) brightness(1.18); mix-blend-mode:multiply; pointer-events:none; }
 .ppass > *:not(.ghost) { position:relative; z-index:1; }
+.hdr.profile { padding-bottom:0; overflow:visible; border-radius:0; }
+.hdr.profile .bg { position:absolute; left:0; right:0; top:0; bottom:64px; border-radius:0 0 26px 26px; overflow:hidden; z-index:0;
+  background: radial-gradient(90% 70% at 40% 30%, rgba(255,255,255,.09) 0%, transparent 60%), linear-gradient(165deg, #DC2A32 0%, #CF232B 55%, #A91C25 100%); }
+.hdr.profile .bg::before { content:""; position:absolute; inset:0; opacity:.13; background: repeating-radial-gradient(circle at -12% 30%, transparent 0 38px, #fff 38px 39.5px); mask: radial-gradient(circle at -12% 30%, #000 0%, rgba(0,0,0,.7) 40%, transparent 70%); -webkit-mask: radial-gradient(circle at -12% 30%, #000 0%, rgba(0,0,0,.7) 40%, transparent 70%); }
+.hdr.profile .bg::after { content:""; position:absolute; right:-4px; bottom:-4px; width:190px; height:170px; opacity:.28; background: radial-gradient(rgba(255,255,255,.9) 1.2px, transparent 1.8px) 0 0/8px 8px; mask: radial-gradient(ellipse at 100% 100%, #000 0%, rgba(0,0,0,.5) 35%, transparent 68%); -webkit-mask: radial-gradient(ellipse at 100% 100%, #000 0%, rgba(0,0,0,.5) 35%, transparent 68%); }
+.hdr.profile::before, .hdr.profile::after { display:none; }
 .two { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
 .tiles { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
 .tile { border:1.5px solid var(--line); border-radius:12px; background:#fff; padding:10px 4px; text-align:center; font-weight:800; font-size:9.5px; letter-spacing:.04em; text-transform:uppercase; display:grid; justify-items:center; gap:6px; }

@@ -30,18 +30,16 @@ body{display:flex;gap:40px;padding:40px;background:#ddd;flex-wrap:wrap}
 .e2 .strip .c { font-weight:900; font-style:italic; font-size:30px; line-height:1; margin-top:3px; }
 .e2 .strip .copy { width:46px; height:46px; border:2px solid #fff; border-radius:12px; display:grid; place-items:center; }
 /* E3 · Stacked tickets */
-.e3 { position:relative; padding:88px 18px 0 0; }
+.e3 { position:relative; padding:74px 18px 0 0; }
 .e3 .back { position:absolute; left:14px; right:0; top:0; bottom:18px; border-radius:22px; transform:rotate(1.5deg); overflow:hidden; border:2px solid #016F9F; box-shadow:3px 4px 0 #016F9F, 0 10px 22px -10px rgba(1,111,159,.6);
   background: linear-gradient(135deg, #1FAAE0 0%, #029CD4 55%, #016F9F 100%); }
 .e3 .back::before { content:""; position:absolute; inset:0; opacity:.14; background: repeating-linear-gradient(-35deg, transparent 0 14px, #fff 14px 16px); mask: linear-gradient(90deg, #000 0%, transparent 55%); -webkit-mask: linear-gradient(90deg, #000 0%, transparent 55%); }
 .e3 .back::after { content:""; position:absolute; right:-6px; bottom:-6px; width:160px; height:120px; opacity:.35; background:radial-gradient(#fff 1.2px, transparent 1.8px) 0 0/8px 8px; mask:radial-gradient(ellipse at 100% 100%, #000 0%, transparent 70%); -webkit-mask:radial-gradient(ellipse at 100% 100%, #000 0%, transparent 70%); pointer-events:none; }
-.e3 .back img { position:absolute; right:16px; top:-2px; width:112px; filter:drop-shadow(0 6px 10px rgba(1,111,159,.6)); }
-.e3 .back .tag { position:absolute; left:18px; top:14px; color:#fff; font-weight:900; font-style:italic; text-transform:uppercase; font-size:15px; letter-spacing:.04em; text-shadow:0 2px 0 #016F9F; }
-.e3 .back .sub { position:absolute; left:18px; top:40px; display:flex; align-items:center; gap:8px; }
+.e3 .back img { position:absolute; right:14px; top:-4px; width:104px; filter:drop-shadow(0 6px 10px rgba(1,111,159,.6)); }
+.e3 .back .tag { position:absolute; left:18px; top:12px; color:#fff; font-weight:900; font-style:italic; text-transform:uppercase; font-size:15px; letter-spacing:.04em; text-shadow:0 2px 0 #016F9F; }
+.e3 .back .sub { position:absolute; left:18px; top:38px; display:flex; align-items:center; gap:8px; }
 .e3 .back .sub span { background:#A32539; color:#fff; font-size:9.5px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; padding:4px 8px; border-radius:999px; }
 .e3 .back .sub span.b { background:#F2D4D7; color:#A32539; }
-.e3 .back .wave { position:absolute; left:18px; top:72px; display:flex; gap:4px; align-items:flex-end; height:14px; }
-.e3 .back .wave i { width:4px; border-radius:2px; background:#F2D4D7; opacity:.9; }
 .e3 .front { position:relative; background:#fff; color:#252525; border-radius:20px; border:2px solid #493533; padding:18px 20px 18px; box-shadow:3px 4px 0 #493533, 0 18px 30px -12px rgba(73,53,51,.45); overflow:hidden; }
 .e3 .front::before { content:""; position:absolute; inset:5px; border:1.5px dashed #E2E2E2; border-radius:15px; pointer-events:none; }
 .e3 .front .stripe { position:absolute; left:0; top:0; bottom:0; width:8px; background:linear-gradient(180deg, #CD2028 0 50%, #029CD4 50% 100%); }
@@ -82,13 +80,15 @@ body{display:flex;gap:40px;padding:40px;background:#ddd;flex-wrap:wrap}
 .j.on i { background:var(--red); color:#fff; }
 .j.on b { color:var(--red-dark); } .j.on span { color:var(--charcoal); }
 .statrow { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-.sc { border-radius:16px; padding:12px 14px 10px; color:#fff; }
-.sc.red { background:var(--red); box-shadow:0 4px 0 var(--red-dark); }
-.sc.blue { background:var(--blue); box-shadow:0 4px 0 var(--blue-dark); }
+.sc { position:relative; border-radius:16px; padding:12px 14px 12px; color:#fff; border:2px solid rgba(255,255,255,.75); display:flex; flex-direction:column; align-items:flex-start; }
+.sc .ic { position:absolute; right:12px; top:12px; width:36px; height:36px; border-radius:10px; background:rgba(255,255,255,.18); border:1.5px solid rgba(255,255,255,.5); display:grid; place-items:center; }
+.sc .st { display:inline-block; margin-top:10px; font-size:9px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; background:#fff; color:var(--charcoal); padding:3px 7px; border-radius:999px; }
+.sc.red { background:linear-gradient(160deg, #D62A32, var(--red)); box-shadow:0 4px 0 var(--red-dark); }
+.sc.blue { background:linear-gradient(160deg, #1FAAE0, var(--blue)); box-shadow:0 4px 0 var(--blue-dark); }
 .sc .l { font-size:10px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; opacity:.9; }
 .sc .v { font-weight:900; font-style:italic; font-size:26px; line-height:1; margin-top:6px; }
 .sc .v small { font-size:12px; font-weight:700; font-style:normal; opacity:.75; }
-.sc .m { font-size:10.5px; margin-top:6px; opacity:.9; line-height:1.35; }
+.sc .m { font-size:10.5px; margin-top:6px; opacity:.9; line-height:1.35; padding-right:0; }
 .reward { display:flex; justify-content:space-between; align-items:center; gap:12px; background:#fff; border:1.5px dashed var(--charcoal); border-radius:16px; padding:12px 16px; }
 .reward .l { font-size:10px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; color:var(--mute); }
 .reward .v { font-weight:900; font-style:italic; font-size:22px; color:var(--charcoal); margin-top:2px; }
@@ -130,7 +130,7 @@ body{display:flex;gap:40px;padding:40px;background:#ddd;flex-wrap:wrap}
     <div class="top"><img class="lockup" src="wendys-horiz-white.svg" alt="Wendy's"><div class="pill"><span class="on">EN</span><span>සිං</span><span>தமிழ்</span></div></div>
     <div class="eyebrow" style="margin-top:16px">Your fest. Your stats.</div>
     <h1 class="display" style="font-size:52px;margin-top:8px;margin-bottom:18px;text-shadow:0 3px 10px rgba(0,0,0,.14)">My profile</h1>
-    <div class="cardwrap"><div class="e3"><div class="back"><img src="cameo.png" alt=""><div class="tag">Wendy Fest</div><div class="sub"><span>Colombo</span><span class="b">Launch week</span></div><div class="wave"><i style="height:6px"></i><i style="height:12px"></i><i style="height:8px"></i><i style="height:14px"></i><i style="height:5px"></i><i style="height:10px"></i></div></div><div class="front"><div class="stripe"></div><div class="top"><img src="wendys-horiz.svg" alt="Wendy's"><div class="vr"></div><div><div class="t1">Wendy Fest</div><div class="t2">Participant #0002</div></div></div><div class="display name">Hirusha<br><span class="o">Dayananda</span></div><div class="meta"><div><div class="l">Entry code</div><div class="c">CWN3VB</div></div><div class="n">Colombo<b>14 Nov</b></div></div></div></div></div>
+    <div class="cardwrap"><div class="e3"><div class="back"><img src="cameo.png" alt=""><div class="tag">Wendy Fest</div><div class="sub"><span>Colombo</span><span class="b">Launch week</span></div></div><div class="front"><div class="stripe"></div><div class="top"><img src="wendys-horiz.svg" alt="Wendy's"><div class="vr"></div><div><div class="t1">Wendy Fest</div><div class="t2">Participant #0002</div></div></div><div class="display name">Hirusha<br><span class="o">Dayananda</span></div><div class="meta"><div><div class="l">Entry code</div><div class="c">CWN3VB</div></div><div class="n">Colombo<b>14 Nov</b></div></div></div></div></div>
   </header>
   <div class="body" style="gap:12px;padding-top:80px">
     <div class="two"><a class="btn outline" href="#"><svg width="20" height="20"><use href="#i-dl"/></svg>Save pass</a><a class="btn outline" href="#"><svg width="20" height="20"><use href="#i-share"/></svg>Share</a></div>
@@ -142,8 +142,8 @@ body{display:flex;gap:40px;padding:40px;background:#ddd;flex-wrap:wrap}
       <div class="j"><i><svg width="20" height="20"><use href="#i-cam"/></svg></i><b>Roasted</b><span>Roast Me</span></div>
     </div>
     <div class="statrow">
-      <div class="sc red"><div class="l">Scream &amp; Win</div><div class="v">—<small>/100</small></div><div class="m">Find the LED wall. Say your code to the host.</div></div>
-      <div class="sc blue"><div class="l">Roast Me</div><div class="v">—</div><div class="m">Blue booth. One photo, one roast.</div></div>
+      <div class="sc red"><div class="ic"><svg width="22" height="22"><use href="#i-mic"/></svg></div><div class="l">Scream &amp; Win</div><div class="v">—<small>/100</small></div><div class="m">LED wall · tell the host your code</div><div class="st">Not played</div></div>
+      <div class="sc blue"><div class="ic"><svg width="22" height="22"><use href="#i-cam"/></svg></div><div class="l">Roast Me</div><div class="v">—</div><div class="m">Blue booth · one photo, one roast</div><div class="st">Not roasted</div></div>
     </div>
     <div class="reward"><div><div class="l">Reward</div><div class="v">Locked</div></div><div class="m">Win Scream &amp; Win to unlock<br>10% off your next order</div></div>
   </div>

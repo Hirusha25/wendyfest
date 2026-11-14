@@ -44,10 +44,8 @@ function redHeader(ctx, W, H) {
   const g = ctx.createRadialGradient(W * .42, H * .4, 20, W * .42, H * .4, W * .9);
   g.addColorStop(0, "#E02C34"); g.addColorStop(.38, "#D2252D"); g.addColorStop(.68, "#B51F28"); g.addColorStop(1, "#8C1720");
   ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
-  ctx.lineWidth = 3.5;
-  const cluster = (cx, cy, radii, peak) => radii.forEach((r, i) => { const t = i / (radii.length - 1); const op = Math.max(.05, Math.min(peak, peak * (.35 + .65 * (1 - Math.abs(t - .45) / .55)))); ctx.strokeStyle = `rgba(255,255,255,${op.toFixed(2)})`; ctx.beginPath(); ctx.arc(cx, cy, r, 0, 7); ctx.stroke(); });
-  cluster(0, H * .44, [100, 133, 166, 199, 232, 265, 298, 331, 370], .26);
-  cluster(W, H * .32, [100, 133, 166, 199, 232, 265, 298], .2);
+  ctx.lineWidth = 4;
+  for (let r = 66; r < 470; r += 33) { const lo = 55, hi = 475, mid = (lo + hi) / 2; const t = r < mid ? (r - lo) / (mid - lo) : (hi - r) / (hi - mid); ctx.strokeStyle = `rgba(255,255,255,${(.34 * Math.max(0, Math.min(1, t))).toFixed(2)})`; ctx.beginPath(); ctx.arc(W, H * .56, r, 0, 7); ctx.stroke(); }
   ctx.fillStyle = "rgba(255,255,255,.28)";
   for (let y = H - 260; y < H; y += 22) for (let x = W - 300; x < W; x += 22) { const d = Math.hypot(W - x, H - y) / 300; if (d < 1) { ctx.globalAlpha = .4 * (1 - d); ctx.beginPath(); ctx.arc(x, y, 3.2, 0, 7); ctx.fill(); } }
   ctx.globalAlpha = 1;

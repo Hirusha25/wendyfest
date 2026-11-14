@@ -17,7 +17,7 @@ button, input, select { font:inherit; }
 .hdr { position:relative; color:#fff; padding:16px 22px 26px; border-radius:0 0 26px 26px; overflow:hidden; flex:none;
   background: linear-gradient(180deg, rgba(0,0,0,.10) 0%, rgba(0,0,0,0) 28%, rgba(0,0,0,0) 62%, rgba(0,0,0,.22) 100%), radial-gradient(80% 70% at 42% 40%, #E02C34 0%, #D2252D 38%, #B51F28 68%, #8C1720 100%); }
 .hdr::before { content:""; position:absolute; inset:0; pointer-events:none;
-  background: url("../assets/rings-left.svg") 0 44% / 300px 300px no-repeat, url("../assets/rings-right.svg") 100% 32% / 300px 300px no-repeat; }
+  background: url("../assets/rings-right.svg") 100% 56% / 320px 320px no-repeat; }
 .hdr::after { content:""; position:absolute; right:-4px; bottom:-4px; width:190px; height:170px; pointer-events:none; opacity:.28; background:radial-gradient(rgba(255,255,255,.9) 1.2px, transparent 1.8px) 0 0/8px 8px; mask:radial-gradient(ellipse at 100% 100%, #000 0%, rgba(0,0,0,.5) 35%, transparent 68%); -webkit-mask:radial-gradient(ellipse at 100% 100%, #000 0%, rgba(0,0,0,.5) 35%, transparent 68%); }
 .hdr > * { position:relative; z-index:1; }
 .top { display:flex; justify-content:space-between; align-items:center; height:40px; }

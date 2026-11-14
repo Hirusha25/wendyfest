@@ -141,6 +141,7 @@ window.qrUrl = (text) => { try { const q = qrcode(0, "M"); q.addData(String(text
 })();
 `;
 fs.writeFileSync(path.join(out, "js/demo-shim.js"), shim);
+{ const k = path.join(out, "css/kiosk.css"); fs.writeFileSync(k, fs.readFileSync(k, "utf8").replaceAll('url("/assets/', 'url("../assets/')); }
 { const g = path.join(out, "css/guest.css"); fs.writeFileSync(g, fs.readFileSync(g, "utf8").replaceAll('url("/assets/', 'url("../assets/')); }
 { const a = path.join(out, "js/app.js"); fs.writeFileSync(a, fs.readFileSync(a, "utf8").replaceAll('loadImg("/assets/', 'loadImg(location.href.replace(/[#?].*$/, "").replace(/\\/(kiosk\\/)?[^/]*$/, "") + "/assets/')); }
 { const f = path.join(out, "js/i18n.js"); fs.writeFileSync(f, fs.readFileSync(f, "utf8").replace('src="/assets/cameo.png"', 'src="${location.href.replace(/[#?].*$/, "").replace(/\\/(kiosk\\/)?[^/]*$/, "")}/assets/cameo.png"')); }

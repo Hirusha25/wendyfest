@@ -161,7 +161,7 @@ function publicProfile(p) {
   return { name: p.name, code: p.code, lang: p.lang, number: DB.participants.indexOf(p) + 1, joined: p.created_at, phoneMasked: p.phone.replace(/^(94)(\d{2})\d{5}(\d{2})$/, "+$1 $2*****$3"), profileUrl: profileUrl(p), screams, roasts,
     badges: { screamer: screams.length > 0, winner: screams.some((s) => s.won), roasted: roasts.length > 0 }, coupon: coupon(), limits: { screamAttempts: scream().attemptsPerPerson, roastAttempts: roastS().attemptsPerPerson } };
 }
-const byCode = (c) => DB.participants.find((p) => p.code === String(c || "").toUpperCase());
+const byCode = (c) => { let k = String(c || "").toUpperCase().replace(/[^A-Z0-9]/g, ""); if (k === "DEMO" || k === "DEMO01") k = "WENDYS"; return DB.participants.find((p) => p.code === k); };
 const needPin = (which) => { const c = cookie("wf_" + which); return c === KIOSK_PIN || c === ADMIN_PIN; };
 
 async function route(method, url, body) {

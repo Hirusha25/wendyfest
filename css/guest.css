@@ -33,7 +33,7 @@ button, input, select { font:inherit; }
 .h2 { font-size:clamp(40px, 13vw, 52px); margin-top:10px; text-shadow:0 3px 10px rgba(0,0,0,.14); }
 .sub { font-style:italic; font-weight:600; font-size:17px; margin:12px 0 0; color:var(--blush); }
 .waves { position:absolute; width:70px; height:70px; }
-.waves i { position:absolute; inset:0; border:3px solid rgba(255,255,255,.85); border-radius:50%; border-color:rgba(255,255,255,.85) transparent transparent transparent; transform:rotate(45deg); }
+.waves i { position:absolute; inset:0; border:3px solid rgba(255,255,255,.85); border-radius:50%; border-color:rgba(255,255,255,.85) transparent transparent transparent; transform:rotate(90deg); }
 .waves i:nth-child(2) { inset:10px; } .waves i:nth-child(3) { inset:20px; }
 .cameo { position:absolute; filter:drop-shadow(0 8px 14px rgba(0,0,0,.25)); }
 .check { width:80px; height:80px; border-radius:50%; border:5px solid #fff; background:var(--red-dark); display:grid; place-items:center; margin:16px auto 0; box-shadow:0 6px 0 var(--red-lo); }

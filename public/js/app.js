@@ -44,8 +44,8 @@ function redHeader(ctx, W, H) {
   const g = ctx.createRadialGradient(W * .42, H * .4, 20, W * .42, H * .4, W * .9);
   g.addColorStop(0, "#E02C34"); g.addColorStop(.38, "#D2252D"); g.addColorStop(.68, "#B51F28"); g.addColorStop(1, "#8C1720");
   ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
-  ctx.strokeStyle = "rgba(255,255,255,.14)"; ctx.lineWidth = 3;
-  for (let r = 120; r < W * 1.2; r += 110) { ctx.beginPath(); ctx.arc(-W * .12, H * .5, r, 0, 7); ctx.stroke(); }
+  ctx.lineWidth = 3;
+  for (let r = 100; r < 820; r += 36) { const t = Math.min(1, Math.max(0, (r - 100) / 300)) * Math.min(1, Math.max(0, (820 - r) / 320)); ctx.strokeStyle = `rgba(255,255,255,${(.22 * t).toFixed(3)})`; ctx.beginPath(); ctx.arc(0, H * .45, r, 0, 7); ctx.stroke(); }
   ctx.fillStyle = "rgba(255,255,255,.28)";
   for (let y = H - 260; y < H; y += 22) for (let x = W - 300; x < W; x += 22) { const d = Math.hypot(W - x, H - y) / 300; if (d < 1) { ctx.globalAlpha = .4 * (1 - d); ctx.beginPath(); ctx.arc(x, y, 3.2, 0, 7); ctx.fill(); } }
   ctx.globalAlpha = 1;

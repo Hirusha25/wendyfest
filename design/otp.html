@@ -1,0 +1,44 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Wendy Fest · reference match</title><link rel="stylesheet" href="after.css">
+<style>body{display:flex;gap:40px;padding:40px;background:#ddd;flex-wrap:wrap}</style>
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="i-mic" viewBox="0 0 24 24"><path d="M12 15a4 4 0 0 0 4-4V6a4 4 0 0 0-8 0v5a4 4 0 0 0 4 4zm6-4a6 6 0 0 1-12 0M12 17v4m-4 0h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="i-cam" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.5" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+<symbol id="i-trophy" viewBox="0 0 24 24"><path d="M7 4h10v5a5 5 0 0 1-10 0zM7 6H4a3 3 0 0 0 3 3M17 6h3a3 3 0 0 1-3 3M12 14v4m-4 2h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9z" fill="currentColor"/></symbol>
+<symbol id="i-dl" viewBox="0 0 24 24"><path d="M12 4v11m-5-5 5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-share" viewBox="0 0 24 24"><path d="M12 15V4m-4 4 4-4 4 4M5 12v8h14v-8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg></head><body>
+<style>
+.otp { display:flex; gap:10px; justify-content:space-between; }
+.otp i { flex:1; height:62px; border-radius:14px; border:2px solid var(--line); background:#FAFAFA; display:grid; place-items:center; font-weight:900; font-style:italic; font-size:28px; color:var(--ink); font-style:normal; }
+.otp i.on { border-color:var(--red); background:#fff; box-shadow:0 0 0 3px var(--blush); }
+.otp i.cur { border-color:var(--blue); background:#fff; box-shadow:0 0 0 3px #D9F0FA; }
+.otp i.cur::after { content:""; width:2px; height:28px; background:var(--blue); animation:blink 1s steps(2) infinite; }
+@keyframes blink { 50% { opacity:0 } }
+.timer { display:flex; justify-content:space-between; align-items:center; font-size:13px; color:var(--mute); font-weight:600; }
+.timer b { color:var(--red); }
+.phone-chip { display:inline-flex; align-items:center; gap:8px; background:var(--blush); color:var(--red-dark); border-radius:999px; padding:6px 12px; font-weight:800; font-size:13px; letter-spacing:.04em; }
+.phone-chip u { text-decoration:none; color:var(--red); font-weight:700; font-size:12px; border-bottom:1.5px solid currentColor; }
+</style>
+<section class="phone" id="otp">
+  <header class="hdr" style="padding-bottom:56px;--rx:108%;--ry:62%">
+    <div class="top"><img class="lockup" src="wendys-horiz-white.svg" alt="Wendy's"><div class="pill"><span class="on">EN</span><span>සිං</span><span>தமிழ்</span></div></div>
+    <div class="eyebrow" style="margin-top:16px">Almost there</div>
+    <h1 class="display h2" style="font-size:52px;margin-top:10px;text-shadow:0 3px 10px rgba(0,0,0,.14)">Check<br>your SMS.</h1>
+  </header>
+  <div class="body" style="gap:12px;padding-top:0;margin-top:-40px">
+    <div class="form" style="display:grid;gap:16px">
+      <div>
+        <div style="font-weight:800;font-size:15px;color:var(--charcoal)">Enter the 4-digit code</div>
+        <div style="font-size:12.5px;color:var(--mute);margin-top:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">Sent to <span class="phone-chip">077 123 4567 <u>Change</u></span></div>
+      </div>
+      <div class="otp"><i class="on">4</i><i class="on">8</i><i class="cur"></i><i></i></div>
+      <div class="timer"><span>Code expires in <b>01:42</b></span><span style="color:var(--line)">Resend in 0:30</span></div>
+      <a class="btn" href="#">Verify &amp; get my pass</a>
+    </div>
+    <div class="link">Wrong number? <b>Go back</b></div>
+  </div>
+</section>
+</body></html>

@@ -1,0 +1,107 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Landing CTA options</title><link rel="stylesheet" href="after.css">
+<style>
+body{display:flex;gap:40px;padding:40px;background:#ddd;flex-wrap:wrap}
+/* make the activity cards read as info, not buttons */
+.info { display:grid; gap:0; background:#fff; border-radius:18px; overflow:hidden; box-shadow:0 4px 0 var(--line), 0 10px 22px -12px rgba(73,53,51,.3); }
+.info .row { display:grid; grid-template-columns:auto 1fr; gap:14px; align-items:start; padding:14px 18px; }
+.info .row + .row { border-top:1.5px dashed var(--line); }
+.info .k { width:40px; height:40px; border-radius:12px; display:grid; place-items:center; color:#fff; background:var(--red); font-weight:900; font-style:italic; font-size:14px; }
+.info .k.b { background:var(--blue); }
+.info .t { font-weight:900; font-style:italic; text-transform:uppercase; font-size:17px; color:var(--red); }
+.info .row + .row .t { color:var(--blue-dark); }
+.info .d { font-size:12.5px; line-height:1.4; color:var(--charcoal); margin-top:2px; }
+.lede { font-size:13px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--mute); display:flex; align-items:center; gap:10px; }
+.lede::after { content:""; flex:1; height:1.5px; background:var(--line); }
+/* A: pulse + shine sweep */
+.cta-a { position:relative; overflow:hidden; height:62px; font-size:17px; animation:pulse 1.8s ease-in-out infinite; }
+.cta-a::after { content:""; position:absolute; top:-50%; bottom:-50%; width:40px; background:linear-gradient(90deg, transparent, rgba(255,255,255,.45), transparent); transform:skewX(-20deg); animation:shine 2.4s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { transform:scale(1) } 50% { transform:scale(1.03) } }
+@keyframes shine { 0% { left:-60px } 60%,100% { left:110% } }
+/* B: ring + arrow nudge */
+.cta-b { position:relative; height:62px; font-size:17px; }
+.cta-b::before { content:""; position:absolute; inset:-6px; border-radius:999px; border:3px solid var(--red); opacity:0; animation:ring 1.8s ease-out infinite; }
+@keyframes ring { 0% { transform:scale(.96); opacity:.8 } 100% { transform:scale(1.12); opacity:0 } }
+.cta-b svg { animation:nudge 1.2s ease-in-out infinite; }
+@keyframes nudge { 0%,100% { transform:translateX(0) } 50% { transform:translateX(5px) } }
+/* C: big stacked CTA with sub line, bounce in */
+.cta-c { height:72px; flex-direction:column; gap:2px; font-size:18px; animation:bounce 2.2s ease-in-out infinite; }
+.cta-c small { font-size:10.5px; letter-spacing:.14em; font-style:normal; font-weight:700; color:var(--blush); }
+@keyframes bounce { 0%,100% { transform:translateY(0) } 50% { transform:translateY(-4px) } }
+/* D: static, but demoted everything else */
+.cta-d { height:64px; font-size:18px; box-shadow:0 5px 0 var(--red-dark), 0 18px 30px -12px rgba(163,37,57,.75); }
+.quiet { opacity:.92; }
+.hint { text-align:center; font-size:12px; color:var(--mute); margin-top:-2px; }
+</style></head><body>
+<section class="phone" id="ctaA">
+  <header class="hdr" style="padding-bottom:30px;--rx:-14%;--ry:52%">
+    <div class="top"><img class="lockup" src="wendys-horiz-white.svg" alt="Wendy's"><div class="pill"><span class="on">EN</span><span>සිං</span><span>தமிழ்</span></div></div>
+    <div class="eyebrow">Wendy Fest</div>
+    <h1 class="display h1">Scream.<br>Get<br>roasted.<br><span class="outline">Win.</span></h1>
+    <p class="sub" style="max-width:238px;font-size:17px">One fest. Two ways to play.</p>
+    <div class="waves" style="right:122px;top:272px"><i></i><i></i><i></i></div>
+    <img class="cameo" src="cameo.png" alt="" style="right:10px;top:262px;width:108px">
+  </header>
+  <div class="body" style="gap:12px;padding-top:16px">
+    <div class="lede">What's on</div>
+    <div class="info quiet">
+      <div class="row"><div class="k">01</div><div><div class="t">Scream &amp; Win</div><div class="d">Yell “WENDY’S!” into the mic. Beat the meter, unlock a reward code.</div></div></div>
+      <div class="row"><div class="k b">02</div><div><div class="t">Roast Me</div><div class="d">Step up to the camera. Wendy’s serves a roast made just for you.</div></div></div>
+    </div>
+    <div style="margin-top:auto;display:grid;gap:8px"><a class="btn cta-a" href="#">Register now</a><div class="link">Already registered? <b>Open my pass</b></div></div>
+  </div>
+</section>
+<section class="phone" id="ctaB">
+  <header class="hdr" style="padding-bottom:30px;--rx:-14%;--ry:52%">
+    <div class="top"><img class="lockup" src="wendys-horiz-white.svg" alt="Wendy's"><div class="pill"><span class="on">EN</span><span>සිං</span><span>தமிழ்</span></div></div>
+    <div class="eyebrow">Wendy Fest</div>
+    <h1 class="display h1">Scream.<br>Get<br>roasted.<br><span class="outline">Win.</span></h1>
+    <p class="sub" style="max-width:238px;font-size:17px">One fest. Two ways to play.</p>
+    <div class="waves" style="right:122px;top:272px"><i></i><i></i><i></i></div>
+    <img class="cameo" src="cameo.png" alt="" style="right:10px;top:262px;width:108px">
+  </header>
+  <div class="body" style="gap:12px;padding-top:16px">
+    <div class="lede">What's on</div>
+    <div class="info quiet">
+      <div class="row"><div class="k">01</div><div><div class="t">Scream &amp; Win</div><div class="d">Yell “WENDY’S!” into the mic. Beat the meter, unlock a reward code.</div></div></div>
+      <div class="row"><div class="k b">02</div><div><div class="t">Roast Me</div><div class="d">Step up to the camera. Wendy’s serves a roast made just for you.</div></div></div>
+    </div>
+    <div style="margin-top:auto;display:grid;gap:8px"><a class="btn cta-b" href="#">Register now <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><div class="link">Already registered? <b>Open my pass</b></div></div>
+  </div>
+</section>
+<section class="phone" id="ctaC">
+  <header class="hdr" style="padding-bottom:30px;--rx:-14%;--ry:52%">
+    <div class="top"><img class="lockup" src="wendys-horiz-white.svg" alt="Wendy's"><div class="pill"><span class="on">EN</span><span>සිං</span><span>தமிழ்</span></div></div>
+    <div class="eyebrow">Wendy Fest</div>
+    <h1 class="display h1">Scream.<br>Get<br>roasted.<br><span class="outline">Win.</span></h1>
+    <p class="sub" style="max-width:238px;font-size:17px">One fest. Two ways to play.</p>
+    <div class="waves" style="right:122px;top:272px"><i></i><i></i><i></i></div>
+    <img class="cameo" src="cameo.png" alt="" style="right:10px;top:262px;width:108px">
+  </header>
+  <div class="body" style="gap:12px;padding-top:16px">
+    <div class="lede">What's on</div>
+    <div class="info quiet">
+      <div class="row"><div class="k">01</div><div><div class="t">Scream &amp; Win</div><div class="d">Yell “WENDY’S!” into the mic. Beat the meter, unlock a reward code.</div></div></div>
+      <div class="row"><div class="k b">02</div><div><div class="t">Roast Me</div><div class="d">Step up to the camera. Wendy’s serves a roast made just for you.</div></div></div>
+    </div>
+    <div style="margin-top:auto;display:grid;gap:8px"><a class="btn cta-c" href="#">Register now<small>Free · takes 20 seconds</small></a><div class="link">Already registered? <b>Open my pass</b></div></div>
+  </div>
+</section>
+<section class="phone" id="ctaD">
+  <header class="hdr" style="padding-bottom:30px;--rx:-14%;--ry:52%">
+    <div class="top"><img class="lockup" src="wendys-horiz-white.svg" alt="Wendy's"><div class="pill"><span class="on">EN</span><span>සිං</span><span>தமிழ்</span></div></div>
+    <div class="eyebrow">Wendy Fest</div>
+    <h1 class="display h1">Scream.<br>Get<br>roasted.<br><span class="outline">Win.</span></h1>
+    <p class="sub" style="max-width:238px;font-size:17px">One fest. Two ways to play.</p>
+    <div class="waves" style="right:122px;top:272px"><i></i><i></i><i></i></div>
+    <img class="cameo" src="cameo.png" alt="" style="right:10px;top:262px;width:108px">
+  </header>
+  <div class="body" style="gap:12px;padding-top:16px">
+    <div class="lede">What's on</div>
+    <div class="info quiet" style="font-size:12px">
+      <div class="row" style="padding:12px 18px"><div class="k" style="width:32px;height:32px;font-size:12px">01</div><div><div class="t" style="font-size:15px">Scream &amp; Win</div><div class="d">Yell “WENDY’S!” into the mic. Beat the meter, unlock a reward code.</div></div></div>
+      <div class="row" style="padding:12px 18px"><div class="k b" style="width:32px;height:32px;font-size:12px">02</div><div><div class="t" style="font-size:15px">Roast Me</div><div class="d">Step up to the camera. Wendy’s serves a roast made just for you.</div></div></div>
+    </div>
+    <div style="margin-top:auto;display:grid;gap:10px"><div class="hint">One registration. Both booths.</div><a class="btn cta-d" href="#">Register now <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><div class="link">Already registered? <b>Open my pass</b></div></div>
+  </div>
+</section>
+</body></html>

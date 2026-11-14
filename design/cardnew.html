@@ -30,7 +30,7 @@ body{display:flex;gap:40px;padding:40px;background:#ddd;flex-wrap:wrap}
 .e2 .strip .c { font-weight:900; font-style:italic; font-size:30px; line-height:1; margin-top:3px; }
 .e2 .strip .copy { width:46px; height:46px; border:2px solid #fff; border-radius:12px; display:grid; place-items:center; }
 /* E3 · Stacked tickets */
-.e3 { position:relative; padding:96px 18px 0 0; }
+.e3 { position:relative; padding:88px 18px 0 0; }
 .e3 .back { position:absolute; left:14px; right:0; top:0; bottom:18px; border-radius:22px; transform:rotate(1.5deg); overflow:hidden; border:2px solid #016F9F; box-shadow:3px 4px 0 #016F9F, 0 10px 22px -10px rgba(1,111,159,.6);
   background: linear-gradient(135deg, #1FAAE0 0%, #029CD4 55%, #016F9F 100%); }
 .e3 .back::before { content:""; position:absolute; inset:0; opacity:.14; background: repeating-linear-gradient(-35deg, transparent 0 14px, #fff 14px 16px); mask: linear-gradient(90deg, #000 0%, transparent 55%); -webkit-mask: linear-gradient(90deg, #000 0%, transparent 55%); }
@@ -70,9 +70,36 @@ body{display:flex;gap:40px;padding:40px;background:#ddd;flex-wrap:wrap}
 .e4 .ec .l { font-weight:800; letter-spacing:.14em; text-transform:uppercase; font-size:11px; }
 .e4 .ec .c { font-weight:900; font-style:italic; font-size:34px; line-height:1; margin-top:2px; color:#1E1A19; }
 .e4 .ec .copy { width:46px; height:46px; border:2px solid #1E1A19; color:#1E1A19; border-radius:12px; display:grid; place-items:center; }
+
+.lede { font-size:12px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; color:var(--mute); display:flex; align-items:center; gap:10px; margin-top:2px; }
+.lede::after { content:""; flex:1; height:1.5px; background:var(--line); }
+.journey { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+.j { background:#fff; border:1.5px solid var(--line); border-radius:14px; padding:8px 4px 7px; text-align:center; display:grid; justify-items:center; gap:3px; box-shadow:0 3px 0 var(--line); }
+.j i { width:34px; height:34px; border-radius:50%; display:grid; place-items:center; background:#F3F3F3; color:#B5B5B5; }
+.j b { font-size:10px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--mute); }
+.j span { font-size:8.5px; color:#9A9A9A; font-weight:600; }
+.j.on { border-color:var(--red); box-shadow:0 3px 0 var(--red-dark); }
+.j.on i { background:var(--red); color:#fff; }
+.j.on b { color:var(--red-dark); } .j.on span { color:var(--charcoal); }
+.statrow { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.sc { border-radius:16px; padding:12px 14px 10px; color:#fff; }
+.sc.red { background:var(--red); box-shadow:0 4px 0 var(--red-dark); }
+.sc.blue { background:var(--blue); box-shadow:0 4px 0 var(--blue-dark); }
+.sc .l { font-size:10px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; opacity:.9; }
+.sc .v { font-weight:900; font-style:italic; font-size:26px; line-height:1; margin-top:6px; }
+.sc .v small { font-size:12px; font-weight:700; font-style:normal; opacity:.75; }
+.sc .m { font-size:10.5px; margin-top:6px; opacity:.9; line-height:1.35; }
+.reward { display:flex; justify-content:space-between; align-items:center; gap:12px; background:#fff; border:1.5px dashed var(--charcoal); border-radius:16px; padding:12px 16px; }
+.reward .l { font-size:10px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; color:var(--mute); }
+.reward .v { font-weight:900; font-style:italic; font-size:22px; color:var(--charcoal); margin-top:2px; }
+.reward .m { font-size:11px; color:var(--mute); text-align:right; line-height:1.35; }
 </style>
 <svg width="0" height="0" style="position:absolute"><defs>
-<symbol id="i-copy2" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="i-copy2" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M6 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+<symbol id="i-mic" viewBox="0 0 24 24"><path d="M12 15a4 4 0 0 0 4-4V6a4 4 0 0 0-8 0v5a4 4 0 0 0 4 4zm6-4a6 6 0 0 1-12 0M12 17v4m-4 0h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="i-cam" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.5" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+<symbol id="i-trophy" viewBox="0 0 24 24"><path d="M7 4h10v5a5 5 0 0 1-10 0zM7 6H4a3 3 0 0 0 3 3M17 6h3a3 3 0 0 1-3 3M12 14v4m-4 2h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9z" fill="currentColor"/></symbol>
 <symbol id="i-dl" viewBox="0 0 24 24"><path d="M12 4v11m-5-5 5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 15V4m-4 4 4-4 4 4M5 12v8h14v-8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 </defs></svg></head><body>
@@ -92,7 +119,7 @@ body{display:flex;gap:40px;padding:40px;background:#ddd;flex-wrap:wrap}
     <div class="top"><img class="lockup" src="wendys-horiz-white.svg" alt="Wendy's"><div class="pill"><span class="on">EN</span><span>සිං</span><span>தமிழ்</span></div></div>
     <div class="eyebrow" style="margin-top:16px">Your fest. Your stats.</div>
     <h1 class="display" style="font-size:52px;margin-top:8px;margin-bottom:18px;text-shadow:0 3px 10px rgba(0,0,0,.14)">My profile</h1>
-    <div class="cardwrap"><div class="e2"><div class="hole"></div><div class="row"><div><div class="wf">Wendy Fest</div><div class="pn">Participant #0002</div></div><div class="badge"><img src="cameo.png" alt=""></div></div><div class="display name">Hirusha<br><span class="o">Dayananda</span></div><div class="strip"><div><div class="l">Entry code</div><div class="c">CWN3VB</div></div><div class="copy"><svg width="24" height="24"><use href="#i-copy2"/></svg></div></div></div></div>
+    <div class="cardwrap"><div class="e2"><div class="hole"></div><div class="row"><div><div class="wf">Wendy Fest</div><div class="pn">Participant #0002</div></div><div class="badge"><img src="cameo.png" alt=""></div></div><div class="display name">Hirusha<br><span class="o">Dayananda</span></div><div class="strip"><div><div class="l">Entry code</div><div class="c">CWN3VB</div></div><div class="copy"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M6 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1"/></svg></div></div></div></div>
   </header>
   <div class="body" style="gap:12px;padding-top:80px">
     <div class="two"><a class="btn outline" href="#"><svg width="20" height="20"><use href="#i-dl"/></svg>Save pass</a><a class="btn outline" href="#"><svg width="20" height="20"><use href="#i-share"/></svg>Share</a></div>
@@ -107,6 +134,18 @@ body{display:flex;gap:40px;padding:40px;background:#ddd;flex-wrap:wrap}
   </header>
   <div class="body" style="gap:12px;padding-top:80px">
     <div class="two"><a class="btn outline" href="#"><svg width="20" height="20"><use href="#i-dl"/></svg>Save pass</a><a class="btn outline" href="#"><svg width="20" height="20"><use href="#i-share"/></svg>Share</a></div>
+    <div class="lede">Your fest journey</div>
+    <div class="journey">
+      <div class="j on"><i><svg width="20" height="20"><use href="#i-star"/></svg></i><b>Rookie</b><span>Registered</span></div>
+      <div class="j"><i><svg width="20" height="20"><use href="#i-mic"/></svg></i><b>Screamer</b><span>Scream &amp; Win</span></div>
+      <div class="j"><i><svg width="20" height="20"><use href="#i-trophy"/></svg></i><b>Winner</b><span>Beat the meter</span></div>
+      <div class="j"><i><svg width="20" height="20"><use href="#i-cam"/></svg></i><b>Roasted</b><span>Roast Me</span></div>
+    </div>
+    <div class="statrow">
+      <div class="sc red"><div class="l">Scream &amp; Win</div><div class="v">—<small>/100</small></div><div class="m">Find the LED wall. Say your code to the host.</div></div>
+      <div class="sc blue"><div class="l">Roast Me</div><div class="v">—</div><div class="m">Blue booth. One photo, one roast.</div></div>
+    </div>
+    <div class="reward"><div><div class="l">Reward</div><div class="v">Locked</div></div><div class="m">Win Scream &amp; Win to unlock<br>10% off your next order</div></div>
   </div>
 </section>
 <section class="phone" id="e4">
@@ -114,7 +153,7 @@ body{display:flex;gap:40px;padding:40px;background:#ddd;flex-wrap:wrap}
     <div class="top"><img class="lockup" src="wendys-horiz-white.svg" alt="Wendy's"><div class="pill"><span class="on">EN</span><span>සිං</span><span>தமிழ்</span></div></div>
     <div class="eyebrow" style="margin-top:16px">Your fest. Your stats.</div>
     <h1 class="display" style="font-size:52px;margin-top:8px;margin-bottom:18px;text-shadow:0 3px 10px rgba(0,0,0,.14)">My profile</h1>
-    <div class="cardwrap"><div class="e4"><div class="mono">H</div><img class="cam" src="cameo.png" alt=""><div class="wf">Wendy Fest</div><div class="pn">Participant #0002</div><div class="display name">Hirusha<br><span class="o">Dayananda</span></div><div class="rule"></div><div class="ec"><div><div class="l">Entry code</div><div class="c">CWN3VB</div></div><div class="copy"><svg width="24" height="24"><use href="#i-copy2"/></svg></div></div></div></div>
+    <div class="cardwrap"><div class="e4"><div class="mono">H</div><img class="cam" src="cameo.png" alt=""><div class="wf">Wendy Fest</div><div class="pn">Participant #0002</div><div class="display name">Hirusha<br><span class="o">Dayananda</span></div><div class="rule"></div><div class="ec"><div><div class="l">Entry code</div><div class="c">CWN3VB</div></div><div class="copy"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M6 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1"/></svg></div></div></div></div>
   </header>
   <div class="body" style="gap:12px;padding-top:80px">
     <div class="two"><a class="btn outline" href="#"><svg width="20" height="20"><use href="#i-dl"/></svg>Save pass</a><a class="btn outline" href="#"><svg width="20" height="20"><use href="#i-share"/></svg>Share</a></div>

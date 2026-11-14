@@ -30,7 +30,7 @@
     </div>
     <div class="two"><button class="btn outline" id="dl"><svg width="20" height="20"><use href="#i-dl"/></svg><span data-t="savePass">Save pass</span></button><button class="btn outline" id="share"><svg width="20" height="20"><use href="#i-share"/></svg><span data-t="share">Share</span></button></div>
     <div class="lede" data-t="journey">Your fest journey</div>
-    <div class="journey" id="journey"></div>
+    <div class="track"><div class="steps" id="journey"></div></div>
     <div class="statrow" id="stats"></div>
     <div id="reward"></div>
     <div id="roast"></div>
@@ -49,12 +49,14 @@
     $("num").textContent = "#" + String(p.number).padStart(4, "0"); $("code").textContent = p.code;
     $("date").textContent = new Date(p.joined + "Z").toLocaleDateString(window.lang === "en" ? "en-GB" : window.lang, { day: "numeric", month: "short" });
     const b = p.badges;
-    $("journey").innerHTML = [["star", true, "bRookie", "bRookieD"], ["mic", b.screamer, "bScreamer", "bScreamerD"], ["trophy", b.winner, "bWinner", "bWinnerD"], ["cam", b.roasted, "bRoasted", "bRoastedD"]]
-      .map(([i, on, k, d]) => `<div class="j ${on ? "on" : ""}"><i>${ic(i)}</i><b>${t(k)}</b><span>${t(d)}</span></div>`).join("");
+    const steps = [["star", true, "bRookie"], ["mic", b.screamer, "bScreamer"], ["trophy", b.winner, "bWinner"], ["cam", b.roasted, "bRoasted"]];
+    const done = steps.filter((x) => x[1]).length;
+    $("journey").style.setProperty("--p", `${Math.round(((done - 1) / 3) * 76)}%`);
+    $("journey").innerHTML = steps.map(([i, on, k], idx) => `<div class="s ${on ? "on" : ""} ${idx === 3 ? "b" : ""}"><i>${ic(i)}</i><b>${t(k)}</b></div>`).join("");
     const s = p.screams[0], r = p.roasts[0];
     $("stats").innerHTML = `
-      <div class="sc red"><div class="ic">${ic("mic")}</div><div class="l">${t("scream")}</div><div class="v">${s ? s.score : "—"}<small>/100</small></div><div class="m">${s ? `${t("bWinnerD")}: ${s.loudness} · ${s.accuracy}` : t("scHint")}</div><span class="st ${s && s.won ? "win" : ""}">${s ? (s.won ? "🏆 " + t("won") : t("played")) : t("notPlayed")}</span></div>
-      <div class="sc blue"><div class="ic">${ic("cam")}</div><div class="l">${t("roast")}</div><div class="v">${r ? "🔥" : "—"}</div><div class="m">${r ? (r.title[window.lang] || r.title.en) : t("roHint")}</div><span class="st">${r ? t("roasted") : t("notRoasted")}</span></div>`;
+      <div class="card2 red"><div class="top"><b>${t("scream")}</b>${ic("mic")}</div><div class="bot"><div class="v">${s ? s.score : "—"}<small>/100</small></div><div class="m">${s ? `${t("bWinnerD")}: ${s.loudness} · ${s.accuracy}` : t("scHint")}</div><span class="st ${s && s.won ? "win" : ""}">${s ? (s.won ? "🏆 " + t("won") : t("played")) : t("notPlayed")}</span></div></div>
+      <div class="card2 blue"><div class="top"><b>${t("roast")}</b>${ic("cam")}</div><div class="bot"><div class="v">${r ? "🔥" : "—"}</div><div class="m">${r ? esc(r.title[window.lang] || r.title.en) : t("roHint")}</div><span class="st">${r ? t("roasted") : t("notRoasted")}</span></div></div>`;
     const win = p.screams.find((x) => x.won && x.coupon);
     $("reward").innerHTML = win ? `<div class="reward on"><div><div class="l">${t("reward")}</div><div class="v">${win.coupon.code}</div></div><div class="m">${esc(win.coupon.label)}<br>${t("rewardHow")}</div></div>`
       : `<div class="reward"><div><div class="l">${t("reward")}</div><div class="v">${t("locked")}</div></div><div class="m">${t("rewardHint")}<br>${esc(p.coupon.valueLabel)}</div></div>`;

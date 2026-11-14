@@ -1,0 +1,112 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Card ideas</title><link rel="stylesheet" href="after.css">
+<style>
+body{display:flex;gap:40px;padding:40px;background:#ddd;flex-wrap:wrap}
+.cardwrap { position:relative; margin:0 0 -64px; z-index:3; }
+/* E1 · Split pass: text panel left, cameo panel right, cut on a diagonal */
+.e1 { position:relative; border-radius:20px; overflow:hidden; background:#029CD4; height:236px; color:#fff; box-shadow:0 18px 30px -16px rgba(0,0,0,.45); }
+.e1 .txt { position:absolute; left:0; top:0; bottom:0; width:62%; padding:20px 18px 18px; display:flex; flex-direction:column; justify-content:space-between; }
+.e1 .pic { position:absolute; right:0; top:0; bottom:0; width:44%; background:#1E1A19; clip-path:polygon(22% 0, 100% 0, 100% 100%, 0 100%); display:grid; place-items:center; }
+.e1 .pic img { width:112px; filter:drop-shadow(0 8px 14px rgba(0,0,0,.5)); margin-left:18px; }
+.e1 .wf { font-weight:800; font-style:italic; text-transform:uppercase; font-size:13px; letter-spacing:.06em; }
+.e1 .pn { font-weight:700; letter-spacing:.14em; text-transform:uppercase; font-size:10.5px; margin-top:4px; opacity:.95; }
+.e1 .name { font-size:27px; width:200px; line-height:.95; margin-top:8px; }
+.e1 .name .o { color:transparent; -webkit-text-stroke:2px #fff; }
+.e1 .code { display:flex; align-items:center; gap:10px; background:#fff; color:#1E1A19; border-radius:12px; padding:8px 12px; width:max-content; }
+.e1 .code .l { font-size:9.5px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; color:#6F6563; }
+.e1 .code .c { font-weight:900; font-style:italic; font-size:24px; letter-spacing:.01em; line-height:1; }
+.e1 .code svg { color:var(--red); }
+/* E2 · Lanyard badge: cameo badge pinned top-right, text below, code strip */
+.e2 { position:relative; border-radius:22px; background:#029CD4; color:#fff; padding:18px 20px 0; box-shadow:0 18px 30px -16px rgba(0,0,0,.45); border:2px solid rgba(255,255,255,.6); }
+.e2 .hole { width:54px; height:10px; border-radius:999px; background:#0A6F96; margin:0 auto 10px; box-shadow:inset 0 2px 3px rgba(0,0,0,.4); }
+.e2 .row { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+.e2 .wf { font-weight:800; font-style:italic; text-transform:uppercase; font-size:14px; letter-spacing:.04em; }
+.e2 .pn { font-weight:700; letter-spacing:.14em; text-transform:uppercase; font-size:10.5px; margin-top:4px; }
+.e2 .name { font-size:32px; line-height:.95; margin-top:10px; }
+.e2 .name .o { color:transparent; -webkit-text-stroke:2px #fff; }
+.e2 .badge { width:70px; height:70px; border-radius:50%; background:#fff; display:grid; place-items:center; flex:none; box-shadow:0 6px 14px rgba(0,0,0,.3); }
+.e2 .badge img { width:58px; }
+.e2 .strip { margin:16px -20px 0; background:#1E1A19; border-radius:0 0 20px 20px; padding:14px 20px 16px; display:flex; justify-content:space-between; align-items:center; }
+.e2 .strip .l { font-size:10.5px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; color:#4DBBEA; }
+.e2 .strip .c { font-weight:900; font-style:italic; font-size:30px; line-height:1; margin-top:3px; }
+.e2 .strip .copy { width:46px; height:46px; border:2px solid #fff; border-radius:12px; display:grid; place-items:center; }
+/* E3 · Stacked tickets: white ticket on blue backing, cameo peeking from behind */
+.e3 { position:relative; padding:0 0 0 0; }
+.e3 .back { position:absolute; inset:-8px -8px 8px 8px; background:#029CD4; border-radius:22px; transform:rotate(2.5deg); overflow:hidden; }
+.e3 .back img { position:absolute; right:-30px; top:-20px; width:170px; opacity:.35; filter:grayscale(1) brightness(.75); mix-blend-mode:multiply; }
+.e3 .front { position:relative; background:#FBF5EA; color:#1E1A19; border-radius:20px; border:1.5px solid #B4AB9F; padding:18px 20px 18px; box-shadow:0 14px 26px -14px rgba(0,0,0,.4); }
+.e3 .top { display:flex; align-items:center; gap:14px; }
+.e3 .top img { height:36px; }
+.e3 .top .vr { width:1.5px; height:40px; background:#B4AB9F; }
+.e3 .top .t1 { font-weight:800; font-style:italic; text-transform:uppercase; font-size:13px; }
+.e3 .top .t2 { color:#029CD4; font-weight:800; letter-spacing:.12em; text-transform:uppercase; font-size:11px; }
+.e3 .name { font-size:30px; line-height:.95; margin-top:14px; }
+.e3 .name .o { color:transparent; -webkit-text-stroke:2px #1E1A19; }
+.e3 .meta { display:flex; justify-content:space-between; align-items:flex-end; margin-top:12px; padding-top:12px; border-top:1.5px dashed #B4AB9F; }
+.e3 .meta .l { font-size:10px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; color:#6F6563; }
+.e3 .meta .c { font-weight:900; font-style:italic; font-size:30px; line-height:1; margin-top:2px; }
+.e3 .meta .n { text-align:right; font-size:10px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; color:#6F6563; }
+.e3 .meta .n b { display:block; font-size:16px; color:#1E1A19; font-style:italic; }
+/* E4 · Monogram: giant outlined initial, cameo small in corner, blue card, white rule */
+.e4 { position:relative; border-radius:20px; overflow:hidden; background:#029CD4; color:#fff; padding:20px 20px 20px; box-shadow:0 18px 30px -16px rgba(0,0,0,.45); }
+.e4 .mono { position:absolute; right:-10px; bottom:-30px; font-weight:900; font-style:italic; font-size:200px; line-height:1; color:transparent; -webkit-text-stroke:2px rgba(255,255,255,.35); pointer-events:none; }
+.e4 .cam { position:absolute; right:16px; top:16px; width:58px; filter:drop-shadow(0 6px 12px rgba(0,0,0,.35)); }
+.e4 .wf { font-weight:800; font-style:italic; text-transform:uppercase; font-size:14px; }
+.e4 .pn { font-weight:700; letter-spacing:.14em; text-transform:uppercase; font-size:10.5px; margin-top:4px; }
+.e4 .name { font-size:32px; line-height:.95; margin-top:16px; width:230px; position:relative; }
+.e4 .name .o { color:transparent; -webkit-text-stroke:2px #fff; }
+.e4 .rule { height:2px; background:#fff; margin:16px 0 12px; width:60%; }
+.e4 .ec { display:flex; align-items:center; gap:14px; position:relative; }
+.e4 .ec .l { font-weight:800; letter-spacing:.14em; text-transform:uppercase; font-size:11px; }
+.e4 .ec .c { font-weight:900; font-style:italic; font-size:34px; line-height:1; margin-top:2px; color:#1E1A19; }
+.e4 .ec .copy { width:46px; height:46px; border:2px solid #1E1A19; color:#1E1A19; border-radius:12px; display:grid; place-items:center; }
+</style>
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="i-copy2" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="i-dl" viewBox="0 0 24 24"><path d="M12 4v11m-5-5 5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-share" viewBox="0 0 24 24"><path d="M12 15V4m-4 4 4-4 4 4M5 12v8h14v-8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg></head><body>
+<section class="phone" id="e1">
+  <header class="hdr profile"><div class="bg"></div>
+    <div class="top"><img class="lockup" src="wendys-horiz-white.svg" alt="Wendy's"><div class="pill"><span class="on">EN</span><span>සිං</span><span>தமிழ்</span></div></div>
+    <div class="eyebrow" style="margin-top:16px">Your fest. Your stats.</div>
+    <h1 class="display" style="font-size:52px;margin-top:8px;margin-bottom:18px;text-shadow:0 3px 10px rgba(0,0,0,.14)">My profile</h1>
+    <div class="cardwrap"><div class="e1"><div class="txt"><div><div class="wf">Wendy Fest</div><div class="pn">Participant #0002</div><div class="display name">Hirusha<br><span class="o">Dayananda</span></div></div><div class="code"><div><div class="l">Entry code</div><div class="c">CWN3VB</div></div><svg width="22" height="22"><use href="#i-copy2"/></svg></div></div><div class="pic"><img src="cameo.png" alt=""></div></div></div>
+  </header>
+  <div class="body" style="gap:12px;padding-top:80px">
+    <div class="two"><a class="btn outline" href="#"><svg width="20" height="20"><use href="#i-dl"/></svg>Save pass</a><a class="btn outline" href="#"><svg width="20" height="20"><use href="#i-share"/></svg>Share</a></div>
+  </div>
+</section>
+<section class="phone" id="e2">
+  <header class="hdr profile"><div class="bg"></div>
+    <div class="top"><img class="lockup" src="wendys-horiz-white.svg" alt="Wendy's"><div class="pill"><span class="on">EN</span><span>සිං</span><span>தமிழ்</span></div></div>
+    <div class="eyebrow" style="margin-top:16px">Your fest. Your stats.</div>
+    <h1 class="display" style="font-size:52px;margin-top:8px;margin-bottom:18px;text-shadow:0 3px 10px rgba(0,0,0,.14)">My profile</h1>
+    <div class="cardwrap"><div class="e2"><div class="hole"></div><div class="row"><div><div class="wf">Wendy Fest</div><div class="pn">Participant #0002</div></div><div class="badge"><img src="cameo.png" alt=""></div></div><div class="display name">Hirusha<br><span class="o">Dayananda</span></div><div class="strip"><div><div class="l">Entry code</div><div class="c">CWN3VB</div></div><div class="copy"><svg width="24" height="24"><use href="#i-copy2"/></svg></div></div></div></div>
+  </header>
+  <div class="body" style="gap:12px;padding-top:80px">
+    <div class="two"><a class="btn outline" href="#"><svg width="20" height="20"><use href="#i-dl"/></svg>Save pass</a><a class="btn outline" href="#"><svg width="20" height="20"><use href="#i-share"/></svg>Share</a></div>
+  </div>
+</section>
+<section class="phone" id="e3">
+  <header class="hdr profile"><div class="bg"></div>
+    <div class="top"><img class="lockup" src="wendys-horiz-white.svg" alt="Wendy's"><div class="pill"><span class="on">EN</span><span>සිං</span><span>தமிழ்</span></div></div>
+    <div class="eyebrow" style="margin-top:16px">Your fest. Your stats.</div>
+    <h1 class="display" style="font-size:52px;margin-top:8px;margin-bottom:18px;text-shadow:0 3px 10px rgba(0,0,0,.14)">My profile</h1>
+    <div class="cardwrap"><div class="e3"><div class="back"><img src="cameo.png" alt=""></div><div class="front"><div class="top"><img src="wendys-horiz.svg" alt="Wendy's"><div class="vr"></div><div><div class="t1">Wendy Fest</div><div class="t2">Participant #0002</div></div></div><div class="display name">Hirusha<br><span class="o">Dayananda</span></div><div class="meta"><div><div class="l">Entry code</div><div class="c">CWN3VB</div></div><div class="n">Colombo<b>14 Nov</b></div></div></div></div></div>
+  </header>
+  <div class="body" style="gap:12px;padding-top:80px">
+    <div class="two"><a class="btn outline" href="#"><svg width="20" height="20"><use href="#i-dl"/></svg>Save pass</a><a class="btn outline" href="#"><svg width="20" height="20"><use href="#i-share"/></svg>Share</a></div>
+  </div>
+</section>
+<section class="phone" id="e4">
+  <header class="hdr profile"><div class="bg"></div>
+    <div class="top"><img class="lockup" src="wendys-horiz-white.svg" alt="Wendy's"><div class="pill"><span class="on">EN</span><span>සිං</span><span>தமிழ்</span></div></div>
+    <div class="eyebrow" style="margin-top:16px">Your fest. Your stats.</div>
+    <h1 class="display" style="font-size:52px;margin-top:8px;margin-bottom:18px;text-shadow:0 3px 10px rgba(0,0,0,.14)">My profile</h1>
+    <div class="cardwrap"><div class="e4"><div class="mono">H</div><img class="cam" src="cameo.png" alt=""><div class="wf">Wendy Fest</div><div class="pn">Participant #0002</div><div class="display name">Hirusha<br><span class="o">Dayananda</span></div><div class="rule"></div><div class="ec"><div><div class="l">Entry code</div><div class="c">CWN3VB</div></div><div class="copy"><svg width="24" height="24"><use href="#i-copy2"/></svg></div></div></div></div>
+  </header>
+  <div class="body" style="gap:12px;padding-top:80px">
+    <div class="two"><a class="btn outline" href="#"><svg width="20" height="20"><use href="#i-dl"/></svg>Save pass</a><a class="btn outline" href="#"><svg width="20" height="20"><use href="#i-share"/></svg>Share</a></div>
+  </div>
+</section>
+</body></html>

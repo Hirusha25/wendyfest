@@ -3,286 +3,421 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Scream & Win · Wendy Fest</title><link rel="icon" href="/assets/cameo.png">
-<link rel="stylesheet" href="/css/brand.css"><link rel="stylesheet" href="/css/kiosk.css">
+<link rel="stylesheet" href="/css/brand.css">
 <style>
-  .idle-title { font-size: 19vmin; line-height: .85; }
-  .idle-title .l2 { color: var(--blush); }
-  .gerr { font-size: 7vmin; color: #fff; -webkit-text-stroke: .3vmin #fff; color: transparent; }
-  .name { font-size: 9vmin; color: var(--blush); }
-  .db { font-family: var(--display); font-style: italic; font-weight: 900; font-size: 6vmin; }
-  .trans { font-size: 3vmin; font-weight: 600; min-height: 4vmin; opacity: .9; }
-  .judge { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2vmin; width: 90vmin; }
-  .judge button { padding: 4vmin 2vmin; font-size: 3vmin; }
-  .cnt { font-size: 40vmin; line-height: 1; }
-  .win-wrap { display: grid; grid-template-columns: 1fr auto; gap: 5vmin; align-items: center; width: 100%; }
-  .coupon-k { background: #fff; color: var(--ink); border-radius: 2.4vmin; padding: 3vmin 4vmin; display: grid; gap: .6vmin; }
-  .coupon-k .code { color: var(--red); font-size: 7vmin; }
-  .thr { font-size: 2vmin; opacity: .8; }
+/* ================= AFTER DARK · Scream & Win ================= */
+:root { --red:#CD2028; --red-dark:#A32539; --red-hi:#FF3B45; --ink:#0E0C0C; --ink2:#1A1616; --cream:#F6F0E6; --blush:#F2D4D7; --cyan:#4DE3F2; --line:rgba(255,255,255,.14); }
+html, body { height:100%; overflow:hidden; }
+body { margin:0; background:var(--ink); color:#fff; font-family:Poppins,'Noto Sans Sinhala','Noto Sans Tamil',system-ui,sans-serif; user-select:none; cursor:default; }
+.stage { position:relative; width:100vw; height:100vh; overflow:hidden;
+  background: radial-gradient(120% 90% at 50% 110%, #2A0A0E 0%, #140F10 45%, #0E0C0C 100%); }
+/* angled red side panels (3D) */
+.panel { position:absolute; top:0; bottom:0; width:22vw; pointer-events:none; z-index:1; }
+.panel.l { left:0; background:linear-gradient(100deg, #B01C26 0%, #7E131B 55%, rgba(60,10,14,0) 100%); clip-path:polygon(0 0, 46% 0, 100% 100%, 0 100%); filter:drop-shadow(1.5vmin 0 3vmin rgba(0,0,0,.6)); }
+.panel.l::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(255,255,255,.12), transparent 40%, rgba(0,0,0,.35)); clip-path:inherit; }
+.panel.r { right:0; background:linear-gradient(260deg, #B01C26 0%, #7E131B 55%, rgba(60,10,14,0) 100%); clip-path:polygon(54% 0, 100% 0, 100% 100%, 0 100%); filter:drop-shadow(-1.5vmin 0 3vmin rgba(0,0,0,.6)); }
+.panel.r::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(255,255,255,.12), transparent 40%, rgba(0,0,0,.35)); clip-path:inherit; }
+.rings { position:absolute; inset:0; pointer-events:none; z-index:1; opacity:.5;
+  background:repeating-radial-gradient(circle at 0% 55%, transparent 0 3.2vmin, rgba(205,32,40,.35) 3.2vmin 3.5vmin), repeating-radial-gradient(circle at 100% 45%, transparent 0 3.2vmin, rgba(205,32,40,.35) 3.2vmin 3.5vmin);
+  mask:radial-gradient(circle at 0% 55%, #000 0, transparent 26vmin), radial-gradient(circle at 100% 45%, #000 0, transparent 26vmin); -webkit-mask:radial-gradient(circle at 0% 55%, #000 0, transparent 26vmin), radial-gradient(circle at 100% 45%, #000 0, transparent 26vmin); }
+#field { position:absolute; left:0; right:0; bottom:0; height:38vh; z-index:1; pointer-events:none; }
+.vignette { position:absolute; inset:0; z-index:2; pointer-events:none; background:radial-gradient(70% 60% at 50% 45%, transparent 55%, rgba(0,0,0,.55) 100%); }
+
+/* chrome */
+.brand { position:absolute; top:4.4vmin; left:6vmin; z-index:5; display:flex; align-items:center; gap:1.8vmin; }
+.brand img { height:6vmin; width:auto; }
+.brand i { width:.2vmin; height:4.2vmin; background:rgba(255,255,255,.35); }
+.brand b { font-size:1.9vmin; letter-spacing:.22em; text-transform:uppercase; font-weight:700; color:#EDE4D8; }
+.foot { position:absolute; left:0; right:0; bottom:0; z-index:5; display:flex; justify-content:space-between; align-items:center; padding:1.6vmin 6vmin; font-size:1.5vmin; letter-spacing:.16em; text-transform:uppercase; font-weight:700; color:rgba(255,255,255,.55); }
+.foot .c { display:flex; align-items:center; gap:1.2vmin; } .foot .c img { height:2.6vmin; }
+.gear { position:absolute; bottom:5.6vmin; right:3vmin; width:3vmin; height:3vmin; opacity:.25; cursor:pointer; z-index:60; } .gear:hover { opacity:.7; }
+
+/* screens */
+.screen { position:absolute; inset:0; z-index:4; display:none; padding:12vmin 10vw 7vmin; align-content:center; justify-items:center; text-align:center; }
+.screen.on { display:grid; }
+.display { font-weight:900; font-style:italic; text-transform:uppercase; letter-spacing:-.02em; line-height:.92; color:#F6F0E6; text-shadow:0 .6vmin 2.4vmin rgba(0,0,0,.6); }
+.h1 { font-size:13vmin; } .h2 { font-size:8vmin; } .h3 { font-size:5vmin; }
+.red { color:var(--red-hi); }
+.eyebrow { display:flex; align-items:center; justify-content:center; gap:1.6vmin; font-size:1.9vmin; letter-spacing:.3em; text-transform:uppercase; font-weight:600; color:#EDE4D8; }
+.eyebrow::before, .eyebrow::after { content:""; width:6vmin; height:.2vmin; background:rgba(255,255,255,.4); }
+.sub { font-size:3.2vmin; font-weight:600; color:#F6F0E6; }
+.sub b { font-weight:900; }
+.btn { display:inline-flex; align-items:center; justify-content:center; gap:2vmin; padding:0 3.4vmin 0 4.6vmin; height:7.6vmin; border-radius:999px; border:0; cursor:pointer; background:linear-gradient(180deg, #E0303A, #B51F28); color:#fff; font:italic 900 2.6vmin/1 Poppins, sans-serif; text-transform:uppercase; letter-spacing:.04em; box-shadow:0 .8vmin 0 #6E1119, 0 2.6vmin 5vmin -1.6vmin rgba(255,59,69,.6), inset 0 .2vmin 0 rgba(255,255,255,.35); transition:transform .1s; }
+.btn:active { transform:translateY(.4vmin); box-shadow:0 .4vmin 0 #6E1119; }
+.btn::after { content:""; width:4vmin; height:4vmin; border-radius:50%; background:#fff; -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center/55% no-repeat, linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center/55% no-repeat, linear-gradient(#000 0 0); mask-composite:exclude; }
+.btn.ghost { background:transparent; box-shadow:none; border:.3vmin solid rgba(255,255,255,.6); padding:0 4vmin; } .btn.ghost::after { display:none; }
+.btn.ink { background:linear-gradient(180deg, #2A2424, #141111); box-shadow:0 .8vmin 0 #000; }
+.pill { display:inline-flex; align-items:center; gap:1.2vmin; padding:1.1vmin 2.4vmin; border-radius:999px; border:.25vmin solid var(--red-hi); background:rgba(205,32,40,.14); font-size:1.9vmin; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#fff; }
+.pill .dot { width:1.4vmin; height:1.4vmin; border-radius:50%; background:var(--red-hi); box-shadow:0 0 1.6vmin var(--red-hi); animation:blink 1s steps(2) infinite; }
+.pill.ok { border-color:#2ECC71; background:rgba(46,204,113,.12); } .pill.ok .dot { background:#2ECC71; box-shadow:0 0 1.6vmin #2ECC71; animation:none; }
+.pill.cyan { border-color:var(--cyan); background:rgba(77,227,242,.1); }
+@keyframes blink { 50% { opacity:.2 } }
+.card { background:#F6F0E6; color:var(--ink); border-radius:2.4vmin; box-shadow:0 2vmin 5vmin rgba(0,0,0,.6), inset 0 -.6vmin 0 rgba(0,0,0,.08); }
+.qrcard { padding:2vmin; display:grid; gap:1.2vmin; justify-items:center; width:30vmin; }
+.qrcard img { width:24vmin; height:24vmin; }
+.qrcard b { font-size:2.1vmin; letter-spacing:.12em; text-transform:uppercase; font-weight:900; text-align:center; line-height:1.15; }
+.qrcard small { font-size:1.5vmin; color:#616161; text-align:center; }
+.muted { color:rgba(255,255,255,.6); font-size:1.9vmin; }
+.help { display:inline-flex; align-items:center; gap:1vmin; color:rgba(255,255,255,.75); font-size:1.9vmin; }
+.help i { width:2.6vmin; height:2.6vmin; border-radius:50%; border:.2vmin solid currentColor; display:grid; place-items:center; font-style:normal; font-weight:800; font-size:1.6vmin; }
+.vr { width:.2vmin; height:5vmin; background:rgba(255,255,255,.3); }
+
+/* idle */
+.idle.on { display:grid; grid-template-columns:1fr auto; gap:6vw; align-items:center; text-align:left; justify-items:start; }
+.idle .h1 { font-size:14vmin; }
+.idle .h1 .amp { color:var(--red-hi); }
+
+/* code */
+.boxes { display:flex; gap:1.6vmin; justify-content:center; }
+.boxes i { width:8vmin; height:8vmin; border-radius:1.6vmin; background:#F6F0E6; color:var(--ink); display:grid; place-items:center; font:900 5vmin/1 Poppins, sans-serif; box-shadow:0 .8vmin 0 #B9B0A6, 0 2vmin 4vmin rgba(0,0,0,.5); }
+.boxes i.cur { outline:.4vmin solid var(--red-hi); outline-offset:.2vmin; }
+.boxes i.err { animation:shake .4s; outline:.4vmin solid var(--red-hi); }
+.kbd { display:grid; gap:1.2vmin; justify-items:center; }
+.kbd .row { display:flex; gap:1vmin; }
+.kbd button { height:6vmin; min-width:6vmin; padding:0 1.6vmin; border-radius:1.2vmin; border:0; background:linear-gradient(180deg, #2C2626, #171313); color:#fff; font:800 2.6vmin/1 Poppins, sans-serif; box-shadow:0 .6vmin 0 #000, inset 0 .15vmin 0 rgba(255,255,255,.18); cursor:pointer; }
+.kbd button:active { transform:translateY(.3vmin); box-shadow:0 .3vmin 0 #000; }
+.kbd button.wide { min-width:9vmin; }
+#code { position:absolute; opacity:0; width:1px; height:1px; left:-9999px; }
+.msg { min-height:3vmin; font-size:2.2vmin; color:#F6F0E6; }
+
+/* waveform */
+canvas.wave { width:70vw; height:12vmin; display:block; }
+
+/* countdown + gauge */
+.ringwrap { position:relative; width:52vmin; height:52vmin; display:grid; place-items:center; }
+.ringwrap canvas { position:absolute; inset:0; width:100%; height:100%; }
+.ringwrap .num { position:relative; font:italic 900 30vmin/1 Poppins, sans-serif; color:#F6F0E6; text-shadow:0 1vmin 4vmin rgba(0,0,0,.7); }
+.ringwrap .num.sm { font-size:18vmin; }
+.ringwrap .lbl { position:relative; margin-top:-2vmin; font-size:1.9vmin; letter-spacing:.3em; text-transform:uppercase; font-weight:800; color:#EDE4D8; }
+.dots { font-size:2.4vmin; letter-spacing:.5em; font-weight:800; color:#F6F0E6; }
+.dots span { opacity:.3; } .dots span.on { opacity:1; }
+.scream-grid { display:grid; grid-template-columns:1fr auto 1fr; gap:3vw; align-items:center; width:100%; }
+.scream-grid canvas.wave { width:100%; height:16vmin; }
+.target { position:absolute; left:-16vmin; top:4vmin; }
+.target::after { content:""; position:absolute; left:100%; top:50%; width:10vmin; height:.2vmin; background:var(--cyan); }
+.timeleft { display:grid; gap:1vmin; justify-items:start; }
+.timeleft b { font:italic 900 5vmin/1 Poppins, sans-serif; color:#F6F0E6; } .timeleft b small { font-size:2.4vmin; font-style:normal; font-weight:800; letter-spacing:.1em; }
+.bar { width:26vmin; height:1.2vmin; border-radius:999px; background:rgba(255,255,255,.12); overflow:hidden; }
+.bar i { display:block; height:100%; width:100%; background:linear-gradient(90deg, var(--red-hi), #FF8A5B); border-radius:999px; transform-origin:left; }
+
+/* judge */
+.judge { display:flex; gap:2vmin; }
+
+/* result */
+.result { display:grid; grid-template-columns:auto auto auto auto; gap:4vw; align-items:center; text-align:left; justify-items:start; }
+.result .score { font:italic 900 20vmin/1 Poppins, sans-serif; color:#F6F0E6; }
+.result .lbl { font-size:1.9vmin; letter-spacing:.3em; text-transform:uppercase; font-weight:800; color:#EDE4D8; }
+.reward { display:grid; gap:1.2vmin; }
+.reward .code { background:#F6F0E6; color:var(--red); font:italic 900 5.2vmin/1 Poppins, sans-serif; padding:2vmin 3vmin; border-radius:1.6vmin; box-shadow:0 .8vmin 0 #B9B0A6, 0 2vmin 4vmin rgba(0,0,0,.5); letter-spacing:.02em; }
+.reward small { font-size:1.6vmin; color:rgba(255,255,255,.7); }
+.confetti { position:absolute; inset:0; pointer-events:none; z-index:3; overflow:hidden; }
+.confetti i { position:absolute; width:1.4vmin; height:2.6vmin; border-radius:.2vmin; animation:fall 3s linear forwards; }
+@keyframes fall { to { transform:translateY(110vh) rotate(720deg); opacity:.3 } }
+@keyframes shake { 0%,100% { transform:translateX(0) } 25% { transform:translateX(-1vmin) } 75% { transform:translateX(1vmin) } }
+.flash { position:absolute; inset:0; background:#fff; opacity:0; pointer-events:none; z-index:70; }
+.flash.go { animation:flash .5s ease; } @keyframes flash { 0% { opacity:.9 } 100% { opacity:0 } }
+.settings { position:absolute; top:0; right:0; width:44vmin; height:100%; background:#1A1616; color:#fff; padding:4vmin; transform:translateX(100%); transition:transform .3s; z-index:80; font-size:1.8vmin; overflow:auto; box-shadow:-2vmin 0 5vmin rgba(0,0,0,.6); }
+.settings.open { transform:none; }
+.settings label { display:block; margin:1.6vmin 0 .4vmin; font-weight:700; }
+.settings select, .settings input { width:100%; padding:1vmin; border-radius:1vmin; border:0; font-size:1.8vmin; }
+.lvl { width:100%; height:1.2vmin; background:rgba(255,255,255,.12); border-radius:999px; overflow:hidden; } .lvl div { height:100%; width:0; background:var(--red-hi); }
+.k-input { font:900 6vmin/1 Poppins, sans-serif; letter-spacing:.3em; text-align:center; width:40vmin; padding:2vmin; border-radius:1.6vmin; border:0; background:#F6F0E6; color:var(--ink); box-shadow:0 .8vmin 0 #B9B0A6; outline:0; }
+.k-input.err { animation:shake .4s; }
+.rise { animation:rise .5s ease both; } .rise-2 { animation:rise .5s .1s ease both; } .rise-3 { animation:rise .5s .2s ease both; }
+@keyframes rise { from { transform:translateY(2vmin); opacity:0 } to { transform:none; opacity:1 } }
+@media (orientation:portrait) {
+  .screen { padding:16vmin 6vw 10vmin; }
+  .idle, .result, .scream-grid { grid-template-columns:1fr; justify-items:center; text-align:center; }
+  .target { position:static; } .target::after { display:none; }
+  .panel { width:30vw; }
+}
 </style>
 </head>
-<body class="kiosk on-red freckles">
+<body>
 <div class="stage">
-  <img class="k-logo" src="/assets/wendys-horiz-white.svg" alt="Wendy's">
-  <img class="k-cameo" src="/assets/cameo.png" alt="">
-  <div class="frame"><i></i></div>
+  <div class="panel l"></div><div class="panel r"></div><div class="rings"></div>
+  <canvas id="field"></canvas><div class="vignette"></div>
   <div class="flash" id="flash"></div>
+  <div class="brand"><img src="/assets/wendys-horiz-white.svg" alt="Wendy's"><i></i><b>Wendy Fest</b></div>
 
   <!-- PIN -->
-  <section class="screen" id="s-pin" style="place-items:center"><div class="stack center" style="gap:3vmin">
-    <div class="k-eyebrow">Host console</div><div class="display big">Enter PIN</div>
-    <input class="k-input" id="pin" type="password" inputmode="numeric" maxlength="8" style="width:40vmin;letter-spacing:.5em">
-    <button class="btn white k-btn" id="pin-go">Unlock</button></div></section>
+  <section class="screen" id="s-pin"><div style="display:grid;gap:3vmin;justify-items:center">
+    <div class="eyebrow">Host console</div><div class="display h2">Enter PIN</div>
+    <input class="k-input" id="pin" type="password" inputmode="numeric" maxlength="8">
+    <button class="btn" id="pin-go">Unlock</button></div></section>
 
-  <!-- IDLE / attract -->
-  <section class="screen on" id="s-idle">
-    <div class="cols">
-      <div>
-        <div class="k-eyebrow pop">Wendy Fest · Sri Lanka</div>
-        <div class="display idle-title rise" style="margin:2vmin 0"><span>Scream</span><br><span class="l2">& Win</span></div>
-        <div class="display gerr rise-2 pulse">GERRRRRRR!</div>
-        <p class="k-sub rise-3" style="margin-top:3vmin">Yell <b>“WENDY’S!”</b> into the mic. Loud enough and clear enough beats the meter and wins a reward code.</p>
-        <p class="k-sub" style="opacity:.8;font-size:2.4vmin">කෑගහන්න, දිනන්න &nbsp;·&nbsp; கத்துங்கள், வெல்லுங்கள்</p>
-      </div>
-      <div class="stack center" style="justify-items:center;gap:2vmin">
-        <div class="qr"><img id="qr-reg" alt="QR"></div>
-        <div class="k-eyebrow">Scan to register</div>
-        <div style="font-size:2vmin;opacity:.8">Then tell the host your 6-letter code</div>
-        <button class="btn white k-btn" id="start" style="margin-top:2vmin">Host: enter guest code →</button>
-      </div>
+  <!-- IDLE -->
+  <section class="screen on idle" id="s-idle">
+    <div style="display:grid;gap:2.4vmin;justify-items:start">
+      <div class="eyebrow rise" style="justify-content:flex-start">Interactive experience</div>
+      <h1 class="display h1 rise-2">Scream<br><span class="amp">&amp;</span><span class="red">Win</span></h1>
+      <div class="sub rise-3">Say <b>WENDY’S.</b> Make some noise.</div>
+      <div class="muted rise-3" style="font-size:2.1vmin">කෑගහන්න, දිනන්න &nbsp;·&nbsp; கத்துங்கள், வெல்லுங்கள்</div>
+      <button class="btn rise-3" id="start" style="margin-top:1vmin">Enter your code</button>
     </div>
+    <div class="card qrcard rise-2"><img id="qr-reg" alt="QR"><b>Scan to<br>register</b><small>Then tell the host your 6-letter code</small></div>
   </section>
 
   <!-- CODE -->
-  <section class="screen" id="s-code" style="place-items:center"><div class="stack center" style="gap:2.4vmin">
-    <div class="k-eyebrow">Guest code</div>
-    <input class="k-input" id="code" maxlength="6" autocomplete="off" placeholder="ABC123">
-    <div id="kb"></div>
-    <div class="k-sub" id="code-msg" style="min-height:3vmin;opacity:.9;font-size:2.2vmin"></div>
-    <button class="btn ghost sm" style="color:#fff" onclick="goIdle()">← Back</button>
+  <section class="screen" id="s-code"><div style="display:grid;gap:2.6vmin;justify-items:center">
+    <div class="display h2">Let’s hear you.</div>
+    <div class="eyebrow" style="letter-spacing:.24em">Enter your 6-character code</div>
+    <input id="code" autocomplete="off" aria-label="Guest code">
+    <div class="boxes" id="boxes"><i class="cur"></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="kbd" id="kbd"></div>
+    <div class="msg" id="code-msg"></div>
+    <div style="display:flex;align-items:center;gap:3vmin"><button class="btn" id="code-go">Continue</button><span class="vr"></span><span class="help"><i>i</i> Ask your host for help.</span><button class="btn ghost" style="height:5.6vmin;font-size:1.9vmin" onclick="goIdle()">Back</button></div>
   </div></section>
 
   <!-- READY -->
-  <section class="screen" id="s-ready" style="place-items:center"><div class="stack center" style="gap:2vmin;justify-items:center">
-    <div class="k-eyebrow">Get ready</div>
-    <div class="display name" id="r-name">Hi!</div>
-    <div class="display mid">When the count hits zero, scream<br><span style="color:var(--blush)">“WENDY’S!”</span></div>
-    <div class="k-level" style="margin-top:2vmin"><div id="lvl-ready"></div></div>
-    <div class="thr" id="mic-status">Checking microphone…</div>
-    <div class="row" style="gap:2vmin;margin-top:2vmin"><button class="btn white k-btn" id="go">Start the count</button><button class="btn ghost k-btn" style="color:#fff" onclick="goIdle()">Cancel</button></div>
+  <section class="screen" id="s-ready"><div style="display:grid;gap:2.2vmin;justify-items:center">
+    <div class="eyebrow">Mic check</div>
+    <div class="display h2">Ready, <span id="r-name">Hirusha</span>?</div>
+    <div class="sub">When the count hits zero, scream <b>“WENDY’S!”</b></div>
+    <canvas class="wave" id="wave-ready"></canvas>
+    <div class="pill ok" id="mic-pill"><span class="dot"></span><span id="mic-status">Checking microphone…</span></div>
+    <div style="display:flex;gap:2vmin;margin-top:1vmin"><button class="btn" id="go">Let’s go</button><button class="btn ghost" onclick="goIdle()">Cancel</button></div>
   </div></section>
 
-  <!-- GO -->
-  <section class="screen" id="s-go" style="place-items:center">
-    <div class="stack center" id="go-count" style="justify-items:center"><div class="display cnt" id="cnt">3</div></div>
-    <div class="cols hidden" id="go-meter">
-      <div class="meter-wrap"><canvas class="meter" id="meter" width="800" height="800"></canvas></div>
-      <div class="stack" style="gap:1.4vmin">
-        <div class="display big pulse" style="color:#fff">SCREAM!</div>
-        <div class="db"><span id="db">-60</span> dB</div>
-        <div class="k-eyebrow">We heard</div>
-        <div class="trans" id="trans">…</div>
-        <div class="k-level"><div id="lvl-go"></div></div>
-        <div class="thr">Time left: <b id="tleft">3.0</b>s</div>
+  <!-- GO: countdown then scream -->
+  <section class="screen" id="s-go">
+    <div id="go-count" style="display:grid;gap:2vmin;justify-items:center">
+      <div class="eyebrow">Get ready to scream</div>
+      <div class="ringwrap"><canvas id="ring-count"></canvas><div class="num" id="cnt">3</div></div>
+      <div class="dots" id="dots"><span class="on">3</span> · <span>2</span> · <span>1</span></div>
+    </div>
+    <div id="go-meter" class="scream-grid" style="display:none">
+      <canvas class="wave" id="wave-l"></canvas>
+      <div style="display:grid;gap:2vmin;justify-items:center;position:relative">
+        <div class="display h3" style="font-size:6vmin">Scream Wendy’s!</div>
+        <div class="ringwrap" style="width:44vmin;height:44vmin"><span class="pill cyan target" id="target">Target <b id="thr">70</b></span><canvas id="ring-gauge"></canvas><div class="num sm" id="gauge-num">0</div><div class="lbl">Loudness score</div></div>
+      </div>
+      <div style="display:grid;gap:3vmin;justify-items:start">
+        <canvas class="wave" id="wave-r"></canvas>
+        <span class="pill"><span class="dot"></span>Listening</span>
+        <div class="timeleft"><b><span id="tleft">3.0</span>s <small>LEFT</small></b><div class="bar"><i id="tbar"></i></div></div>
+        <div class="muted" id="trans" style="font-size:1.8vmin;min-height:2.4vmin">…</div>
       </div>
     </div>
   </section>
 
-  <!-- HOST JUDGE (fallback when speech recognition unavailable) -->
-  <section class="screen" id="s-judge" style="place-items:center"><div class="stack center" style="gap:3vmin;justify-items:center">
-    <div class="k-eyebrow">Host call · speech recognition unavailable</div>
-    <div class="display mid">Did they say “WENDY’S”?</div>
-    <div class="judge">
-      <button class="btn white" onclick="submitScream(100)">Crystal clear</button>
-      <button class="btn ink" onclick="submitScream(60)">Close enough</button>
-      <button class="btn ghost" style="color:#fff" onclick="submitScream(15)">Nope</button>
-    </div>
+  <!-- HOST JUDGE -->
+  <section class="screen" id="s-judge"><div style="display:grid;gap:3vmin;justify-items:center">
+    <div class="eyebrow">Host call · speech recognition unavailable</div>
+    <div class="display h2">Did they say “Wendy’s”?</div>
+    <div class="judge"><button class="btn" onclick="submitScream(100)">Crystal clear</button><button class="btn ink" onclick="submitScream(60)">Close enough</button><button class="btn ghost" onclick="submitScream(15)">Nope</button></div>
   </div></section>
 
   <!-- RESULT -->
-  <section class="screen" id="s-result" style="place-items:center;padding-top:14vmin">
-    <div class="win-wrap">
-      <div class="stack" style="gap:1vmin">
-        <div class="k-eyebrow" id="res-eyebrow">Result</div>
-        <div class="display result-score" id="res-score">0</div>
-        <div class="display mid" id="res-title">…</div>
-        <div class="k-sub" id="res-detail"></div>
-        <div class="coupon-k hidden pop" id="res-coupon" style="margin-top:2vmin">
-          <div class="k-eyebrow" style="color:var(--gray)">Reward code</div>
-          <div class="display code" id="res-code">WF-XXXXXX</div>
-          <div style="font-weight:700" id="res-label"></div>
-          <div style="font-size:1.8vmin;color:var(--gray)">Sent by SMS · saved on your Wendy Fest profile</div>
-        </div>
-        <div class="row" style="gap:2vmin;margin-top:3vmin"><button class="btn white k-btn" onclick="goIdle()">Next guest →</button></div>
+  <section class="screen" id="s-result">
+    <div style="display:grid;gap:3vmin;justify-items:center;width:100%">
+      <div class="display h2" id="res-title" style="font-size:7vmin">You brought the loud.</div>
+      <div class="result">
+        <div><div class="score" id="res-score">84</div><div class="lbl" id="res-eyebrow">Final score</div></div>
+        <span class="vr" style="height:16vmin"></span>
+        <div class="reward" id="res-coupon"><div class="lbl">Your reward code</div><div class="code" id="res-code">WENDY10-AAA111</div><small id="res-label"></small><small>Sent by SMS · saved on your Wendy Fest pass</small></div>
+        <div class="card qrcard" style="width:24vmin;padding:1.4vmin"><img id="qr-profile" alt="QR" style="width:18vmin;height:18vmin"><b style="font-size:1.7vmin" id="qr-label">Save your<br>reward</b></div>
       </div>
-      <div class="stack center" style="justify-items:center;gap:1.5vmin">
-        <div class="qr"><img id="qr-profile" alt="QR"></div>
-        <div class="k-eyebrow">Scan for your profile</div>
-      </div>
+      <div class="sub" id="res-detail" style="font-size:2.4vmin;color:rgba(255,255,255,.85)"></div>
+      <button class="btn" onclick="goIdle()">Next player</button>
     </div>
   </section>
 
-  <footer class="k-foot"><span class="c"><img src="/assets/cameo.png" alt="">© 2026 Wendy’s Sri Lanka</span><span class="st" id="corner-l">Station A</span><span class="links"><span>Terms</span><span>Privacy</span></span></footer>
+  <footer class="foot"><span class="c"><img src="/assets/cameo.png" alt="">© 2026 Wendy’s Sri Lanka</span><span id="corner-l">Station A</span><span>Scream &amp; Win</span></footer>
   <svg class="gear" viewBox="0 0 24 24" fill="#fff" onclick="document.getElementById('settings').classList.toggle('open')"><path d="M12 8a4 4 0 100 8 4 4 0 000-8zm9 4a7 7 0 00-.1-1.2l2-1.5-2-3.5-2.4 1a7 7 0 00-2-1.2L16 3H8l-.5 2.6a7 7 0 00-2 1.2l-2.4-1-2 3.5 2 1.5A7 7 0 003 12a7 7 0 00.1 1.2l-2 1.5 2 3.5 2.4-1a7 7 0 002 1.2L8 21h8l.5-2.6a7 7 0 002-1.2l2.4 1 2-3.5-2-1.5c.1-.4.1-.8.1-1.2z"/></svg>
   <aside class="settings" id="settings">
-    <div class="k-eyebrow">Station settings</div>
+    <div class="eyebrow" style="justify-content:flex-start">Station settings</div>
     <label>Microphone (this screen)</label><select id="mic"></select>
-    <label>Live level</label><div class="k-level" style="width:100%"><div id="lvl-set"></div></div><div id="db-set" style="margin-top:.6vmin">— dB</div>
+    <label>Live level</label><div class="lvl"><div id="lvl-set"></div></div><div id="db-set" style="margin-top:.6vmin">— dB</div>
     <label>Clarity scoring</label><select id="judge-mode"><option value="auto">Auto (speech recognition, Chrome + internet)</option><option value="host">Host judges after each scream</option></select>
     <label>Scoring (from admin)</label><div id="thr-info">—</div>
-    <p style="opacity:.7;margin-top:2vmin">Calibrate: have a staff member scream at the real distance. Their peak dB should land near the ceiling set in Admin. Change dB floor/ceiling in Admin if screams never reach 100 or always do.</p>
-    <button class="btn sm white" style="margin-top:2vmin" onclick="document.getElementById('settings').classList.remove('open')">Close</button>
+    <p style="opacity:.7;margin-top:2vmin">Calibrate: have a staff member scream at the real distance. Their peak should land near 100. Adjust dB floor/ceiling in Admin if screams never reach it or always do.</p>
+    <button class="btn ghost" style="margin-top:2vmin;height:5.6vmin;font-size:1.9vmin" onclick="document.getElementById('settings').classList.remove('open')">Close</button>
   </aside>
 </div>
 
-<script src="/js/i18n.js"></script><script src="/js/kiosk.js"></script>
+<script src="/js/kiosk.js"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let CFG = { scream: { threshold: 70, durationMs: 3000, dbFloor: -42, dbCeil: -6, loudWeight: .6, accWeight: .4 } };
-  let guest = null, audio = null, analyser = null, buf = null, stream = null, rafId = null;
-  let peakDb = -100, transcript = "", recog = null, recogOk = false, windowOpen = false;
+  let guest = null, audio = null, analyser = null, buf = null, fbuf = null, stream = null, rafId = null;
+  let peakDb = -100, transcript = "", recog = null, windowOpen = false, smooth = -100, gaugeShown = 0, mode = "idle";
   $("corner-l").textContent = "Station " + K.station;
   $("qr-reg").src = `/api/qr?text=${encodeURIComponent(location.origin + "/register")}`;
-
-  fetch("/api/config").then((r) => r.json()).then((c) => { CFG = c; $("qr-reg").src = `/api/qr?text=${encodeURIComponent(c.baseUrl + "/register")}`; $("thr-info").textContent = `Win at ${c.scream.threshold} · loud ${Math.round(c.scream.loudWeight * 100)}% / clarity ${Math.round(c.scream.accWeight * 100)}% · dB ${c.scream.dbFloor}→${c.scream.dbCeil}`; });
+  fetch("/api/config").then((r) => r.json()).then((c) => { CFG = c; $("qr-reg").src = `/api/qr?text=${encodeURIComponent(c.baseUrl + "/register")}`; $("thr").textContent = c.scream.threshold; $("thr-info").textContent = `Win at ${c.scream.threshold} · loud ${Math.round(c.scream.loudWeight * 100)}% / clarity ${Math.round(c.scream.accWeight * 100)}% · dB ${c.scream.dbFloor}→${c.scream.dbCeil}`; });
 
   // ---------- PIN ----------
   async function unlock() { if (await K.login($("pin").value)) goIdle(); else { $("pin").classList.add("err"); setTimeout(() => $("pin").classList.remove("err"), 500); $("pin").value = ""; } }
   $("pin-go").onclick = unlock; $("pin").addEventListener("keydown", (e) => e.key === "Enter" && unlock());
   if (!document.cookie.includes("wf_kiosk=")) K.show("s-pin");
 
+  // ---------- background particle field ----------
+  const field = $("field"), fx = field.getContext("2d");
+  function sizeCanvas(c) { const r = c.getBoundingClientRect(); const d = Math.min(2, devicePixelRatio || 1); if (!r.width || !r.height) return d; const w = Math.round(r.width * d), h = Math.round(r.height * d); if (c.width !== w || c.height !== h) { c.width = w; c.height = h; } c._sized = true; return d; }
+  let fd = sizeCanvas(field); addEventListener("resize", () => { fd = sizeCanvas(field); document.querySelectorAll("canvas").forEach((c) => { c._sized = false; }); });
+  function drawField(t) {
+    const W = field.width, H = field.height; fx.clearRect(0, 0, W, H);
+    const energy = windowOpen ? Math.min(1, Math.max(0, (smooth - CFG.scream.dbFloor) / (CFG.scream.dbCeil - CFG.scream.dbFloor))) : 0.12;
+    const cols = 110, rows = 14;
+    for (let j = 0; j < rows; j++) for (let i = 0; i <= cols; i++) {
+      const x = (i / cols) * W; const depth = j / rows;
+      const y = H * (0.35 + depth * 0.65) + Math.sin(i * .25 + t * .0016 + j * .6) * (8 + 60 * energy) * fd * (1 - depth * .5) + Math.sin(i * .07 - t * .0009) * 14 * fd;
+      const a = (0.05 + 0.28 * (1 - depth)) * (0.45 + energy * .8); fx.fillStyle = `rgba(255,${60 + 40 * energy | 0},${70},${Math.min(1, a).toFixed(2)})`;
+      fx.beginPath(); fx.arc(x, y, (0.9 + 1.1 * (1 - depth)) * fd, 0, 7); fx.fill();
+    }
+  }
+
   // ---------- audio ----------
   const micSel = $("mic");
-  async function listMics() {
-    const devs = (await navigator.mediaDevices.enumerateDevices()).filter((d) => d.kind === "audioinput");
-    const saved = localStorage.getItem("wf_mic_" + K.station);
-    micSel.innerHTML = devs.map((d, i) => `<option value="${d.deviceId}" ${d.deviceId === saved ? "selected" : ""}>${d.label || "Microphone " + (i + 1)}</option>`).join("");
-  }
+  async function listMics() { const devs = (await navigator.mediaDevices.enumerateDevices()).filter((d) => d.kind === "audioinput"); const saved = localStorage.getItem("wf_mic_" + K.station); micSel.innerHTML = devs.map((d, i) => `<option value="${d.deviceId}" ${d.deviceId === saved ? "selected" : ""}>${d.label || "Microphone " + (i + 1)}</option>`).join(""); }
   micSel.onchange = () => { localStorage.setItem("wf_mic_" + K.station, micSel.value); startAudio(true); };
-  $("judge-mode").value = localStorage.getItem("wf_judge") || "auto";
-  $("judge-mode").onchange = () => localStorage.setItem("wf_judge", $("judge-mode").value);
-
+  $("judge-mode").value = localStorage.getItem("wf_judge") || "auto"; $("judge-mode").onchange = () => localStorage.setItem("wf_judge", $("judge-mode").value);
   async function startAudio(restart) {
     if (stream && !restart) return true;
     if (stream) stream.getTracks().forEach((t) => t.stop());
     try {
       const id = localStorage.getItem("wf_mic_" + K.station);
       stream = await navigator.mediaDevices.getUserMedia({ audio: { deviceId: id ? { exact: id } : undefined, echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
-      audio = audio || new (window.AudioContext || window.webkitAudioContext)();
-      if (audio.state === "suspended") await audio.resume();
-      const src = audio.createMediaStreamSource(stream);
-      analyser = audio.createAnalyser(); analyser.fftSize = 2048; analyser.smoothingTimeConstant = 0; src.connect(analyser);
-      buf = new Float32Array(analyser.fftSize);
-      await listMics();
-      $("mic-status").textContent = "Mic OK · " + (micSel.selectedOptions[0]?.textContent || "default");
-      if (!rafId) loop();
+      audio = audio || new (window.AudioContext || window.webkitAudioContext)(); if (audio.state === "suspended") await audio.resume();
+      const src = audio.createMediaStreamSource(stream); analyser = audio.createAnalyser(); analyser.fftSize = 2048; analyser.smoothingTimeConstant = .6; src.connect(analyser);
+      buf = new Float32Array(analyser.fftSize); fbuf = new Uint8Array(analyser.frequencyBinCount);
+      await listMics(); $("mic-status").textContent = "Mic connected · " + (micSel.selectedOptions[0]?.textContent || "default"); $("mic-pill").classList.add("ok");
       return true;
-    } catch (e) { $("mic-status").textContent = "Microphone blocked or missing: " + e.message; return false; }
+    } catch (e) { $("mic-status").textContent = "Microphone blocked: " + e.message; $("mic-pill").classList.remove("ok"); return false; }
   }
-  function currentDb() {
-    if (!analyser) return -100;
-    analyser.getFloatTimeDomainData(buf);
-    let sum = 0; for (let i = 0; i < buf.length; i++) sum += buf[i] * buf[i];
-    const rms = Math.sqrt(sum / buf.length);
-    return rms > 0 ? Math.max(-100, 20 * Math.log10(rms)) : -100;
-  }
+  function currentDb() { if (!analyser) return -100; analyser.getFloatTimeDomainData(buf); let s = 0; for (let i = 0; i < buf.length; i++) s += buf[i] * buf[i]; const rms = Math.sqrt(s / buf.length); return rms > 0 ? Math.max(-100, 20 * Math.log10(rms)) : -100; }
   const dbToPct = (db) => Math.max(0, Math.min(100, ((db - CFG.scream.dbFloor) / (CFG.scream.dbCeil - CFG.scream.dbFloor)) * 100));
-  let smooth = -100;
-  function loop() {
-    rafId = requestAnimationFrame(loop);
-    const db = currentDb(); smooth = db > smooth ? db : smooth * .92 + db * .08;
-    const pct = dbToPct(smooth);
-    ["lvl-ready", "lvl-go", "lvl-set"].forEach((id) => { $(id).style.width = pct + "%"; });
-    $("db-set").textContent = db.toFixed(1) + " dB";
-    if (windowOpen) { if (db > peakDb) peakDb = db; $("db").textContent = db.toFixed(0); drawMeter(pct, dbToPct(peakDb)); }
+
+  // ---------- waveform ----------
+  function drawWave(c, mirror) {
+    if (!c._sized) sizeCanvas(c);
+    const ctx = c.getContext("2d"), W = c.width, H = c.height; ctx.clearRect(0, 0, W, H);
+    const n = 64, gap = W / n;
+    const g = ctx.createLinearGradient(0, 0, W, 0); g.addColorStop(0, "rgba(255,59,69,.15)"); g.addColorStop(.5, "#FF3B45"); g.addColorStop(1, "rgba(255,59,69,.15)");
+    ctx.fillStyle = g;
+    for (let i = 0; i < n; i++) {
+      let v = .08;
+      if (analyser && fbuf) { analyser.getByteFrequencyData(fbuf); const idx = Math.floor((mirror ? (n - 1 - i) : i) / n * fbuf.length * .35); v = Math.max(.06, fbuf[idx] / 255); }
+      else v = .06 + Math.abs(Math.sin(i * .4 + performance.now() * .004)) * .15;
+      const h = v * H * .95; ctx.fillRect(i * gap + gap * .25, (H - h) / 2, gap * .5, h);
+    }
+    ctx.fillStyle = "#F6F0E6"; ctx.globalAlpha = .9; const mid = Math.floor(n / 2); ctx.fillRect(mid * gap + gap * .25, 0, gap * .5, H); ctx.globalAlpha = 1;
   }
 
-  // ---------- meter ----------
-  const mc = $("meter").getContext("2d");
-  function drawMeter(pct, peakPct) {
-    const W = 800, cx = 400, cy = 420, r = 300; mc.clearRect(0, 0, W, W);
-    const a0 = Math.PI * .75, a1 = Math.PI * 2.25;
-    mc.lineCap = "round"; mc.lineWidth = 46;
-    mc.strokeStyle = "rgba(255,255,255,.18)"; mc.beginPath(); mc.arc(cx, cy, r, a0, a1); mc.stroke();
-    const grad = mc.createLinearGradient(100, 0, 700, 0); grad.addColorStop(0, "#F2D4D7"); grad.addColorStop(.6, "#fff"); grad.addColorStop(1, "#029CD4");
-    mc.strokeStyle = grad; mc.beginPath(); mc.arc(cx, cy, r, a0, a0 + (a1 - a0) * (pct / 100)); mc.stroke();
-    // threshold tick
-    const ta = a0 + (a1 - a0) * (CFG.scream.threshold / 100);
-    mc.strokeStyle = "#252525"; mc.lineWidth = 8; mc.beginPath(); mc.moveTo(cx + Math.cos(ta) * (r - 40), cy + Math.sin(ta) * (r - 40)); mc.lineTo(cx + Math.cos(ta) * (r + 40), cy + Math.sin(ta) * (r + 40)); mc.stroke();
-    // peak marker
-    const pa = a0 + (a1 - a0) * (peakPct / 100);
-    mc.fillStyle = "#fff"; mc.beginPath(); mc.arc(cx + Math.cos(pa) * r, cy + Math.sin(pa) * r, 16, 0, 7); mc.fill();
-    mc.fillStyle = "#fff"; mc.textAlign = "center"; mc.font = "italic 900 190px Poppins, sans-serif"; mc.fillText(Math.round(peakPct), cx, cy + 70);
-    mc.font = "700 34px Poppins, sans-serif"; mc.fillStyle = "rgba(255,255,255,.8)"; mc.fillText("PEAK LOUDNESS", cx, cy + 130);
-    mc.font = "700 28px Poppins, sans-serif"; mc.fillText("WIN LINE " + CFG.scream.threshold, cx, cy + 250);
+  // ---------- rings ----------
+  function drawRing(c, pct, { ticks = 60, color = "#FF3B45", dim = "rgba(255,255,255,.22)", glow = true, marker = null } = {}) {
+    if (!c._sized) sizeCanvas(c);
+    const ctx = c.getContext("2d"), W = c.width, H = c.height, cx = W / 2, cy = H / 2, R = Math.min(W, H) * .44; ctx.clearRect(0, 0, W, H);
+    const a0 = Math.PI * .75, span = Math.PI * 1.5, lit = Math.round((pct / 100) * ticks);
+    for (let i = 0; i < ticks; i++) {
+      const a = a0 + (i / (ticks - 1)) * span, on = i < lit, len = (i % 5 === 0 ? .09 : .06) * R;
+      ctx.strokeStyle = on ? color : dim; ctx.lineWidth = (on ? 4 : 3) * fd; ctx.lineCap = "round";
+      if (on && glow) { ctx.shadowColor = color; ctx.shadowBlur = 14 * fd; } else ctx.shadowBlur = 0;
+      ctx.beginPath(); ctx.moveTo(cx + Math.cos(a) * (R - len), cy + Math.sin(a) * (R - len)); ctx.lineTo(cx + Math.cos(a) * R, cy + Math.sin(a) * R); ctx.stroke();
+    }
+    ctx.shadowBlur = 0; ctx.strokeStyle = "rgba(255,255,255,.08)"; ctx.lineWidth = 2 * fd; ctx.beginPath(); ctx.arc(cx, cy, R * .82, a0, a0 + span); ctx.stroke();
+    if (marker !== null) { const a = a0 + (marker / 100) * span; ctx.strokeStyle = "#4DE3F2"; ctx.lineWidth = 5 * fd; ctx.shadowColor = "#4DE3F2"; ctx.shadowBlur = 12 * fd; ctx.beginPath(); ctx.moveTo(cx + Math.cos(a) * (R - .14 * R), cy + Math.sin(a) * (R - .14 * R)); ctx.lineTo(cx + Math.cos(a) * (R + .03 * R), cy + Math.sin(a) * (R + .03 * R)); ctx.stroke(); ctx.shadowBlur = 0; }
   }
-  drawMeter(0, 0);
+
+  // ---------- main loop ----------
+  let countPct = 0;
+  function loop(t) {
+    rafId = requestAnimationFrame(loop);
+    drawField(t);
+    const db = currentDb(); smooth = db > smooth ? db : smooth * .9 + db * .1;
+    const pct = dbToPct(smooth);
+    $("lvl-set").style.width = pct + "%"; $("db-set").textContent = db.toFixed(1) + " dB";
+    if (mode === "ready") drawWave($("wave-ready"));
+    if (mode === "count") drawRing($("ring-count"), countPct, { ticks: 72, color: "#FF3B45" });
+    if (mode === "scream") {
+      if (windowOpen && db > peakDb) peakDb = db;
+      gaugeShown += (pct - gaugeShown) * .25;
+      drawWave($("wave-l"), true); drawWave($("wave-r"), false);
+      drawRing($("ring-gauge"), gaugeShown, { ticks: 72, color: "#FF3B45", marker: CFG.scream.threshold });
+      $("gauge-num").textContent = Math.round(dbToPct(peakDb));
+    }
+  }
+  requestAnimationFrame(loop);
 
   // ---------- speech ----------
   function startRecog() {
-    transcript = ""; recogOk = false; $("trans").textContent = "…";
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SR || $("judge-mode").value === "host") return;
-    try {
-      recog = new SR(); recog.lang = "en-US"; recog.interimResults = true; recog.continuous = true; recog.maxAlternatives = 3;
-      recog.onresult = (e) => { let s = ""; for (let i = 0; i < e.results.length; i++) for (let j = 0; j < e.results[i].length; j++) s += " " + e.results[i][j].transcript; transcript = s.trim(); $("trans").textContent = transcript || "…"; recogOk = true; };
-      recog.onerror = (e) => { if (e.error !== "no-speech" && e.error !== "aborted") $("trans").textContent = "(speech: " + e.error + ")"; };
-      recog.start();
-    } catch (e) { recog = null; }
+    transcript = ""; $("trans").textContent = "…";
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition; if (!SR || $("judge-mode").value === "host") return;
+    try { recog = new SR(); recog.lang = "en-US"; recog.interimResults = true; recog.continuous = true; recog.maxAlternatives = 3;
+      recog.onresult = (e) => { let s = ""; for (let i = 0; i < e.results.length; i++) for (let j = 0; j < e.results[i].length; j++) s += " " + e.results[i][j].transcript; transcript = s.trim(); $("trans").textContent = "We heard: " + (transcript || "…"); };
+      recog.onerror = () => {}; recog.start(); } catch { recog = null; }
   }
   function stopRecog() { try { recog && recog.stop(); } catch {} }
 
-  // ---------- flow ----------
-  function goIdle() { K.resetIdle(0); stopRecog(); windowOpen = false; guest = null; $("code").value = ""; $("code-msg").textContent = ""; K.show("s-idle"); }
-  document.addEventListener("kiosk-home", goIdle);
-  $("start").onclick = () => { K.show("s-code"); $("code").focus(); startAudio(); };
-  $("kb").appendChild(K.keypad($("code"), lookup));
-  $("code").addEventListener("keydown", (e) => e.key === "Enter" && lookup($("code").value));
+  // ---------- code entry ----------
+  const codeEl = $("code");
+  const KEYS = [["Q","W","E","R","T","Y","U","I","O","P"],["A","S","D","F","G","H","J","K","L"],["Z","X","C","V","B","N","M","2","3","4","5","6","7","8","9"]];
+  KEYS.forEach((row, ri) => { const r = document.createElement("div"); r.className = "row"; if (ri === 2) { const d = document.createElement("button"); d.className = "wide"; d.textContent = "⌫"; d.onclick = () => { codeEl.value = codeEl.value.slice(0, -1); paintBoxes(); }; r.appendChild(d); }
+    row.forEach((k) => { const b = document.createElement("button"); b.textContent = k; b.onclick = () => { if (codeEl.value.length < 6) { codeEl.value += k; paintBoxes(); } }; r.appendChild(b); }); $("kbd").appendChild(r); });
+  function paintBoxes() { const v = codeEl.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6); if (codeEl.value !== v) codeEl.value = v; [...$("boxes").children].forEach((b, i) => { b.textContent = v[i] || ""; b.classList.toggle("cur", i === v.length); b.classList.remove("err"); }); }
+  codeEl.addEventListener("input", paintBoxes); codeEl.addEventListener("keydown", (e) => e.key === "Enter" && lookup(codeEl.value));
+  $("code-go").onclick = () => lookup(codeEl.value);
   async function lookup(code) {
     $("code-msg").textContent = "Looking up…";
     try {
       guest = await K.api("/api/kiosk/lookup", { code });
-      if (guest.screamsLeft <= 0) { $("code-msg").textContent = `${guest.firstName} has already used their attempt${guest.alreadyWon ? " (and won!)" : ""}.`; $("code").classList.add("err"); setTimeout(() => $("code").classList.remove("err"), 500); return; }
-      $("r-name").textContent = `Hi ${guest.firstName}!`;
-      K.show("s-ready"); const ok = await startAudio(); if (!ok) $("mic-status").textContent += " · open settings (gear) to pick a mic";
-      K.resetIdle(90000, goIdle);
-    } catch (e) { $("code-msg").textContent = e.message; $("code").classList.add("err"); setTimeout(() => $("code").classList.remove("err"), 500); }
+      if (guest.screamsLeft <= 0) { $("code-msg").textContent = `${guest.firstName} has already used their attempt${guest.alreadyWon ? " (and won!)" : ""}.`; shakeBoxes(); return; }
+      $("r-name").textContent = guest.firstName; mode = "ready"; K.show("s-ready"); await startAudio(); K.resetIdle(90000, goIdle);
+    } catch (e) { $("code-msg").textContent = e.message; shakeBoxes(); }
   }
+  function shakeBoxes() { [...$("boxes").children].forEach((b) => { b.classList.add("err"); setTimeout(() => b.classList.remove("err"), 500); }); }
+
+  // ---------- flow ----------
+  function goIdle() { K.resetIdle(0); stopRecog(); windowOpen = false; guest = null; codeEl.value = ""; paintBoxes(); $("code-msg").textContent = ""; mode = "idle"; document.querySelectorAll(".confetti").forEach((c) => c.remove()); K.show("s-idle"); }
+  document.addEventListener("kiosk-home", goIdle);
+  $("start").onclick = () => { K.show("s-code"); codeEl.focus(); startAudio(); };
+  document.addEventListener("screen", (e) => { if (e.detail === "s-code") setTimeout(() => codeEl.focus(), 50); });
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
   $("go").onclick = async () => {
     if (!(await startAudio())) return;
-    K.resetIdle(0); K.show("s-go"); $("go-count").classList.remove("hidden"); $("go-meter").classList.add("hidden");
-    for (const n of [3, 2, 1]) { $("cnt").textContent = n; $("cnt").classList.remove("pop"); void $("cnt").offsetWidth; $("cnt").classList.add("pop"); if (n === 2) startRecog(); await wait(900); }
-    $("go-count").classList.add("hidden"); $("go-meter").classList.remove("hidden");
-    peakDb = -100; windowOpen = true;
+    K.resetIdle(0); K.show("s-go"); $("go-count").style.display = "grid"; $("go-meter").style.display = "none"; mode = "count";
+    const dots = [...$("dots").querySelectorAll("span")];
+    for (let n = 3; n >= 1; n--) {
+      $("cnt").textContent = n; dots.forEach((d, i) => d.classList.toggle("on", i <= 3 - n));
+      if (n === 2) startRecog();
+      const t0 = performance.now(); while (performance.now() - t0 < 1000) { countPct = ((4 - n) - 1 + (performance.now() - t0) / 1000) / 3 * 100; await wait(16); }
+    }
+    $("go-count").style.display = "none"; $("go-meter").style.display = "grid";
+    peakDb = -100; gaugeShown = 0; windowOpen = true; mode = "scream";
     const dur = CFG.scream.durationMs || 3000, t0 = performance.now();
-    while (performance.now() - t0 < dur) { $("tleft").textContent = ((dur - (performance.now() - t0)) / 1000).toFixed(1); await wait(50); }
-    $("tleft").textContent = "0.0"; windowOpen = false;
+    while (performance.now() - t0 < dur) { const left = dur - (performance.now() - t0); $("tleft").textContent = (left / 1000).toFixed(1); $("tbar").style.transform = `scaleX(${left / dur})`; await wait(50); }
+    $("tleft").textContent = "0.0"; $("tbar").style.transform = "scaleX(0)"; windowOpen = false;
     await wait(900); stopRecog(); await wait(400);
     if ($("judge-mode").value === "host" || !(window.SpeechRecognition || window.webkitSpeechRecognition)) { K.show("s-judge"); return; }
     submitScream(null);
   };
   async function submitScream(accuracyOverride) {
-    try {
-      const r = await K.api("/api/kiosk/scream", { code: guest.code, peakDb, transcript, accuracyOverride });
-      showResult(r);
-    } catch (e) { alert("Could not submit: " + e.message); goIdle(); }
+    try { const r = await K.api("/api/kiosk/scream", { code: guest.code, peakDb, transcript, accuracyOverride }); showResult(r); }
+    catch (e) { alert("Could not submit: " + e.message); goIdle(); }
+  }
+  function confetti(n = 90) {
+    const box = document.createElement("div"); box.className = "confetti"; document.querySelector(".stage").appendChild(box);
+    const colors = ["#F6F0E6", "#FF3B45", "#4DE3F2", "#CD2028", "#fff"];
+    for (let i = 0; i < n; i++) { const el = document.createElement("i"); el.style.left = Math.random() * 100 + "vw"; el.style.top = -4 - Math.random() * 20 + "vh"; el.style.background = colors[i % colors.length]; el.style.animationDelay = Math.random() * .9 + "s"; el.style.transform = `rotate(${Math.random() * 360}deg)`; box.appendChild(el); }
+    setTimeout(() => box.remove(), 4200);
   }
   function showResult(r) {
-    K.show("s-result");
-    $("res-score").textContent = r.score;
-    $("res-eyebrow").textContent = `${r.name} · loud ${r.loudness} · clarity ${r.accuracy} · win line ${r.threshold}`;
-    $("res-coupon").classList.toggle("hidden", !r.coupon);
+    mode = "result"; K.show("s-result");
+    $("res-score").textContent = r.score; $("res-eyebrow").textContent = "Final score";
+    $("res-coupon").style.display = r.coupon ? "grid" : "none";
     if (r.won) {
-      $("res-title").textContent = r.couponPoolEmpty ? "YOU BEAT THE METER!" : "GOTTA BE LOUD. YOU WON!";
-      $("res-detail").textContent = r.couponPoolEmpty ? "Reward pool is empty – see a host." : "Fresh. Never frozen. Just like that scream.";
+      $("res-title").textContent = r.couponPoolEmpty ? "You beat the meter!" : "You brought the loud.";
+      $("res-detail").textContent = r.couponPoolEmpty ? "Reward pool is empty – see a host." : `Loud ${r.loudness} · Clarity ${r.accuracy} · Win line ${r.threshold}. Fresh, never frozen, just like that scream.`;
       if (r.coupon) { $("res-code").textContent = r.coupon.code; $("res-label").textContent = r.coupon.label; }
-      $("flash").classList.remove("go"); void $("flash").offsetWidth; $("flash").classList.add("go"); K.confetti();
+      $("qr-label").innerHTML = "Save your<br>reward";
+      $("flash").classList.remove("go"); void $("flash").offsetWidth; $("flash").classList.add("go"); confetti();
     } else {
-      $("res-title").textContent = r.loudness < r.accuracy ? "LOUDER NEXT TIME." : "WE HEARD… SOMETHING.";
-      $("res-detail").textContent = r.accuracy < 40 ? "The meter heard you. It just didn’t hear “Wendy’s”. Respect for the effort." : "Close one. Colombo traffic is louder. Try the Roast Me booth!";
+      $("res-title").textContent = r.loudness < r.accuracy ? "Louder next time." : "We heard… something.";
+      $("res-detail").textContent = (r.accuracy < 40 ? "The meter heard you. It just didn’t hear “Wendy’s”. " : "Close one. Colombo traffic is louder. ") + `Loud ${r.loudness} · Clarity ${r.accuracy} · Win line ${r.threshold}.`;
+      $("qr-label").innerHTML = "Scan for<br>your pass";
     }
     $("qr-profile").src = `/api/qr?text=${encodeURIComponent(r.profileUrl)}`;
     K.resetIdle(30000, goIdle);
   }
-  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 </script>
 </body></html>

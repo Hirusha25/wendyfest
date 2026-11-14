@@ -64,13 +64,13 @@ async function route(method, url, body) {
     const otp = String(Math.floor(Math.random() * 10000)).padStart(4, "0");
     DB.pending = { phone, otp, payload: { name, email: body.email || null, dob: body.dob || null, lang: ["en", "si", "ta"].includes(body.lang) ? body.lang : "en" }, expires: Date.now() + 120000 }; save();
     sendSms(phone, otp + " is your Wendy Fest code. It expires in 2 minutes.");
-    return json({ ok: true, step: "otp", phoneMasked: phone.replace(/^(94)(\d{2})\d{5}(\d{2})$/, "+$1 $2 *** **$3"), ttl: 120, resendIn: 30, digits: 4, devOtp: otp });
+    return json({ ok: true, step: "otp", phoneMasked: phone.replace(/^(94)(\d{2})\d{5}(\d{2})$/, "+$1 $2 *** **$3"), ttl: 120, resendIn: 30, digits: 4 });
   }
   if (p === "/api/verify") {
     const pend = DB.pending; const phone = normalisePhone(body.phone);
     if (!pend || pend.phone !== phone) return json({ error: "otp" }, 400);
     if (Date.now() > pend.expires) { DB.pending = null; save(); return json({ error: "expired" }, 400); }
-    if (String(body.code) !== pend.otp && String(body.code) !== "0000") return json({ error: "otp" }, 400);
+    if (!/^\d{4}$/.test(String(body.code))) return json({ error: "otp" }, 400); // demo: any 4 digits verify
     let pt = DB.participants.find((x) => x.phone === phone), created = false;
     if (!pt) { let code; do { code = shortCode2(6); } while (byCode(code)); pt = { id: DB.participants.length + 1, code, token: token2(), name: pend.payload.name, phone, email: pend.payload.email, dob: pend.payload.dob, lang: pend.payload.lang, created_at: now() }; DB.participants.push(pt); created = true; }
     else { pt.lang = pend.payload.lang; pt.name = pend.payload.name; }
@@ -138,7 +138,6 @@ window.fetch = async (url, opts = {}) => {
   return new Response(JSON.stringify(data), { status, headers: { "Content-Type": "application/json" } });
 };
 window.qrUrl = (text) => { try { const q = qrcode(0, "M"); q.addData(String(text)); q.make(); return "data:image/svg+xml;utf8," + encodeURIComponent(q.createSvgTag({ cellSize: 4, margin: 2, scalable: true }).replace(/<rect[^>]*fill="white"[^>]*\\/>/, "")); } catch (e) { return ""; } };
-window.demoToast = (msg) => { let el = document.getElementById("demo-toast"); if (!el) { el = document.createElement("div"); el.id = "demo-toast"; el.style.cssText = "position:fixed;left:50%;top:12px;transform:translateX(-50%);max-width:92vw;background:#252525;color:#fff;padding:10px 14px;border-radius:12px;font:600 13px Poppins,sans-serif;z-index:9999;box-shadow:0 10px 30px rgba(0,0,0,.4);opacity:0;transition:opacity .2s"; document.body.appendChild(el); } el.textContent = msg; el.style.opacity = 1; clearTimeout(el._t); el._t = setTimeout(() => el.style.opacity = 0, 5000); };
 })();
 `;
 fs.writeFileSync(path.join(out, "js/demo-shim.js"), shim);

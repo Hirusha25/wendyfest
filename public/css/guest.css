@@ -184,8 +184,11 @@ button, input, select { font:inherit; }
 .rpaper .rbody { font-size:15px; line-height:1.55; margin:12px 0 0; color:var(--ink); }
 .rpaper .sig { margin-top:14px; font-size:12px; color:var(--mute); font-style:italic; }
 
-.toast { position:fixed; left:50%; bottom:90px; max-width:min(90vw, 360px); border-radius:18px; padding:12px 18px; line-height:1.35; transform:translateX(-50%); background:var(--ink); color:#fff; padding:12px 18px; border-radius:999px; font-weight:600; font-size:.9rem; z-index:99; opacity:0; transition:opacity .2s; pointer-events:none; max-width:90vw; text-align:center; }
-.toast.show { opacity:1; }
+.toast { position:fixed; left:50%; top:14px; transform:translate(-50%, -20px); width:min(92vw, 400px); display:flex; align-items:center; gap:12px; background:#fff; color:var(--ink); border:2px solid var(--red); border-left-width:8px; border-radius:16px; padding:12px 14px; box-shadow:0 4px 0 var(--red-dark), 0 16px 30px -12px rgba(73,53,51,.45); font-weight:600; font-size:.9rem; line-height:1.35; z-index:99; opacity:0; pointer-events:none; transition:opacity .2s, transform .25s; text-align:left; }
+.toast::before { content:""; flex:none; width:36px; height:36px; border-radius:50%; background:var(--blush) url("/assets/cameo.png") center / 30px no-repeat; }
+.toast.show { opacity:1; transform:translate(-50%, 0); }
+.toast.ok { border-color:var(--blue); box-shadow:0 4px 0 var(--blue-dark), 0 16px 30px -12px rgba(1,111,159,.45); }
+.toast.ok::before { background-color:#D9F0FA; }
 @keyframes rise { from { transform:translateY(14px); opacity:0 } to { transform:none; opacity:1 } }
 .rise { animation:rise .5s ease both; } .rise-2 { animation:rise .5s .1s ease both; } .rise-3 { animation:rise .5s .2s ease both; }
 .brandfoot .c { display:flex; align-items:center; gap:8px; }

@@ -5,10 +5,10 @@ window.api = async (path, opts = {}) => {
   if (!r.ok) throw Object.assign(new Error(data.error || r.statusText), { status: r.status, data });
   return data;
 };
-window.toast = (msg, ms = 2400) => {
+window.toast = (msg, ms = 2600, kind = "") => {
   let el = document.querySelector(".toast");
-  if (!el) { el = document.createElement("div"); el.className = "toast"; document.body.appendChild(el); }
-  el.textContent = msg; el.classList.add("show"); clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove("show"), ms);
+  if (!el) { el = document.createElement("div"); el.className = "toast"; el.setAttribute("role", "status"); document.body.appendChild(el); }
+  el.textContent = msg; el.className = "toast show " + kind; clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove("show"), ms);
 };
 window.qrUrl = (text, dark) => `/api/qr?text=${encodeURIComponent(text)}${dark ? `&dark=${dark}` : ""}`;
 window.shareLink = async ({ title, text, url, file }) => {

@@ -154,8 +154,8 @@
   $("verify").addEventListener("click", verify);
 
   // ---- step 3 ----
-  $("copy").addEventListener("click", async () => { try { await navigator.clipboard.writeText($("code").textContent); toast(t("copied")); } catch {} });
-  $("resend-welcome").addEventListener("click", async (e) => { e.preventDefault(); await api("/api/me/resend", { method: "POST" }); toast("SMS sent"); });
+  $("copy").addEventListener("click", async () => { try { await navigator.clipboard.writeText($("code").textContent); toast(t("copied"), 2000, "ok"); } catch {} });
+  $("resend-welcome").addEventListener("click", async (e) => { e.preventDefault(); await api("/api/me/resend", { method: "POST" }); toast("SMS sent", 2000, "ok"); });
   // deep-link: /register?next=... no longer used; profile is the only destination.
 </script>
 </body></html>

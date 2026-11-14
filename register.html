@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>[DEMO] Register · Wendy Fest</title><meta name="theme-color" content="#CD2028"><link rel="icon" href="./assets/cameo.png"><link rel="stylesheet" href="./css/guest.css?v=mwgqf3o1">
+<title>[DEMO] Register · Wendy Fest</title><meta name="theme-color" content="#CD2028"><link rel="icon" href="./assets/cameo.png"><link rel="stylesheet" href="./css/guest.css?v=mwgqid2l">
 </head>
 <body>
 <div class="app">
@@ -74,7 +74,7 @@
   </section>
   <div id="foot"></div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js?v=mwgqf3o1"></script><script src="./js/i18n.js?v=mwgqf3o1"></script><script src="./js/app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js?v=mwgqid2l"></script><script src="./js/i18n.js?v=mwgqid2l"></script><script src="./js/app.js"></script>
 <script>
   document.querySelectorAll(".langbox").forEach((el) => el.innerHTML = langSwitcher()); document.getElementById("foot").outerHTML = brandFoot(); applyLang();
   const $ = (id) => document.getElementById(id);
@@ -154,8 +154,8 @@
   $("verify").addEventListener("click", verify);
 
   // ---- step 3 ----
-  $("copy").addEventListener("click", async () => { try { await navigator.clipboard.writeText($("code").textContent); toast(t("copied")); } catch {} });
-  $("resend-welcome").addEventListener("click", async (e) => { e.preventDefault(); await api("/api/me/resend", { method: "POST" }); toast("SMS sent"); });
+  $("copy").addEventListener("click", async () => { try { await navigator.clipboard.writeText($("code").textContent); toast(t("copied"), 2000, "ok"); } catch {} });
+  $("resend-welcome").addEventListener("click", async (e) => { e.preventDefault(); await api("/api/me/resend", { method: "POST" }); toast("SMS sent", 2000, "ok"); });
   // deep-link: /register?next=... no longer used; profile is the only destination.
 </script>
 </body></html>

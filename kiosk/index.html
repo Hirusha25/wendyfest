@@ -1,0 +1,29 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>[DEMO] Wendy Fest · Kiosk</title><link rel="stylesheet" href="../css/brand.css"><link rel="stylesheet" href="../css/kiosk.css"><link rel="icon" href="../assets/cameo.png">
+<style>.pick { display: grid; grid-template-columns: 1fr 1fr; gap: 3vmin; width: min(90vw, 120vmin); } .pick a { text-decoration: none; padding: 5vmin; display: grid; gap: 1vmin; } .pick .display { font-size: 7vmin; }</style></head>
+<body class="kiosk on-red freckles"><div class="stage">
+<img class="k-logo" src="../assets/wendys-horiz-white.svg" alt="Wendy's"><img class="k-cameo" src="../assets/cameo.png" alt="">
+<div class="frame"><i></i></div>
+<section class="screen on" id="s-pin" style="place-items:center"><div class="stack center" style="gap:3vmin">
+  <div class="k-eyebrow">Wendy Fest · Host console</div><div class="display big">Enter PIN</div>
+  <input class="k-input" id="pin" type="password" inputmode="numeric" maxlength="8" autofocus style="width:40vmin;letter-spacing:.5em">
+  <button class="btn white k-btn" id="go">Unlock</button>
+</div></section>
+<section class="screen" id="s-pick" style="place-items:center"><div class="stack center" style="gap:3vmin">
+  <div class="k-eyebrow">Choose this screen's job</div>
+  <div class="pick">
+    <a class="ticket cream" href="../kiosk/scream.html"><div class="ticket-inner"></div><div class="k-eyebrow" style="color:var(--red)">GERRRRRRR!</div><div class="display" style="color:var(--red)">Scream & Win</div><div style="color:var(--ink)">LED wall / kiosk · needs a microphone</div></a>
+    <a class="ticket ink" href="../kiosk/roast.html"><div class="ticket-inner"></div><div class="k-eyebrow" style="color:var(--blue)">Serving the sass</div><div class="display" style="color:var(--blue)">Roast Me</div><div>Kiosk · needs a webcam</div></a>
+  </div>
+  <div class="row" style="gap:2vmin;justify-content:center"><span class="k-eyebrow">Station label</span><input id="station" class="input" style="width:14vmin;text-align:center;font-weight:800" maxlength="12"><a class="btn ghost sm" href="../admin.html" style="color:#fff">Admin</a></div>
+  <div class="k-sub" style="opacity:.75;font-size:2vmin">Tip: press <b>F</b> for fullscreen on any kiosk screen · <b>Esc</b> returns to the idle screen</div>
+</div></section>
+<div class="k-corner-l">Host console</div><div class="k-corner">Gotta be Wendy's</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js"></script><script src="../js/i18n.js"></script><script src="../js/kiosk.js"></script>
+<script>
+  const pin = document.getElementById("pin"); const st = document.getElementById("station"); st.value = K.station;
+  st.oninput = () => localStorage.setItem("wf_station", st.value.trim() || "A");
+  async function unlock() { if (await K.login(pin.value)) K.show("s-pick"); else { pin.classList.add("err"); setTimeout(() => pin.classList.remove("err"), 500); pin.value = ""; } }
+  document.getElementById("go").onclick = unlock; pin.addEventListener("keydown", (e) => e.key === "Enter" && unlock());
+  if (document.cookie.includes("wf_kiosk=")) K.show("s-pick");
+</script></body></html>

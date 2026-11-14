@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>[DEMO] Wendy Fest</title><meta name="theme-color" content="#CD2028"><link rel="icon" href="./assets/cameo.png">
+<link rel="stylesheet" href="./css/brand.css">
+<style>
+  body.scream { background: var(--red); color: #fff; }
+  body.roast { background: var(--ink); color: #fff; }
+  .big { font-size: clamp(2.8rem, 14vw, 4.6rem); }
+  body.roast .big { color: var(--blue); }
+  .steps { display: grid; gap: 10px; }
+  .steps div { display: flex; gap: 12px; align-items: center; }
+  .steps b { width: 34px; height: 34px; border-radius: 50%; background: #fff; color: var(--red); display: grid; place-items: center; flex: none; font-style: italic; }
+  .status { background: rgba(255,255,255,.12); border-radius: 18px; padding: 16px; }
+</style>
+</head>
+<body class="on-red freckles">
+<main class="wrap">
+  <header class="topbar"><a href="./index.html"><img class="logo" src="./assets/wendys-horiz-white.svg" alt="Wendy's"></a><div id="langbox"></div></header>
+  <div class="eyebrow" id="eyebrow" style="opacity:.85"></div>
+  <h1 class="display big rise" id="title" style="margin:6px 0 10px"></h1>
+  <p class="lead rise-2" id="desc" style="opacity:.95;margin:0 0 20px"></p>
+
+  <section class="ticket cream pad rise-3" id="codecard" style="color:var(--ink)">
+    <div class="ticket-inner"></div>
+    <div class="eyebrow" style="color:var(--red)" data-t="yourCode"></div>
+    <div class="code" id="code" style="color:var(--red);margin:6px 0">------</div>
+    <p style="margin:0 0 4px;font-weight:600" data-t="showCode"></p>
+    <p class="muted" style="margin:0;font-size:.85rem" id="attempts"></p>
+  </section>
+
+  <section style="margin:22px 0">
+    <div class="eyebrow" style="opacity:.8" data-t="howTo"></div>
+    <div class="steps" style="margin-top:12px">
+      <div><b>1</b><span data-t="step1"></span></div>
+      <div><b>2</b><span data-t="step2"></span></div>
+      <div><b>3</b><span data-t="step3"></span></div>
+    </div>
+  </section>
+
+  <section class="status stack" id="status"></section>
+
+  <div class="stack" style="margin:22px 0 40px">
+    <a class="btn white block xl" href="./profile.html" data-t="openProfile"></a>
+    <a class="btn ghost block" style="color:#fff" href="./index.html" data-t="home"></a>
+  </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js"></script><script src="./js/i18n.js"></script><script src="./js/app.js"></script>
+<script>
+  const kind = new URLSearchParams(location.search).get("k") === "roast" ? "roast" : "scream";
+  document.body.classList.add(kind);
+  document.getElementById("langbox").innerHTML = langSwitcher();
+  function paint(p) {
+    document.getElementById("eyebrow").textContent = kind === "scream" ? "GERRRRRRR!" : "SERVING THE SASS";
+    document.getElementById("title").textContent = t(kind);
+    document.getElementById("desc").textContent = t(kind + "Desc");
+    if (!p) return;
+    document.getElementById("code").textContent = p.code;
+    const used = kind === "scream" ? p.screams.length : p.roasts.length, max = kind === "scream" ? p.limits.screamAttempts : p.limits.roastAttempts;
+    document.getElementById("attempts").textContent = used >= max ? t("attemptsUsed") : `${max - used} ${t("attemptsLeft")}`;
+    const s = document.getElementById("status"); s.innerHTML = "";
+    if (kind === "scream") {
+      const best = p.screams[0];
+      s.innerHTML = best ? `<div class="eyebrow">${t("screamResult")}</div><div class="display" style="font-size:3rem">${best.score}<span style="font-size:1.2rem;opacity:.7">/100</span></div><div>${best.won ? "🏆 " + t("won") : t("lost")}</div>${best.coupon ? `<div class="coupon-box" style="margin-top:10px"><div class="eyebrow muted">${t("reward")}</div><div class="code">${best.coupon.code}</div><div class="muted" style="font-size:.85rem">${best.coupon.label}</div></div>` : ""}` : `<div class="eyebrow">${t("screamResult")}</div><div>${t("notPlayed")}</div>`;
+    } else {
+      const r = p.roasts[0];
+      s.innerHTML = r ? `<div class="eyebrow">${t("roastResult")}</div><div class="display" style="font-size:1.6rem">${r.title[window.lang] || r.title.en}</div><p style="margin:8px 0">${r.roast[window.lang] || r.roast.en}</p><a class="btn blue sm" href="${r.url}">${t("viewRoast")}</a>` : `<div class="eyebrow">${t("roastResult")}</div><div>${t("notRoasted")}</div>`;
+    }
+  }
+  let profile = null;
+  api("/api/me").then((p) => { profile = p; paint(p); applyLang(); }).catch(() => { location.href = "./register.html?next=" + kind; });
+  paint(null); applyLang();
+  document.addEventListener("langchange", () => paint(profile));
+</script>
+</body></html>

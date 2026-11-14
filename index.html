@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>[DEMO] Wendy Fest · Scream & Win · Roast Me</title>
+<meta name="description" content="Wendy's is now in Sri Lanka. Scream, get roasted, win.">
+<meta name="theme-color" content="#CD2028">
+<link rel="icon" href="./assets/cameo.png">
+<link rel="stylesheet" href="./css/brand.css">
+<style>
+  body { background: var(--red); color: #fff; }
+  .hero { padding: 10px 0 30px; }
+  .hero .display { font-size: clamp(3.4rem, 17vw, 6.2rem); }
+  .hero .line2 { color: var(--blush); }
+  .hero .line3 { color: #fff; -webkit-text-stroke: 3px #fff; color: transparent; }
+  .cameo { width: 92px; margin-left: auto; filter: drop-shadow(0 12px 24px rgba(0,0,0,.3)); }
+  .act { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  .act .ticket { padding: 22px; color: var(--ink); }
+  .act .display { font-size: 2rem; color: var(--red); }
+  .act .ticket.ink .display { color: var(--blue); }
+  .act .ticket.ink { color: #fff; }
+  .num { font-weight: 900; font-style: italic; font-size: 3.4rem; line-height: 1; opacity: .18; position: absolute; right: 22px; top: 10px; }
+  .steps { display: grid; gap: 10px; }
+  .steps div { display: flex; gap: 12px; align-items: center; }
+  .steps b { width: 34px; height: 34px; border-radius: 50%; background: #fff; color: var(--red); display: grid; place-items: center; flex: none; font-style: italic; }
+  .bottom { padding: 30px 0 10px; }
+</style>
+</head>
+<body class="on-red freckles">
+<main class="wrap">
+  <header class="topbar">
+    <img class="logo" src="./assets/wendys-horiz-white.svg" alt="Wendy's">
+    <div id="langbox"></div>
+  </header>
+
+  <section class="hero">
+    <div class="row between" style="align-items:flex-end">
+      <div>
+        <div class="eyebrow rise" style="opacity:.85" data-t="here">Wendy's is now in Sri Lanka.</div>
+        <h1 class="display rise-2" style="margin-top:10px">
+          <span class="display" data-t="hero1">Scream.</span><br>
+          <span class="display line2" data-t="hero2">Get roasted.</span><br>
+          <span class="display line3" data-t="hero3">Win.</span>
+        </h1>
+      </div>
+      <img class="cameo pop" src="./assets/cameo.png" alt="">
+    </div>
+    <p class="lead rise-3" style="max-width:34ch;opacity:.95" data-t="sub">Register once, play both. Your code lands on your phone in seconds.</p>
+  </section>
+
+  <section class="act">
+    <a class="ticket cream rise" href="./register.html?next=scream" style="text-decoration:none">
+      <div class="ticket-inner"></div><div class="num">01</div>
+      <div class="eyebrow" style="color:var(--red)">GERRRRRRR!</div>
+      <h2 class="display" style="margin:6px 0 10px" data-t="scream">Scream & Win</h2>
+      <p style="margin:0" data-t="screamDesc">Yell “WENDY’S!” into the mic. Loud enough and clear enough beats the meter and unlocks a reward code.</p>
+    </a>
+    <a class="ticket ink rise-2" href="./register.html?next=roast" style="text-decoration:none">
+      <div class="ticket-inner"></div><div class="num">02</div>
+      <div class="eyebrow" style="color:var(--blue)">SERVING THE SASS</div>
+      <h2 class="display" style="margin:6px 0 10px" data-t="roast">Roast Me</h2>
+      <p style="margin:0" data-t="roastDesc">Step up to the camera. Wendy's looks you over and serves a roast made just for you, in English, Sinhala and Tamil.</p>
+    </a>
+  </section>
+
+  <section style="margin-top:26px">
+    <div class="eyebrow" style="opacity:.8" data-t="howTo">How to play</div>
+    <div class="steps" style="margin-top:12px">
+      <div><b>1</b><span data-t="step1"></span></div>
+      <div><b>2</b><span data-t="step2"></span></div>
+      <div><b>3</b><span data-t="step3"></span></div>
+    </div>
+  </section>
+
+  <div class="bottom stack">
+    <a class="btn white block xl" href="./register.html" data-t="register">Register & play</a>
+    <a class="btn ghost block" href="./profile.html" style="color:#fff" data-t="openProfile">Open my profile</a>
+  </div>
+  <p class="foot" style="color:rgba(255,255,255,.7)"><span data-t="poweredBy"></span> · <span data-t="tagline"></span></p>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js"></script><script src="./js/i18n.js"></script>
+<script>document.getElementById("langbox").innerHTML = langSwitcher(); applyLang();</script>
+</body></html>

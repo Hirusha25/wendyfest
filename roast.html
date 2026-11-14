@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>[DEMO] Roasted by Wendy's · Wendy Fest</title><meta name="theme-color" content="#252525"><link rel="icon" href="./assets/cameo.png">
+<meta property="og:title" content="I just got roasted by Wendy's 🔥"><meta property="og:description" content="Wendy Fest · Sri Lanka">
+<link rel="stylesheet" href="./css/brand.css">
+<style>
+  body { background: var(--ink); color: #fff; }
+  .photo { border-radius: 22px; overflow: hidden; border: 4px solid #fff; box-shadow: var(--shadow); aspect-ratio: 4/3; background: #111; }
+  .photo img { width: 100%; height: 100%; object-fit: cover; }
+  .tabs { display: inline-flex; background: rgba(255,255,255,.1); border-radius: 999px; padding: 3px; gap: 2px; }
+  .tabs button { border: 0; background: transparent; color: #fff; padding: 8px 14px; border-radius: 999px; font-weight: 700; cursor: pointer; opacity: .7; }
+  .tabs button.on { background: var(--red); opacity: 1; }
+  .rtitle { font-size: clamp(1.9rem, 9vw, 2.8rem); }
+  .rbody { font-size: 1.1rem; line-height: 1.55; }
+  .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+</style>
+</head>
+<body class="freckles on-red">
+<main class="wrap">
+  <header class="topbar"><a href="./index.html"><img class="logo" src="./assets/wendys-horiz-white.svg" alt="Wendy's"></a><div class="tabs" id="tabs"><button data-l="en">EN</button><button data-l="si">සිං</button><button data-l="ta">தமிழ்</button></div></header>
+  <div class="eyebrow pop" style="color:var(--blue)" data-t="roastedBy"></div>
+  <div class="photo rise" style="margin:12px 0 18px"><img id="photo" alt=""></div>
+  <section class="ticket pad rise-2" style="padding:26px 22px">
+    <div class="ticket-inner"></div>
+    <div class="eyebrow" id="vibe" style="opacity:.85"></div>
+    <h1 class="display rtitle" id="title" style="margin:8px 0 12px">…</h1>
+    <p class="rbody" id="body" style="margin:0"></p>
+    <div style="margin-top:16px;font-size:.8rem;opacity:.8">— Wendy's, <span id="who"></span></div>
+  </section>
+  <div class="actions rise-3" style="margin:16px 0">
+    <button class="btn white" id="dl" data-t="download"></button>
+    <button class="btn blue" id="share" data-t="share"></button>
+  </div>
+  <a class="btn ghost block" href="./index.html" style="color:#fff" data-t="tryIt"></a>
+  <p class="foot" style="color:rgba(255,255,255,.6)" data-t="poweredBy"></p>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js"></script><script src="./js/i18n.js"></script><script src="./js/app.js"></script>
+<script>
+  const token = new URLSearchParams(location.search).get("t");
+  let R = null;
+  function paint() {
+    if (!R) return;
+    document.querySelectorAll("#tabs button").forEach((b) => b.classList.toggle("on", b.dataset.l === window.lang));
+    document.getElementById("title").textContent = R.title[window.lang] || R.title.en;
+    document.getElementById("body").textContent = R.roast[window.lang] || R.roast.en;
+    document.getElementById("vibe").textContent = R.vibe || "";
+    document.getElementById("who").textContent = `to ${R.name}`;
+    if (R.photo) document.getElementById("photo").src = R.photo;
+    applyLang();
+  }
+  document.querySelectorAll("#tabs button").forEach((b) => b.onclick = () => setLang(b.dataset.l));
+  document.addEventListener("langchange", paint);
+  api(`/api/roast/${token}`).then((r) => { R = r; if (!new URLSearchParams(location.search).get("lang") && !localStorage.getItem("wf_lang")) window.lang = r.lang; paint(); }).catch(() => { document.getElementById("title").textContent = "This roast went cold."; });
+  document.getElementById("dl").onclick = async () => { const c = await renderRoastCard(R, window.lang); downloadCanvas(c, `wendys-roast-${R.name}.png`); };
+  document.getElementById("share").onclick = async () => { const c = await renderRoastCard(R, window.lang); const f = await canvasToFile(c, "wendys-roast.png"); shareLink({ title: "Roasted by Wendy's", text: t("roastShare"), url: R.url, file: f }); };
+</script>
+</body></html>

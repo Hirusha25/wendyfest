@@ -35,11 +35,12 @@ const DB = Object.assign({ participants: [], coupons: [], screams: [], roasts: [
 const save = () => localStorage.setItem("wf_demo", JSON.stringify(DB));
 if (!DB.coupons.length) { for (let i = 0; i < 100; i++) DB.coupons.push({ id: i + 1, code: "WF-" + shortCode2(6), label: null, claimed_by: null }); save(); }
 const now = () => new Date().toISOString().slice(0, 19).replace("T", " ");
+if (!DB.participants.some((p) => p.code === "WENDYS")) { DB.participants.unshift({ id: 1000, code: "WENDYS", token: "demo-guest-token", name: "Demo Guest", phone: "94770000000", email: null, dob: null, lang: "en", created_at: now() }); save(); }
 const cookie = (n) => (document.cookie.match(new RegExp("(?:^|; )" + n + "=([^;]*)")) || [])[1];
 const setCookie = (n, v) => (document.cookie = n + "=" + v + "; path=/; max-age=31536000; SameSite=Lax");
-const scream = () => Object.assign({ threshold: 70, loudWeight: .6, accWeight: .4, dbFloor: -42, dbCeil: -6, attemptsPerPerson: 1, durationMs: 3000 }, DB.settings.scream || {});
+const scream = () => Object.assign({ threshold: 70, loudWeight: .6, accWeight: .4, dbFloor: -42, dbCeil: -6, attemptsPerPerson: 99, durationMs: 3000 }, DB.settings.scream || {});
 const coupon = () => Object.assign({ valueLabel: "10% OFF your next Wendy's order", terms: "Valid at Wendy's Sri Lanka outlets during the launch period. One use per code." }, DB.settings.coupon || {});
-const roastS = () => Object.assign({ attemptsPerPerson: 1 }, DB.settings.roast || {});
+const roastS = () => Object.assign({ attemptsPerPerson: 99 }, DB.settings.roast || {});
 const profileUrl = (p) => BASE + "/profile.html?t=" + p.token;
 const roastUrl = (r) => BASE + "/roast.html?t=" + r.token;
 const first = (p) => p.name.split(" ")[0];
@@ -128,7 +129,7 @@ window.fetch = async (url, opts = {}) => {
 };
 window.qrUrl = (text) => { try { const q = qrcode(0, "M"); q.addData(String(text)); q.make(); return "data:image/svg+xml;utf8," + encodeURIComponent(q.createSvgTag({ cellSize: 4, margin: 2, scalable: true }).replace(/<rect[^>]*fill="white"[^>]*\\/>/, "")); } catch (e) { return ""; } };
 window.demoToast = (msg) => { let el = document.getElementById("demo-toast"); if (!el) { el = document.createElement("div"); el.id = "demo-toast"; el.style.cssText = "position:fixed;left:50%;top:12px;transform:translateX(-50%);max-width:92vw;background:#252525;color:#fff;padding:10px 14px;border-radius:12px;font:600 13px Poppins,sans-serif;z-index:9999;box-shadow:0 10px 30px rgba(0,0,0,.4);opacity:0;transition:opacity .2s"; document.body.appendChild(el); } el.textContent = msg; el.style.opacity = 1; clearTimeout(el._t); el._t = setTimeout(() => el.style.opacity = 0, 5000); };
-document.addEventListener("DOMContentLoaded", () => { const b = document.createElement("div"); b.textContent = "DEMO · runs on this device only · SMS and AI roast are simulated · kiosk PIN 2468 · admin PIN 1357"; b.style.cssText = "position:fixed;left:0;right:0;bottom:0;background:#029CD4;color:#fff;text-align:center;font:700 11px/1.3 Poppins,sans-serif;letter-spacing:.04em;padding:5px 8px;z-index:9998;opacity:.95"; document.body.appendChild(b); });
+document.addEventListener("DOMContentLoaded", () => { const b = document.createElement("div"); b.textContent = "DEMO · runs on this device only · SMS and AI roast are simulated · kiosk PIN 2468 · admin PIN 1357 · demo guest code WENDYS"; b.style.cssText = "position:fixed;left:0;right:0;bottom:0;background:#029CD4;color:#fff;text-align:center;font:700 11px/1.3 Poppins,sans-serif;letter-spacing:.04em;padding:5px 8px;z-index:9998;opacity:.95"; document.body.appendChild(b); document.body.style.paddingBottom = "80px"; });
 })();
 `;
 fs.writeFileSync(path.join(out, "js/demo-shim.js"), shim);

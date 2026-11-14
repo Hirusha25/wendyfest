@@ -54,3 +54,59 @@ body.kiosk { background: var(--red); color: #fff; cursor: default; user-select: 
 .spin { width: 8vmin; height: 8vmin; border: 1vmin solid rgba(255,255,255,.25); border-top-color: #fff; border-radius: 50%; animation: spin 1s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg) } }
 .ghost-wendy { position: absolute; right: -6vmin; bottom: -8vmin; width: 60vmin; opacity: .08; pointer-events: none; }
+
+/* ---------- phone / portrait layout (for testing on mobiles and portrait kiosks) ---------- */
+@media (orientation: portrait), (max-width: 900px) {
+  html, body { overflow: auto; }
+  .stage { height: auto; min-height: 100vh; min-height: 100dvh; display: block; padding: 0; }
+  .screen { position: relative; inset: auto; min-height: 100vh; min-height: 100dvh; padding: 22vw 5vw 14vw; align-content: start; }
+  .screen.on { display: grid; }
+  .frame { display: none; }
+  .k-logo { top: 4vw; left: 5vw; height: 9vw; }
+  .k-cameo { top: 2vw; right: 5vw; height: 14vw; }
+  .k-corner, .k-corner-l { position: static; display: inline-block; margin: 4vw 2vw 0 0; font-size: 2.6vw; }
+  .cols { grid-template-columns: 1fr; gap: 6vw; align-items: start; height: auto; }
+  .huge { font-size: 22vw; } .big { font-size: 13vw; } .mid { font-size: 7.5vw; }
+  .k-sub { font-size: 4.2vw; max-width: none; } .k-eyebrow { font-size: 3.2vw; }
+  .k-btn { font-size: 4vw; padding: 4vw 6vw; width: 100%; }
+  .row { flex-wrap: wrap; }
+  .k-input { width: 100%; font-size: 12vw; padding: 3vw; letter-spacing: .25em; }
+  .kb { grid-template-columns: repeat(8, 1fr); gap: 1.5vw; width: 100%; }
+  .kb button { height: 11vw; font-size: 4.5vw; border-radius: 2vw; }
+  .kb button.wide { font-size: 3.4vw; }
+  .qr { width: 56vw; height: 56vw; padding: 3vw; border-radius: 3vw; }
+  .k-level { width: 100%; height: 3.5vw; }
+  .meter { width: 84vw; height: 84vw; }
+  .result-score { font-size: 36vw; }
+  .cam { width: 90vw; max-width: none; }
+  .cam .count { font-size: 40vw; }
+  .consent-box { max-width: none; font-size: 3.8vw; padding: 5vw; }
+  .settings { width: 100%; }
+  .gear { width: 7vw; height: 7vw; opacity: .35; position: fixed; }
+  .spin { width: 14vw; height: 14vw; border-width: 1.6vw; }
+  .ghost-wendy { display: none; }
+}
+@media (orientation: portrait), (max-width: 900px) {
+  .idle-title { font-size: 22vw !important; }
+  .gerr { font-size: 10vw !important; }
+  .name { font-size: 12vw !important; }
+  .db { font-size: 9vw !important; } .trans { font-size: 4.5vw !important; } .thr { font-size: 3.4vw !important; }
+  .cnt { font-size: 50vw !important; }
+  .judge { grid-template-columns: 1fr !important; width: 100% !important; } .judge button { font-size: 4.5vw !important; padding: 5vw !important; }
+  .win-wrap { grid-template-columns: 1fr !important; gap: 6vw !important; }
+  .coupon-k { padding: 5vw !important; } .coupon-k .code { font-size: 10vw !important; } .coupon-k .k-eyebrow { font-size: 3vw !important; }
+  .lang-pick { flex-wrap: wrap; } .lang-pick button { font-size: 3.8vw !important; padding: 2.5vw 4vw !important; }
+  .reveal { grid-template-columns: 1fr !important; gap: 6vw !important; }
+  .rtitle { font-size: 9vw !important; } .rbody { font-size: 4.4vw !important; } .rtabs button { font-size: 3.4vw !important; }
+  .cooking-line { font-size: 4.8vw !important; }
+  .pick { grid-template-columns: 1fr !important; width: 100% !important; } .pick .display { font-size: 10vw !important; }
+}
+@media (orientation: portrait), (max-width: 900px) {
+  html, body { overflow-x: hidden; }
+  .cols { grid-template-columns: 1fr !important; }
+  .settings { position: fixed; inset: 0; width: 100%; height: 100%; transform: none; display: none; }
+  .settings.open { display: block; }
+  #s-result { padding-top: 26vw !important; }
+  .reveal .photo { width: 100%; }
+  .reveal .ticket { padding: 9vw 6vw !important; }
+}

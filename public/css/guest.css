@@ -40,7 +40,7 @@ button, input, select { font:inherit; }
 .check { width:80px; height:80px; border-radius:50%; border:5px solid #fff; background:var(--red-dark); display:grid; place-items:center; margin:16px auto 0; box-shadow:0 6px 0 var(--red-lo); }
 
 /* ---- body ---- */
-.body { padding:18px 22px 0; display:flex; flex-direction:column; flex:1; gap:14px; }
+.body { padding:18px 22px 8px; display:flex; flex-direction:column; flex:1; gap:14px; }
 .btn { display:flex; align-items:center; justify-content:center; gap:10px; height:56px; border-radius:999px; border:0; cursor:pointer; background:var(--red); color:#fff; font-weight:800; font-style:italic; font-size:16px; text-transform:uppercase; letter-spacing:.03em; text-decoration:none; box-shadow:0 4px 0 var(--red-dark), 0 12px 22px -10px rgba(163,37,57,.55); transition:transform .1s; }
 .btn:active { transform:translateY(2px); box-shadow:0 2px 0 var(--red-dark); }
 .btn:disabled { opacity:.55; cursor:not-allowed; }
@@ -58,7 +58,7 @@ button, input, select { font:inherit; }
 .brandfoot { margin-top:auto; background:var(--charcoal); color:#D9CFCB; padding:16px 22px 18px; padding-bottom:max(18px, env(safe-area-inset-bottom)); display:flex; justify-content:space-between; align-items:center; gap:12px; font-size:10.5px; font-weight:600; }
 .brandfoot .links { display:flex; gap:12px; }
 .brandfoot a { color:#F2D4D7; text-decoration:none; border-bottom:1px solid rgba(242,212,215,.5); }
-.body + .brandfoot { margin-top:18px; }
+.body + .brandfoot { margin-top:36px; }
 
 /* ---- landing cards ---- */
 .mcard { position:relative; background:#fff; border-radius:18px; padding:16px 18px; box-shadow:0 4px 0 var(--line), 0 10px 22px -12px rgba(73,53,51,.3); border-left:6px solid var(--red); }
@@ -184,7 +184,7 @@ button, input, select { font:inherit; }
 .rpaper .rbody { font-size:15px; line-height:1.55; margin:12px 0 0; color:var(--ink); }
 .rpaper .sig { margin-top:14px; font-size:12px; color:var(--mute); font-style:italic; }
 
-.toast { position:fixed; left:50%; bottom:90px; transform:translateX(-50%); background:var(--ink); color:#fff; padding:12px 18px; border-radius:999px; font-weight:600; font-size:.9rem; z-index:99; opacity:0; transition:opacity .2s; pointer-events:none; max-width:90vw; text-align:center; }
+.toast { position:fixed; left:50%; bottom:90px; max-width:min(90vw, 360px); border-radius:18px; padding:12px 18px; line-height:1.35; transform:translateX(-50%); background:var(--ink); color:#fff; padding:12px 18px; border-radius:999px; font-weight:600; font-size:.9rem; z-index:99; opacity:0; transition:opacity .2s; pointer-events:none; max-width:90vw; text-align:center; }
 .toast.show { opacity:1; }
 @keyframes rise { from { transform:translateY(14px); opacity:0 } to { transform:none; opacity:1 } }
 .rise { animation:rise .5s ease both; } .rise-2 { animation:rise .5s .1s ease both; } .rise-3 { animation:rise .5s .2s ease both; }

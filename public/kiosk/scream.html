@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Scream & Win · Wendy Fest</title><link rel="icon" href="/assets/cameo.png">
+<link rel="stylesheet" href="/css/brand.css"><link rel="stylesheet" href="/css/kiosk.css">
+<style>
+  .idle-title { font-size: 19vmin; line-height: .85; }
+  .idle-title .l2 { color: var(--blush); }
+  .gerr { font-size: 7vmin; color: #fff; -webkit-text-stroke: .3vmin #fff; color: transparent; }
+  .name { font-size: 9vmin; color: var(--blush); }
+  .db { font-family: var(--display); font-style: italic; font-weight: 900; font-size: 6vmin; }
+  .trans { font-size: 3vmin; font-weight: 600; min-height: 4vmin; opacity: .9; }
+  .judge { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2vmin; width: 90vmin; }
+  .judge button { padding: 4vmin 2vmin; font-size: 3vmin; }
+  .cnt { font-size: 40vmin; line-height: 1; }
+  .win-wrap { display: grid; grid-template-columns: 1fr auto; gap: 5vmin; align-items: center; width: 100%; }
+  .coupon-k { background: #fff; color: var(--ink); border-radius: 2.4vmin; padding: 3vmin 4vmin; display: grid; gap: .6vmin; }
+  .coupon-k .code { color: var(--red); font-size: 7vmin; }
+  .thr { font-size: 2vmin; opacity: .8; }
+</style>
+</head>
+<body class="kiosk on-red freckles">
+<div class="stage">
+  <img class="k-logo" src="/assets/wendys-horiz-white.svg" alt="Wendy's">
+  <img class="k-cameo" src="/assets/cameo.png" alt="">
+  <div class="frame"><i></i></div>
+  <div class="flash" id="flash"></div>
+
+  <!-- PIN -->
+  <section class="screen" id="s-pin" style="place-items:center"><div class="stack center" style="gap:3vmin">
+    <div class="k-eyebrow">Host console</div><div class="display big">Enter PIN</div>
+    <input class="k-input" id="pin" type="password" inputmode="numeric" maxlength="8" style="width:40vmin;letter-spacing:.5em">
+    <button class="btn white k-btn" id="pin-go">Unlock</button></div></section>
+
+  <!-- IDLE / attract -->
+  <section class="screen on" id="s-idle">
+    <div class="cols">
+      <div>
+        <div class="k-eyebrow pop">Wendy Fest · Sri Lanka</div>
+        <div class="display idle-title rise" style="margin:2vmin 0"><span>Scream</span><br><span class="l2">& Win</span></div>
+        <div class="display gerr rise-2 pulse">GERRRRRRR!</div>
+        <p class="k-sub rise-3" style="margin-top:3vmin">Yell <b>“WENDY’S!”</b> into the mic. Loud enough and clear enough beats the meter and wins a reward code.</p>
+        <p class="k-sub" style="opacity:.8;font-size:2.4vmin">කෑගහන්න, දිනන්න &nbsp;·&nbsp; கத்துங்கள், வெல்லுங்கள்</p>
+      </div>
+      <div class="stack center" style="justify-items:center;gap:2vmin">
+        <div class="qr"><img id="qr-reg" alt="QR"></div>
+        <div class="k-eyebrow">Scan to register</div>
+        <div style="font-size:2vmin;opacity:.8">Then tell the host your 6-letter code</div>
+        <button class="btn white k-btn" id="start" style="margin-top:2vmin">Host: enter guest code →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CODE -->
+  <section class="screen" id="s-code" style="place-items:center"><div class="stack center" style="gap:2.4vmin">
+    <div class="k-eyebrow">Guest code</div>
+    <input class="k-input" id="code" maxlength="6" autocomplete="off" placeholder="ABC123">
+    <div id="kb"></div>
+    <div class="k-sub" id="code-msg" style="min-height:3vmin;opacity:.9;font-size:2.2vmin"></div>
+    <button class="btn ghost sm" style="color:#fff" onclick="goIdle()">← Back</button>
+  </div></section>
+
+  <!-- READY -->
+  <section class="screen" id="s-ready" style="place-items:center"><div class="stack center" style="gap:2vmin;justify-items:center">
+    <div class="k-eyebrow">Get ready</div>
+    <div class="display name" id="r-name">Hi!</div>
+    <div class="display mid">When the count hits zero, scream<br><span style="color:var(--blush)">“WENDY’S!”</span></div>
+    <div class="k-level" style="margin-top:2vmin"><div id="lvl-ready"></div></div>
+    <div class="thr" id="mic-status">Checking microphone…</div>
+    <div class="row" style="gap:2vmin;margin-top:2vmin"><button class="btn white k-btn" id="go">Start the count</button><button class="btn ghost k-btn" style="color:#fff" onclick="goIdle()">Cancel</button></div>
+  </div></section>
+
+  <!-- GO -->
+  <section class="screen" id="s-go" style="place-items:center">
+    <div class="stack center" id="go-count" style="justify-items:center"><div class="display cnt" id="cnt">3</div></div>
+    <div class="cols hidden" id="go-meter">
+      <div class="meter-wrap"><canvas class="meter" id="meter" width="800" height="800"></canvas></div>
+      <div class="stack" style="gap:1.4vmin">
+        <div class="display big pulse" style="color:#fff">SCREAM!</div>
+        <div class="db"><span id="db">-60</span> dB</div>
+        <div class="k-eyebrow">We heard</div>
+        <div class="trans" id="trans">…</div>
+        <div class="k-level"><div id="lvl-go"></div></div>
+        <div class="thr">Time left: <b id="tleft">3.0</b>s</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOST JUDGE (fallback when speech recognition unavailable) -->
+  <section class="screen" id="s-judge" style="place-items:center"><div class="stack center" style="gap:3vmin;justify-items:center">
+    <div class="k-eyebrow">Host call · speech recognition unavailable</div>
+    <div class="display mid">Did they say “WENDY’S”?</div>
+    <div class="judge">
+      <button class="btn white" onclick="submitScream(100)">Crystal clear</button>
+      <button class="btn ink" onclick="submitScream(60)">Close enough</button>
+      <button class="btn ghost" style="color:#fff" onclick="submitScream(15)">Nope</button>
+    </div>
+  </div></section>
+
+  <!-- RESULT -->
+  <section class="screen" id="s-result" style="place-items:center;padding-top:14vmin">
+    <div class="win-wrap">
+      <div class="stack" style="gap:1vmin">
+        <div class="k-eyebrow" id="res-eyebrow">Result</div>
+        <div class="display result-score" id="res-score">0</div>
+        <div class="display mid" id="res-title">…</div>
+        <div class="k-sub" id="res-detail"></div>
+        <div class="coupon-k hidden pop" id="res-coupon" style="margin-top:2vmin">
+          <div class="k-eyebrow" style="color:var(--gray)">Reward code</div>
+          <div class="display code" id="res-code">WF-XXXXXX</div>
+          <div style="font-weight:700" id="res-label"></div>
+          <div style="font-size:1.8vmin;color:var(--gray)">Sent by SMS · saved on your Wendy Fest profile</div>
+        </div>
+        <div class="row" style="gap:2vmin;margin-top:3vmin"><button class="btn white k-btn" onclick="goIdle()">Next guest →</button></div>
+      </div>
+      <div class="stack center" style="justify-items:center;gap:1.5vmin">
+        <div class="qr"><img id="qr-profile" alt="QR"></div>
+        <div class="k-eyebrow">Scan for your profile</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="k-corner-l" id="corner-l">Station A</div><div class="k-corner">Gotta be Wendy's</div>
+  <svg class="gear" viewBox="0 0 24 24" fill="#fff" onclick="document.getElementById('settings').classList.toggle('open')"><path d="M12 8a4 4 0 100 8 4 4 0 000-8zm9 4a7 7 0 00-.1-1.2l2-1.5-2-3.5-2.4 1a7 7 0 00-2-1.2L16 3H8l-.5 2.6a7 7 0 00-2 1.2l-2.4-1-2 3.5 2 1.5A7 7 0 003 12a7 7 0 00.1 1.2l-2 1.5 2 3.5 2.4-1a7 7 0 002 1.2L8 21h8l.5-2.6a7 7 0 002-1.2l2.4 1 2-3.5-2-1.5c.1-.4.1-.8.1-1.2z"/></svg>
+  <aside class="settings" id="settings">
+    <div class="k-eyebrow">Station settings</div>
+    <label>Microphone (this screen)</label><select id="mic"></select>
+    <label>Live level</label><div class="k-level" style="width:100%"><div id="lvl-set"></div></div><div id="db-set" style="margin-top:.6vmin">— dB</div>
+    <label>Clarity scoring</label><select id="judge-mode"><option value="auto">Auto (speech recognition, Chrome + internet)</option><option value="host">Host judges after each scream</option></select>
+    <label>Scoring (from admin)</label><div id="thr-info">—</div>
+    <p style="opacity:.7;margin-top:2vmin">Calibrate: have a staff member scream at the real distance. Their peak dB should land near the ceiling set in Admin. Change dB floor/ceiling in Admin if screams never reach 100 or always do.</p>
+    <button class="btn sm white" style="margin-top:2vmin" onclick="document.getElementById('settings').classList.remove('open')">Close</button>
+  </aside>
+</div>
+
+<script src="/js/i18n.js"></script><script src="/js/kiosk.js"></script>
+<script>
+  const $ = (id) => document.getElementById(id);
+  let CFG = { scream: { threshold: 70, durationMs: 3000, dbFloor: -42, dbCeil: -6, loudWeight: .6, accWeight: .4 } };
+  let guest = null, audio = null, analyser = null, buf = null, stream = null, rafId = null;
+  let peakDb = -100, transcript = "", recog = null, recogOk = false, windowOpen = false;
+  $("corner-l").textContent = "Station " + K.station;
+  $("qr-reg").src = `/api/qr?text=${encodeURIComponent(location.origin + "/register")}`;
+
+  fetch("/api/config").then((r) => r.json()).then((c) => { CFG = c; $("qr-reg").src = `/api/qr?text=${encodeURIComponent(c.baseUrl + "/register")}`; $("thr-info").textContent = `Win at ${c.scream.threshold} · loud ${Math.round(c.scream.loudWeight * 100)}% / clarity ${Math.round(c.scream.accWeight * 100)}% · dB ${c.scream.dbFloor}→${c.scream.dbCeil}`; });
+
+  // ---------- PIN ----------
+  async function unlock() { if (await K.login($("pin").value)) goIdle(); else { $("pin").classList.add("err"); setTimeout(() => $("pin").classList.remove("err"), 500); $("pin").value = ""; } }
+  $("pin-go").onclick = unlock; $("pin").addEventListener("keydown", (e) => e.key === "Enter" && unlock());
+  if (!document.cookie.includes("wf_kiosk=")) K.show("s-pin");
+
+  // ---------- audio ----------
+  const micSel = $("mic");
+  async function listMics() {
+    const devs = (await navigator.mediaDevices.enumerateDevices()).filter((d) => d.kind === "audioinput");
+    const saved = localStorage.getItem("wf_mic_" + K.station);
+    micSel.innerHTML = devs.map((d, i) => `<option value="${d.deviceId}" ${d.deviceId === saved ? "selected" : ""}>${d.label || "Microphone " + (i + 1)}</option>`).join("");
+  }
+  micSel.onchange = () => { localStorage.setItem("wf_mic_" + K.station, micSel.value); startAudio(true); };
+  $("judge-mode").value = localStorage.getItem("wf_judge") || "auto";
+  $("judge-mode").onchange = () => localStorage.setItem("wf_judge", $("judge-mode").value);
+
+  async function startAudio(restart) {
+    if (stream && !restart) return true;
+    if (stream) stream.getTracks().forEach((t) => t.stop());
+    try {
+      const id = localStorage.getItem("wf_mic_" + K.station);
+      stream = await navigator.mediaDevices.getUserMedia({ audio: { deviceId: id ? { exact: id } : undefined, echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+      audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+      if (audio.state === "suspended") await audio.resume();
+      const src = audio.createMediaStreamSource(stream);
+      analyser = audio.createAnalyser(); analyser.fftSize = 2048; analyser.smoothingTimeConstant = 0; src.connect(analyser);
+      buf = new Float32Array(analyser.fftSize);
+      await listMics();
+      $("mic-status").textContent = "Mic OK · " + (micSel.selectedOptions[0]?.textContent || "default");
+      if (!rafId) loop();
+      return true;
+    } catch (e) { $("mic-status").textContent = "Microphone blocked or missing: " + e.message; return false; }
+  }
+  function currentDb() {
+    if (!analyser) return -100;
+    analyser.getFloatTimeDomainData(buf);
+    let sum = 0; for (let i = 0; i < buf.length; i++) sum += buf[i] * buf[i];
+    const rms = Math.sqrt(sum / buf.length);
+    return rms > 0 ? Math.max(-100, 20 * Math.log10(rms)) : -100;
+  }
+  const dbToPct = (db) => Math.max(0, Math.min(100, ((db - CFG.scream.dbFloor) / (CFG.scream.dbCeil - CFG.scream.dbFloor)) * 100));
+  let smooth = -100;
+  function loop() {
+    rafId = requestAnimationFrame(loop);
+    const db = currentDb(); smooth = db > smooth ? db : smooth * .92 + db * .08;
+    const pct = dbToPct(smooth);
+    ["lvl-ready", "lvl-go", "lvl-set"].forEach((id) => { $(id).style.width = pct + "%"; });
+    $("db-set").textContent = db.toFixed(1) + " dB";
+    if (windowOpen) { if (db > peakDb) peakDb = db; $("db").textContent = db.toFixed(0); drawMeter(pct, dbToPct(peakDb)); }
+  }
+
+  // ---------- meter ----------
+  const mc = $("meter").getContext("2d");
+  function drawMeter(pct, peakPct) {
+    const W = 800, cx = 400, cy = 420, r = 300; mc.clearRect(0, 0, W, W);
+    const a0 = Math.PI * .75, a1 = Math.PI * 2.25;
+    mc.lineCap = "round"; mc.lineWidth = 46;
+    mc.strokeStyle = "rgba(255,255,255,.18)"; mc.beginPath(); mc.arc(cx, cy, r, a0, a1); mc.stroke();
+    const grad = mc.createLinearGradient(100, 0, 700, 0); grad.addColorStop(0, "#F2D4D7"); grad.addColorStop(.6, "#fff"); grad.addColorStop(1, "#029CD4");
+    mc.strokeStyle = grad; mc.beginPath(); mc.arc(cx, cy, r, a0, a0 + (a1 - a0) * (pct / 100)); mc.stroke();
+    // threshold tick
+    const ta = a0 + (a1 - a0) * (CFG.scream.threshold / 100);
+    mc.strokeStyle = "#252525"; mc.lineWidth = 8; mc.beginPath(); mc.moveTo(cx + Math.cos(ta) * (r - 40), cy + Math.sin(ta) * (r - 40)); mc.lineTo(cx + Math.cos(ta) * (r + 40), cy + Math.sin(ta) * (r + 40)); mc.stroke();
+    // peak marker
+    const pa = a0 + (a1 - a0) * (peakPct / 100);
+    mc.fillStyle = "#fff"; mc.beginPath(); mc.arc(cx + Math.cos(pa) * r, cy + Math.sin(pa) * r, 16, 0, 7); mc.fill();
+    mc.fillStyle = "#fff"; mc.textAlign = "center"; mc.font = "italic 900 190px Poppins, sans-serif"; mc.fillText(Math.round(peakPct), cx, cy + 70);
+    mc.font = "700 34px Poppins, sans-serif"; mc.fillStyle = "rgba(255,255,255,.8)"; mc.fillText("PEAK LOUDNESS", cx, cy + 130);
+    mc.font = "700 28px Poppins, sans-serif"; mc.fillText("WIN LINE " + CFG.scream.threshold, cx, cy + 250);
+  }
+  drawMeter(0, 0);
+
+  // ---------- speech ----------
+  function startRecog() {
+    transcript = ""; recogOk = false; $("trans").textContent = "…";
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR || $("judge-mode").value === "host") return;
+    try {
+      recog = new SR(); recog.lang = "en-US"; recog.interimResults = true; recog.continuous = true; recog.maxAlternatives = 3;
+      recog.onresult = (e) => { let s = ""; for (let i = 0; i < e.results.length; i++) for (let j = 0; j < e.results[i].length; j++) s += " " + e.results[i][j].transcript; transcript = s.trim(); $("trans").textContent = transcript || "…"; recogOk = true; };
+      recog.onerror = (e) => { if (e.error !== "no-speech" && e.error !== "aborted") $("trans").textContent = "(speech: " + e.error + ")"; };
+      recog.start();
+    } catch (e) { recog = null; }
+  }
+  function stopRecog() { try { recog && recog.stop(); } catch {} }
+
+  // ---------- flow ----------
+  function goIdle() { K.resetIdle(0); stopRecog(); windowOpen = false; guest = null; $("code").value = ""; $("code-msg").textContent = ""; K.show("s-idle"); }
+  document.addEventListener("kiosk-home", goIdle);
+  $("start").onclick = () => { K.show("s-code"); $("code").focus(); startAudio(); };
+  $("kb").appendChild(K.keypad($("code"), lookup));
+  $("code").addEventListener("keydown", (e) => e.key === "Enter" && lookup($("code").value));
+  async function lookup(code) {
+    $("code-msg").textContent = "Looking up…";
+    try {
+      guest = await K.api("/api/kiosk/lookup", { code });
+      if (guest.screamsLeft <= 0) { $("code-msg").textContent = `${guest.firstName} has already used their attempt${guest.alreadyWon ? " (and won!)" : ""}.`; $("code").classList.add("err"); setTimeout(() => $("code").classList.remove("err"), 500); return; }
+      $("r-name").textContent = `Hi ${guest.firstName}!`;
+      K.show("s-ready"); const ok = await startAudio(); if (!ok) $("mic-status").textContent += " · open settings (gear) to pick a mic";
+      K.resetIdle(90000, goIdle);
+    } catch (e) { $("code-msg").textContent = e.message; $("code").classList.add("err"); setTimeout(() => $("code").classList.remove("err"), 500); }
+  }
+  $("go").onclick = async () => {
+    if (!(await startAudio())) return;
+    K.resetIdle(0); K.show("s-go"); $("go-count").classList.remove("hidden"); $("go-meter").classList.add("hidden");
+    for (const n of [3, 2, 1]) { $("cnt").textContent = n; $("cnt").classList.remove("pop"); void $("cnt").offsetWidth; $("cnt").classList.add("pop"); if (n === 2) startRecog(); await wait(900); }
+    $("go-count").classList.add("hidden"); $("go-meter").classList.remove("hidden");
+    peakDb = -100; windowOpen = true;
+    const dur = CFG.scream.durationMs || 3000, t0 = performance.now();
+    while (performance.now() - t0 < dur) { $("tleft").textContent = ((dur - (performance.now() - t0)) / 1000).toFixed(1); await wait(50); }
+    $("tleft").textContent = "0.0"; windowOpen = false;
+    await wait(900); stopRecog(); await wait(400);
+    if ($("judge-mode").value === "host" || !(window.SpeechRecognition || window.webkitSpeechRecognition)) { K.show("s-judge"); return; }
+    submitScream(null);
+  };
+  async function submitScream(accuracyOverride) {
+    try {
+      const r = await K.api("/api/kiosk/scream", { code: guest.code, peakDb, transcript, accuracyOverride });
+      showResult(r);
+    } catch (e) { alert("Could not submit: " + e.message); goIdle(); }
+  }
+  function showResult(r) {
+    K.show("s-result");
+    $("res-score").textContent = r.score;
+    $("res-eyebrow").textContent = `${r.name} · loud ${r.loudness} · clarity ${r.accuracy} · win line ${r.threshold}`;
+    $("res-coupon").classList.toggle("hidden", !r.coupon);
+    if (r.won) {
+      $("res-title").textContent = r.couponPoolEmpty ? "YOU BEAT THE METER!" : "GOTTA BE LOUD. YOU WON!";
+      $("res-detail").textContent = r.couponPoolEmpty ? "Reward pool is empty – see a host." : "Fresh. Never frozen. Just like that scream.";
+      if (r.coupon) { $("res-code").textContent = r.coupon.code; $("res-label").textContent = r.coupon.label; }
+      $("flash").classList.remove("go"); void $("flash").offsetWidth; $("flash").classList.add("go"); K.confetti();
+    } else {
+      $("res-title").textContent = r.loudness < r.accuracy ? "LOUDER NEXT TIME." : "WE HEARD… SOMETHING.";
+      $("res-detail").textContent = r.accuracy < 40 ? "The meter heard you. It just didn’t hear “Wendy’s”. Respect for the effort." : "Close one. Colombo traffic is louder. Try the Roast Me booth!";
+    }
+    $("qr-profile").src = `/api/qr?text=${encodeURIComponent(r.profileUrl)}`;
+    K.resetIdle(30000, goIdle);
+  }
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+</script>
+</body></html>

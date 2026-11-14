@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Roast Me · Wendy Fest</title><link rel="icon" href="/assets/cameo.png">
+<link rel="stylesheet" href="/css/brand.css"><link rel="stylesheet" href="/css/kiosk.css">
+<style>
+  body.kiosk { background: var(--ink); }
+  .frame::before, .frame::after, .frame i::before, .frame i::after { background: var(--ink); }
+  .idle-title { font-size: 20vmin; line-height: .85; color: var(--blue); }
+  .idle-title .l2 { color: #fff; }
+  .lang-pick { display: flex; gap: 1.5vmin; }
+  .lang-pick button { padding: 1.6vmin 3vmin; font-size: 2.4vmin; }
+  .lang-pick button.on { background: var(--blue); }
+  .reveal { display: grid; grid-template-columns: 1fr 1.1fr; gap: 4vmin; align-items: center; width: 100%; }
+  .reveal .photo { border-radius: 2.4vmin; overflow: hidden; border: .7vmin solid #fff; aspect-ratio: 4/3; }
+  .reveal .photo img { width: 100%; height: 100%; object-fit: cover; }
+  .rtitle { font-size: 6.4vmin; }
+  .rbody { font-size: 2.9vmin; line-height: 1.5; font-weight: 500; }
+  .rtabs { display: inline-flex; gap: .6vmin; background: rgba(255,255,255,.12); padding: .5vmin; border-radius: 999px; }
+  .rtabs button { border: 0; background: transparent; color: #fff; padding: 1vmin 2vmin; border-radius: 999px; font-weight: 800; font-size: 1.9vmin; cursor: pointer; opacity: .7; }
+  .rtabs button.on { background: var(--red); opacity: 1; }
+  .cooking-line { font-size: 3.2vmin; font-weight: 600; min-height: 5vmin; }
+  .ghost-wendy { position: absolute; right: -4vmin; bottom: -10vmin; width: 62vmin; opacity: .06; pointer-events: none; }
+</style>
+</head>
+<body class="kiosk on-red freckles">
+<div class="stage">
+  <img class="k-logo" src="/assets/wendys-horiz-white.svg" alt="Wendy's">
+  <img class="k-cameo" src="/assets/cameo.png" alt="">
+  <div class="frame"><i></i></div>
+  <div class="flash" id="flash"></div>
+
+  <section class="screen" id="s-pin" style="place-items:center"><div class="stack center" style="gap:3vmin">
+    <div class="k-eyebrow">Host console</div><div class="display big">Enter PIN</div>
+    <input class="k-input" id="pin" type="password" inputmode="numeric" maxlength="8" style="width:40vmin;letter-spacing:.5em">
+    <button class="btn blue k-btn" id="pin-go">Unlock</button></div></section>
+
+  <section class="screen on" id="s-idle">
+    <img class="ghost-wendy" src="/assets/cameo.png" alt="">
+    <div class="cols">
+      <div>
+        <div class="k-eyebrow pop" style="color:var(--blue)">Serving the sass</div>
+        <div class="display idle-title rise" style="margin:2vmin 0"><span>Roast</span><br><span class="l2">Me</span></div>
+        <p class="k-sub rise-2" style="margin-top:3vmin">Step up to the camera. Wendy's looks you over and serves a roast made just for you – in English, Sinhala and Tamil.</p>
+        <p class="k-sub rise-3" style="opacity:.8;font-size:2.4vmin">මාව roast කරන්න &nbsp;·&nbsp; என்னை roast செய்</p>
+      </div>
+      <div class="stack center" style="justify-items:center;gap:2vmin">
+        <div class="qr"><img id="qr-reg" alt="QR"></div>
+        <div class="k-eyebrow">Scan to register</div>
+        <div style="font-size:2vmin;opacity:.8">Then tell the host your 6-letter code</div>
+        <button class="btn blue k-btn" id="start" style="margin-top:2vmin">Host: enter guest code →</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen" id="s-code" style="place-items:center"><div class="stack center" style="gap:2.4vmin">
+    <div class="k-eyebrow">Guest code</div>
+    <input class="k-input" id="code" maxlength="6" autocomplete="off" placeholder="ABC123">
+    <div id="kb"></div>
+    <div class="k-sub" id="code-msg" style="min-height:3vmin;font-size:2.2vmin"></div>
+    <button class="btn ghost sm" style="color:#fff" onclick="goIdle()">← Back</button>
+  </div></section>
+
+  <section class="screen" id="s-consent" style="place-items:center"><div class="stack center" style="gap:2.4vmin;justify-items:center">
+    <div class="k-eyebrow" style="color:var(--blue)">Before we roast you</div>
+    <div class="display mid" id="c-name">Hi!</div>
+    <div class="lang-pick"><button class="btn sm ink" data-l="en">English</button><button class="btn sm ink" data-l="si">සිංහල</button><button class="btn sm ink" data-l="ta">தமிழ்</button></div>
+    <div class="consent-box">
+      <p lang="en">📸 We’ll take one photo of you at this booth. Wendy's AI will look at your style, outfit and expression to write a playful roast. The photo and roast are saved to your Wendy Fest profile and a link is sent to your phone so you can download and share it.</p>
+      <p lang="si">📸 මෙම booth එකේදී ඔබේ ඡායාරූපයක් ගනු ලැබේ. ඔබේ style, ඇඳුම සහ මුහුණේ ඉරියව්ව බලා Wendy's AI විහිළු roast එකක් ලියයි. ඡායාරූපය සහ roast එක ඔබේ Wendy Fest profile එකේ save වී link එකක් ඔබේ දුරකථනයට යවනු ලැබේ.</p>
+      <p lang="ta">📸 இந்த booth-இல் உங்கள் ஒரு புகைப்படம் எடுக்கப்படும். உங்கள் style, உடை, முகபாவனையைப் பார்த்து Wendy's AI ஒரு விளையாட்டான roast எழுதும். புகைப்படமும் roast-ும் உங்கள் Wendy Fest profile-இல் சேமிக்கப்பட்டு link உங்கள் போனுக்கு அனுப்பப்படும்.</p>
+      <p style="opacity:.7;font-size:1.8vmin">No roast is ever about body, skin, age, religion or anything you can’t change. Just your vibe.</p>
+    </div>
+    <div class="row" style="gap:2vmin"><button class="btn blue k-btn" id="agree">I agree · එකඟයි · சம்மதம் →</button><button class="btn ghost k-btn" style="color:#fff" onclick="goIdle()">No thanks</button></div>
+  </div></section>
+
+  <section class="screen" id="s-cam" style="place-items:center"><div class="cols" style="grid-template-columns:auto 1fr;gap:5vmin">
+    <div class="cam"><video id="video" autoplay playsinline muted></video><canvas id="shot" class="hidden"></canvas><div class="count hidden" id="count">3</div></div>
+    <div class="stack" style="gap:2vmin">
+      <div class="k-eyebrow" style="color:var(--blue)">Strike a pose</div>
+      <div class="display big" style="font-size:9vmin">Show us<br>your vibe.</div>
+      <p class="k-sub">Props, costumes and attitude all count. Hold still when the count hits one.</p>
+      <div class="row" style="gap:2vmin"><button class="btn blue k-btn" id="snap">Take the photo</button><button class="btn ghost k-btn" style="color:#fff" onclick="goIdle()">Cancel</button></div>
+      <div id="cam-status" style="font-size:1.8vmin;opacity:.8"></div>
+    </div>
+  </div></section>
+
+  <section class="screen" id="s-cooking" style="place-items:center"><div class="stack center" style="gap:3vmin;justify-items:center">
+    <div class="spin"></div>
+    <div class="display big">Looking you over…</div>
+    <div class="cooking-line" id="cook-line">Checking the fit.</div>
+  </div></section>
+
+  <section class="screen" id="s-reveal" style="place-items:center">
+    <div class="reveal">
+      <div class="stack" style="gap:2vmin;justify-items:center">
+        <div class="photo"><img id="r-photo" alt=""></div>
+        <div class="row" style="gap:3vmin;align-items:center">
+          <div class="qr" style="width:20vmin;height:20vmin"><img id="qr-roast" alt="QR"></div>
+          <div><div class="k-eyebrow" style="color:var(--blue)">Scan to take it home</div><div style="font-size:1.9vmin;opacity:.85;margin-top:.6vmin">Download, share, send to the group chat.<br>Also sent to your phone by SMS.</div></div>
+        </div>
+      </div>
+      <div class="ticket pad" style="padding:4vmin;gap:1.4vmin;display:grid">
+        <div class="ticket-inner"></div>
+        <div class="row between"><div class="k-eyebrow" id="r-vibe"></div><div class="rtabs"><button data-l="en">EN</button><button data-l="si">සිං</button><button data-l="ta">தமிழ்</button></div></div>
+        <div class="display rtitle" id="r-title">…</div>
+        <div class="rbody" id="r-body"></div>
+        <div style="font-size:1.8vmin;opacity:.8">— Wendy's, to <span id="r-who"></span></div>
+        <div><button class="btn white k-btn" style="margin-top:1vmin" onclick="goIdle()">Next guest →</button></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="k-corner-l" id="corner-l">Station A</div><div class="k-corner">Gotta be Wendy's</div>
+  <svg class="gear" viewBox="0 0 24 24" fill="#fff" onclick="document.getElementById('settings').classList.toggle('open')"><path d="M12 8a4 4 0 100 8 4 4 0 000-8zm9 4a7 7 0 00-.1-1.2l2-1.5-2-3.5-2.4 1a7 7 0 00-2-1.2L16 3H8l-.5 2.6a7 7 0 00-2 1.2l-2.4-1-2 3.5 2 1.5A7 7 0 003 12a7 7 0 00.1 1.2l-2 1.5 2 3.5 2.4-1a7 7 0 002 1.2L8 21h8l.5-2.6a7 7 0 002-1.2l2.4 1 2-3.5-2-1.5c.1-.4.1-.8.1-1.2z"/></svg>
+  <aside class="settings" id="settings">
+    <div class="k-eyebrow">Station settings</div>
+    <label>Camera (this screen)</label><select id="camsel"></select>
+    <label>Mirror preview</label><select id="mirror"><option value="1">On (selfie style)</option><option value="0">Off</option></select>
+    <p style="opacity:.7;margin-top:2vmin">Use an external USB webcam at eye height, ~1.2 m from the guest, with the light source behind the camera. The saved photo is never mirrored.</p>
+    <button class="btn sm white" style="margin-top:2vmin" onclick="document.getElementById('settings').classList.remove('open')">Close</button>
+  </aside>
+</div>
+
+<script src="/js/i18n.js"></script><script src="/js/kiosk.js"></script>
+<script>
+  const $ = (id) => document.getElementById(id);
+  let guest = null, stream = null, glang = "en", R = null, BASE = location.origin;
+  $("corner-l").textContent = "Station " + K.station;
+  $("qr-reg").src = `/api/qr?text=${encodeURIComponent(BASE + "/register")}`;
+  fetch("/api/config").then((r) => r.json()).then((c) => { BASE = c.baseUrl; $("qr-reg").src = `/api/qr?text=${encodeURIComponent(BASE + "/register")}`; });
+
+  async function unlock() { if (await K.login($("pin").value)) goIdle(); else { $("pin").classList.add("err"); setTimeout(() => $("pin").classList.remove("err"), 500); $("pin").value = ""; } }
+  $("pin-go").onclick = unlock; $("pin").addEventListener("keydown", (e) => e.key === "Enter" && unlock());
+  if (!document.cookie.includes("wf_kiosk=")) K.show("s-pin");
+
+  // ---------- camera ----------
+  const camSel = $("camsel");
+  async function listCams() {
+    const devs = (await navigator.mediaDevices.enumerateDevices()).filter((d) => d.kind === "videoinput");
+    const saved = localStorage.getItem("wf_cam_" + K.station);
+    camSel.innerHTML = devs.map((d, i) => `<option value="${d.deviceId}" ${d.deviceId === saved ? "selected" : ""}>${d.label || "Camera " + (i + 1)}</option>`).join("");
+  }
+  camSel.onchange = () => { localStorage.setItem("wf_cam_" + K.station, camSel.value); startCam(true); };
+  $("mirror").value = localStorage.getItem("wf_mirror") ?? "1";
+  $("mirror").onchange = () => { localStorage.setItem("wf_mirror", $("mirror").value); applyMirror(); };
+  function applyMirror() { $("video").style.transform = $("mirror").value === "1" ? "scaleX(-1)" : "none"; }
+  async function startCam(restart) {
+    if (stream && !restart) return true;
+    if (stream) stream.getTracks().forEach((t) => t.stop());
+    try {
+      const id = localStorage.getItem("wf_cam_" + K.station);
+      stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId: id ? { exact: id } : undefined, width: { ideal: 1280 }, height: { ideal: 960 }, facingMode: "user" }, audio: false });
+      $("video").srcObject = stream; await listCams(); applyMirror();
+      $("cam-status").textContent = "Camera: " + (camSel.selectedOptions[0]?.textContent || "default");
+      return true;
+    } catch (e) { $("cam-status").textContent = "Camera blocked or missing: " + e.message + " · open settings (gear)"; return false; }
+  }
+  function capture() {
+    const v = $("video"), c = $("shot"); const w = 1024, h = Math.round(1024 * (v.videoHeight / v.videoWidth || .75));
+    c.width = w; c.height = h; const ctx = c.getContext("2d"); ctx.drawImage(v, 0, 0, w, h);
+    return c.toDataURL("image/jpeg", .86);
+  }
+
+  // ---------- flow ----------
+  function goIdle() { K.resetIdle(0); guest = null; R = null; $("code").value = ""; $("code-msg").textContent = ""; K.show("s-idle"); }
+  document.addEventListener("kiosk-home", goIdle);
+  $("start").onclick = () => { K.show("s-code"); $("code").focus(); startCam(); };
+  $("kb").appendChild(K.keypad($("code"), lookup));
+  $("code").addEventListener("keydown", (e) => e.key === "Enter" && lookup($("code").value));
+  async function lookup(code) {
+    $("code-msg").textContent = "Looking up…";
+    try {
+      guest = await K.api("/api/kiosk/lookup", { code });
+      if (guest.roastsLeft <= 0) { $("code-msg").textContent = `${guest.firstName} has already been roasted. One roast per guest.`; return; }
+      glang = guest.lang || "en"; setGLang(glang);
+      $("c-name").textContent = `Hi ${guest.firstName}!`;
+      K.show("s-consent"); K.resetIdle(120000, goIdle);
+    } catch (e) { $("code-msg").textContent = e.message; $("code").classList.add("err"); setTimeout(() => $("code").classList.remove("err"), 500); }
+  }
+  function setGLang(l) { glang = l; document.querySelectorAll(".lang-pick button").forEach((b) => b.classList.toggle("on", b.dataset.l === l)); document.querySelectorAll(".consent-box p[lang]").forEach((p) => p.style.order = p.lang === l ? -1 : 0); document.querySelectorAll(".consent-box p[lang]").forEach((p) => p.style.opacity = p.lang === l ? 1 : .55); }
+  document.querySelectorAll(".lang-pick button").forEach((b) => b.onclick = () => setGLang(b.dataset.l));
+  $("agree").onclick = async () => { K.show("s-cam"); await startCam(); K.resetIdle(120000, goIdle); };
+  $("snap").onclick = async () => {
+    K.resetIdle(0); $("snap").disabled = true;
+    for (const n of [3, 2, 1]) { $("count").textContent = n; $("count").classList.remove("hidden", "pop"); void $("count").offsetWidth; $("count").classList.add("pop"); await wait(900); }
+    $("count").classList.add("hidden");
+    $("flash").classList.remove("go"); void $("flash").offsetWidth; $("flash").classList.add("go");
+    const image = capture(); $("snap").disabled = false;
+    K.show("s-cooking"); cookLines();
+    try {
+      R = await K.api("/api/kiosk/roast", { code: guest.code, image, consent: true });
+      reveal();
+    } catch (e) { alert("Roast failed: " + e.message); goIdle(); }
+  };
+  const LINES = ["Checking the fit.", "Judging the pose. Respectfully.", "Consulting the group chat.", "Asking Amma for a second opinion.", "Counting the side quests.", "Loading sass… 73%", "Fresh roast, never frozen."];
+  let cookTimer = null;
+  function cookLines() { let i = 0; clearInterval(cookTimer); $("cook-line").textContent = LINES[0]; cookTimer = setInterval(() => { i = (i + 1) % LINES.length; $("cook-line").textContent = LINES[i]; }, 1800); }
+  function paintReveal(l) {
+    document.querySelectorAll(".rtabs button").forEach((b) => b.classList.toggle("on", b.dataset.l === l));
+    $("r-title").textContent = R.title[l] || R.title.en; $("r-body").textContent = R.roast[l] || R.roast.en; $("r-title").lang = l; $("r-body").lang = l;
+  }
+  document.querySelectorAll(".rtabs button").forEach((b) => b.onclick = () => paintReveal(b.dataset.l));
+  function reveal() {
+    clearInterval(cookTimer);
+    K.show("s-reveal");
+    $("r-photo").src = R.photo; $("r-vibe").textContent = R.vibe || "Roasted";
+    $("r-who").textContent = R.name; paintReveal(glang);
+    $("qr-roast").src = `/api/qr?text=${encodeURIComponent(R.url)}`;
+    K.confetti(40); K.resetIdle(75000, goIdle);
+  }
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+</script>
+</body></html>

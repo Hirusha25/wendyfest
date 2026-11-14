@@ -1,0 +1,117 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>OTP options</title><link rel="stylesheet" href="/css/guest.css">
+<style>
+body{display:flex;gap:40px;padding:40px;background:#ddd;flex-wrap:wrap;flex-direction:row}
+.phone{width:390px;height:844px;overflow:hidden;position:relative;background:var(--cream);display:flex;flex-direction:column;flex:none}
+.phone .app{min-height:0;height:100%}
+/* A · steps */
+.steps { background:#fff; border-radius:18px; padding:16px 18px; box-shadow:0 4px 0 var(--line); display:grid; gap:12px; }
+.steps .s { display:flex; gap:12px; align-items:center; }
+.steps .s i { width:30px; height:30px; border-radius:50%; display:grid; place-items:center; flex:none; font-weight:900; font-style:italic; font-size:12px; border:2px solid var(--line); color:var(--mute); }
+.steps .s.done i { background:var(--red); border-color:var(--red); color:#fff; }
+.steps .s.cur i { border-color:var(--blue); color:var(--blue-dark); }
+.steps .s b { font-size:13px; font-weight:800; text-transform:uppercase; font-style:italic; }
+.steps .s span { font-size:11.5px; color:var(--mute); display:block; }
+.steps .s.todo b { color:#B5B5B5; }
+/* B · ghost pass */
+.ghost { position:relative; background:#fff; border-radius:18px; border:2px dashed var(--line); padding:18px 20px; display:flex; align-items:center; gap:14px; overflow:hidden; }
+.ghost::after { content:""; position:absolute; inset:0; background:linear-gradient(100deg, transparent 30%, rgba(255,255,255,.9) 50%, transparent 70%); animation:shine2 2.2s linear infinite; }
+@keyframes shine2 { from { transform:translateX(-100%) } to { transform:translateX(100%) } }
+.ghost img { height:34px; }
+.ghost .vr { width:1.5px; height:40px; background:var(--line); }
+.ghost .t1 { font-weight:800; font-style:italic; text-transform:uppercase; font-size:13px; color:#B5B5B5; }
+.ghost .t2 { font-weight:900; font-style:italic; font-size:24px; letter-spacing:.1em; color:var(--line); }
+.ghost small { display:block; font-size:10px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; color:var(--blue-dark); margin-top:2px; }
+/* C · Wendy tip */
+.tip { background:var(--ink); color:#fff; border-radius:18px; padding:16px 18px; display:flex; gap:14px; align-items:center; box-shadow:0 4px 0 #000; }
+.tip img { width:56px; flex:none; }
+.tip b { display:block; font-weight:900; font-style:italic; text-transform:uppercase; font-size:14px; color:var(--blue); }
+.tip p { margin:4px 0 0; font-size:12.5px; line-height:1.4; }
+/* D · secure note + SMS preview bubble */
+.bubble { position:relative; background:#fff; border-radius:18px 18px 18px 4px; padding:14px 16px; box-shadow:0 4px 0 var(--line); font-size:13px; line-height:1.45; color:var(--charcoal); }
+.bubble .from { font-size:10px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; color:var(--red); margin-bottom:4px; }
+.bubble mark { background:var(--blush); color:var(--red-dark); font-weight:900; padding:0 6px; border-radius:6px; }
+.secure { display:flex; gap:10px; align-items:center; font-size:11.5px; color:var(--mute); }
+.secure i { width:28px; height:28px; border-radius:50%; background:var(--blush); color:var(--red-dark); display:grid; place-items:center; flex:none; }
+</style></head><body>
+<section class="phone" id="oA"><div class="app">
+  <header class="hdr" style="padding-bottom:56px;--rx:108%;--ry:62%">
+    <div class="top"><img class="lockup" src="/assets/wendys-horiz-white.svg" alt="Wendy's"><div class="pill"><button class="on">EN</button><button>සිං</button><button>தமிழ்</button></div></div>
+    <div class="eyebrow" style="margin-top:16px">Almost there</div>
+    <h1 class="display h2">Check<br>your SMS.</h1>
+  </header>
+  <main class="body" style="padding-top:0;margin-top:-40px;gap:14px">
+    <div class="form" style="gap:16px">
+      <div><div style="font-weight:800;font-size:15px;color:var(--charcoal)">Enter the 4-digit code</div>
+        <div style="font-size:12.5px;color:var(--mute);margin-top:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">Sent to <span class="phone-chip">+94 77 *** **67 <button type="button">Change</button></span></div></div>
+      <div class="otp" style="--n:4"><input value="4" class="on"><input value="8" class="on"><input><input></div>
+      <div class="timer"><span>Code expires in <b>01:42</b></span><button disabled>Resend in 0:30</button></div>
+      <button class="btn">Verify &amp; get my pass</button>
+    </div>
+    <div class="steps">
+      <div class="s done"><i>✓</i><div><b>Registered</b><span>Details saved</span></div></div>
+      <div class="s cur"><i>2</i><div><b>Verify your number</b><span>Type the code from the SMS</span></div></div>
+      <div class="s todo"><i>3</i><div><b>Get your pass</b><span>Entry code + QR to both booths</span></div></div>
+    </div>
+    <div class="link" style="margin-top:auto;padding-bottom:6px">Wrong number? <a>Go back</a></div>
+  </main>
+  <footer class="brandfoot"><span class="c"><img src="/assets/cameo.png" alt="">© 2026 Wendy’s Sri Lanka</span><span class="links"><a>Terms</a><a>Privacy</a></span></footer>
+</div></section>
+<section class="phone" id="oB"><div class="app">
+  <header class="hdr" style="padding-bottom:56px;--rx:108%;--ry:62%">
+    <div class="top"><img class="lockup" src="/assets/wendys-horiz-white.svg" alt="Wendy's"><div class="pill"><button class="on">EN</button><button>සිං</button><button>தமிழ்</button></div></div>
+    <div class="eyebrow" style="margin-top:16px">Almost there</div>
+    <h1 class="display h2">Check<br>your SMS.</h1>
+  </header>
+  <main class="body" style="padding-top:0;margin-top:-40px;gap:14px">
+    <div class="form" style="gap:16px">
+      <div><div style="font-weight:800;font-size:15px;color:var(--charcoal)">Enter the 4-digit code</div>
+        <div style="font-size:12.5px;color:var(--mute);margin-top:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">Sent to <span class="phone-chip">+94 77 *** **67 <button type="button">Change</button></span></div></div>
+      <div class="otp" style="--n:4"><input value="4" class="on"><input value="8" class="on"><input><input></div>
+      <div class="timer"><span>Code expires in <b>01:42</b></span><button disabled>Resend in 0:30</button></div>
+      <button class="btn">Verify &amp; get my pass</button>
+    </div>
+    <div class="ghost"><img src="/assets/wendys-horiz.svg" alt=""><div class="vr"></div><div><div class="t1">Wendy Fest · Entry pass</div><div class="t2">······</div><small>Printing your pass…</small></div></div>
+    <div class="link" style="margin-top:auto;padding-bottom:6px">Wrong number? <a>Go back</a></div>
+  </main>
+  <footer class="brandfoot"><span class="c"><img src="/assets/cameo.png" alt="">© 2026 Wendy’s Sri Lanka</span><span class="links"><a>Terms</a><a>Privacy</a></span></footer>
+</div></section>
+<section class="phone" id="oC"><div class="app">
+  <header class="hdr" style="padding-bottom:56px;--rx:108%;--ry:62%">
+    <div class="top"><img class="lockup" src="/assets/wendys-horiz-white.svg" alt="Wendy's"><div class="pill"><button class="on">EN</button><button>සිං</button><button>தமிழ்</button></div></div>
+    <div class="eyebrow" style="margin-top:16px">Almost there</div>
+    <h1 class="display h2">Check<br>your SMS.</h1>
+  </header>
+  <main class="body" style="padding-top:0;margin-top:-40px;gap:14px">
+    <div class="form" style="gap:16px">
+      <div><div style="font-weight:800;font-size:15px;color:var(--charcoal)">Enter the 4-digit code</div>
+        <div style="font-size:12.5px;color:var(--mute);margin-top:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">Sent to <span class="phone-chip">+94 77 *** **67 <button type="button">Change</button></span></div></div>
+      <div class="otp" style="--n:4"><input value="4" class="on"><input value="8" class="on"><input><input></div>
+      <div class="timer"><span>Code expires in <b>01:42</b></span><button disabled>Resend in 0:30</button></div>
+      <button class="btn">Verify &amp; get my pass</button>
+    </div>
+    <div class="tip"><img src="/assets/cameo.png" alt=""><div><b>While you wait</b><p>Scream &amp; Win is at the LED wall. Roast Me is the blue booth. Say your code to the host, that’s it.</p></div></div>
+    <div class="link" style="margin-top:auto;padding-bottom:6px">Wrong number? <a>Go back</a></div>
+  </main>
+  <footer class="brandfoot"><span class="c"><img src="/assets/cameo.png" alt="">© 2026 Wendy’s Sri Lanka</span><span class="links"><a>Terms</a><a>Privacy</a></span></footer>
+</div></section>
+<section class="phone" id="oD"><div class="app">
+  <header class="hdr" style="padding-bottom:56px;--rx:108%;--ry:62%">
+    <div class="top"><img class="lockup" src="/assets/wendys-horiz-white.svg" alt="Wendy's"><div class="pill"><button class="on">EN</button><button>සිං</button><button>தமிழ்</button></div></div>
+    <div class="eyebrow" style="margin-top:16px">Almost there</div>
+    <h1 class="display h2">Check<br>your SMS.</h1>
+  </header>
+  <main class="body" style="padding-top:0;margin-top:-40px;gap:14px">
+    <div class="form" style="gap:16px">
+      <div><div style="font-weight:800;font-size:15px;color:var(--charcoal)">Enter the 4-digit code</div>
+        <div style="font-size:12.5px;color:var(--mute);margin-top:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">Sent to <span class="phone-chip">+94 77 *** **67 <button type="button">Change</button></span></div></div>
+      <div class="otp" style="--n:4"><input value="4" class="on"><input value="8" class="on"><input><input></div>
+      <div class="timer"><span>Code expires in <b>01:42</b></span><button disabled>Resend in 0:30</button></div>
+      <button class="btn">Verify &amp; get my pass</button>
+    </div>
+    <div class="bubble"><div class="from">Wendys · SMS</div><mark>4 8 · ·</mark> is your Wendy Fest code. It expires in 2 minutes. Never share it.</div>
+    <div class="secure"><i><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></i>We only use your number to send your pass and results. No spam.</div>
+    <div class="link" style="margin-top:auto;padding-bottom:6px">Wrong number? <a>Go back</a></div>
+  </main>
+  <footer class="brandfoot"><span class="c"><img src="/assets/cameo.png" alt="">© 2026 Wendy’s Sri Lanka</span><span class="links"><a>Terms</a><a>Privacy</a></span></footer>
+</div></section>
+</body></html>

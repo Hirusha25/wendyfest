@@ -1,52 +1,43 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>[DEMO] Roasted by Wendy's · Wendy Fest</title><meta name="theme-color" content="#252525"><link rel="icon" href="./assets/cameo.png">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>[DEMO] Roasted by Wendy's · Wendy Fest</title><meta name="theme-color" content="#CD2028"><link rel="icon" href="./assets/cameo.png">
 <meta property="og:title" content="I just got roasted by Wendy's 🔥"><meta property="og:description" content="Wendy Fest · Sri Lanka">
-<link rel="stylesheet" href="./css/brand.css?v=mwgjqy2v">
-<style>
-  body { background: var(--ink); color: #fff; }
-  .photo { border-radius: 22px; overflow: hidden; border: 4px solid #fff; box-shadow: var(--shadow); aspect-ratio: 4/3; background: #111; }
-  .photo img { width: 100%; height: 100%; object-fit: cover; }
-  .tabs { display: inline-flex; background: rgba(255,255,255,.1); border-radius: 999px; padding: 3px; gap: 2px; }
-  .tabs button { border: 0; background: transparent; color: #fff; padding: 8px 14px; border-radius: 999px; font-weight: 700; cursor: pointer; opacity: .7; }
-  .tabs button.on { background: var(--red); opacity: 1; }
-  .rtitle { font-size: clamp(1.9rem, 9vw, 2.8rem); }
-  .rbody { font-size: 1.1rem; line-height: 1.55; }
-  .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-</style>
+<link rel="stylesheet" href="./css/guest.css?v=mwgnqgxb">
 </head>
-<body class="freckles on-red">
-<main class="wrap">
-  <header class="topbar"><a href="./index.html"><img class="logo" src="./assets/wendys-horiz-white.svg" alt="Wendy's"></a><div class="tabs" id="tabs"><button data-l="en">EN</button><button data-l="si">සිං</button><button data-l="ta">தமிழ்</button></div></header>
-  <div class="eyebrow pop" style="color:var(--blue)" data-t="roastedBy"></div>
-  <div class="photo rise" style="margin:12px 0 18px"><img id="photo" alt=""></div>
-  <section class="ticket pad rise-2" style="padding:26px 22px">
-    <div class="ticket-inner"></div>
-    <div class="eyebrow" id="vibe" style="opacity:.85"></div>
-    <h1 class="display rtitle" id="title" style="margin:8px 0 12px">…</h1>
-    <p class="rbody" id="body" style="margin:0"></p>
-    <div style="margin-top:16px;font-size:.8rem;opacity:.8">— Wendy's, <span id="who"></span></div>
-  </section>
-  <div class="actions rise-3" style="margin:16px 0">
-    <button class="btn white" id="dl" data-t="download"></button>
-    <button class="btn blue" id="share" data-t="share"></button>
-  </div>
-  <a class="btn ghost block" href="./index.html" style="color:#fff" data-t="tryIt"></a>
-  <p class="foot" style="color:rgba(255,255,255,.6)" data-t="poweredBy"></p>
-</main>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js?v=mwgjqy2v"></script><script src="./js/i18n.js?v=mwgjqy2v"></script><script src="./js/app.js"></script>
+<body>
+<div class="app">
+  <header class="hdr" style="padding-bottom:70px;--rx:-12%;--ry:30%">
+    <div class="top"><img class="lockup" src="./assets/wendys-horiz-white.svg" alt="Wendy's"><div class="rtabs" id="tabs"><button data-l="en">EN</button><button data-l="si">සිං</button><button data-l="ta">தமிழ்</button></div></div>
+    <div class="eyebrow" style="margin-top:16px" data-t="roastedBy">Roasted by Wendy’s</div>
+    <h1 class="display h2" id="who">…</h1>
+  </header>
+  <main class="body" style="padding-top:0;margin-top:-56px">
+    <div class="photo rise"><img id="photo" alt=""></div>
+    <div class="rpaper rise-2">
+      <div class="vibe" id="vibe"></div>
+      <h2 class="display rtitle" id="title">…</h2>
+      <p class="rbody" id="body"></p>
+      <div class="sig">— Wendy’s, <span data-t="fest">Wendy Fest</span></div>
+    </div>
+    <div class="two rise-3"><button class="btn outline" id="dl" data-t="download">Download</button><button class="btn" id="share" style="height:52px;font-size:15px" data-t="share">Share</button></div>
+    <a class="link" href="./index.html" style="padding:6px 0 10px" data-t="tryIt">Get roasted too</a>
+  </main>
+  <div id="foot"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js?v=mwgnqgxb"></script><script src="./js/i18n.js?v=mwgnqgxb"></script><script src="./js/app.js"></script>
 <script>
+  document.getElementById("foot").outerHTML = brandFoot();
   const token = new URLSearchParams(location.search).get("t");
   let R = null;
   function paint() {
     if (!R) return;
     document.querySelectorAll("#tabs button").forEach((b) => b.classList.toggle("on", b.dataset.l === window.lang));
+    document.getElementById("who").textContent = R.name.split(" ")[0];
     document.getElementById("title").textContent = R.title[window.lang] || R.title.en;
     document.getElementById("body").textContent = R.roast[window.lang] || R.roast.en;
     document.getElementById("vibe").textContent = R.vibe || "";
-    document.getElementById("who").textContent = `to ${R.name}`;
     if (R.photo) document.getElementById("photo").src = R.photo;
     applyLang();
   }

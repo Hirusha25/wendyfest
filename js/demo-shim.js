@@ -111,18 +111,21 @@ function fallbackRoast({ name, reason }) {
 function templates(lang) {
   const t = {
     en: {
+      otp: (code) => `${code} is your Wendy Fest code. It expires in 2 minutes. Never share it.`,
       welcome: (name, code, link) => `Hi ${name}, welcome to Wendy Fest! Your code is ${code}. Show it at the Scream & Win or Roast Me kiosk. Your profile: ${link}`,
       win: (name, coupon, label, link) => `${name}, you screamed it right! Your Wendy's reward code: ${coupon} (${label}). It's saved on your profile: ${link}`,
       lose: (name, link) => `${name}, close one! Not quite loud enough this time. Your profile: ${link}`,
       roast: (name, link) => `${name}, you've been roasted by Wendy's. See it, save it, share it: ${link}`,
     },
     si: {
+      otp: (code) => `${code} ඔබේ Wendy Fest කේතයයි. මිනිත්තු 2කින් කල් ඉකුත් වේ. කිසිවෙකුට දෙන්න එපා.`,
       welcome: (name, code, link) => `${name}, Wendy Fest වෙත සාදරයෙන් පිළිගනිමු! ඔබේ කේතය ${code}. Scream & Win / Roast Me කියෝස්ක් එකේදී පෙන්වන්න. ${link}`,
       win: (name, coupon, label, link) => `${name}, ඔබ දිනුම්! Wendy's ත්‍යාග කේතය: ${coupon} (${label}). ${link}`,
       lose: (name, link) => `${name}, ආසන්නයි! මේ පාර ටිකක් අඩුයි. ${link}`,
       roast: (name, link) => `${name}, Wendy's ඔබව roast කළා. බලන්න, බාගන්න, බෙදාගන්න: ${link}`,
     },
     ta: {
+      otp: (code) => `${code} உங்கள் Wendy Fest குறியீடு. 2 நிமிடத்தில் காலாவதியாகும். யாருடனும் பகிர வேண்டாம்.`,
       welcome: (name, code, link) => `${name}, Wendy Fest-க்கு வரவேற்கிறோம்! உங்கள் குறியீடு ${code}. Scream & Win / Roast Me கியோஸ்கில் காட்டுங்கள். ${link}`,
       win: (name, coupon, label, link) => `${name}, நீங்கள் வென்றீர்கள்! Wendy's பரிசு குறியீடு: ${coupon} (${label}). ${link}`,
       lose: (name, link) => `${name}, கிட்டத்தட்ட! இந்த முறை சற்று குறைவு. ${link}`,
@@ -154,7 +157,7 @@ const roastS = () => Object.assign({ attemptsPerPerson: 99 }, DB.settings.roast 
 const profileUrl = (p) => BASE + "/profile.html?t=" + p.token;
 const roastUrl = (r) => BASE + "/roast.html?t=" + r.token;
 const first = (p) => p.name.split(" ")[0];
-function sendSms(phone, body) { DB.sms.push({ phone, body, at: now() }); save(); console.log("📱 SMS → +" + phone + "\n" + body); window.demoToast && window.demoToast("📱 SMS (simulated): " + body.slice(0, 90) + "…"); }
+function sendSms(phone, body) { DB.sms.push({ phone, body, at: now() }); save(); console.log("📱 SMS → +" + phone + "\n" + body); window.demoToast && window.demoToast("📱 SMS (simulated): " + body.slice(0, 110)); }
 function publicProfile(p) {
   const screams = DB.screams.filter((s) => s.participant_id === p.id).reverse().map((s) => ({ ...s, won: !!s.won, coupon: s.coupon_code ? { code: s.coupon_code, label: coupon().valueLabel } : null }));
   const roasts = DB.roasts.filter((r) => r.participant_id === p.id).reverse().map((r) => ({ token: r.token, url: roastUrl(r), title: r.title, roast: r.roast, vibe: r.vibe, at: r.at, photo: r.photo }));
@@ -171,10 +174,20 @@ async function route(method, url, body) {
   if (p === "/api/register") {
     const name = String(body.name || "").trim().slice(0, 60), phone = normalisePhone(body.phone);
     if (name.length < 2) return json({ error: "name" }, 400); if (!phone) return json({ error: "phone" }, 400);
+    const otp = String(Math.floor(Math.random() * 10000)).padStart(4, "0");
+    DB.pending = { phone, otp, payload: { name, email: body.email || null, dob: body.dob || null, lang: ["en", "si", "ta"].includes(body.lang) ? body.lang : "en" }, expires: Date.now() + 120000 }; save();
+    sendSms(phone, otp + " is your Wendy Fest code. It expires in 2 minutes.");
+    return json({ ok: true, step: "otp", phoneMasked: phone.replace(/^(94)(d{2})d{5}(d{2})$/, "+$1 $2 *** **$3"), ttl: 120, resendIn: 30, digits: 4, devOtp: otp });
+  }
+  if (p === "/api/verify") {
+    const pend = DB.pending; const phone = normalisePhone(body.phone);
+    if (!pend || pend.phone !== phone) return json({ error: "otp" }, 400);
+    if (Date.now() > pend.expires) { DB.pending = null; save(); return json({ error: "expired" }, 400); }
+    if (String(body.code) !== pend.otp && String(body.code) !== "0000") return json({ error: "otp" }, 400);
     let pt = DB.participants.find((x) => x.phone === phone), created = false;
-    if (!pt) { let code; do { code = shortCode2(6); } while (byCode(code)); pt = { id: DB.participants.length + 1, code, token: token2(), name, phone, email: body.email || null, dob: body.dob || null, lang: ["en", "si", "ta"].includes(body.lang) ? body.lang : "en", created_at: now() }; DB.participants.push(pt); created = true; }
-    else if (body.lang) pt.lang = body.lang;
-    save(); setCookie("wf_session", pt.token); sendSms(pt.phone, templates(pt.lang).welcome(first(pt), pt.code, profileUrl(pt)));
+    if (!pt) { let code; do { code = shortCode2(6); } while (byCode(code)); pt = { id: DB.participants.length + 1, code, token: token2(), name: pend.payload.name, phone, email: pend.payload.email, dob: pend.payload.dob, lang: pend.payload.lang, created_at: now() }; DB.participants.push(pt); created = true; }
+    else { pt.lang = pend.payload.lang; pt.name = pend.payload.name; }
+    DB.pending = null; save(); setCookie("wf_session", pt.token); sendSms(pt.phone, templates(pt.lang).welcome(first(pt), pt.code, profileUrl(pt)));
     return json({ ok: true, created, token: pt.token, code: pt.code, profileUrl: profileUrl(pt) });
   }
   if (p === "/api/me" || p === "/api/me/resend") {
@@ -239,5 +252,5 @@ window.fetch = async (url, opts = {}) => {
 };
 window.qrUrl = (text) => { try { const q = qrcode(0, "M"); q.addData(String(text)); q.make(); return "data:image/svg+xml;utf8," + encodeURIComponent(q.createSvgTag({ cellSize: 4, margin: 2, scalable: true }).replace(/<rect[^>]*fill="white"[^>]*\/>/, "")); } catch (e) { return ""; } };
 window.demoToast = (msg) => { let el = document.getElementById("demo-toast"); if (!el) { el = document.createElement("div"); el.id = "demo-toast"; el.style.cssText = "position:fixed;left:50%;top:12px;transform:translateX(-50%);max-width:92vw;background:#252525;color:#fff;padding:10px 14px;border-radius:12px;font:600 13px Poppins,sans-serif;z-index:9999;box-shadow:0 10px 30px rgba(0,0,0,.4);opacity:0;transition:opacity .2s"; document.body.appendChild(el); } el.textContent = msg; el.style.opacity = 1; clearTimeout(el._t); el._t = setTimeout(() => el.style.opacity = 0, 5000); };
-document.addEventListener("DOMContentLoaded", () => { const b = document.createElement("div"); b.textContent = "DEMO · runs on this device only · SMS and AI roast are simulated · kiosk PIN 2468 · admin PIN 1357 · demo guest code WENDYS"; b.style.cssText = "position:fixed;left:0;right:0;bottom:0;background:#029CD4;color:#fff;text-align:center;font:700 11px/1.3 Poppins,sans-serif;letter-spacing:.04em;padding:5px 8px;z-index:9998;opacity:.95"; document.body.appendChild(b); document.body.style.paddingBottom = "80px"; });
+document.addEventListener("DOMContentLoaded", () => { const b = document.createElement("div"); b.textContent = "DEMO · runs on this device only · SMS and AI roast are simulated · kiosk PIN 2468 · admin PIN 1357 · demo guest code WENDYS · OTP 0000 always works"; b.style.cssText = "position:fixed;left:0;right:0;bottom:0;background:#029CD4;color:#fff;text-align:center;font:700 11px/1.3 Poppins,sans-serif;letter-spacing:.04em;padding:5px 8px;z-index:9998;opacity:.95"; document.body.appendChild(b); document.body.style.paddingBottom = "80px"; });
 })();

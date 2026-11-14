@@ -5,7 +5,7 @@ One platform for the Wendy's Sri Lanka launch activation.
 | Surface | URL | Who |
 |---|---|---|
 | Guest landing / QR target | `/` and `/register` | Guests on their phones |
-| Guest profile card | `/p/<token>` (link in SMS) · `/profile` | Guests |
+| Guest pass (profile) | `/p/<token>` (link in SMS) · `/profile` | Guests |
 | Roast share page | `/r/<token>` | Guests + whoever they share with |
 | Host console | `/kiosk` (PIN) | Staff |
 | Scream & Win screen | `/kiosk/scream` | LED wall laptop + kiosk(s) |
@@ -26,7 +26,7 @@ Open `http://localhost:3000`. Default PINs: kiosk `2468`, admin `1357` (change i
 ## Guest journey
 
 1. Guest scans the big QR → `/register` → name, mobile, email (optional), date of birth, language.
-2. Server creates a 6-letter code (no 0/O/1/I), sends an SMS with the code + profile link, and shows the code on screen.
+2. A 4-digit OTP is sent by SMS (2-minute expiry, 30-second resend, 5 attempts). On verify, the server creates a 6-letter entry code (no 0/O/1/I), sends a welcome SMS with the code + pass link, and shows the entry pass on screen.
 3. Guest tells the host the code at either kiosk. Host types it (on-screen keypad or keyboard).
 4. **Scream & Win:** 3-2-1 → 3-second scream window → score = 60% peak loudness + 40% "Wendy's" clarity (speech recognition). Score ≥ 70 wins → next unused coupon from the pool is claimed, SMS'd, shown on screen with a QR to their profile.
 5. **Roast Me:** consent screen (EN/සිං/தமிழ்) → webcam countdown → Claude looks at the photo → roast in all three languages → QR to `/r/<token>` where they download a 1080×1350 card or share.

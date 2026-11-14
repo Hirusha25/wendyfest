@@ -1,95 +1,69 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>My profile · Wendy Fest</title><meta name="theme-color" content="#CD2028"><link rel="icon" href="/assets/cameo.png">
-<link rel="stylesheet" href="/css/brand.css">
-<style>
-  .head { background: var(--red); color: #fff; padding-bottom: 70px; }
-  .pcard { margin-top: -56px; padding: 0; overflow: hidden; }
-  .pcard .top { background: var(--red); color: #fff; padding: 22px 22px 18px; position: relative; }
-  .pcard .top .display { font-size: clamp(2.2rem, 10vw, 3rem); word-break: break-word; }
-  .pcard .top .cameo { position: absolute; right: 16px; top: 14px; width: 64px; }
-  .pcard .body { padding: 18px 22px 22px; }
-  .badges { display: flex; gap: 8px; flex-wrap: wrap; }
-  .badge { display: inline-flex; gap: 8px; align-items: center; padding: 8px 14px; border-radius: 999px; font-weight: 800; font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; background: var(--gray-light); color: var(--gray); }
-  .badge.on { background: var(--ink); color: #fff; }
-  .badge.on.win { background: var(--blue); }
-  .stat { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .stat .box { background: var(--cream-2); border-radius: 16px; padding: 14px; }
-  .stat .display { font-size: 2.4rem; color: var(--red); }
-  .sec { margin-top: 18px; }
-  .sec h3 { font-weight: 800; text-transform: uppercase; letter-spacing: .08em; font-size: .8rem; color: var(--gray); margin-bottom: 10px; }
-  .roast-p { background: var(--ink); color: #fff; border-radius: 18px; padding: 18px; }
-  .roast-p img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 12px; margin-bottom: 12px; }
-  .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-</style>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>My pass · Wendy Fest</title><meta name="theme-color" content="#CD2028"><link rel="icon" href="/assets/cameo.png"><link rel="stylesheet" href="/css/guest.css">
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="i-mic" viewBox="0 0 24 24"><path d="M12 15a4 4 0 0 0 4-4V6a4 4 0 0 0-8 0v5a4 4 0 0 0 4 4zm6-4a6 6 0 0 1-12 0M12 17v4m-4 0h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="i-cam" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.5" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+<symbol id="i-trophy" viewBox="0 0 24 24"><path d="M7 4h10v5a5 5 0 0 1-10 0zM7 6H4a3 3 0 0 0 3 3M17 6h3a3 3 0 0 1-3 3M12 14v4m-4 2h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9z" fill="currentColor"/></symbol>
+<symbol id="i-dl" viewBox="0 0 24 24"><path d="M12 4v11m-5-5 5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-share" viewBox="0 0 24 24"><path d="M12 15V4m-4 4 4-4 4 4M5 12v8h14v-8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
 </head>
-<body class="freckles">
-  <div class="head on-red">
-    <div class="wrap">
-      <header class="topbar"><a href="/"><img class="logo" src="/assets/wendys-horiz-white.svg" alt="Wendy's"></a><div id="langbox"></div></header>
-      <div class="eyebrow" style="opacity:.85" data-t="profile"></div>
-      <h1 class="display" style="font-size:2.4rem;margin-top:4px">Wendy Fest</h1>
-    </div>
-  </div>
-  <main class="wrap">
-    <section class="card pcard rise" id="card">
-      <div class="top">
-        <div class="eyebrow" style="opacity:.85"><span data-t="participant"></span> <span id="num"></span></div>
-        <div class="display" id="name" style="margin-top:6px">…</div>
-        <div style="opacity:.85;font-size:.85rem;margin-top:8px"><span data-t="yourCode"></span>: <b id="code" style="letter-spacing:.14em"></b></div>
-        <img class="cameo" src="/assets/cameo.png" alt="">
+<body>
+<div class="app">
+  <header class="hdr" style="padding-bottom:150px;--rx:-12%;--ry:30%">
+    <div class="top"><img class="lockup" src="/assets/wendys-horiz-white.svg" alt="Wendy's"><div id="langbox"></div></div>
+    <div class="eyebrow" style="margin-top:16px" data-t="profEyebrow">Your fest. Your stats.</div>
+    <h1 class="display h2" style="font-size:clamp(40px,13vw,52px);margin-bottom:0" data-t="profTitle">My profile</h1>
+  </header>
+  <main class="body" style="gap:12px;padding-top:0;margin-top:-140px">
+    <div class="stack" style="margin-top:0;margin-bottom:6px">
+      <div class="back"><img src="/assets/cameo.png" alt=""><div class="tag" data-t="fest">Wendy Fest</div><div class="sub"><span data-t="colombo">Colombo</span><span class="b" data-t="launchWeek">Launch week</span></div></div>
+      <div class="front"><div class="stripe"></div>
+        <div class="top2"><img src="/assets/wendys-horiz.svg" alt="Wendy's"><div class="vr"></div><div><div class="t1" data-t="fest">Wendy Fest</div><div class="t2"><span data-t="participant">Participant</span> <span id="num">#0000</span></div></div></div>
+        <div class="display name" id="name">…</div>
+        <div class="meta"><div><div class="l" data-t="entryCode">Entry code</div><div class="c" id="code">······</div></div><div class="n"><span data-t="colombo">Colombo</span><b id="date">—</b></div></div>
       </div>
-      <div class="body stack">
-        <div class="badges" id="badges"></div>
-        <div class="actions">
-          <button class="btn sm" id="dl" data-t="download"></button>
-          <button class="btn sm ink" id="share" data-t="share"></button>
-        </div>
-      </div>
-    </section>
-
-    <section class="sec card rise-2">
-      <h3 data-t="screamResult"></h3>
-      <div id="scream"></div>
-    </section>
-
-    <section class="sec card rise-3">
-      <h3 data-t="roastResult"></h3>
-      <div id="roast"></div>
-    </section>
-
-    <div class="stack" style="margin:22px 0 10px">
-      <a class="btn block" href="/scream" data-t="scream"></a>
-      <a class="btn block ink" href="/roast" data-t="roast"></a>
     </div>
-    <p class="foot"><span data-t="poweredBy"></span> · <span data-t="terms"></span></p>
+    <div class="two"><button class="btn outline" id="dl"><svg width="20" height="20"><use href="#i-dl"/></svg><span data-t="savePass">Save pass</span></button><button class="btn outline" id="share"><svg width="20" height="20"><use href="#i-share"/></svg><span data-t="share">Share</span></button></div>
+    <div class="lede" data-t="journey">Your fest journey</div>
+    <div class="journey" id="journey"></div>
+    <div class="statrow" id="stats"></div>
+    <div id="reward"></div>
+    <div id="roast"></div>
   </main>
+  <div id="foot"></div>
+</div>
 <script src="/js/i18n.js"></script><script src="/js/app.js"></script>
 <script>
-  document.getElementById("langbox").innerHTML = langSwitcher();
+  document.getElementById("langbox").innerHTML = langSwitcher(); document.getElementById("foot").outerHTML = brandFoot(); applyLang();
+  const $ = (id) => document.getElementById(id);
   let P = null;
+  const ic = (n) => `<svg width="20" height="20"><use href="#i-${n}"/></svg>`;
   function paint(p) {
-    document.getElementById("name").textContent = p.name;
-    document.getElementById("num").textContent = "#" + String(p.number).padStart(4, "0");
-    document.getElementById("code").textContent = p.code;
+    const parts = p.name.trim().split(/\s+/); const first = parts.shift(); const rest = parts.join(" ");
+    $("name").innerHTML = `${esc(first)}${rest ? `<br><span class="o">${esc(rest)}</span>` : ""}`;
+    $("num").textContent = "#" + String(p.number).padStart(4, "0"); $("code").textContent = p.code;
+    $("date").textContent = new Date(p.joined + "Z").toLocaleDateString(window.lang === "en" ? "en-GB" : window.lang, { day: "numeric", month: "short" });
     const b = p.badges;
-    document.getElementById("badges").innerHTML = [["bScreamer", b.screamer, ""], ["bWinner", b.winner, "win"], ["bRoasted", b.roasted, ""]].map(([k, on, cls]) => `<span class="badge ${on ? "on " + cls : ""}">${on ? "✓" : "○"} ${t(k)}</span>`).join("") + (!b.screamer && !b.roasted ? `<span class="badge on">★ ${t("bRookie")}</span>` : "");
-    const s = p.screams[0];
-    document.getElementById("scream").innerHTML = s ? `
-      <div class="stat">
-        <div class="box"><div class="eyebrow muted">${t("score")}</div><div class="display">${s.score}<span style="font-size:1rem;color:var(--gray)">/100</span></div><div class="muted" style="font-size:.8rem">${s.won ? "🏆 " + t("won") : t("lost")}</div></div>
-        <div class="box"><div class="eyebrow muted">${t("loud")} · ${t("clear")}</div><div class="display" style="font-size:1.7rem">${s.loudness} · ${s.accuracy}</div><div class="muted" style="font-size:.8rem">${new Date(s.at + "Z").toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</div></div>
-      </div>
-      ${s.coupon ? `<div class="coupon-box" style="margin-top:12px;border:2px solid var(--blush)"><div class="eyebrow muted">${t("reward")}</div><div class="code">${s.coupon.code}</div><div style="font-weight:600">${s.coupon.label}</div><div class="muted" style="font-size:.78rem;margin-top:4px">${t("rewardHow")} ${p.coupon.terms}</div></div>` : `<p class="muted" style="margin:12px 0 0">${t("noReward")}</p>`}`
-      : `<p class="muted" style="margin:0">${t("notPlayed")}</p>`;
-    const r = p.roasts[0];
-    document.getElementById("roast").innerHTML = r ? `<div class="roast-p"><img src="${r.photo}" alt=""><div class="eyebrow" style="color:var(--blue)">${r.vibe || ""}</div><div class="display" style="font-size:1.5rem;margin:4px 0 8px">${r.title[window.lang] || r.title.en}</div><p style="margin:0 0 12px">${r.roast[window.lang] || r.roast.en}</p><a class="btn blue sm" href="${r.url}">${t("viewRoast")}</a></div>` : `<p class="muted" style="margin:0">${t("notRoasted")}</p>`;
+    $("journey").innerHTML = [["star", true, "bRookie", "bRookieD"], ["mic", b.screamer, "bScreamer", "bScreamerD"], ["trophy", b.winner, "bWinner", "bWinnerD"], ["cam", b.roasted, "bRoasted", "bRoastedD"]]
+      .map(([i, on, k, d]) => `<div class="j ${on ? "on" : ""}"><i>${ic(i)}</i><b>${t(k)}</b><span>${t(d)}</span></div>`).join("");
+    const s = p.screams[0], r = p.roasts[0];
+    $("stats").innerHTML = `
+      <div class="sc red"><div class="ic">${ic("mic")}</div><div class="l">${t("scream")}</div><div class="v">${s ? s.score : "—"}<small>/100</small></div><div class="m">${s ? `${t("bWinnerD")}: ${s.loudness} · ${s.accuracy}` : t("scHint")}</div><span class="st ${s && s.won ? "win" : ""}">${s ? (s.won ? "🏆 " + t("won") : t("played")) : t("notPlayed")}</span></div>
+      <div class="sc blue"><div class="ic">${ic("cam")}</div><div class="l">${t("roast")}</div><div class="v">${r ? "🔥" : "—"}</div><div class="m">${r ? (r.title[window.lang] || r.title.en) : t("roHint")}</div><span class="st">${r ? t("roasted") : t("notRoasted")}</span></div>`;
+    const win = p.screams.find((x) => x.won && x.coupon);
+    $("reward").innerHTML = win ? `<div class="reward on"><div><div class="l">${t("reward")}</div><div class="v">${win.coupon.code}</div></div><div class="m">${esc(win.coupon.label)}<br>${t("rewardHow")}</div></div>`
+      : `<div class="reward"><div><div class="l">${t("reward")}</div><div class="v">${t("locked")}</div></div><div class="m">${t("rewardHint")}<br>${esc(p.coupon.valueLabel)}</div></div>`;
+    $("roast").innerHTML = r ? `<div class="lede">${t("yourRoast")}</div><div class="roastcard"><img src="${r.photo}" alt=""><div class="l">${esc(r.vibe || "")}</div><div class="t">${esc(r.title[window.lang] || r.title.en)}</div><p>${esc(r.roast[window.lang] || r.roast.en)}</p><a class="btn blue" style="height:48px;font-size:14px" href="${r.url}">${t("viewRoast")}</a></div>` : "";
   }
+  const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   api("/api/me").then((p) => { P = p; paint(p); applyLang(); }).catch(() => location.href = "/register");
   document.addEventListener("langchange", () => P && paint(P));
-  document.getElementById("dl").onclick = async () => { if (!P) return; const c = await renderProfileCard(P); downloadCanvas(c, `wendyfest-${P.code}.png`); };
-  document.getElementById("share").onclick = async () => { if (!P) return; const c = await renderProfileCard(P); const f = await canvasToFile(c, `wendyfest-${P.code}.png`); shareLink({ title: "Wendy Fest", text: `I'm at Wendy Fest 🍔 #${P.code}`, url: P.profileUrl, file: f }); };
+  $("dl").onclick = async () => { if (!P) return; const c = await renderProfileCard(P); downloadCanvas(c, `wendyfest-${P.code}.png`); };
+  $("share").onclick = async () => { if (!P) return; const c = await renderProfileCard(P); const f = await canvasToFile(c, `wendyfest-${P.code}.png`); shareLink({ title: "Wendy Fest", text: `I'm at Wendy Fest 🍔 #${P.code}`, url: P.profileUrl, file: f }); };
 </script>
 </body></html>

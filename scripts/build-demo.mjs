@@ -44,7 +44,7 @@ const roastS = () => Object.assign({ attemptsPerPerson: 99 }, DB.settings.roast 
 const profileUrl = (p) => BASE + "/profile.html?t=" + p.token;
 const roastUrl = (r) => BASE + "/roast.html?t=" + r.token;
 const first = (p) => p.name.split(" ")[0];
-function sendSms(phone, body) { DB.sms.push({ phone, body, at: now() }); save(); console.log("📱 SMS → +" + phone + "\\n" + body); window.demoToast && window.demoToast("📱 SMS (simulated): " + body.slice(0, 90) + "…"); }
+function sendSms(phone, body) { DB.sms.push({ phone, body, at: now() }); save(); console.log("📱 SMS → +" + phone + "\\n" + body); window.demoToast && window.demoToast("📱 SMS (simulated): " + body.slice(0, 110)); }
 function publicProfile(p) {
   const screams = DB.screams.filter((s) => s.participant_id === p.id).reverse().map((s) => ({ ...s, won: !!s.won, coupon: s.coupon_code ? { code: s.coupon_code, label: coupon().valueLabel } : null }));
   const roasts = DB.roasts.filter((r) => r.participant_id === p.id).reverse().map((r) => ({ token: r.token, url: roastUrl(r), title: r.title, roast: r.roast, vibe: r.vibe, at: r.at, photo: r.photo }));
@@ -61,10 +61,20 @@ async function route(method, url, body) {
   if (p === "/api/register") {
     const name = String(body.name || "").trim().slice(0, 60), phone = normalisePhone(body.phone);
     if (name.length < 2) return json({ error: "name" }, 400); if (!phone) return json({ error: "phone" }, 400);
+    const otp = String(Math.floor(Math.random() * 10000)).padStart(4, "0");
+    DB.pending = { phone, otp, payload: { name, email: body.email || null, dob: body.dob || null, lang: ["en", "si", "ta"].includes(body.lang) ? body.lang : "en" }, expires: Date.now() + 120000 }; save();
+    sendSms(phone, otp + " is your Wendy Fest code. It expires in 2 minutes.");
+    return json({ ok: true, step: "otp", phoneMasked: phone.replace(/^(94)(\d{2})\d{5}(\d{2})$/, "+$1 $2 *** **$3"), ttl: 120, resendIn: 30, digits: 4, devOtp: otp });
+  }
+  if (p === "/api/verify") {
+    const pend = DB.pending; const phone = normalisePhone(body.phone);
+    if (!pend || pend.phone !== phone) return json({ error: "otp" }, 400);
+    if (Date.now() > pend.expires) { DB.pending = null; save(); return json({ error: "expired" }, 400); }
+    if (String(body.code) !== pend.otp && String(body.code) !== "0000") return json({ error: "otp" }, 400);
     let pt = DB.participants.find((x) => x.phone === phone), created = false;
-    if (!pt) { let code; do { code = shortCode2(6); } while (byCode(code)); pt = { id: DB.participants.length + 1, code, token: token2(), name, phone, email: body.email || null, dob: body.dob || null, lang: ["en", "si", "ta"].includes(body.lang) ? body.lang : "en", created_at: now() }; DB.participants.push(pt); created = true; }
-    else if (body.lang) pt.lang = body.lang;
-    save(); setCookie("wf_session", pt.token); sendSms(pt.phone, templates(pt.lang).welcome(first(pt), pt.code, profileUrl(pt)));
+    if (!pt) { let code; do { code = shortCode2(6); } while (byCode(code)); pt = { id: DB.participants.length + 1, code, token: token2(), name: pend.payload.name, phone, email: pend.payload.email, dob: pend.payload.dob, lang: pend.payload.lang, created_at: now() }; DB.participants.push(pt); created = true; }
+    else { pt.lang = pend.payload.lang; pt.name = pend.payload.name; }
+    DB.pending = null; save(); setCookie("wf_session", pt.token); sendSms(pt.phone, templates(pt.lang).welcome(first(pt), pt.code, profileUrl(pt)));
     return json({ ok: true, created, token: pt.token, code: pt.code, profileUrl: profileUrl(pt) });
   }
   if (p === "/api/me" || p === "/api/me/resend") {
@@ -129,7 +139,7 @@ window.fetch = async (url, opts = {}) => {
 };
 window.qrUrl = (text) => { try { const q = qrcode(0, "M"); q.addData(String(text)); q.make(); return "data:image/svg+xml;utf8," + encodeURIComponent(q.createSvgTag({ cellSize: 4, margin: 2, scalable: true }).replace(/<rect[^>]*fill="white"[^>]*\\/>/, "")); } catch (e) { return ""; } };
 window.demoToast = (msg) => { let el = document.getElementById("demo-toast"); if (!el) { el = document.createElement("div"); el.id = "demo-toast"; el.style.cssText = "position:fixed;left:50%;top:12px;transform:translateX(-50%);max-width:92vw;background:#252525;color:#fff;padding:10px 14px;border-radius:12px;font:600 13px Poppins,sans-serif;z-index:9999;box-shadow:0 10px 30px rgba(0,0,0,.4);opacity:0;transition:opacity .2s"; document.body.appendChild(el); } el.textContent = msg; el.style.opacity = 1; clearTimeout(el._t); el._t = setTimeout(() => el.style.opacity = 0, 5000); };
-document.addEventListener("DOMContentLoaded", () => { const b = document.createElement("div"); b.textContent = "DEMO · runs on this device only · SMS and AI roast are simulated · kiosk PIN 2468 · admin PIN 1357 · demo guest code WENDYS"; b.style.cssText = "position:fixed;left:0;right:0;bottom:0;background:#029CD4;color:#fff;text-align:center;font:700 11px/1.3 Poppins,sans-serif;letter-spacing:.04em;padding:5px 8px;z-index:9998;opacity:.95"; document.body.appendChild(b); document.body.style.paddingBottom = "80px"; });
+document.addEventListener("DOMContentLoaded", () => { const b = document.createElement("div"); b.textContent = "DEMO · runs on this device only · SMS and AI roast are simulated · kiosk PIN 2468 · admin PIN 1357 · demo guest code WENDYS · OTP 0000 always works"; b.style.cssText = "position:fixed;left:0;right:0;bottom:0;background:#029CD4;color:#fff;text-align:center;font:700 11px/1.3 Poppins,sans-serif;letter-spacing:.04em;padding:5px 8px;z-index:9998;opacity:.95"; document.body.appendChild(b); document.body.style.paddingBottom = "80px"; });
 })();
 `;
 fs.writeFileSync(path.join(out, "js/demo-shim.js"), shim);
@@ -140,16 +150,13 @@ const QR_CDN = `<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4
 const links = [
   [/href="\/register\?next=([a-z]+)"/g, 'href="PFXregister.html?next=$1"'],
   [/href="\/register"/g, 'href="PFXregister.html"'], [/href="\/profile"/g, 'href="PFXprofile.html"'],
-  [/href="\/scream"/g, 'href="PFXactivity.html?k=scream"'], [/href="\/roast"/g, 'href="PFXactivity.html?k=roast"'],
   [/href="\/kiosk\/scream"/g, 'href="PFXkiosk/scream.html"'], [/href="\/kiosk\/roast"/g, 'href="PFXkiosk/roast.html"'],
   [/href="\/kiosk"/g, 'href="PFXkiosk/index.html"'], [/href="\/admin"/g, 'href="PFXadmin.html"'], [/href="\/"/g, 'href="PFXindex.html"'],
   [/href="\/api\/admin\/export\.csv"/g, 'href="#" onclick="alert(\'CSV export needs the real server\');return false"'],
   [/(src|href)="\/(css|js|assets)\//g, '$1="PFX$2/'],
   [/location\.href = "\/register\?next=" \+ kind/g, 'location.href = "PFXregister.html?next=" + kind'],
   [/location\.href = "\/register"/g, 'location.href = "PFXregister.html"'],
-  [/location\.pathname\.includes\("roast"\)/g, 'new URLSearchParams(location.search).get("k") === "roast"'],
   [/location\.pathname\.split\("\/"\)\.pop\(\)/g, 'new URLSearchParams(location.search).get("t")'],
-  [/document\.querySelector\("#done a\.btn"\)\.href = "\/" \+ next/g, 'document.querySelector("#done a.btn").href = "PFXactivity.html?k=" + next'],
   [/`\/api\/qr\?text=\$\{encodeURIComponent\(([^}]*)\)\}`/g, 'qrUrl($1)'],
   [/location\.origin \+ "\/register"/g, 'BASE_DEMO + "/register.html"'],
   [/c\.baseUrl \+ "\/register"/g, 'c.baseUrl + "/register.html"'],
@@ -165,7 +172,7 @@ for (const f of walk(out)) {
   s = s.replace(/<script src="([^"]*js\/(i18n|app|kiosk)\.js)"><\/script>/, `${QR_CDN}<script src="${pfx}js/demo-shim.js?v=${V}"></script><script src="$1?v=${V}"></script>`);
   // fetch("/api/config") in kiosk pages stays (shim intercepts). Keep page title hint.
   s = s.replace("<title>", "<title>[DEMO] ");
-  s = s.replace(/(css\/(brand|kiosk)\.css)"/g, `$1?v=${V}"`);
+  s = s.replace(/(css\/(brand|kiosk|guest)\.css)"/g, `$1?v=${V}"`);
   fs.writeFileSync(f, s);
 }
 // app.js: qrUrl is overridden by shim; nothing else to change. kiosk.js: K.api uses fetch – fine.

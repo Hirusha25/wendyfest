@@ -55,6 +55,14 @@ CREATE TABLE IF NOT EXISTS sms_log (
   phone TEXT, body TEXT, provider TEXT, status TEXT, detail TEXT,
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
+CREATE TABLE IF NOT EXISTS otps (
+  phone TEXT PRIMARY KEY,
+  code TEXT NOT NULL,
+  payload TEXT NOT NULL,
+  attempts INTEGER NOT NULL DEFAULT 0,
+  expires_at INTEGER NOT NULL,
+  last_sent INTEGER NOT NULL
+);
 CREATE TABLE IF NOT EXISTS settings (
   key TEXT PRIMARY KEY, value TEXT
 );

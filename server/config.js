@@ -27,6 +27,7 @@ export const config = {
   dbPath: env("DB_PATH", path.join(root, "data", "wendyfest.sqlite")),
   photoDir: env("PHOTO_DIR", path.join(root, "data", "photos")),
 
+  otp: { digits: Number(env("OTP_DIGITS", 4)), ttlSec: Number(env("OTP_TTL_SEC", 120)), resendSec: Number(env("OTP_RESEND_SEC", 30)), maxAttempts: 5 },
   kioskPin: env("KIOSK_PIN", "2468"),
   adminPin: env("ADMIN_PIN", "1357"),
 

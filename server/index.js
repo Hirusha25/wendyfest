@@ -65,8 +65,6 @@ function publicProfile(p) {
 // ---------- public pages ----------
 app.get("/", (req, res) => res.sendFile(page("index.html")));
 app.get("/register", (req, res) => res.sendFile(page("register.html")));
-app.get("/scream", (req, res) => res.sendFile(page("activity.html")));
-app.get("/roast", (req, res) => res.sendFile(page("activity.html")));
 app.get("/profile", (req, res) => res.sendFile(page("profile.html")));
 app.get("/p/:token", (req, res) => {
   const p = participantByToken.get(req.params.token);
@@ -93,7 +91,36 @@ app.get("/api/qr", async (req, res) => {
 });
 
 // ---------- registration + profile ----------
-app.post("/api/register", async (req, res) => {
+// Step 1: validate, store pending registration, send OTP by SMS.
+function issueOtp(phone, payload) {
+  const d = config.otp.digits;
+  const code = String(Math.floor(Math.random() * 10 ** d)).padStart(d, "0");
+  const now = Date.now();
+  db.prepare("INSERT INTO otps(phone, code, payload, attempts, expires_at, last_sent) VALUES (?,?,?,0,?,?) ON CONFLICT(phone) DO UPDATE SET code=excluded.code, payload=excluded.payload, attempts=0, expires_at=excluded.expires_at, last_sent=excluded.last_sent")
+    .run(phone, code, JSON.stringify(payload), now + config.otp.ttlSec * 1000, now);
+  sendSms(phone, templates(payload.lang).otp(code));
+  return code;
+}
+function completeRegistration(payload) {
+  const { name, phone, email, dob, lang, consentMarketing } = payload;
+  let p = participantByPhone.get(phone);
+  let created = false;
+  if (!p) {
+    let code;
+    do { code = shortCode(6); } while (participantByCode.get(code));
+    db.prepare("INSERT INTO participants(code, token, name, phone, email, dob, lang, consent_marketing) VALUES (?,?,?,?,?,?,?,?)")
+      .run(code, token(), name, phone, email || null, dob || null, lang, consentMarketing ? 1 : 0);
+    p = participantByPhone.get(phone);
+    created = true;
+  } else {
+    db.prepare("UPDATE participants SET lang = ?, name = COALESCE(NULLIF(?, ''), name) WHERE id = ?").run(lang, name, p.id);
+    p = participantByPhone.get(phone);
+  }
+  sendSms(p.phone, templates(p.lang).welcome(p.name.split(" ")[0], p.code, profileUrl(p)));
+  return { p, created };
+}
+
+app.post("/api/register", (req, res) => {
   const { name, phone, email, dob, lang = "en", consentMarketing } = req.body || {};
   const cleanName = String(name || "").trim().slice(0, 60);
   const normPhone = normalisePhone(phone);
@@ -101,23 +128,27 @@ app.post("/api/register", async (req, res) => {
   if (!normPhone) return res.status(400).json({ error: "phone" });
   if (dob && !/^\d{4}-\d{2}-\d{2}$/.test(dob)) return res.status(400).json({ error: "dob" });
   const safeLang = ["en", "si", "ta"].includes(lang) ? lang : "en";
+  const payload = { name: cleanName, phone: normPhone, email: email ? String(email).trim().slice(0, 120) : null, dob: dob || null, lang: safeLang, consentMarketing: !!consentMarketing };
+  const existing = db.prepare("SELECT last_sent FROM otps WHERE phone = ?").get(normPhone);
+  if (existing && Date.now() - existing.last_sent < config.otp.resendSec * 1000) return res.status(429).json({ error: "wait", retryIn: Math.ceil((config.otp.resendSec * 1000 - (Date.now() - existing.last_sent)) / 1000) });
+  const code = issueOtp(normPhone, payload);
+  const out = { ok: true, step: "otp", phoneMasked: normPhone.replace(/^(94)(\d{2})\d{5}(\d{2})$/, "+$1 $2 *** **$3"), ttl: config.otp.ttlSec, resendIn: config.otp.resendSec, digits: config.otp.digits };
+  if (config.sms.provider === "console") out.devOtp = code; // only in console mode so local testing works
+  res.json(out);
+});
 
-  let p = participantByPhone.get(normPhone);
-  let created = false;
-  if (!p) {
-    let code;
-    do { code = shortCode(6); } while (participantByCode.get(code));
-    db.prepare("INSERT INTO participants(code, token, name, phone, email, dob, lang, consent_marketing) VALUES (?,?,?,?,?,?,?,?)")
-      .run(code, token(), cleanName, normPhone, email ? String(email).trim().slice(0, 120) : null, dob || null, safeLang, consentMarketing ? 1 : 0);
-    p = participantByPhone.get(normPhone);
-    created = true;
-  } else {
-    db.prepare("UPDATE participants SET lang = COALESCE(?, lang), name = COALESCE(NULLIF(?, ''), name) WHERE id = ?").run(lang ? safeLang : null, cleanName, p.id);
-    p = participantByPhone.get(normPhone);
-  }
+// Step 2: verify OTP, create participant, send welcome SMS.
+app.post("/api/verify", (req, res) => {
+  const normPhone = normalisePhone(req.body?.phone);
+  const code = String(req.body?.code || "").replace(/\D/g, "");
+  const row = normPhone && db.prepare("SELECT * FROM otps WHERE phone = ?").get(normPhone);
+  if (!row) return res.status(400).json({ error: "otp" });
+  if (Date.now() > row.expires_at) { db.prepare("DELETE FROM otps WHERE phone = ?").run(normPhone); return res.status(400).json({ error: "expired" }); }
+  if (row.attempts >= config.otp.maxAttempts) { db.prepare("DELETE FROM otps WHERE phone = ?").run(normPhone); return res.status(400).json({ error: "expired" }); }
+  if (code !== row.code) { db.prepare("UPDATE otps SET attempts = attempts + 1 WHERE phone = ?").run(normPhone); return res.status(400).json({ error: "otp" }); }
+  db.prepare("DELETE FROM otps WHERE phone = ?").run(normPhone);
+  const { p, created } = completeRegistration(JSON.parse(row.payload));
   setCookie(res, "wf_session", p.token);
-  const t = templates(p.lang);
-  sendSms(p.phone, t.welcome(p.name.split(" ")[0], p.code, profileUrl(p))); // fire and forget
   res.json({ ok: true, created, token: p.token, code: p.code, profileUrl: profileUrl(p) });
 });
 

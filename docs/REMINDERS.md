@@ -14,6 +14,9 @@
 - [ ] Licensed fonts (GT Walsheim Ultra Bold, Wendy's Fresh) from the client to replace Poppins.
 - [ ] Legal/T&Cs line for registration + photo consent retention period.
 
+## SMS volume
+- Each registration now sends **2 SMS** (OTP + welcome), plus 1 per scream result and 1 per roast. Budget ~4 SMS per guest with the gateway.
+
 ## Config before launch
 - [ ] `ANTHROPIC_API_KEY` for Roast Me.
 - [ ] `SMS_PROVIDER` credentials + approved sender ID.

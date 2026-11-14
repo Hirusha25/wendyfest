@@ -143,6 +143,7 @@ document.addEventListener("DOMContentLoaded", () => { const b = document.createE
 })();
 `;
 fs.writeFileSync(path.join(out, "js/demo-shim.js"), shim);
+{ const a = path.join(out, "js/app.js"); fs.writeFileSync(a, fs.readFileSync(a, "utf8").replaceAll('loadImg("/assets/', 'loadImg(location.href.replace(/[#?].*$/, "").replace(/\\/(kiosk\\/)?[^/]*$/, "") + "/assets/')); }
 { const f = path.join(out, "js/i18n.js"); fs.writeFileSync(f, fs.readFileSync(f, "utf8").replace('src="/assets/cameo.png"', 'src="${location.href.replace(/[#?].*$/, "").replace(/\\/(kiosk\\/)?[^/]*$/, "")}/assets/cameo.png"')); }
 
 // --- rewrite pages ---

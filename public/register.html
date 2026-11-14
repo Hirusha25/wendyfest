@@ -94,10 +94,10 @@
   form.addEventListener("submit", (e) => { e.preventDefault(); sendOtp(); });
   async function sendOtp(isResend) {
     const name = form.name.value.trim(), phone = form.phone.value.trim();
-    const digits = phone.replace(/\D/g, "");
-    form.name.classList.toggle("err", name.length < 2); form.phone.classList.toggle("err", !/^07\d{8}$/.test(digits));
+    const phoneDigits = phone.replace(/\D/g, "");
+    form.name.classList.toggle("err", name.length < 2); form.phone.classList.toggle("err", !/^07\d{8}$/.test(phoneDigits));
     if (name.length < 2) return toast(t("errName"));
-    if (!/^07\d{8}$/.test(digits)) return toast(t("errPhone"));
+    if (!/^07\d{8}$/.test(phoneDigits)) return toast(t("errPhone"));
     const dob = dobIso(); dobEl.classList.toggle("err", dob === null); if (dob === null) return toast(t("errDob"));
     const btn = $("submit"); btn.disabled = true; btn.querySelector("span").textContent = t("sending");
     try {
@@ -107,6 +107,7 @@
       $("demo-otp").classList.toggle("hidden", !r.devOtp); if (r.devOtp) $("demo-otp-code").textContent = r.devOtp;
       show("s-otp"); setTimeout(() => $("otp-boxes").querySelector("input").focus(), 200);
     } catch (err) {
+      console.error(err);
       if (err.data?.error === "wait") { toast(`${t("resendIn")} ${err.data.retryIn}s`); if (pending) show("s-otp"); }
       else toast(err.message === "phone" ? t("errPhone") : err.message === "name" ? t("errName") : t("errGeneric"));
     }

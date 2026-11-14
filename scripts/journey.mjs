@@ -14,7 +14,7 @@ const snap = (n, full = true) => p.screenshot({ path: `${out}/${n}.png`, fullPag
 await p.goto(u("/"), { waitUntil: "networkidle" }); await p.waitForTimeout(800); await snap("01-landing", false);
 await p.click("a.cta", { force: true }); await p.waitForLoadState("networkidle"); await p.waitForTimeout(600); await snap("02-register");
 await p.fill("#name", "Hirusha Dayananda"); await p.fill("#phone", "077" + String(Date.now() % 10000000).padStart(7, "0")); await p.click("#submit"); await p.waitForTimeout(900);
-const toast = await p.textContent(".toast").catch(() => ""); const otp = (toast.match(/DEV OTP: (\d{4})/) || [])[1] || "0000"; console.log("otp", otp);
+const otp = (await p.textContent("#demo-otp-code").catch(() => "")) || "0000"; console.log("otp", otp);
 await snap("03-otp");
 const inputs = await p.$$("#otp-boxes input"); for (let i = 0; i < 4; i++) await inputs[i].type(otp[i]);
 await p.waitForTimeout(1000); await snap("04-youre-in");

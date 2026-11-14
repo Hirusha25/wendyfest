@@ -1,0 +1,164 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Wendy Fest · reference match</title><link rel="stylesheet" href="after.css">
+<style>body{display:flex;gap:40px;padding:40px;background:#ddd;flex-wrap:wrap}</style>
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="i-mic" viewBox="0 0 24 24"><path d="M12 15a4 4 0 0 0 4-4V6a4 4 0 0 0-8 0v5a4 4 0 0 0 4 4zm6-4a6 6 0 0 1-12 0M12 17v4m-4 0h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="i-cam" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.5" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+<symbol id="i-trophy" viewBox="0 0 24 24"><path d="M7 4h10v5a5 5 0 0 1-10 0zM7 6H4a3 3 0 0 0 3 3M17 6h3a3 3 0 0 1-3 3M12 14v4m-4 2h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9z" fill="currentColor"/></symbol>
+<symbol id="i-dl" viewBox="0 0 24 24"><path d="M12 4v11m-5-5 5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-share" viewBox="0 0 24 24"><path d="M12 15V4m-4 4 4-4 4 4M5 12v8h14v-8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg></head><body>
+<style>
+.blu .ppass { background:#029CD4 !important; border-color:rgba(255,255,255,.55) !important; }
+.blu .ppass .ghost { display:block; right:-70px; top:28px; width:300px; opacity:.5; filter:grayscale(1) contrast(1.05) brightness(.72); mix-blend-mode:multiply; }
+.blu .ppass .rule { background:rgba(255,255,255,.9); }
+.blu .ppass .name { color:#fff; }
+.blu .ppass .name .o { color:transparent; -webkit-text-stroke:2px #fff; }
+.blu .ppass .wf { color:#fff; } .blu .ppass .wf::after { background:#fff; }
+.blu .ppass .pn, .blu .ppass .ec .l { color:#fff; }
+/* D1: red border, black code + black name shadow, white copy btn */
+.d1 .ppass { border:3px solid var(--red) !important; }
+.d1 .ppass .ec .c { color:#1E1A19; }
+.d1 .ppass .name { color:#fff; text-shadow:0 3px 0 rgba(0,0,0,.28); }
+.d1 .ppass .name .o { -webkit-text-stroke:2px #fff; text-shadow:none; }
+.d1 .ppass .copy { border-color:#1E1A19; color:#1E1A19; background:#fff; }
+/* D2: ink plate behind the code */
+.d2 .ppass .ec { background:#1E1A19; margin:14px -22px -24px; padding:16px 22px 20px; border-radius:0 0 18px 18px; position:relative; z-index:2; }
+.d2 .ppass .ec .l { color:#4DBBEA; } .d2 .ppass .ec .c { color:#fff; }
+.d2 .ppass .rule { display:none; }
+.d2 .ppass .copy { border-color:#fff; color:#fff; }
+.d2 .ppass .ghost { top:-6px; width:250px; }
+/* D3: white code chip, black type (ticket feel) */
+.d3 .ppass .ec { gap:12px; }
+.d3 .ppass .ec > div { background:#fff; color:#1E1A19; border-radius:12px; padding:8px 16px 10px; }
+.d3 .ppass .ec .l { color:#6F6563; font-size:11px; } .d3 .ppass .ec .c { color:#1E1A19; font-size:32px; }
+.d3 .ppass .copy { border-color:#fff; color:#fff; }
+/* D4: black type throughout on a lighter blue */
+.d4 .ppass { background:#1FAAE0 !important; border-color:#fff !important; }
+.d4 .ppass .wf, .d4 .ppass .pn, .d4 .ppass .ec .l { color:#1E1A19; } .d4 .ppass .wf::after { background:#1E1A19; }
+.d4 .ppass .name { color:#fff; text-shadow:0 3px 0 rgba(0,0,0,.3); }
+.d4 .ppass .name .o { -webkit-text-stroke:2px #fff; text-shadow:none; }
+.d4 .ppass .rule { background:#1E1A19; }
+.d4 .ppass .ec .c { color:#1E1A19; }
+.d4 .ppass .copy { border-color:#1E1A19; color:#1E1A19; }
+.d4 .ppass .ghost { opacity:.4; }
+</style>
+<!-- 4 PROFILE -->
+<section class="phone blu d1" id="d1">
+  <header class="hdr profile">
+    <div class="bg"></div>
+    <div class="top"><img class="lockup" src="wendys-horiz-white.svg" alt="Wendy's"><div class="pill"><span class="on">EN</span><span>සිං</span><span>தமிழ்</span></div></div>
+    <div class="eyebrow" style="margin-top:16px">Your fest. Your stats.</div>
+    <h1 class="display" style="font-size:52px;margin-top:8px;margin-bottom:18px;text-shadow:0 3px 10px rgba(0,0,0,.14)">My profile</h1>
+    <div class="ppass">
+      <img class="ghost" src="cameo.png" alt="">
+      <div class="wf">Wendy Fest</div>
+      <div class="pn">Participant #0002</div>
+      <div class="display name">Hirusha<br><span class="o">Dayananda</span></div>
+      <div class="rule"></div>
+      <div class="ec"><div><div class="l">Entry code</div><div class="c">CWN3VB</div></div><div class="copy"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="8" width="7" height="11" rx="2"/><rect x="8.5" y="5" width="7" height="14" rx="2" fill="#BB1C25"/><rect x="14.5" y="8" width="7" height="11" rx="2" fill="#BB1C25"/></svg></div></div>
+    </div>
+  </header>
+  <div class="body" style="gap:12px;padding-top:80px">
+    <div class="two"><a class="btn outline" href="#"><svg width="20" height="20"><use href="#i-dl"/></svg>Save pass</a><a class="btn outline" href="#"><svg width="20" height="20"><use href="#i-share"/></svg>Share</a></div>
+    <div class="eyebrow dark" style="margin-top:2px">Your fest journey</div>
+    <div class="tiles">
+      <div class="tile on"><svg width="22" height="22"><use href="#i-star"/></svg>Rookie</div>
+      <div class="tile"><svg width="22" height="22"><use href="#i-mic"/></svg>Screamer</div>
+      <div class="tile"><svg width="22" height="22"><use href="#i-trophy"/></svg>Winner</div>
+      <div class="tile"><svg width="22" height="22"><use href="#i-cam"/></svg>Roasted</div>
+    </div>
+    <div class="card stat"><div><div class="k">Scream &amp; Win</div><div class="m">Not played yet · the host runs it at the LED wall</div></div><div class="v">—</div></div>
+    <div class="card stat"><div><div class="k">Roast Me</div><div class="m">Not roasted yet · blue booth</div></div><div class="v">—</div></div>
+  </div>
+</section>
+<!-- 4 PROFILE -->
+<section class="phone blu d2" id="d2">
+  <header class="hdr profile">
+    <div class="bg"></div>
+    <div class="top"><img class="lockup" src="wendys-horiz-white.svg" alt="Wendy's"><div class="pill"><span class="on">EN</span><span>සිං</span><span>தமிழ்</span></div></div>
+    <div class="eyebrow" style="margin-top:16px">Your fest. Your stats.</div>
+    <h1 class="display" style="font-size:52px;margin-top:8px;margin-bottom:18px;text-shadow:0 3px 10px rgba(0,0,0,.14)">My profile</h1>
+    <div class="ppass">
+      <img class="ghost" src="cameo.png" alt="">
+      <div class="wf">Wendy Fest</div>
+      <div class="pn">Participant #0002</div>
+      <div class="display name">Hirusha<br><span class="o">Dayananda</span></div>
+      <div class="rule"></div>
+      <div class="ec"><div><div class="l">Entry code</div><div class="c">CWN3VB</div></div><div class="copy"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="8" width="7" height="11" rx="2"/><rect x="8.5" y="5" width="7" height="14" rx="2" fill="#BB1C25"/><rect x="14.5" y="8" width="7" height="11" rx="2" fill="#BB1C25"/></svg></div></div>
+    </div>
+  </header>
+  <div class="body" style="gap:12px;padding-top:80px">
+    <div class="two"><a class="btn outline" href="#"><svg width="20" height="20"><use href="#i-dl"/></svg>Save pass</a><a class="btn outline" href="#"><svg width="20" height="20"><use href="#i-share"/></svg>Share</a></div>
+    <div class="eyebrow dark" style="margin-top:2px">Your fest journey</div>
+    <div class="tiles">
+      <div class="tile on"><svg width="22" height="22"><use href="#i-star"/></svg>Rookie</div>
+      <div class="tile"><svg width="22" height="22"><use href="#i-mic"/></svg>Screamer</div>
+      <div class="tile"><svg width="22" height="22"><use href="#i-trophy"/></svg>Winner</div>
+      <div class="tile"><svg width="22" height="22"><use href="#i-cam"/></svg>Roasted</div>
+    </div>
+    <div class="card stat"><div><div class="k">Scream &amp; Win</div><div class="m">Not played yet · the host runs it at the LED wall</div></div><div class="v">—</div></div>
+    <div class="card stat"><div><div class="k">Roast Me</div><div class="m">Not roasted yet · blue booth</div></div><div class="v">—</div></div>
+  </div>
+</section>
+<!-- 4 PROFILE -->
+<section class="phone blu d3" id="d3">
+  <header class="hdr profile">
+    <div class="bg"></div>
+    <div class="top"><img class="lockup" src="wendys-horiz-white.svg" alt="Wendy's"><div class="pill"><span class="on">EN</span><span>සිං</span><span>தமிழ்</span></div></div>
+    <div class="eyebrow" style="margin-top:16px">Your fest. Your stats.</div>
+    <h1 class="display" style="font-size:52px;margin-top:8px;margin-bottom:18px;text-shadow:0 3px 10px rgba(0,0,0,.14)">My profile</h1>
+    <div class="ppass">
+      <img class="ghost" src="cameo.png" alt="">
+      <div class="wf">Wendy Fest</div>
+      <div class="pn">Participant #0002</div>
+      <div class="display name">Hirusha<br><span class="o">Dayananda</span></div>
+      <div class="rule"></div>
+      <div class="ec"><div><div class="l">Entry code</div><div class="c">CWN3VB</div></div><div class="copy"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="8" width="7" height="11" rx="2"/><rect x="8.5" y="5" width="7" height="14" rx="2" fill="#BB1C25"/><rect x="14.5" y="8" width="7" height="11" rx="2" fill="#BB1C25"/></svg></div></div>
+    </div>
+  </header>
+  <div class="body" style="gap:12px;padding-top:80px">
+    <div class="two"><a class="btn outline" href="#"><svg width="20" height="20"><use href="#i-dl"/></svg>Save pass</a><a class="btn outline" href="#"><svg width="20" height="20"><use href="#i-share"/></svg>Share</a></div>
+    <div class="eyebrow dark" style="margin-top:2px">Your fest journey</div>
+    <div class="tiles">
+      <div class="tile on"><svg width="22" height="22"><use href="#i-star"/></svg>Rookie</div>
+      <div class="tile"><svg width="22" height="22"><use href="#i-mic"/></svg>Screamer</div>
+      <div class="tile"><svg width="22" height="22"><use href="#i-trophy"/></svg>Winner</div>
+      <div class="tile"><svg width="22" height="22"><use href="#i-cam"/></svg>Roasted</div>
+    </div>
+    <div class="card stat"><div><div class="k">Scream &amp; Win</div><div class="m">Not played yet · the host runs it at the LED wall</div></div><div class="v">—</div></div>
+    <div class="card stat"><div><div class="k">Roast Me</div><div class="m">Not roasted yet · blue booth</div></div><div class="v">—</div></div>
+  </div>
+</section>
+<!-- 4 PROFILE -->
+<section class="phone blu d4" id="d4">
+  <header class="hdr profile">
+    <div class="bg"></div>
+    <div class="top"><img class="lockup" src="wendys-horiz-white.svg" alt="Wendy's"><div class="pill"><span class="on">EN</span><span>සිං</span><span>தமிழ்</span></div></div>
+    <div class="eyebrow" style="margin-top:16px">Your fest. Your stats.</div>
+    <h1 class="display" style="font-size:52px;margin-top:8px;margin-bottom:18px;text-shadow:0 3px 10px rgba(0,0,0,.14)">My profile</h1>
+    <div class="ppass">
+      <img class="ghost" src="cameo.png" alt="">
+      <div class="wf">Wendy Fest</div>
+      <div class="pn">Participant #0002</div>
+      <div class="display name">Hirusha<br><span class="o">Dayananda</span></div>
+      <div class="rule"></div>
+      <div class="ec"><div><div class="l">Entry code</div><div class="c">CWN3VB</div></div><div class="copy"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="8" width="7" height="11" rx="2"/><rect x="8.5" y="5" width="7" height="14" rx="2" fill="#BB1C25"/><rect x="14.5" y="8" width="7" height="11" rx="2" fill="#BB1C25"/></svg></div></div>
+    </div>
+  </header>
+  <div class="body" style="gap:12px;padding-top:80px">
+    <div class="two"><a class="btn outline" href="#"><svg width="20" height="20"><use href="#i-dl"/></svg>Save pass</a><a class="btn outline" href="#"><svg width="20" height="20"><use href="#i-share"/></svg>Share</a></div>
+    <div class="eyebrow dark" style="margin-top:2px">Your fest journey</div>
+    <div class="tiles">
+      <div class="tile on"><svg width="22" height="22"><use href="#i-star"/></svg>Rookie</div>
+      <div class="tile"><svg width="22" height="22"><use href="#i-mic"/></svg>Screamer</div>
+      <div class="tile"><svg width="22" height="22"><use href="#i-trophy"/></svg>Winner</div>
+      <div class="tile"><svg width="22" height="22"><use href="#i-cam"/></svg>Roasted</div>
+    </div>
+    <div class="card stat"><div><div class="k">Scream &amp; Win</div><div class="m">Not played yet · the host runs it at the LED wall</div></div><div class="v">—</div></div>
+    <div class="card stat"><div><div class="k">Roast Me</div><div class="m">Not roasted yet · blue booth</div></div><div class="v">—</div></div>
+  </div>
+</section>
+</body></html>

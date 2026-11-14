@@ -51,7 +51,7 @@ function publicProfile(p) {
   return { name: p.name, code: p.code, lang: p.lang, number: DB.participants.indexOf(p) + 1, joined: p.created_at, phoneMasked: p.phone.replace(/^(94)(\\d{2})\\d{5}(\\d{2})$/, "+$1 $2*****$3"), profileUrl: profileUrl(p), screams, roasts,
     badges: { screamer: screams.length > 0, winner: screams.some((s) => s.won), roasted: roasts.length > 0 }, coupon: coupon(), limits: { screamAttempts: scream().attemptsPerPerson, roastAttempts: roastS().attemptsPerPerson } };
 }
-const byCode = (c) => DB.participants.find((p) => p.code === String(c || "").toUpperCase());
+const byCode = (c) => { let k = String(c || "").toUpperCase().replace(/[^A-Z0-9]/g, ""); if (k === "DEMO" || k === "DEMO01") k = "WENDYS"; return DB.participants.find((p) => p.code === k); };
 const needPin = (which) => { const c = cookie("wf_" + which); return c === KIOSK_PIN || c === ADMIN_PIN; };
 
 async function route(method, url, body) {
@@ -135,6 +135,7 @@ document.addEventListener("DOMContentLoaded", () => { const b = document.createE
 fs.writeFileSync(path.join(out, "js/demo-shim.js"), shim);
 
 // --- rewrite pages ---
+const V = Date.now().toString(36);
 const QR_CDN = `<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>`;
 const links = [
   [/href="\/register\?next=([a-z]+)"/g, 'href="PFXregister.html?next=$1"'],
@@ -161,9 +162,10 @@ for (const f of walk(out)) {
   for (const [re, rep] of links) s = s.replace(re, rep.replaceAll("PFX", pfx));
   s = s.replace("BASE_DEMO", `location.href.replace(/[#?].*$/, "").replace(/\\/(kiosk\\/)?[^/]*$/, "")`);
   // inject QR lib + shim before the first page script
-  s = s.replace(/<script src="([^"]*js\/(i18n|app|kiosk)\.js)"><\/script>/, `${QR_CDN}<script src="${pfx}js/demo-shim.js"></script><script src="$1"></script>`);
+  s = s.replace(/<script src="([^"]*js\/(i18n|app|kiosk)\.js)"><\/script>/, `${QR_CDN}<script src="${pfx}js/demo-shim.js?v=${V}"></script><script src="$1?v=${V}"></script>`);
   // fetch("/api/config") in kiosk pages stays (shim intercepts). Keep page title hint.
   s = s.replace("<title>", "<title>[DEMO] ");
+  s = s.replace(/(css\/(brand|kiosk)\.css)"/g, `$1?v=${V}"`);
   fs.writeFileSync(f, s);
 }
 // app.js: qrUrl is overridden by shim; nothing else to change. kiosk.js: K.api uses fetch – fine.

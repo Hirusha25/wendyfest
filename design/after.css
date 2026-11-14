@@ -64,19 +64,20 @@ body { font-family: Poppins, system-ui, sans-serif; color:var(--ink); background
 .consent i::after { content:""; position:absolute; left:6px; top:2px; width:4px; height:9px; border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg); }
 
 /* entry pass card */
-.epass { position:relative; background:#FBF6EE; border-radius:16px; border:1.5px solid #B9B0A6; overflow:hidden; padding:22px 20px 22px; }
-.epass .swoosh { position:absolute; left:-2px; top:-2px; width:200px; height:70px; pointer-events:none; }
-.epass .head { display:flex; align-items:center; gap:18px; position:relative; }
-.epass .head .lockup { height:44px; }
-.epass .head .vr { width:1.5px; height:56px; background:#8F867E; }
-.epass .head .t1 { font-weight:800; font-style:italic; text-transform:uppercase; font-size:17px; letter-spacing:.02em; color:#1E1A19; }
-.epass .head .t2 { color:var(--red); font-weight:800; letter-spacing:.14em; text-transform:uppercase; font-size:15px; margin-top:2px; }
-.epass .hr { height:1.5px; background:#9E958C; margin:20px 0 20px; }
-.code { font-weight:900; font-style:italic; font-size:54px; letter-spacing:-.01em; line-height:1; color:#1E1A19; }
-.copy { width:54px; height:54px; border:1.5px solid #C9A7A9; background:#FFF8F2; border-radius:12px; display:grid; place-items:center; color:var(--red); flex:none; box-shadow:0 2px 0 #E8D8D4; }
-.onecode { display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; font-size:12px; margin-top:16px; color:#1E1A19; }
-.onecode::before, .onecode::after { content:""; flex:1; height:1.5px; background:var(--red); }
-.barcode { height:48px; margin:14px 6px 0; background:repeating-linear-gradient(90deg, #1E1A19 0 2px, transparent 2px 4px, #1E1A19 4px 5px, transparent 5px 9px, #1E1A19 9px 12px, transparent 12px 14px, #1E1A19 14px 15px, transparent 15px 17px, #1E1A19 17px 19px, transparent 19px 23px); }
+.epass { position:relative; background:#FBF5EA; border-radius:20px; border:1.5px solid #B4AB9F; overflow:hidden; padding:24px 22px 24px; }
+.epass .swoosh { position:absolute; left:-2px; top:-2px; width:230px; height:70px; pointer-events:none; }
+.epass .head { display:flex; align-items:center; gap:16px; position:relative; padding-top:16px; }
+.epass .head .lockup { height:42px; }
+.epass .head .vr { width:1.5px; height:56px; background:#7C746C; }
+.epass .head .t1 { white-space:nowrap; font-weight:800; font-style:italic; text-transform:uppercase; font-size:17px; color:#1E1A19; line-height:1.15; }
+.epass .head .t2 { white-space:nowrap; color:var(--red); font-weight:800; letter-spacing:.1em; text-transform:uppercase; font-size:16px; line-height:1.15; margin-top:3px; }
+.epass .hr { height:1.5px; background:#7C746C; margin:22px 0 22px; }
+.code { font-weight:900; font-style:italic; font-size:50px; letter-spacing:-.02em; line-height:1; color:#1E1A19; }
+.copy { width:58px; height:58px; border:1.5px solid #D9B4B6; background:#FFF9F3; border-radius:12px; display:grid; place-items:center; color:var(--red); flex:none; }
+.onecode { display:flex; align-items:center; justify-content:center; gap:12px; white-space:nowrap; font-weight:800; letter-spacing:.12em; text-transform:uppercase; font-size:12px; margin-top:22px; color:#1E1A19; }
+.onecode::before, .onecode::after { content:""; width:24px; height:1.5px; background:var(--red); }
+.barcode { height:58px; margin:18px 10px 0; background:
+  repeating-linear-gradient(90deg, #1E1A19 0 2px, transparent 2px 4px, #1E1A19 4px 5px, transparent 5px 8px, #1E1A19 8px 11px, transparent 11px 13px, #1E1A19 13px 14px, transparent 14px 16px, #1E1A19 16px 18px, transparent 18px 21px, #1E1A19 21px 22px, transparent 22px 25px); }
 .note { text-align:center; margin-top:4px; }
 .note b { display:block; font-style:italic; font-weight:800; font-size:19px; }
 .note span { font-style:italic; font-size:15px; color:#3A3331; font-weight:500; }

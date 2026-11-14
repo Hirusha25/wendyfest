@@ -190,10 +190,8 @@ button, input, select { font:inherit; }
 .brandfoot .c { display:flex; align-items:center; gap:8px; }
 .brandfoot .c img { height:18px; width:auto; }
 
-.btn:has(.arr) { padding:0 11px 0 24px; }
-.btn:has(.arr) > span:first-child { flex:1; text-align:center; }
-.btn .arr { flex:none; width:34px; height:34px; padding:7px; box-sizing:border-box; border-radius:50%; background:#fff; color:var(--red); transition:transform .15s; }
-.btn.blue .arr { color:var(--blue-dark); }
+.btn:has(.arr) { padding:0 22px; gap:12px; }
+.btn .arr { flex:none; width:30px; height:30px; padding:6px; box-sizing:border-box; border-radius:50%; border:2px solid rgba(255,255,255,.9); color:#fff; transition:transform .15s; }
 .btn:hover .arr, .btn:active .arr { transform:translateX(3px); }
 .cta .arr { animation:nudge 1.2s ease-in-out infinite; }
 @keyframes nudge { 0%,100% { transform:translateX(0) } 50% { transform:translateX(4px) } }

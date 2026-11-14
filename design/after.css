@@ -88,13 +88,13 @@ body { font-family: Poppins, system-ui, sans-serif; color:var(--ink); background
 .ppass .wf { font-weight:800; text-transform:uppercase; font-size:17px; letter-spacing:.06em; display:flex; align-items:center; gap:12px; }
 .ppass .wf::after { content:""; width:44px; height:2px; background:rgba(255,255,255,.9); }
 .ppass .pn { font-weight:700; letter-spacing:.14em; text-transform:uppercase; font-size:13.5px; margin-top:10px; }
-.ppass .name { font-size:36px; margin-top:12px; width:260px; line-height:.95; letter-spacing:-.01em; }
+.ppass .name { font-size:34px; margin-top:12px; width:250px; line-height:.95; letter-spacing:-.01em; }
 .ppass .rule { height:2px; background:rgba(255,255,255,.9); margin:18px 0 16px; width:100%; }
 .ppass .ec { display:flex; align-items:center; gap:18px; }
 .ppass .ec .l { font-weight:800; letter-spacing:.14em; text-transform:uppercase; font-size:14px; }
 .ppass .ec .c { font-weight:900; font-style:italic; font-size:36px; letter-spacing:.01em; line-height:1.05; margin-top:2px; }
 .ppass .copy { width:54px; height:54px; border:2px solid rgba(255,255,255,.95); background:transparent; color:#fff; border-radius:12px; box-shadow:none; }
-.ppass .ghost { position:absolute; right:-70px; top:30px; width:300px; height:auto; opacity:.5; filter:grayscale(1) contrast(1.1) brightness(1.18); mix-blend-mode:multiply; pointer-events:none; }
+.ppass .ghost { position:absolute; right:-54px; top:40px; width:262px; height:auto; opacity:.42; filter:grayscale(1) contrast(1.0) brightness(1.3); mix-blend-mode:multiply; pointer-events:none; }
 .ppass > *:not(.ghost) { position:relative; z-index:1; }
 .hdr.profile { padding-bottom:0; overflow:visible; border-radius:0; }
 .hdr.profile .bg { position:absolute; left:0; right:0; top:0; bottom:64px; border-radius:0 0 26px 26px; overflow:hidden; z-index:0;

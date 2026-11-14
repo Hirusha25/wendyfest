@@ -110,3 +110,96 @@ body.kiosk { background: var(--red); color: #fff; cursor: default; user-select: 
   .reveal .photo { width: 100%; }
   .reveal .ticket { padding: 9vw 6vw !important; }
 }
+
+/* =========================================================
+   Kiosk theme v2 — same treatments as the guest pages
+   ========================================================= */
+body.kiosk { background:
+  url("../assets/rings-right.svg") 100% 0 / 60vmin 60vmin no-repeat,
+  linear-gradient(180deg, rgba(0,0,0,.10) 0%, rgba(0,0,0,0) 28%, rgba(0,0,0,0) 62%, rgba(0,0,0,.22) 100%),
+  radial-gradient(80% 70% at 42% 40%, #E02C34 0%, #D2252D 38%, #B51F28 68%, #8C1720 100%); }
+body.kiosk::after { content:""; position:fixed; right:-1vmin; bottom:-1vmin; width:48vmin; height:40vmin; pointer-events:none; opacity:.28; z-index:0;
+  background:radial-gradient(rgba(255,255,255,.9) .35vmin, transparent .5vmin) 0 0/2.2vmin 2.2vmin; mask:radial-gradient(ellipse at 100% 100%, #000 0%, rgba(0,0,0,.5) 35%, transparent 68%); -webkit-mask:radial-gradient(ellipse at 100% 100%, #000 0%, rgba(0,0,0,.5) 35%, transparent 68%); }
+body.kiosk.freckles, body.kiosk .on-red.freckles { background-image: url("../assets/rings-right.svg"), linear-gradient(180deg, rgba(0,0,0,.10) 0%, rgba(0,0,0,0) 28%, rgba(0,0,0,0) 62%, rgba(0,0,0,.22) 100%), radial-gradient(80% 70% at 42% 40%, #E02C34 0%, #D2252D 38%, #B51F28 68%, #8C1720 100%); }
+.frame { display:none; }
+.stage > .screen, .stage > .k-logo, .stage > .k-cameo, .stage > .k-foot { z-index:1; }
+
+/* roast kiosk: ink base, blue accents */
+body.kiosk.roast-kiosk { background:
+  url("../assets/rings-right.svg") 100% 0 / 60vmin 60vmin no-repeat,
+  linear-gradient(180deg, rgba(255,255,255,.04) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,.35) 100%),
+  radial-gradient(80% 70% at 42% 40%, #343030 0%, #262222 45%, #1A1717 100%); }
+body.kiosk.roast-kiosk.freckles { background-image: url("../assets/rings-right.svg"), linear-gradient(180deg, rgba(255,255,255,.04) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,.35) 100%), radial-gradient(80% 70% at 42% 40%, #343030 0%, #262222 45%, #1A1717 100%); }
+
+/* eyebrow with rule */
+.k-eyebrow { display:flex; align-items:center; gap:1.4vmin; font-style:italic; letter-spacing:.08em; }
+.k-eyebrow::after { content:""; width:6vmin; height:.3vmin; background:#F2D4D7; }
+.center .k-eyebrow { justify-content:center; }
+.roast-kiosk .k-eyebrow::after { background:#029CD4; }
+
+/* buttons: offset shadow + circle arrow */
+.kiosk .btn { font-style:italic; font-weight:900; text-transform:uppercase; border-radius:999px; box-shadow:0 .6vmin 0 #A32539, 0 2vmin 4vmin -1.6vmin rgba(163,37,57,.55); }
+.kiosk .btn.white { color:#CD2028; box-shadow:0 .6vmin 0 #E2E2E2, 0 2vmin 4vmin -1.6vmin rgba(73,53,51,.45); }
+.kiosk .btn.blue { box-shadow:0 .6vmin 0 #016F9F, 0 2vmin 4vmin -1.6vmin rgba(1,111,159,.55); }
+.kiosk .btn.ink { box-shadow:0 .6vmin 0 #000; }
+.kiosk .btn.ghost { box-shadow:none; border-width:.3vmin; }
+.kiosk .btn:active { transform:translateY(.3vmin); }
+.kiosk .k-btn:not(.ghost)::after { content:""; flex:none; width:4.2vmin; height:4.2vmin; border-radius:50%; border:.3vmin solid currentColor; background:currentColor; -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center / 60% no-repeat; mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center / 60% no-repeat; }
+.kiosk .k-btn:not(.ghost) { position:relative; }
+.kiosk .k-btn:not(.ghost)::after { background:transparent; -webkit-mask:none; mask:none; display:grid; place-items:center; }
+.kiosk .k-btn:not(.ghost)::before { content:""; position:absolute; right:2.3vmin; top:50%; width:4.2vmin; height:4.2vmin; transform:translateY(-50%); border-radius:50%; border:.3vmin solid currentColor; background:currentColor; -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center / 58% no-repeat, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center / 58% no-repeat, linear-gradient(#000 0 0); mask-composite: exclude; }
+.kiosk .k-btn:not(.ghost) { padding-right:8.4vmin; }
+.kiosk .k-btn:not(.ghost)::after { display:none; }
+
+/* ticket cards → charcoal border, offset shadow, dashed inner */
+.kiosk .ticket { -webkit-mask:none; mask:none; border-radius:2.4vmin; border:.35vmin solid #493533; box-shadow:.5vmin .7vmin 0 #493533, 0 3vmin 6vmin -2vmin rgba(73,53,51,.5); background:#fff; color:#252525; }
+.kiosk .ticket.ink { background:#252525; color:#fff; border-color:#016F9F; box-shadow:.5vmin .7vmin 0 #016F9F; }
+.kiosk .ticket.cream { background:#fff; }
+.kiosk .ticket-inner { inset:1vmin; border:.25vmin dashed #E2E2E2; border-radius:1.6vmin; }
+.kiosk .ticket.ink .ticket-inner { border-color:rgba(255,255,255,.18); }
+
+/* code entry */
+.k-input { border:.35vmin solid #493533; box-shadow:.5vmin .7vmin 0 #493533; border-radius:2vmin; background:#fff; }
+.k-input.err { border-color:#CD2028; box-shadow:.5vmin .7vmin 0 #A32539; }
+.kb button { background:rgba(255,255,255,.14); border:.2vmin solid rgba(255,255,255,.25); }
+.kb button.wide { background:#fff; color:#CD2028; box-shadow:0 .4vmin 0 #E2E2E2; }
+
+/* QR card */
+.qr { border:.35vmin solid #493533; box-shadow:.5vmin .7vmin 0 #493533; border-radius:2.4vmin; }
+
+/* coupon reveal */
+.coupon-k { border:.35vmin solid #493533; box-shadow:.5vmin .7vmin 0 #493533; border-radius:2.4vmin; position:relative; }
+.coupon-k .code { background:#F2D4D7; color:#A32539; padding:.6vmin 1.6vmin; border-radius:1.2vmin; display:inline-block; }
+
+/* footer */
+.k-corner, .k-corner-l { display:none; }
+.k-foot { position:absolute; left:0; right:0; bottom:0; background:#493533; color:#D9CFCB; padding:1.6vmin 4vmin; display:flex; justify-content:space-between; align-items:center; font-size:1.7vmin; font-weight:600; z-index:5; }
+.k-foot .c { display:flex; align-items:center; gap:1.2vmin; }
+.k-foot .c img { height:2.8vmin; }
+.k-foot .links { display:flex; gap:2.4vmin; }
+.k-foot .links span { color:#F2D4D7; border-bottom:.15vmin solid rgba(242,212,215,.5); }
+.k-foot .st { font-weight:800; letter-spacing:.14em; text-transform:uppercase; font-size:1.5vmin; color:#F2D4D7; }
+
+/* settings gear sits above footer */
+.gear { bottom:7vmin; opacity:.3; }
+
+/* cooking + reveal on roast */
+.roast-kiosk .cam { border-color:#fff; box-shadow:.6vmin .8vmin 0 #016F9F, 0 3vmin 8vmin rgba(0,0,0,.5); }
+.roast-kiosk .reveal .ticket { background:#fff; color:#252525; }
+.roast-kiosk .rtabs { background:#A32539; }
+.roast-kiosk .rtabs button.on { background:#fff; color:#CD2028; }
+.roast-kiosk .ticket .k-eyebrow { color:#016F9F; }
+.roast-kiosk .ticket .k-eyebrow::after { background:#016F9F; }
+.roast-kiosk .ticket .rtitle { color:#CD2028; }
+.roast-kiosk .ticket .rbody { color:#252525; }
+.roast-kiosk .consent-box { background:#fff; color:#252525; border:.35vmin solid #493533; box-shadow:.5vmin .7vmin 0 #493533; }
+.roast-kiosk .consent-box p[style] { color:#616161 !important; }
+
+/* portrait fallback for footer */
+@media (orientation: portrait), (max-width: 900px) {
+  .k-foot { position:static; margin-top:6vw; padding:3.5vw 5vw; font-size:3vw; }
+  .k-foot .c img { height:4.5vw; } .k-foot .st { font-size:2.6vw; }
+  .kiosk .k-btn:not(.ghost)::before { width:7vw; height:7vw; right:4vw; }
+  .kiosk .k-btn:not(.ghost) { padding-right:13vw; }
+  body.kiosk, body.kiosk.freckles, body.kiosk.roast-kiosk { background-size:80vw 80vw, auto, auto; }
+}

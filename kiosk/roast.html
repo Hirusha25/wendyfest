@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Roast Me · Wendy Fest</title><link rel="icon" href="../assets/cameo.png">
-<link rel="stylesheet" href="../css/brand.css?v=mwgr0k3c"><link rel="stylesheet" href="../css/kiosk.css?v=mwgr0k3c">
+<link rel="stylesheet" href="../css/brand.css?v=mwgr80rh"><link rel="stylesheet" href="../css/kiosk.css?v=mwgr80rh">
 <style>
   body.kiosk { background: var(--ink); }
   .frame::before, .frame::after, .frame i::before, .frame i::after { background: var(--ink); }
@@ -24,7 +24,7 @@
   .ghost-wendy { position: absolute; right: -4vmin; bottom: -10vmin; width: 62vmin; opacity: .06; pointer-events: none; }
 </style>
 </head>
-<body class="kiosk on-red freckles">
+<body class="kiosk on-red freckles roast-kiosk">
 <div class="stage">
   <img class="k-logo" src="../assets/wendys-horiz-white.svg" alt="Wendy's">
   <img class="k-cameo" src="../assets/cameo.png" alt="">
@@ -112,7 +112,7 @@
     </div>
   </section>
 
-  <div class="k-corner-l" id="corner-l">Station A</div><div class="k-corner">Gotta be Wendy's</div>
+  <footer class="k-foot"><span class="c"><img src="../assets/cameo.png" alt="">© 2026 Wendy’s Sri Lanka</span><span class="st" id="corner-l">Station A</span><span class="links"><span>Terms</span><span>Privacy</span></span></footer>
   <svg class="gear" viewBox="0 0 24 24" fill="#fff" onclick="document.getElementById('settings').classList.toggle('open')"><path d="M12 8a4 4 0 100 8 4 4 0 000-8zm9 4a7 7 0 00-.1-1.2l2-1.5-2-3.5-2.4 1a7 7 0 00-2-1.2L16 3H8l-.5 2.6a7 7 0 00-2 1.2l-2.4-1-2 3.5 2 1.5A7 7 0 003 12a7 7 0 00.1 1.2l-2 1.5 2 3.5 2.4-1a7 7 0 002 1.2L8 21h8l.5-2.6a7 7 0 002-1.2l2.4 1 2-3.5-2-1.5c.1-.4.1-.8.1-1.2z"/></svg>
   <aside class="settings" id="settings">
     <div class="k-eyebrow">Station settings</div>
@@ -123,7 +123,7 @@
   </aside>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwgr0k3c"></script><script src="../js/i18n.js?v=mwgr0k3c"></script><script src="../js/kiosk.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwgr80rh"></script><script src="../js/i18n.js?v=mwgr80rh"></script><script src="../js/kiosk.js"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let guest = null, stream = null, glang = "en", R = null, BASE = location.origin;

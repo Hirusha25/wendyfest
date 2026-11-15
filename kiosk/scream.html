@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Scream & Win · Wendy Fest</title><link rel="icon" href="../assets/cameo.png">
-<link rel="stylesheet" href="../css/brand.css?v=mwhpasht">
+<link rel="stylesheet" href="../css/brand.css?v=mwhpgogt">
 <style>
 /* ================= AFTER DARK · Scream & Win ================= */
 :root { --red:#CD2028; --red-dark:#A32539; --red-hi:#FF3B45; --ink:#0E0C0C; --ink2:#1A1616; --cream:#F6F0E6; --blush:#F2D4D7; --cyan:#4DE3F2; --line:rgba(255,255,255,.14); }
@@ -12,20 +12,20 @@ body { margin:0; background:var(--ink); color:#fff; font-family:Poppins,'Noto Sa
 .stage { position:relative; width:100vw; height:100vh; overflow:hidden;
   background: radial-gradient(90% 70% at 50% 100%, #3A0D12 0%, #1B1012 40%, #0F0C0C 75%, #0B0909 100%); }
 /* angled red side panels (3D) */
-.panel { position:absolute; top:0; bottom:0; width:9vw; pointer-events:none; z-index:1; }
-.panel.l { left:0; background:linear-gradient(90deg, #E2262F 0%, #B71E27 55%, #7A1219 100%); clip-path:polygon(0 0, 100% 0, 42% 100%, 0 100%); }
-.panel.l::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(255,150,150,.25), transparent 28%, rgba(0,0,0,.55)); clip-path:inherit; }
-.panel.r { right:0; background:linear-gradient(270deg, #E2262F 0%, #B71E27 55%, #7A1219 100%); clip-path:polygon(0 0, 100% 0, 100% 100%, 58% 100%); }
-.panel.r::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(255,150,150,.25), transparent 28%, rgba(0,0,0,.55)); clip-path:inherit; }
+.panel { position:absolute; top:0; bottom:0; width:14vw; pointer-events:none; z-index:1; }
+.panel.l { left:0; background:linear-gradient(100deg, #E22A33 0%, #BD1F28 50%, #8A151C 100%); clip-path:polygon(0 0, 18% 0, 100% 100%, 0 100%); }
+.panel.l::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(255,150,150,.22), transparent 30%, rgba(0,0,0,.5)); clip-path:inherit; }
+.panel.r { right:0; background:linear-gradient(260deg, #E22A33 0%, #BD1F28 50%, #8A151C 100%); clip-path:polygon(82% 0, 100% 0, 100% 100%, 0 100%); }
+.panel.r::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(255,150,150,.22), transparent 30%, rgba(0,0,0,.5)); clip-path:inherit; }
 .panel-glow { position:absolute; top:0; bottom:0; width:16vw; pointer-events:none; z-index:1; }
 .panel-glow.l { left:0; background:linear-gradient(90deg, rgba(205,32,40,.28), transparent 75%); }
 .panel-glow.r { right:0; background:linear-gradient(270deg, rgba(205,32,40,.28), transparent 75%); }
 .panel::before { content:""; position:absolute; inset:0; clip-path:inherit; box-shadow:inset 0 0 0 .3vmin rgba(255,120,130,.45); }
-.rings { position:absolute; inset:0; pointer-events:none; z-index:1; opacity:.55;
-  background:repeating-radial-gradient(circle at 97% 10%, transparent 0 2.4vmin, rgba(255,80,90,.45) 2.4vmin 2.7vmin);
-  mask:radial-gradient(circle at 97% 10%, transparent 0 6vmin, #000 12vmin, transparent 30vmin); -webkit-mask:radial-gradient(circle at 97% 10%, transparent 0 6vmin, #000 12vmin, transparent 30vmin); }
+.rings { position:absolute; inset:0; pointer-events:none; z-index:1; opacity:.85;
+  background:repeating-radial-gradient(circle at 93% 6%, transparent 0 5.2vmin, rgba(255,70,80,.55) 5.2vmin 5.5vmin);
+  mask:radial-gradient(circle at 93% 6%, transparent 0 8vmin, #000 14vmin, rgba(0,0,0,.6) 30vmin, transparent 46vmin); -webkit-mask:radial-gradient(circle at 93% 6%, transparent 0 8vmin, #000 14vmin, rgba(0,0,0,.6) 30vmin, transparent 46vmin); }
 #field { position:absolute; left:0; top:0; width:100vw; height:100vh; z-index:1; pointer-events:none; }
-.vignette { position:absolute; inset:0; z-index:2; pointer-events:none; background:radial-gradient(60% 55% at 50% 40%, transparent 50%, rgba(0,0,0,.45) 100%); }
+.vignette { position:absolute; inset:0; z-index:2; pointer-events:none; background:radial-gradient(60% 55% at 50% 40%, transparent 55%, rgba(0,0,0,.3) 100%); }
 
 /* chrome */
 .brand { position:absolute; top:4.2vmin; left:5vw; z-index:5; display:flex; align-items:center; gap:2vmin; }
@@ -67,21 +67,21 @@ body { margin:0; background:var(--ink); color:#fff; font-family:Poppins,'Noto Sa
 .vr { width:.2vmin; height:5vmin; background:rgba(255,255,255,.3); }
 
 /* idle */
-.idle.on { display:grid; grid-template-columns:52vw 20vw; column-gap:4vw; align-items:center; justify-content:start; text-align:left; justify-items:start; padding:0 0 26vh 11vw; }
-.idle .left { display:grid; gap:1.6vmin; justify-items:start; width:100%; }
-.idle .eyebrow { justify-content:center; width:100%; font-size:2.2vmin; letter-spacing:.36em; }
-.idle .eyebrow::before, .idle .eyebrow::after { width:8vmin; }
-.idle .h1 { font-size:21vmin; line-height:.83; letter-spacing:-.03em; width:100%; text-align:center; }
+.idle.on { display:block; padding:0; }
+.idle .left { position:absolute; left:13vw; width:50vw; top:16vh; display:grid; gap:0; justify-items:center; text-align:center; }
+.idle .eyebrow { font-size:2.1vmin; letter-spacing:.36em; margin-bottom:1.2vh; }
+.idle .eyebrow::before, .idle .eyebrow::after { width:7vmin; }
+.idle .h1 { font-size:17.5vmin; line-height:.82; letter-spacing:-.03em; }
 .idle .h1 .l1 { display:block; }
-.idle .h1 .l2 { display:block; }
-.idle .h1 .amp { color:var(--red-hi); margin-right:.6vmin; }
-.idle .sub { font-size:4.6vmin; letter-spacing:-.01em; width:100%; text-align:center; margin-top:.2vmin; }
-.idle .cta-wrap { position:absolute; left:37vw; bottom:10vh; transform:translateX(-50%); z-index:6; }
-.idle .btn { height:9.4vmin; font-size:3.3vmin; padding:0 3.4vmin 0 6vmin; }
-.idle .btn::after { width:5vmin; height:5vmin; }
-.idle .qrcard { width:20vw; padding:2.4vmin 2vmin 2.6vmin; border-radius:3vmin; justify-self:start; }
-.idle .qrcard img { width:16vw; height:16vw; }
-.idle .qrcard b { font-size:2.9vmin; letter-spacing:.02em; line-height:1.1; margin-top:.4vmin; }
+.idle .h1 .l2 { display:block; margin-left:-4vmin; }
+.idle .h1 .amp { color:var(--red-hi); margin-right:.8vmin; }
+.idle .sub { font-size:3.9vmin; letter-spacing:-.01em; margin-top:1.2vh; font-style:italic; }
+.idle .cta-wrap { position:absolute; left:45vw; top:73vh; transform:translateX(-50%); z-index:6; }
+.idle .btn { height:9.2vmin; font-size:3.2vmin; padding:0 3vmin 0 5.6vmin; }
+.idle .btn::after { width:4.8vmin; height:4.8vmin; }
+.idle .qrcard { position:absolute; left:67vw; top:19vh; width:19vw; padding:2.2vmin 1.8vmin 2.4vmin; border-radius:2.6vmin; background:#fff; }
+.idle .qrcard img { width:15.6vw; height:15.6vw; }
+.idle .qrcard b { font-size:2.9vmin; letter-spacing:.02em; line-height:1.1; margin-top:.6vmin; }
 
 /* code */
 .boxes { display:flex; gap:1.6vmin; justify-content:center; }
@@ -251,7 +251,7 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
   </aside>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwhpasht"></script><script src="../js/kiosk.js?v=mwhpasht"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwhpgogt"></script><script src="../js/kiosk.js?v=mwhpgogt"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let CFG = { scream: { threshold: 70, durationMs: 3000, dbFloor: -42, dbCeil: -6, loudWeight: .6, accWeight: .4 } };
@@ -273,8 +273,8 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
   function drawField(t) {
     if (!field._sized) fd = sizeCanvas(field);
     const W = field.width, H = field.height; fx.clearRect(0, 0, W, H);
-    const energy = windowOpen ? Math.min(1, Math.max(0, (smooth - CFG.scream.dbFloor) / (CFG.scream.dbCeil - CFG.scream.dbFloor))) : 0.14;
-    const cols = 300, rows = 30, top = H * .72, bottom = H * 1.02;
+    const energy = windowOpen ? Math.min(1, Math.max(0, (smooth - CFG.scream.dbFloor) / (CFG.scream.dbCeil - CFG.scream.dbFloor))) : 0.12;
+    const cols = 240, rows = 26, top = H * .74, bottom = H * 1.0;
     fx.globalCompositeOperation = "lighter";
     for (let j = 0; j < rows; j++) {
       const depth = j / rows;
@@ -282,21 +282,21 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
       for (let i = 0; i <= cols; i++) {
         const u = i / cols; const x = u * W;
         const side = Math.abs(u - .5) * 2;
-        const mtn = Math.pow(Math.max(0, side - .1) / .9, 1.0);
-        const w1 = Math.sin(u * 22 + t * .0014 + depth * 3) * (14 + 60 * energy);
-        const w2 = Math.sin(u * 61 - t * .0024 + depth * 7) * (6 + 30 * energy);
-        const spike = Math.pow(Math.abs(Math.sin(u * 140 + depth * 2 + t * .001)), 3) * 40 * mtn;
-        const lift = mtn * 230 * (1 - depth * .4);
-        const y = baseY - (w1 * (0.2 + mtn) + w2 * mtn + spike + lift) * fd * (0.4 + depth * .6);
-        const a = (0.08 + 1.0 * depth) * (0.08 + mtn * 1.5) * (0.75 + energy);
-        const r = (1.2 + 2.4 * depth) * fd;
-        fx.fillStyle = `rgba(255,${40 + 70 * energy | 0},60,${Math.min(1, a).toFixed(3)})`;
+        const mtn = 0.18 + 0.82 * Math.pow(Math.max(0, side - .05) / .95, 1.2);
+        const w1 = Math.sin(u * 9 + t * .0011 + depth * 2.2) * (10 + 60 * energy);
+        const w2 = Math.sin(u * 23 - t * .0019 + depth * 5) * (4 + 26 * energy);
+        const ridge = Math.pow(Math.max(0, Math.sin(u * 3.1 + depth * 1.6 + t * .0004)), 2) * 50 * (1 - depth);
+        const lift = mtn * 190 * (1 - depth * .5);
+        const y = baseY - (w1 * (.25 + mtn) + w2 * mtn + ridge * mtn + lift) * fd * (0.35 + depth);
+        const a = (0.08 + 0.95 * depth) * (0.1 + mtn * 1.6) * (0.7 + energy);
+        const r = (1.1 + 2.5 * depth) * fd;
+        fx.fillStyle = `rgba(255,${40 + 60 * energy | 0},60,${Math.min(1, a).toFixed(3)})`;
         fx.beginPath(); fx.arc(x, y, r, 0, 7); fx.fill();
       }
     }
     fx.globalCompositeOperation = "source-over";
-    const g1 = fx.createRadialGradient(W * .08, H, 0, W * .08, H, W * .3); g1.addColorStop(0, "rgba(240,50,65,.55)"); g1.addColorStop(1, "rgba(240,50,65,0)");
-    const g2 = fx.createRadialGradient(W * .92, H, 0, W * .92, H, W * .3); g2.addColorStop(0, "rgba(240,50,65,.55)"); g2.addColorStop(1, "rgba(240,50,65,0)");
+    const g1 = fx.createRadialGradient(W * .07, H, 0, W * .07, H, W * .3); g1.addColorStop(0, "rgba(240,50,65,.5)"); g1.addColorStop(1, "rgba(240,50,65,0)");
+    const g2 = fx.createRadialGradient(W * .93, H, 0, W * .93, H, W * .3); g2.addColorStop(0, "rgba(240,50,65,.5)"); g2.addColorStop(1, "rgba(240,50,65,0)");
     fx.fillStyle = g1; fx.fillRect(0, 0, W, H); fx.fillStyle = g2; fx.fillRect(0, 0, W, H);
   }
 

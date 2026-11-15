@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Scream & Win · Studio Cream · Wendy Fest</title><link rel="icon" href="../assets/cameo.png">
-<link rel="stylesheet" href="../css/brand.css?v=mwi2m393">
+<link rel="stylesheet" href="../css/brand.css?v=mwi2pfnz">
 <style>
 /* ================= STUDIO CREAM · Scream & Win ================= */
 :root { --u:min(calc(100vw / 1440), calc(100vh / 760)); --v:var(--u); --blue:#029CD4; --red:#CD2028; --red2:#DA2A33; --red-dark:#8E141B; --ink:#1F1A1A; --cream:#F7F2EC; --blush:#F2D4D7; --cyan:#29C9E0; --line:rgba(205,32,40,.18); }
@@ -269,7 +269,7 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
   </aside>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwi2m393"></script><script src="../js/kiosk.js?v=mwi2m393"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwi2pfnz"></script><script src="../js/kiosk.js?v=mwi2pfnz"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let CFG = { scream: { threshold: 70, durationMs: 3000, dbFloor: -42, dbCeil: -6, loudWeight: .6, accWeight: .4 } };
@@ -358,38 +358,34 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
     if (marker) { ctx.fillStyle = "#29C9E0"; ctx.beginPath(); ctx.arc(maxX, (H - maxH) / 2 - 7 * fd, 5 * fd, 0, 7); ctx.fill(); ctx.strokeStyle = "#fff"; ctx.lineWidth = 2 * fd; ctx.stroke(); }
   }
 
-  // Register-screen wave: a scrolling voice trace. Syllables enter on the left and travel right;
-  // with a live mic the guest's own voice scrolls through. Every fourth bar is Wendy's blue.
-  const VOICE = { n: 64, hist: [], count: 0, last: 0, frac: 0, sylLeft: 0, sylLen: 1, amp: 0, gap: 0, step: 70 };
-  for (let i = 0; i < VOICE.n; i++) VOICE.hist.push(.06);
+  // Register-screen wave (option B): one hill of rounded bars, every fourth bar Wendy's blue.
+  // Gentle voice ripples drift slowly left → right through the hill; a live mic feeds them.
+  const VOICE = { n: 64, hist: [], count: 0, last: 0, sylLeft: 0, sylLen: 1, amp: 0, gap: 0, step: 230 };
+  for (let i = 0; i < VOICE.n; i++) { VOICE.hist.push(nextVoiceSample()); VOICE.count++; }
   function nextVoiceSample() {
-    if (analyser) { const lv = dbToPct(currentDb()) / 100; if (lv > .12) return Math.min(1, lv * (.85 + Math.random() * .3)); }
-    if (VOICE.gap > 0) { VOICE.gap--; return .05 + Math.random() * .05; }
+    if (analyser) { const lv = dbToPct(currentDb()) / 100; if (lv > .12) return Math.min(1, .45 + lv * .6); }
+    if (VOICE.gap > 0) { VOICE.gap--; return .35 + Math.random() * .06; }
     if (VOICE.sylLeft <= 0) {
-      if (Math.random() < .3) VOICE.gap = 2 + Math.floor(Math.random() * 3);          // pause between words
-      VOICE.sylLen = 5 + Math.floor(Math.random() * 6); VOICE.sylLeft = VOICE.sylLen; VOICE.amp = .4 + Math.random() * .6;
-      if (VOICE.gap > 0) return .06;
+      if (Math.random() < .2) VOICE.gap = 1 + Math.floor(Math.random() * 2);
+      VOICE.sylLen = 4 + Math.floor(Math.random() * 4); VOICE.sylLeft = VOICE.sylLen; VOICE.amp = .55 + Math.random() * .45;
     }
     const k = (VOICE.sylLen - VOICE.sylLeft + .5) / VOICE.sylLen; VOICE.sylLeft--;
-    return Math.max(.06, VOICE.amp * Math.pow(Math.sin(Math.PI * k), .8) * (.86 + Math.random() * .2));
+    return .4 + .6 * VOICE.amp * Math.sin(Math.PI * k) * (.9 + Math.random() * .1);
   }
   function drawHill(c) {
     if (!c._sized) sizeCanvas(c);
     const ctx = c.getContext("2d"), W = c.width, H = c.height, now = performance.now(); ctx.clearRect(0, 0, W, H);
     if (!VOICE.last) VOICE.last = now;
     while (now - VOICE.last >= VOICE.step) { VOICE.hist.pop(); VOICE.hist.unshift(nextVoiceSample()); VOICE.count++; VOICE.last += VOICE.step; }
-    const frac = (now - VOICE.last) / VOICE.step, n = VOICE.n, gap = W / n, w = gap * .5;
+    const ease = (q) => q * q * (3 - 2 * q), frac = ease((now - VOICE.last) / VOICE.step), n = VOICE.n, gap = W / n, w = gap * .5;
     for (let i = 0; i < n; i++) {
       const x = (i + frac) * gap + gap * .25, u = (x + w / 2) / W;
       if (u < 0 || u > 1) continue;
-      const edge = Math.min(1, u / .14, (1 - u) / .14), ease = edge * edge * (3 - 2 * edge);
-      const bell = .6 + .4 * Math.exp(-Math.pow((u - .55) / .3, 2));
-      const v = VOICE.hist[i], h = Math.max(w, H * .94 * v * bell * (.25 + .75 * ease)), a = .2 + .8 * ease;
+      const env = Math.exp(-Math.pow((u - .58) / .27, 2)) * .95 + Math.exp(-Math.pow((u - .22) / .12, 2)) * .25 + .05;
+      const v = Math.min(1, env * VOICE.hist[i] * 1.12), h = Math.max(w, v * H * .92), a = Math.min(1, .3 + env * 1.2);
       const blue = (VOICE.count - i) % 4 === 0;
-      const top = blue ? `rgba(2,156,212,${a.toFixed(2)})` : `rgba(205,32,40,${a.toFixed(2)})`;
-      const base = blue ? `rgba(150,210,236,${(a * .12).toFixed(2)})` : `rgba(236,150,158,${(a * .12).toFixed(2)})`;
-      const g = ctx.createLinearGradient(0, H - h, 0, H); g.addColorStop(0, top); g.addColorStop(.55, top.replace(/[\d.]+\)$/, (a * .75).toFixed(2) + ")")); g.addColorStop(1, base);
-      ctx.fillStyle = g; ctx.beginPath(); ctx.roundRect(x, H - h, w, h + w, w / 2); ctx.fill();
+      ctx.fillStyle = blue ? `rgba(2,156,212,${a.toFixed(2)})` : `rgba(205,32,40,${a.toFixed(2)})`;
+      ctx.beginPath(); ctx.roundRect(x, H - h, w, h + w, w / 2); ctx.fill();
     }
   }
 

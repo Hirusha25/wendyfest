@@ -1,0 +1,40 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>[DEMO] C</title><link rel="stylesheet" href="shared.css"><style>
+.stage { background:radial-gradient(80% 70% at 50% 40%, #2A0A0E 0%, #120D0E 50%, #0B0909 100%); }
+.band { position:absolute; left:-10vw; right:-10vw; top:50%; transform:translateY(-50%) rotate(-4deg); z-index:1; white-space:nowrap; overflow:hidden; opacity:.14; }
+.band span { display:inline-block; font:italic 900 34vmin/1 Poppins; text-transform:uppercase; letter-spacing:-.03em; color:transparent; -webkit-text-stroke:.3vmin #fff; animation:slide 30s linear infinite; padding-right:6vmin; }
+@keyframes slide { to { transform:translateX(-50%) } }
+.wrap { position:absolute; inset:0; display:grid; grid-template-columns:auto auto; align-items:center; justify-content:center; gap:6vw; padding-bottom:6vh; }
+.h { font-size:19vmin; } .h .red { color:var(--red-hi); }
+.sub { font-size:3.6vmin; font-weight:600; margin-top:1.6vmin; } .sub b { font-weight:900; }
+.cameo { width:40vmin; filter:drop-shadow(0 3vmin 6vmin rgba(255,59,69,.45)); animation:bob 3s ease-in-out infinite; }
+@keyframes bob { 50% { transform:translateY(-1.5vmin) rotate(2deg) } }
+.waves { position:absolute; left:-12vmin; top:30%; width:12vmin; height:12vmin; }
+.waves i { position:absolute; inset:0; border:.5vmin solid rgba(255,255,255,.85); border-radius:50%; border-color:rgba(255,255,255,.85) transparent transparent transparent; transform:rotate(-90deg); animation:wv 1.2s ease-out infinite; }
+.waves i:nth-child(2) { inset:2.4vmin; animation-delay:.2s; } .waves i:nth-child(3) { inset:4.8vmin; animation-delay:.4s; }
+@keyframes wv { 0% { opacity:0 } 40% { opacity:1 } 100% { opacity:0 } }
+.ticker { position:absolute; left:0; right:0; bottom:6.2vmin; background:var(--red); color:#fff; padding:1.2vmin 0; overflow:hidden; white-space:nowrap; z-index:4; font:italic 900 2.4vmin/1 Poppins; text-transform:uppercase; letter-spacing:.08em; }
+.ticker span { display:inline-block; animation:tk 18s linear infinite; padding-right:4vmin; } .ticker em { font-style:normal; color:var(--blush); margin:0 2vmin; }
+@keyframes tk { to { transform:translateX(-50%) } }
+.row { display:flex; align-items:center; gap:4vmin; margin-top:3.6vmin; }
+.qr.sm { padding:1.2vmin; } .qr.sm img { width:13vmin; height:13vmin; } .qr.sm b { font-size:1.6vmin; }
+</style></head><body><div class="stage">
+<canvas class="fx" id="fx"></canvas>
+<div class="band"><span>Scream &amp; Win · Scream &amp; Win · Scream &amp; Win · Scream &amp; Win · </span></div>
+<div class="brand"><img src="../assets/wendys-horiz-white.svg"><i></i><b>Wendy Fest</b></div>
+<div class="wrap z">
+  <div><div class="eyebrow">Interactive experience</div><h1 class="display h" style="margin-top:2vmin">Scream<br><span class="red">&amp; Win</span></h1><div class="sub">Say <b>WENDY’S.</b> Make some noise.</div>
+    <div class="row"><button class="btn">Enter your code <i></i></button><div class="qr sm"><img id="qr"><b>Scan to<br>register</b></div></div></div>
+  <div style="position:relative"><div class="waves"><i></i><i></i><i></i></div><img class="cameo" src="../assets/cameo.png"></div>
+</div>
+<div class="ticker"><span>Yell “Wendy’s” <em>•</em> Beat 70 on the meter <em>•</em> Win a reward code <em>•</em> One scream per guest <em>•</em> Yell “Wendy’s” <em>•</em> Beat 70 on the meter <em>•</em> Win a reward code <em>•</em> One scream per guest <em>•</em> </span></div>
+<div class="foot"><span>© 2026 Wendy’s Sri Lanka</span><span>Station A</span><span>Scream &amp; Win</span></div>
+</div>
+<script>
+document.getElementById("qr").src="/api/qr?text="+encodeURIComponent(location.origin+"/register");
+const c=document.getElementById("fx"),x=c.getContext("2d");const d=Math.min(2,devicePixelRatio||1);function sz(){c.width=innerWidth*d;c.height=innerHeight*d}sz();addEventListener("resize",sz);
+function f(t){const W=c.width,H=c.height;x.clearRect(0,0,W,H);x.globalCompositeOperation="lighter";
+for(let j=0;j<16;j++){const dp=j/16;for(let i=0;i<=200;i++){const u=i/200,xx=u*W;const side=Math.abs(u-.5)*2;const m=.3+.7*Math.pow(side,1.2);
+const y=H*(.74+dp*.2)-(Math.sin(u*9+t*.0011+dp*2)*12+Math.sin(u*23-t*.0019+dp*5)*5+m*120*(1-dp*.5))*d*(.35+dp);
+x.fillStyle=`rgba(255,55,70,${((.05+.6*dp)*(.1+m*1.1)).toFixed(3)})`;x.beginPath();x.arc(xx,y,(1+2*dp)*d,0,7);x.fill();}}
+x.globalCompositeOperation="source-over";requestAnimationFrame(f)}requestAnimationFrame(f);
+</script></body></html>

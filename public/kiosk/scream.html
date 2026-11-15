@@ -13,15 +13,17 @@ body { margin:0; background:var(--ink); color:#fff; font-family:Poppins,'Noto Sa
   background: radial-gradient(90% 70% at 50% 100%, #3A0D12 0%, #1B1012 40%, #0F0C0C 75%, #0B0909 100%); }
 /* angled red side panels (3D) */
 .panel { position:absolute; top:0; bottom:0; width:14vw; pointer-events:none; z-index:1; }
-.panel.l { left:0; background:linear-gradient(100deg, #E22A33 0%, #BD1F28 50%, #8A151C 100%); clip-path:polygon(0 0, 18% 0, 100% 100%, 0 100%); }
+.panel.l { left:0; width:24vw; background:linear-gradient(98deg, #E12A33 0%, #C81F28 20%, #8E131B 40%, #4A0C11 62%, #24090C 85%); clip-path:polygon(0 4%, 0 100%, 62% 100%); }
 .panel.l::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(255,150,150,.22), transparent 30%, rgba(0,0,0,.5)); clip-path:inherit; }
-.panel.r { right:0; background:linear-gradient(260deg, #E22A33 0%, #BD1F28 50%, #8A151C 100%); clip-path:polygon(82% 0, 100% 0, 100% 100%, 0 100%); }
+.panel.r { right:0; width:24vw; background:linear-gradient(262deg, #E12A33 0%, #C81F28 18%, #8E131B 40%, #4A0C11 62%, #24090C 85%); clip-path:polygon(38% 0, 100% 0, 100% 100%, 81% 100%); }
 .panel.r::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(255,150,150,.22), transparent 30%, rgba(0,0,0,.5)); clip-path:inherit; }
 .panel-glow { position:absolute; top:0; bottom:0; width:16vw; pointer-events:none; z-index:1; }
 .panel-glow.l { left:0; background:linear-gradient(90deg, rgba(205,32,40,.28), transparent 75%); }
 .panel-glow.r { right:0; background:linear-gradient(270deg, rgba(205,32,40,.28), transparent 75%); }
-.panel::before { content:""; position:absolute; inset:0; clip-path:inherit; box-shadow:inset 0 0 0 .3vmin rgba(255,120,130,.45); }
-.rings { position:absolute; inset:0; pointer-events:none; z-index:1; opacity:.85;
+.panel::before { content:""; position:absolute; inset:0; clip-path:inherit; box-shadow:inset 0 0 0 .3vmin rgba(255,120,130,.25); }
+.rings { position:absolute; inset:0; pointer-events:none; z-index:1; opacity:.85; animation:breathe 6s ease-in-out infinite; }
+@keyframes breathe { 50% { opacity:.5 } }
+.rings {
   background:repeating-radial-gradient(circle at 93% 6%, transparent 0 5.2vmin, rgba(255,70,80,.55) 5.2vmin 5.5vmin);
   mask:radial-gradient(circle at 93% 6%, transparent 0 8vmin, #000 14vmin, rgba(0,0,0,.6) 30vmin, transparent 46vmin); -webkit-mask:radial-gradient(circle at 93% 6%, transparent 0 8vmin, #000 14vmin, rgba(0,0,0,.6) 30vmin, transparent 46vmin); }
 #field { position:absolute; left:0; top:0; width:100vw; height:100vh; z-index:1; pointer-events:none; }
@@ -66,22 +68,22 @@ body { margin:0; background:var(--ink); color:#fff; font-family:Poppins,'Noto Sa
 .help i { width:2.6vmin; height:2.6vmin; border-radius:50%; border:.2vmin solid currentColor; display:grid; place-items:center; font-style:normal; font-weight:800; font-size:1.6vmin; }
 .vr { width:.2vmin; height:5vmin; background:rgba(255,255,255,.3); }
 
-/* idle */
+/* idle · approved cover (Option 3): centred, 3D title, no QR */
 .idle.on { display:block; padding:0; }
-.idle .left { position:absolute; left:13vw; width:50vw; top:16vh; display:grid; gap:0; justify-items:center; text-align:center; }
-.idle .eyebrow { font-size:2.1vmin; letter-spacing:.36em; margin-bottom:1.2vh; }
-.idle .eyebrow::before, .idle .eyebrow::after { width:7vmin; }
-.idle .h1 { font-size:17.5vmin; line-height:.82; letter-spacing:-.03em; }
-.idle .h1 .l1 { display:block; }
-.idle .h1 .l2 { display:block; margin-left:-4vmin; }
-.idle .h1 .amp { color:var(--red-hi); margin-right:.8vmin; }
-.idle .sub { font-size:3.9vmin; letter-spacing:-.01em; margin-top:1.2vh; font-style:italic; }
-.idle .cta-wrap { position:absolute; left:45vw; top:73vh; transform:translateX(-50%); z-index:6; }
-.idle .btn { height:9.2vmin; font-size:3.2vmin; padding:0 3vmin 0 5.6vmin; }
-.idle .btn::after { width:4.8vmin; height:4.8vmin; }
-.idle .qrcard { position:absolute; left:67vw; top:19vh; width:19vw; padding:2.2vmin 1.8vmin 2.4vmin; border-radius:2.6vmin; background:#fff; }
-.idle .qrcard img { width:15.6vw; height:15.6vw; }
-.idle .qrcard b { font-size:2.9vmin; letter-spacing:.02em; line-height:1.1; margin-top:.6vmin; }
+.idle .left { position:absolute; left:50%; transform:translateX(-50%); width:80vw; top:19vh; display:grid; gap:0; justify-items:center; text-align:center; }
+.idle .eyebrow { font-size:2.4vmin; letter-spacing:.34em; margin-bottom:1.6vh; color:#F1EAE0; }
+.idle .eyebrow::before, .idle .eyebrow::after { width:8vmin; height:.25vmin; background:rgba(255,255,255,.7); }
+.idle .h1 { font-size:12.3vw; line-height:.78; letter-spacing:-.025em; text-shadow:none; }
+.idle .h1 .l1 { display:block; color:#F7F2EA; text-shadow:0 .25vw 0 #9A9289, 0 .5vw 0 #5E5852, 0 1.2vw 1.8vw rgba(0,0,0,.6); }
+.idle .h1 .l2 { display:block; }
+.idle .h1 .amp { color:#B81E26; margin-right:.3em; }
+.idle .h1 .red { color:#E8303A; text-shadow:0 .25vw 0 #8E1219, 0 .5vw 0 #4E0A0E, 0 1.2vw 1.8vw rgba(0,0,0,.6); }
+.idle .sub { font-size:2.75vw; font-weight:600; font-style:italic; letter-spacing:-.01em; margin-top:2vh; color:#F7F2EA; } .idle .sub b { font-weight:800; }
+.idle .cta-wrap { position:absolute; left:0; right:0; top:81vh; display:flex; justify-content:center; z-index:6; }
+.idle .btn { height:10vmin; font-size:3.4vmin; padding:0 3.4vmin 0 6vmin; gap:2.4vmin; background:linear-gradient(180deg,#F0343E 0%,#D8232C 55%,#B5181F 100%); box-shadow:0 0 5vmin rgba(232,48,58,.55), 0 .8vmin 1.8vmin rgba(0,0,0,.6), inset 0 .2vmin 0 rgba(255,255,255,.45), inset 0 -.4vmin 0 rgba(0,0,0,.25); animation:glow 2.2s ease-in-out infinite; }
+.idle .btn::after { width:4.8vmin; height:4.8vmin; background:#fff; -webkit-mask:none; mask:none; -webkit-mask-composite:initial; background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23D8232C' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center/55% no-repeat; }
+@keyframes glow { 50% { box-shadow:0 0 9vmin rgba(232,48,58,.85), 0 .8vmin 1.8vmin rgba(0,0,0,.6), inset 0 .2vmin 0 rgba(255,255,255,.45), inset 0 -.4vmin 0 rgba(0,0,0,.25); } }
+.idle .mono { position:absolute; right:4vw; bottom:3vh; width:10vw; opacity:.14; filter:grayscale(1) brightness(3); pointer-events:none; }
 
 /* code */
 .boxes { display:flex; gap:1.6vmin; justify-content:center; }
@@ -169,7 +171,7 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
       <h1 class="display h1 rise-2"><span class="l1">Scream</span><span class="l2"><span class="amp">&amp;</span><span class="red">Win</span></span></h1>
       <div class="sub rise-3">Say <b>WENDY’S.</b> Make some noise.</div>
     </div>
-    <div class="card qrcard rise-2"><img id="qr-reg" alt="QR"><b>Scan to<br>register</b></div>
+    <img class="mono" src="/assets/cameo.png" alt="">
     <div class="cta-wrap rise-3"><button class="btn" id="start">Enter your code</button></div>
   </section>
 
@@ -258,8 +260,7 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
   let guest = null, audio = null, analyser = null, buf = null, fbuf = null, stream = null, rafId = null;
   let peakDb = -100, transcript = "", recog = null, windowOpen = false, smooth = -100, gaugeShown = 0, mode = "idle";
   $("corner-l").textContent = "Station " + K.station;
-  $("qr-reg").src = `/api/qr?text=${encodeURIComponent(location.origin + "/register")}`;
-  fetch("/api/config").then((r) => r.json()).then((c) => { CFG = c; $("qr-reg").src = `/api/qr?text=${encodeURIComponent(c.baseUrl + "/register")}`; $("thr").textContent = c.scream.threshold; $("thr-info").textContent = `Win at ${c.scream.threshold} · loud ${Math.round(c.scream.loudWeight * 100)}% / clarity ${Math.round(c.scream.accWeight * 100)}% · dB ${c.scream.dbFloor}→${c.scream.dbCeil}`; });
+  fetch("/api/config").then((r) => r.json()).then((c) => { CFG = c; $("thr").textContent = c.scream.threshold; $("thr-info").textContent = `Win at ${c.scream.threshold} · loud ${Math.round(c.scream.loudWeight * 100)}% / clarity ${Math.round(c.scream.accWeight * 100)}% · dB ${c.scream.dbFloor}→${c.scream.dbCeil}`; });
 
   // ---------- PIN ----------
   async function unlock() { if (await K.login($("pin").value)) goIdle(); else { $("pin").classList.add("err"); setTimeout(() => $("pin").classList.remove("err"), 500); $("pin").value = ""; } }

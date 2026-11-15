@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Scream & Win · Studio Cream · Wendy Fest</title><link rel="icon" href="../assets/cameo.png">
-<link rel="stylesheet" href="../css/brand.css?v=mwi2evd7">
+<link rel="stylesheet" href="../css/brand.css?v=mwi2m393">
 <style>
 /* ================= STUDIO CREAM · Scream & Win ================= */
 :root { --u:min(calc(100vw / 1440), calc(100vh / 760)); --v:var(--u); --blue:#029CD4; --red:#CD2028; --red2:#DA2A33; --red-dark:#8E141B; --ink:#1F1A1A; --cream:#F7F2EC; --blush:#F2D4D7; --cyan:#29C9E0; --line:rgba(205,32,40,.18); }
@@ -20,7 +20,6 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
 .step i { width:calc(56 * var(--u)); height:calc(56 * var(--u)); border-radius:50%; background:#fff; color:var(--red); display:grid; place-items:center; font:900 calc(30 * var(--u))/1 Poppins, sans-serif; font-style:normal; }
 .foot { position:absolute; left:0; right:0; bottom:0; height:calc(44 * var(--u)); z-index:5; display:flex; justify-content:space-between; align-items:center; padding:0 calc(70 * var(--u)) 0 calc(90 * var(--u)); background:#493533; color:#D9CFCB; font-size:calc(15 * var(--u)); letter-spacing:.14em; text-transform:uppercase; font-weight:700; }
 .foot .c { display:flex; align-items:center; gap:calc(12 * var(--u)); } .foot .c img { height:calc(24 * var(--u)); } .foot .links { display:flex; gap:calc(22 * var(--u)); } .foot a { color:#F2D4D7; text-decoration:none; border-bottom:1px solid rgba(242,212,215,.5); }
-.gear { position:absolute; bottom:calc(56 * var(--u)); right:3vmin; width:3vmin; height:3vmin; opacity:.25; cursor:pointer; z-index:60; } .gear:hover { opacity:.7; }
 /* screens */
 .screen { position:absolute; left:0; right:0; top:calc(105 * var(--v)); bottom:calc(44 * var(--u)); z-index:4; display:none; padding:4vh 6vw 7vh; align-content:center; justify-items:center; text-align:center; }
 .screen.on { display:grid; }
@@ -64,7 +63,6 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
 .idle canvas.wave { position:absolute; left:calc(50% - 687 * var(--u)); bottom:0; width:calc(840 * var(--u)); height:calc(170 * var(--u)); }
 .idle .qrcard { position:absolute; left:calc(978 * var(--u)); top:calc(35 * var(--u)); width:calc(350 * var(--u)); height:calc(372 * var(--u)); padding:calc(18 * var(--u)) calc(20 * var(--u)) calc(16 * var(--u)); border-radius:calc(24 * var(--u)); gap:calc(6 * var(--u)); align-content:start; box-shadow:0 calc(14 * var(--u)) calc(40 * var(--u)) rgba(80,20,20,.16), 0 0 0 .15vmin rgba(205,32,40,.08); }
 .idle .qrcard img { width:calc(292 * var(--u)); height:calc(292 * var(--u)); } .idle .qrcard b { font-size:calc(22 * var(--u)); letter-spacing:.14em; white-space:nowrap; } .idle .qrcard b::after { width:calc(90 * var(--u)); height:calc(4 * var(--u)); margin-top:calc(7 * var(--u)); }
-.stage:has(#s-idle.on) .gear { display:none; }
 .idle .cta-wrap { position:absolute; left:calc(893 * var(--u)); top:calc(435 * var(--u)); }
 .idle .btn { width:calc(505 * var(--u)); height:calc(90 * var(--u)); font-size:calc(36 * var(--u)); white-space:nowrap; padding:0 calc(20 * var(--u)) 0 calc(28 * var(--u)); gap:calc(26 * var(--u)); justify-content:center; letter-spacing:.02em; background:linear-gradient(90deg, #DB323B 0%, #CA242D 55%, #AE1C24 100%); box-shadow:0 calc(7 * var(--u)) 0 #7E1016, 0 calc(16 * var(--u)) calc(30 * var(--u)) -1vmin rgba(205,32,40,.4), inset 0 .2vmin 0 rgba(255,255,255,.35); }
 .idle .btn::after { width:calc(50 * var(--u)); height:calc(50 * var(--u)); }
@@ -158,8 +156,8 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
 @keyframes shake { 0%,100% { transform:translateX(0) } 25% { transform:translateX(-1vmin) } 75% { transform:translateX(1vmin) } }
 .flash { position:absolute; inset:0; background:#fff; opacity:0; pointer-events:none; z-index:70; }
 .flash.go { animation:flash .5s ease; } @keyframes flash { 0% { opacity:.9 } 100% { opacity:0 } }
-.settings { position:absolute; top:0; right:0; width:44vmin; height:100%; background:#1F1A1A; color:#fff; padding:4vmin; transform:translateX(100%); transition:transform .3s; z-index:80; font-size:1.8vmin; overflow:auto; box-shadow:-2vmin 0 5vmin rgba(0,0,0,.4); }
-.settings.open { transform:none; }
+.settings { position:absolute; top:0; right:0; width:44vmin; height:100%; background:#1F1A1A; color:#fff; padding:4vmin; transform:translateX(100%); transition:transform .3s; z-index:80; font-size:1.8vmin; overflow:auto; box-shadow:none; }
+.settings.open { transform:none; box-shadow:-2vmin 0 5vmin rgba(0,0,0,.4); }
 .settings .eyebrow { color:#fff; } .settings .eyebrow::before, .settings .eyebrow::after { display:none; }
 .settings label { display:block; margin:1.6vmin 0 .4vmin; font-weight:700; }
 .settings select, .settings input { width:100%; padding:1vmin; border-radius:1vmin; border:0; font-size:1.8vmin; }
@@ -260,7 +258,6 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
   </div></section>
 
   <footer class="foot"><span class="c"><img src="../assets/cameo.png" alt="">© 2026 Wendy’s Sri Lanka</span><span id="corner-l">Station A</span><span class="links"><a href="#">Terms</a><a href="#">Privacy</a></span></footer>
-  <svg class="gear" viewBox="0 0 24 24" fill="#1F1A1A" onclick="document.getElementById('settings').classList.toggle('open')"><path d="M12 8a4 4 0 100 8 4 4 0 000-8zm9 4a7 7 0 00-.1-1.2l2-1.5-2-3.5-2.4 1a7 7 0 00-2-1.2L16 3H8l-.5 2.6a7 7 0 00-2 1.2l-2.4-1-2 3.5 2 1.5A7 7 0 003 12a7 7 0 00.1 1.2l-2 1.5 2 3.5 2.4-1a7 7 0 002 1.2L8 21h8l.5-2.6a7 7 0 002-1.2l2.4 1 2-3.5-2-1.5c.1-.4.1-.8.1-1.2z"/></svg>
   <aside class="settings" id="settings">
     <div class="eyebrow" style="justify-content:flex-start">Station settings</div>
     <label>Microphone (this screen)</label><select id="mic"></select>
@@ -272,7 +269,7 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
   </aside>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwi2evd7"></script><script src="../js/kiosk.js?v=mwi2evd7"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwi2m393"></script><script src="../js/kiosk.js?v=mwi2m393"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let CFG = { scream: { threshold: 70, durationMs: 3000, dbFloor: -42, dbCeil: -6, loudWeight: .6, accWeight: .4 } };
@@ -450,6 +447,10 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
       const w = el.getBoundingClientRect().width / u; if (w > +el.dataset.fit) el.style.fontSize = `calc(${(fs * el.dataset.fit / w).toFixed(2)} * var(--u))`;
     });
   }
+  const toggleSettings = () => $("settings").classList.toggle("open");
+  document.addEventListener("keydown", (e) => { if ((e.key === "s" || e.key === "S") && !e.target.matches("input,select,textarea")) toggleSettings(); });
+  let taps = [];
+  document.querySelector(".step").addEventListener("click", () => { const now = Date.now(); taps = taps.filter((t) => now - t < 1500).concat(now); if (taps.length >= 3) { taps = []; toggleSettings(); } });
   document.fonts.ready.then(fitText); addEventListener("resize", fitText);
 
   // ---------- rings ----------

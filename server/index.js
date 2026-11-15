@@ -75,6 +75,7 @@ app.get("/p/:token", (req, res) => {
 app.get("/r/:token", (req, res) => res.sendFile(page("roast.html")));
 app.get("/kiosk", (req, res) => res.sendFile(page("kiosk/index.html")));
 app.get("/kiosk/scream", (req, res) => res.sendFile(page("kiosk/scream.html")));
+app.get("/kiosk/scream-cream", (req, res) => res.sendFile(page("kiosk/scream-cream.html")));
 app.get("/kiosk/roast", (req, res) => res.sendFile(page("kiosk/roast.html")));
 app.get("/admin", (req, res) => res.sendFile(page("admin.html")));
 

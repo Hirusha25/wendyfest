@@ -70,7 +70,7 @@ body { margin:0; background:var(--ink); color:#fff; font-family:Poppins,'Noto Sa
 
 /* idle · approved cover (Option 3): centred, 3D title, no QR */
 .idle.on { display:block; padding:0; }
-.idle .left { position:absolute; left:50%; transform:translateX(-50%); width:80vw; top:19vh; display:grid; gap:0; justify-items:center; text-align:center; }
+.idle .left { position:absolute; left:50%; transform:translateX(-50%); width:80vw; top:21vh; display:grid; gap:0; justify-items:center; text-align:center; }
 .idle .eyebrow { font-size:2.4vmin; letter-spacing:.34em; margin-bottom:1.6vh; color:#F1EAE0; }
 .idle .eyebrow::before, .idle .eyebrow::after { width:8vmin; height:.25vmin; background:rgba(255,255,255,.7); }
 .idle .h1 { font-size:12.3vw; line-height:.78; letter-spacing:-.025em; text-shadow:none; }
@@ -83,6 +83,8 @@ body { margin:0; background:var(--ink); color:#fff; font-family:Poppins,'Noto Sa
 .idle .btn { height:10vmin; font-size:3.4vmin; padding:0 3.4vmin 0 6vmin; gap:2.4vmin; background:linear-gradient(180deg,#F0343E 0%,#D8232C 55%,#B5181F 100%); box-shadow:0 0 5vmin rgba(232,48,58,.55), 0 .8vmin 1.8vmin rgba(0,0,0,.6), inset 0 .2vmin 0 rgba(255,255,255,.45), inset 0 -.4vmin 0 rgba(0,0,0,.25); animation:glow 2.2s ease-in-out infinite; }
 .idle .btn::after { width:4.8vmin; height:4.8vmin; background:#fff; -webkit-mask:none; mask:none; -webkit-mask-composite:initial; background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23D8232C' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center/55% no-repeat; }
 @keyframes glow { 50% { box-shadow:0 0 9vmin rgba(232,48,58,.85), 0 .8vmin 1.8vmin rgba(0,0,0,.6), inset 0 .2vmin 0 rgba(255,255,255,.45), inset 0 -.4vmin 0 rgba(0,0,0,.25); } }
+.stage:has(#s-idle.on) .brand { left:50%; transform:translateX(-50%); top:5vmin; }
+.stage:has(#s-idle.on) .brand img { height:7vmin; } .stage:has(#s-idle.on) .brand b { font-size:2.4vmin; }
 .idle .mono { position:absolute; right:4vw; bottom:3vh; width:10vw; opacity:.14; filter:grayscale(1) brightness(3); pointer-events:none; }
 
 /* code */

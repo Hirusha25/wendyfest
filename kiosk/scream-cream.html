@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Scream & Win · Studio Cream · Wendy Fest</title><link rel="icon" href="../assets/cameo.png">
-<link rel="stylesheet" href="../css/brand.css?v=mwhvn2n4">
+<link rel="stylesheet" href="../css/brand.css?v=mwhvrvvg">
 <style>
 /* ================= STUDIO CREAM · Scream & Win ================= */
-:root { --u:calc(100vw / 1495); --v:calc(100vh / 668); --red:#CD2028; --red2:#DA2A33; --red-dark:#8E141B; --ink:#1F1A1A; --cream:#F7F2EC; --blush:#F2D4D7; --cyan:#29C9E0; --line:rgba(205,32,40,.18); }
+:root { --u:calc(100vw / 1495); --v:var(--u); --red:#CD2028; --red2:#DA2A33; --red-dark:#8E141B; --ink:#1F1A1A; --cream:#F7F2EC; --blush:#F2D4D7; --cyan:#29C9E0; --line:rgba(205,32,40,.18); }
 html, body { height:100%; overflow:hidden; }
 body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,'Noto Sans Sinhala','Noto Sans Tamil',system-ui,sans-serif; user-select:none; cursor:default; }
 .stage { position:relative; width:100vw; height:100vh; overflow:hidden; background:var(--cream); }
 .stage::before { content:""; position:absolute; inset:0; background:radial-gradient(60% 55% at 25% 105%, rgba(205,32,40,.09), transparent 70%), radial-gradient(50% 60% at 100% 50%, rgba(205,32,40,.05), transparent 70%), linear-gradient(180deg, #FBF8F3, #F6F0EA); pointer-events:none; }
 #field { display:none; }
 /* header bar */
-.hdr { position:absolute; top:0; left:0; right:0; height:calc(105 * var(--v)); background:linear-gradient(180deg,#D8262F,#C21E27); display:flex; align-items:center; justify-content:space-between; padding:0 calc(70 * var(--u)) 0 calc(90 * var(--u)); z-index:5; box-shadow:0 .4vmin 2vmin rgba(120,0,10,.22); }
+.hdr { position:absolute; top:0; left:0; right:0; height:calc(105 * var(--v)); background:linear-gradient(90deg, #DB323B 0%, #CF2730 40%, #BD2028 70%, #A51A22 100%); display:flex; align-items:center; justify-content:space-between; padding:0 calc(70 * var(--u)) 0 calc(90 * var(--u)); z-index:5; box-shadow:0 .4vmin 2vmin rgba(120,0,10,.22), inset 0 -.3vmin 0 rgba(0,0,0,.12); }
 .brand { display:flex; align-items:center; gap:calc(30 * var(--u)); } .brand img { height:calc(58 * var(--v)); width:auto; } .brand i { width:.2vmin; height:calc(44 * var(--v)); background:rgba(255,255,255,.6); }
 .brand b { font:italic 800 calc(26 * var(--u))/1 Poppins, sans-serif; letter-spacing:.22em; text-transform:uppercase; color:#fff; }
 .step { display:flex; align-items:center; gap:calc(26 * var(--u)); font:italic 800 calc(26 * var(--u))/1 Poppins, sans-serif; letter-spacing:.2em; text-transform:uppercase; color:#fff; }
@@ -51,21 +51,21 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
 .help::before, .help::after { content:""; width:5vmin; height:.25vmin; background:var(--red); }
 .help i { display:none; }
 .vr { width:.25vmin; height:5vmin; background:var(--line); }
-/* idle · laid out on the reference banner grid */
-.idle.on { display:block; padding:0; top:0; }
-.idle .left { position:absolute; left:calc(125 * var(--u)); top:calc(148 * var(--v)); display:grid; gap:0; justify-items:start; }
-.idle .eyebrow { justify-content:flex-start; font-size:calc(22 * var(--u)); letter-spacing:.22em; margin-left:calc(35 * var(--u)); } .idle .eyebrow::before { display:none; } .idle .eyebrow::after { width:calc(60 * var(--u)); height:calc(3 * var(--v)); margin-left:calc(22 * var(--u)); }
-.idle .h1 { font-size:calc(178 * var(--u)); line-height:.76; letter-spacing:-.035em; margin-top:calc(6 * var(--v)); }
+/* idle · laid out on the reference banner grid (1495 x 668), uniform scale */
+.idle.on { display:block; padding:0; top:calc(105 * var(--u) + (100vh - 668 * var(--u)) / 2); height:calc(563 * var(--u)); bottom:auto; }
+.idle .left { position:absolute; left:calc(125 * var(--u)); top:calc(44 * var(--u)); display:grid; gap:0; justify-items:start; }
+.idle .eyebrow { justify-content:flex-start; font-size:calc(21 * var(--u)); letter-spacing:.2em; margin-left:calc(35 * var(--u)); color:#1F1A1A; } .idle .eyebrow::before { display:none; } .idle .eyebrow::after { width:calc(58 * var(--u)); height:calc(3 * var(--u)); margin-left:calc(22 * var(--u)); }
+.idle .h1 { font-size:calc(176 * var(--u)); line-height:.77; letter-spacing:-.035em; margin-top:calc(10 * var(--u)); }
 .idle .h1 .l1, .idle .h1 .l2 { display:block; } .idle .h1 .amp { color:#B81E26; margin-right:.12em; }
 .idle .h1 .l1 { color:#1F1A1A; text-shadow:0 calc(3 * var(--u)) 0 #8E8782, 0 calc(6 * var(--u)) 0 #5E5852, 0 calc(14 * var(--u)) calc(22 * var(--u)) rgba(60,30,30,.28); }
 .idle .h1 .amp, .idle .h1 .red { text-shadow:0 calc(3 * var(--u)) 0 #8E1219, 0 calc(6 * var(--u)) 0 #4E0A0E, 0 calc(14 * var(--u)) calc(22 * var(--u)) rgba(120,20,30,.25); }
-.idle .sub { font-size:calc(43 * var(--u)); font-weight:600; margin-top:calc(10 * var(--v)); letter-spacing:-.01em; }
-.idle canvas.wave { position:absolute; left:calc(60 * var(--u)); top:calc(520 * var(--v)); width:calc(840 * var(--u)); height:calc(118 * var(--v)); }
-.idle .qrcard { position:absolute; left:calc(1005 * var(--u)); top:calc(140 * var(--v)); width:calc(350 * var(--u)); padding:calc(22 * var(--v)) calc(20 * var(--u)) calc(20 * var(--v)); border-radius:calc(24 * var(--u)); gap:calc(10 * var(--v)); box-shadow:0 calc(14 * var(--v)) calc(40 * var(--u)) rgba(80,20,20,.16), 0 0 0 .15vmin rgba(205,32,40,.08); }
-.idle .qrcard img { width:calc(296 * var(--u)); height:calc(296 * var(--u)); } .idle .qrcard b { font-size:calc(22 * var(--u)); letter-spacing:.12em; white-space:nowrap; } .idle .qrcard b::after { width:calc(90 * var(--u)); height:calc(4 * var(--v)); margin-top:calc(8 * var(--v)); }
+.idle .sub { font-size:calc(43 * var(--u)); font-weight:600; margin-top:calc(14 * var(--u)); letter-spacing:-.01em; }
+.idle canvas.wave { position:absolute; left:calc(60 * var(--u)); top:calc(420 * var(--u)); width:calc(840 * var(--u)); height:calc(118 * var(--u)); }
+.idle .qrcard { position:absolute; left:calc(1005 * var(--u)); top:calc(35 * var(--u)); width:calc(350 * var(--u)); height:calc(372 * var(--u)); padding:calc(18 * var(--u)) calc(20 * var(--u)) calc(16 * var(--u)); border-radius:calc(24 * var(--u)); gap:calc(6 * var(--u)); align-content:start; box-shadow:0 calc(14 * var(--u)) calc(40 * var(--u)) rgba(80,20,20,.16), 0 0 0 .15vmin rgba(205,32,40,.08); }
+.idle .qrcard img { width:calc(292 * var(--u)); height:calc(292 * var(--u)); } .idle .qrcard b { font-size:calc(22 * var(--u)); letter-spacing:.14em; white-space:nowrap; } .idle .qrcard b::after { width:calc(90 * var(--u)); height:calc(4 * var(--u)); margin-top:calc(7 * var(--u)); }
 .stage:has(#s-idle.on) .foot, .stage:has(#s-idle.on) .gear { display:none; }
-.idle .cta-wrap { position:absolute; left:calc(920 * var(--u)); top:calc(540 * var(--v)); }
-.idle .btn { width:calc(505 * var(--u)); height:calc(90 * var(--v)); font-size:calc(34 * var(--u)); white-space:nowrap; padding:0 calc(28 * var(--u)) 0 calc(50 * var(--u)); gap:calc(30 * var(--u)); justify-content:space-between; }
+.idle .cta-wrap { position:absolute; left:calc(920 * var(--u)); top:calc(435 * var(--u)); }
+.idle .btn { width:calc(505 * var(--u)); height:calc(90 * var(--u)); font-size:calc(36 * var(--u)); white-space:nowrap; padding:0 calc(20 * var(--u)) 0 calc(28 * var(--u)); gap:calc(26 * var(--u)); justify-content:center; letter-spacing:.02em; background:linear-gradient(90deg, #DB323B 0%, #CA242D 55%, #AE1C24 100%); box-shadow:0 calc(7 * var(--u)) 0 #7E1016, 0 calc(16 * var(--u)) calc(30 * var(--u)) -1vmin rgba(205,32,40,.4), inset 0 .2vmin 0 rgba(255,255,255,.35); }
 .idle .btn::after { width:calc(50 * var(--u)); height:calc(50 * var(--u)); }
 /* code */
 .codegrid { display:grid; grid-template-columns:1fr auto; gap:4vw; align-items:center; width:100%; text-align:left; }
@@ -163,7 +163,7 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
   <!-- IDLE -->
   <section class="screen on idle" id="s-idle">
     <div class="left">
-      <div class="eyebrow rise">Interactive experience</div>
+      <div class="eyebrow rise">Interactive LED wall experience</div>
       <h1 class="display h1 rise-2"><span class="l1">Scream</span><span class="l2"><span class="amp">&amp;</span><span class="red">Win</span></span></h1>
       <div class="sub rise-3">Say <b>WENDY’S.</b> Make some noise.</div>
     </div>
@@ -254,7 +254,7 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
   </aside>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwhvn2n4"></script><script src="../js/kiosk.js?v=mwhvn2n4"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwhvrvvg"></script><script src="../js/kiosk.js?v=mwhvrvvg"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let CFG = { scream: { threshold: 70, durationMs: 3000, dbFloor: -42, dbCeil: -6, loudWeight: .6, accWeight: .4 } };
@@ -346,14 +346,17 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
   function drawHill(c) {
     if (!c._sized) sizeCanvas(c);
     const ctx = c.getContext("2d"), W = c.width, H = c.height; ctx.clearRect(0, 0, W, H);
-    const n = 78, gap = W / n, t = performance.now();
+    const n = 84, gap = W / n, t = performance.now();
     if (analyser && fbuf) analyser.getByteFrequencyData(fbuf);
     for (let i = 0; i < n; i++) {
-      const u = (i + .5) / n, env = Math.pow(Math.sin(u * Math.PI), 1.6);
-      let v = analyser && fbuf ? Math.max(.12, fbuf[Math.floor(i / n * fbuf.length * .35)] / 255) : .3 + Math.abs(Math.sin(i * .55 + t * .003)) * .4 + Math.abs(Math.sin(i * 1.9 - t * .002)) * .3;
-      const h = Math.max(3 * fd, (.06 + .94 * env * Math.min(1, v)) * H), x = i * gap + gap * .3;
-      const g = ctx.createLinearGradient(0, H - h, 0, H); g.addColorStop(0, `rgba(205,32,40,${(.35 + .65 * env).toFixed(2)})`); g.addColorStop(1, `rgba(242,180,186,${(.3 + .4 * env).toFixed(2)})`);
-      ctx.fillStyle = g; ctx.fillRect(x, H - h, gap * .5, h);
+      const u = (i + .5) / n;
+      const env = Math.exp(-Math.pow((u - .6) / .26, 2)) * .95 + Math.exp(-Math.pow((u - .25) / .12, 2)) * .25 + .05;
+      const live = analyser && fbuf ? fbuf[Math.floor(i / n * fbuf.length * .35)] / 255 : 0;
+      const jag = .62 + .38 * Math.abs(Math.sin(i * 1.37 + t * .0025)) * (.6 + .4 * Math.abs(Math.sin(i * .41 - t * .0017)));
+      const h = Math.max(4 * fd, Math.min(1, env * jag * 1.05 + live * .6) * H), x = i * gap + gap * .27;
+      const a = Math.min(1, .3 + env * 1.2);
+      const g = ctx.createLinearGradient(0, H - h, 0, H); g.addColorStop(0, `rgba(205,32,40,${a.toFixed(2)})`); g.addColorStop(1, `rgba(232,120,130,${(a * .85).toFixed(2)})`);
+      ctx.fillStyle = g; ctx.fillRect(x, H - h, gap * .46, h);
     }
   }
 

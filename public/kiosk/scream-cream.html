@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="/css/brand.css">
 <style>
 /* ================= STUDIO CREAM · Scream & Win ================= */
-:root { --u:calc(100vw / 1440); --v:var(--u); --red:#CD2028; --red2:#DA2A33; --red-dark:#8E141B; --ink:#1F1A1A; --cream:#F7F2EC; --blush:#F2D4D7; --cyan:#29C9E0; --line:rgba(205,32,40,.18); }
+:root { --u:calc(100vw / 1440); --v:var(--u); --blue:#029CD4; --red:#CD2028; --red2:#DA2A33; --red-dark:#8E141B; --ink:#1F1A1A; --cream:#F7F2EC; --blush:#F2D4D7; --cyan:#29C9E0; --line:rgba(205,32,40,.18); }
 html, body { height:100%; overflow:hidden; }
 body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,'Noto Sans Sinhala','Noto Sans Tamil',system-ui,sans-serif; user-select:none; cursor:default; }
 .stage { position:relative; width:100vw; height:100vh; overflow:hidden; background:var(--cream); }
@@ -61,7 +61,7 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
 .idle .h1 .l1 { color:#1F1A1A; text-shadow:0 calc(3 * var(--u)) 0 #8E8782, 0 calc(6 * var(--u)) 0 #5E5852, 0 calc(14 * var(--u)) calc(22 * var(--u)) rgba(60,30,30,.28); }
 .idle .h1 .amp, .idle .h1 .red { text-shadow:0 calc(3 * var(--u)) 0 #8E1219, 0 calc(6 * var(--u)) 0 #4E0A0E, 0 calc(14 * var(--u)) calc(22 * var(--u)) rgba(120,20,30,.25); }
 .idle .sub { font-size:calc(43 * var(--u)); font-weight:600; margin-top:calc(14 * var(--u)); letter-spacing:-.01em; }
-.idle canvas.wave { position:absolute; left:calc(33 * var(--u)); top:calc(428 * var(--u)); width:calc(840 * var(--u)); height:calc(112 * var(--u)); }
+.idle canvas.wave { position:absolute; left:calc(33 * var(--u)); bottom:0; width:calc(840 * var(--u)); height:calc(170 * var(--u)); }
 .idle .qrcard { position:absolute; left:calc(978 * var(--u)); top:calc(35 * var(--u)); width:calc(350 * var(--u)); height:calc(372 * var(--u)); padding:calc(18 * var(--u)) calc(20 * var(--u)) calc(16 * var(--u)); border-radius:calc(24 * var(--u)); gap:calc(6 * var(--u)); align-content:start; box-shadow:0 calc(14 * var(--u)) calc(40 * var(--u)) rgba(80,20,20,.16), 0 0 0 .15vmin rgba(205,32,40,.08); }
 .idle .qrcard img { width:calc(292 * var(--u)); height:calc(292 * var(--u)); } .idle .qrcard b { font-size:calc(22 * var(--u)); letter-spacing:.14em; white-space:nowrap; } .idle .qrcard b::after { width:calc(90 * var(--u)); height:calc(4 * var(--u)); margin-top:calc(7 * var(--u)); }
 .stage:has(#s-idle.on) .gear { display:none; }
@@ -168,10 +168,9 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
       <h1 class="display h1 rise-2"><span class="l1">Scream</span><span class="l2"><span class="amp">&amp;</span><span class="red">Win</span></span></h1>
       <div class="sub rise-3">Say <b>WENDY’S.</b> Make some noise.</div>
     </div>
-    <canvas class="wave" id="wave-idle"></canvas>
     <div class="card qrcard rise-2"><img id="qr-reg" alt="QR"><b>Scan to register</b></div>
     <div class="cta-wrap rise-3"><button class="btn" id="start">Enter your code</button></div>
-  </div></section>
+  </div><canvas class="wave" id="wave-idle"></canvas></section>
 
   <!-- CODE -->
   <section class="screen" id="s-code"><div class="codegrid">
@@ -344,20 +343,62 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
     if (marker) { ctx.fillStyle = "#29C9E0"; ctx.beginPath(); ctx.arc(maxX, (H - maxH) / 2 - 7 * fd, 5 * fd, 0, 7); ctx.fill(); ctx.strokeStyle = "#fff"; ctx.lineWidth = 2 * fd; ctx.stroke(); }
   }
 
-  function drawHill(c) {
-    if (!c._sized) sizeCanvas(c);
-    const ctx = c.getContext("2d"), W = c.width, H = c.height; ctx.clearRect(0, 0, W, H);
-    const n = 84, gap = W / n, t = performance.now();
+  const WAVE = new URLSearchParams(location.search).get("wave") || "a";
+  function spectrum(n, t) {
     if (analyser && fbuf) analyser.getByteFrequencyData(fbuf);
+    const out = [];
     for (let i = 0; i < n; i++) {
       const u = (i + .5) / n;
-      const env = Math.exp(-Math.pow((u - .6) / .26, 2)) * .95 + Math.exp(-Math.pow((u - .25) / .12, 2)) * .25 + .05;
+      const env = Math.exp(-Math.pow((u - .58) / .27, 2)) * .95 + Math.exp(-Math.pow((u - .22) / .12, 2)) * .25 + .05;
       const live = analyser && fbuf ? fbuf[Math.floor(i / n * fbuf.length * .35)] / 255 : 0;
       const jag = .62 + .38 * Math.abs(Math.sin(i * 1.37 + t * .0025)) * (.6 + .4 * Math.abs(Math.sin(i * .41 - t * .0017)));
-      const h = Math.max(4 * fd, Math.min(1, env * jag * 1.05 + live * .6) * H), x = i * gap + gap * .27;
-      const a = Math.min(1, .3 + env * 1.2);
-      const g = ctx.createLinearGradient(0, H - h, 0, H); g.addColorStop(0, `rgba(205,32,40,${a.toFixed(2)})`); g.addColorStop(1, `rgba(232,120,130,${(a * .85).toFixed(2)})`);
-      ctx.fillStyle = g; ctx.fillRect(x, H - h, gap * .46, h);
+      out.push({ u, env, v: Math.min(1, env * jag * 1.05 + live * .6) });
+    }
+    return out;
+  }
+  function drawHill(c) {
+    if (!c._sized) sizeCanvas(c);
+    const ctx = c.getContext("2d"), W = c.width, H = c.height, t = performance.now(); ctx.clearRect(0, 0, W, H);
+    const R = "205,32,40", B = "2,156,212";
+    if (WAVE === "a") {            // A · bars on the ground, blue caps on the peaks
+      const n = 84, gap = W / n, sp = spectrum(n, t);
+      for (const [i, { env, v }] of sp.entries()) {
+        const h = Math.max(4 * fd, v * H * .92), x = i * gap + gap * .27, a = Math.min(1, .3 + env * 1.2);
+        const g = ctx.createLinearGradient(0, H - h, 0, H); g.addColorStop(0, `rgba(${R},${a.toFixed(2)})`); g.addColorStop(1, `rgba(232,120,130,${(a * .85).toFixed(2)})`);
+        ctx.fillStyle = g; ctx.fillRect(x, H - h, gap * .46, h);
+        if (v > .55) { ctx.fillStyle = `rgba(${B},${Math.min(1, (v - .5) * 2.2).toFixed(2)})`; ctx.fillRect(x, H - h, gap * .46, 5 * fd); }
+      }
+      ctx.fillStyle = `rgba(${B},.55)`; ctx.fillRect(0, H - 2 * fd, W, 2 * fd);
+    } else if (WAVE === "b") {     // B · rounded bars, every fourth one blue, soft red glow at the base
+      const n = 64, gap = W / n, sp = spectrum(n, t);
+      const glow = ctx.createLinearGradient(0, H * .55, 0, H); glow.addColorStop(0, "rgba(205,32,40,0)"); glow.addColorStop(1, "rgba(205,32,40,.16)"); ctx.fillStyle = glow; ctx.fillRect(0, 0, W, H);
+      for (const [i, { env, v }] of sp.entries()) {
+        const w = gap * .5, h = Math.max(w, v * H * .9), x = i * gap + gap * .25, blue = i % 4 === 2, a = Math.min(1, .3 + env * 1.2);
+        ctx.fillStyle = blue ? `rgba(${B},${a.toFixed(2)})` : `rgba(${R},${a.toFixed(2)})`;
+        ctx.beginPath(); ctx.roundRect(x, H - h, w, h + w, w / 2); ctx.fill();
+      }
+    } else if (WAVE === "c") {     // C · smooth analog wave: red fill, blue line riding the crest, echo wave behind
+      const n = 120, sp = spectrum(n, t), pts = sp.map(({ u, v }) => [u * W, H - v * H * .88]);
+      const smooth = (k, lift, fill, line, lw) => {
+        ctx.beginPath(); ctx.moveTo(0, H);
+        for (let i = 0; i < pts.length; i++) { const [x, y] = pts[i]; const yy = Math.min(H - 2, y * k + lift); if (i === 0) ctx.lineTo(x, yy); else { const [px, py] = pts[i - 1]; const pyy = Math.min(H - 2, py * k + lift); ctx.quadraticCurveTo(px, pyy, (px + x) / 2, (pyy + yy) / 2); } }
+        ctx.lineTo(W, H); ctx.closePath(); if (fill) { ctx.fillStyle = fill; ctx.fill(); } if (line) { ctx.strokeStyle = line; ctx.lineWidth = lw; ctx.lineJoin = "round"; ctx.stroke(); }
+      };
+      smooth(1, H * .18, `rgba(${R},.12)`, null, 0);
+      const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, `rgba(${R},.85)`); g.addColorStop(1, `rgba(${R},.15)`);
+      smooth(1, 0, g, null, 0);
+      smooth(1, -4 * fd, null, `rgba(${B},.95)`, 4 * fd);
+      ctx.fillStyle = `rgba(${R},.6)`; ctx.fillRect(0, H - 2 * fd, W, 2 * fd);
+    } else {                       // D · LED dot columns, red with blue tips, like a VU meter
+      const n = 56, gap = W / n, sp = spectrum(n, t), dot = Math.max(3 * fd, gap * .34), step = dot * 1.9, rows = Math.floor(H / step);
+      for (const [i, { env, v }] of sp.entries()) {
+        const lit = Math.round(v * rows), x = i * gap + gap / 2;
+        for (let r = 0; r < rows; r++) {
+          const on = r < lit, top = on && r >= lit - 2 && lit > 3;
+          ctx.fillStyle = top ? `rgba(${B},.95)` : on ? `rgba(${R},${Math.min(1, .35 + env * 1.1).toFixed(2)})` : `rgba(${R},.07)`;
+          ctx.beginPath(); ctx.arc(x, H - r * step - dot / 2, dot / 2, 0, 7); ctx.fill();
+        }
+      }
     }
   }
 

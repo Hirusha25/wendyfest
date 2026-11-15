@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Scream & Win · Studio Cream · Wendy Fest</title><link rel="icon" href="../assets/cameo.png">
-<link rel="stylesheet" href="../css/brand.css?v=mwi1zrrx">
+<link rel="stylesheet" href="../css/brand.css?v=mwi2evd7">
 <style>
 /* ================= STUDIO CREAM · Scream & Win ================= */
-:root { --u:calc(100vw / 1440); --v:var(--u); --blue:#029CD4; --red:#CD2028; --red2:#DA2A33; --red-dark:#8E141B; --ink:#1F1A1A; --cream:#F7F2EC; --blush:#F2D4D7; --cyan:#29C9E0; --line:rgba(205,32,40,.18); }
+:root { --u:min(calc(100vw / 1440), calc(100vh / 760)); --v:var(--u); --blue:#029CD4; --red:#CD2028; --red2:#DA2A33; --red-dark:#8E141B; --ink:#1F1A1A; --cream:#F7F2EC; --blush:#F2D4D7; --cyan:#29C9E0; --line:rgba(205,32,40,.18); }
 html, body { height:100%; overflow:hidden; }
 body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,'Noto Sans Sinhala','Noto Sans Tamil',system-ui,sans-serif; user-select:none; cursor:default; }
 .stage { position:relative; width:100vw; height:100vh; overflow:hidden; background:var(--cream); }
@@ -53,7 +53,7 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
 .vr { width:.25vmin; height:5vmin; background:var(--line); }
 /* idle · reference banner grid (1495 x 668) scaled to the width, block centred between header and footer */
 .idle.on { display:block; padding:0; top:calc(105 * var(--u)); bottom:calc(44 * var(--u)); }
-.idle .box { position:absolute; left:0; width:100%; top:50%; height:calc(563 * var(--u)); transform:translateY(-50%); }
+.idle .box { position:absolute; left:50%; width:calc(1440 * var(--u)); top:50%; height:calc(563 * var(--u)); transform:translate(-50%,-50%); }
 .idle .left { position:absolute; left:calc(98 * var(--u)); top:calc(44 * var(--u)); display:grid; gap:0; justify-items:start; }
 .idle .eyebrow { justify-content:flex-start; font-size:calc(21 * var(--u)); letter-spacing:.2em; margin-left:calc(35 * var(--u)); color:#1F1A1A; } .idle .eyebrow::before { display:none; } .idle .eyebrow::after { width:calc(58 * var(--u)); height:calc(3 * var(--u)); margin-left:calc(22 * var(--u)); }
 .idle .h1 { font-size:calc(176 * var(--u)); line-height:.77; letter-spacing:-.035em; margin-top:calc(10 * var(--u)); }
@@ -61,69 +61,97 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
 .idle .h1 .l1 { color:#1F1A1A; text-shadow:0 calc(3 * var(--u)) 0 #8E8782, 0 calc(6 * var(--u)) 0 #5E5852, 0 calc(14 * var(--u)) calc(22 * var(--u)) rgba(60,30,30,.28); }
 .idle .h1 .amp, .idle .h1 .red { text-shadow:0 calc(3 * var(--u)) 0 #8E1219, 0 calc(6 * var(--u)) 0 #4E0A0E, 0 calc(14 * var(--u)) calc(22 * var(--u)) rgba(120,20,30,.25); }
 .idle .sub { font-size:calc(43 * var(--u)); font-weight:600; margin-top:calc(14 * var(--u)); letter-spacing:-.01em; }
-.idle canvas.wave { position:absolute; left:calc(33 * var(--u)); bottom:0; width:calc(840 * var(--u)); height:calc(170 * var(--u)); }
+.idle canvas.wave { position:absolute; left:calc(50% - 687 * var(--u)); bottom:0; width:calc(840 * var(--u)); height:calc(170 * var(--u)); }
 .idle .qrcard { position:absolute; left:calc(978 * var(--u)); top:calc(35 * var(--u)); width:calc(350 * var(--u)); height:calc(372 * var(--u)); padding:calc(18 * var(--u)) calc(20 * var(--u)) calc(16 * var(--u)); border-radius:calc(24 * var(--u)); gap:calc(6 * var(--u)); align-content:start; box-shadow:0 calc(14 * var(--u)) calc(40 * var(--u)) rgba(80,20,20,.16), 0 0 0 .15vmin rgba(205,32,40,.08); }
 .idle .qrcard img { width:calc(292 * var(--u)); height:calc(292 * var(--u)); } .idle .qrcard b { font-size:calc(22 * var(--u)); letter-spacing:.14em; white-space:nowrap; } .idle .qrcard b::after { width:calc(90 * var(--u)); height:calc(4 * var(--u)); margin-top:calc(7 * var(--u)); }
 .stage:has(#s-idle.on) .gear { display:none; }
 .idle .cta-wrap { position:absolute; left:calc(893 * var(--u)); top:calc(435 * var(--u)); }
 .idle .btn { width:calc(505 * var(--u)); height:calc(90 * var(--u)); font-size:calc(36 * var(--u)); white-space:nowrap; padding:0 calc(20 * var(--u)) 0 calc(28 * var(--u)); gap:calc(26 * var(--u)); justify-content:center; letter-spacing:.02em; background:linear-gradient(90deg, #DB323B 0%, #CA242D 55%, #AE1C24 100%); box-shadow:0 calc(7 * var(--u)) 0 #7E1016, 0 calc(16 * var(--u)) calc(30 * var(--u)) -1vmin rgba(205,32,40,.4), inset 0 .2vmin 0 rgba(255,255,255,.35); }
 .idle .btn::after { width:calc(50 * var(--u)); height:calc(50 * var(--u)); }
-/* code */
-.codegrid { display:grid; grid-template-columns:1fr auto; gap:4vw; align-items:center; width:100%; text-align:left; }
-.codegrid .l { display:grid; gap:2.4vmin; justify-items:start; }
-.codegrid .l .sub { font-size:2.6vmin; font-weight:600; } .codegrid .l .h2 { font-size:9vmin; white-space:nowrap; }
-.boxes { display:flex; gap:1.6vmin; }
-.boxes i { width:9vmin; height:9vmin; border-radius:1.4vmin; background:#fff; border:.35vmin solid var(--red); color:var(--red); display:grid; place-items:center; font:900 5.4vmin/1 Poppins, sans-serif; font-style:italic; box-shadow:0 .6vmin 1.6vmin rgba(205,32,40,.12); }
-.boxes i.cur { box-shadow:0 0 0 .5vmin rgba(205,32,40,.22); }
-.boxes i.err { animation:shake .4s; background:var(--blush); }
-.kbd { display:grid; gap:1.2vmin; justify-items:center; }
-.kbd .row { display:flex; gap:1vmin; }
-.kbd button { height:7vmin; min-width:7vmin; padding:0 1.6vmin; border-radius:1.2vmin; border:0; background:linear-gradient(180deg, #DA2A33, #C21E27); color:#fff; font:800 2.7vmin/1 Poppins, sans-serif; box-shadow:0 .55vmin 0 var(--red-dark), inset 0 .15vmin 0 rgba(255,255,255,.3); cursor:pointer; }
-.kbd button:active { transform:translateY(.3vmin); box-shadow:0 .25vmin 0 var(--red-dark); }
-.kbd button.wide { min-width:9vmin; }
+/* ===== inside screens · measured from the reference screenshots, calc(1440 * var(--u)) grid ===== */
+.screen.bx.on { display:block; padding:0; }
+.bx .box { position:absolute; left:50%; top:50%; width:calc(1440 * var(--u)); transform:translate(-50%,-50%); }
+.bx .abs { position:absolute; }
+.bx .crow { position:absolute; left:0; width:100%; display:block; text-align:center; }
+.bx .t { display:inline-block; font-weight:900; font-style:italic; text-transform:uppercase; letter-spacing:-.03em; line-height:1; color:#1F1A1A; white-space:nowrap; }
+.bx .t.wrap { white-space:normal; }
+.bx .btn { position:absolute; padding:0 calc(60 * var(--u)) 0 0; justify-content:center; font-size:calc(47 * var(--u)); letter-spacing:.02em; background:linear-gradient(90deg, #DB323B 0%, #CA242D 55%, #AE1C24 100%); box-shadow:0 calc(7 * var(--u)) 0 #7E1016, 0 calc(16 * var(--u)) calc(30 * var(--u)) -1vmin rgba(205,32,40,.4), inset 0 .2vmin 0 rgba(255,255,255,.35); }
+.bx .btn::after { position:absolute; right:calc(34 * var(--u)); top:50%; transform:translateY(-50%); width:calc(60 * var(--u)); height:calc(60 * var(--u)); }
+.bx .pillx { position:absolute; display:flex; align-items:center; justify-content:center; gap:calc(16 * var(--u)); background:#fff; border-radius:999px; font:italic 800 calc(24 * var(--u))/1 Poppins, sans-serif; letter-spacing:.08em; text-transform:uppercase; color:#1F1A1A; }
+.bx .pillx .dot { width:calc(20 * var(--u)); height:calc(20 * var(--u)); border-radius:50%; background:var(--red); }
+.bx .lined { display:flex; align-items:center; justify-content:center; gap:calc(22 * var(--u)); }
+.bx .lined::before, .bx .lined::after { content:""; width:calc(55 * var(--u)); height:calc(3 * var(--u)); background:var(--red); }
 #code { position:absolute; opacity:0; width:1px; height:1px; left:-9999px; }
-.msg { min-height:3vmin; font-size:2.2vmin; font-weight:700; color:var(--red); }
-/* waveform */
-canvas.wave { width:70vw; height:12vmin; display:block; }
+#uprobe { position:absolute; width:calc(1000 * var(--u)); height:0; visibility:hidden; pointer-events:none; }
+.brand { cursor:pointer; }
+/* code */
+#s-code .box { height:calc(556 * var(--u)); }
+#s-code .sub2 { left:calc(57 * var(--u)); width:calc(666 * var(--u)); top:calc(156 * var(--u)); text-align:center; font:500 calc(27 * var(--u))/1.33 Poppins, sans-serif; color:#1F1A1A; }
+.boxes { position:absolute; left:calc(57 * var(--u)); top:calc(264 * var(--u)); display:flex; gap:calc(10 * var(--u)); }
+.boxes i { width:calc(102 * var(--u)); height:calc(130 * var(--u)); border-radius:calc(11 * var(--u)); background:#fff; border:calc(3 * var(--u)) solid var(--red); color:#1F1A1A; display:grid; place-items:center; font:800 calc(78 * var(--u))/1 Poppins, sans-serif; font-style:normal; box-shadow:0 calc(4 * var(--u)) calc(10 * var(--u)) rgba(205,32,40,.08); }
+.boxes i.cur { box-shadow:0 0 0 calc(5 * var(--u)) rgba(205,32,40,.18); }
+.boxes i.err { animation:shake .4s; background:var(--blush); }
+#s-code .msg { left:calc(57 * var(--u)); width:calc(666 * var(--u)); top:calc(405 * var(--u)); text-align:center; font:700 calc(24 * var(--u))/1 Poppins, sans-serif; color:var(--red); min-height:0; }
+#s-code .ask { left:calc(57 * var(--u)); width:calc(666 * var(--u)); top:calc(452 * var(--u)); font:500 calc(27 * var(--u))/1 Poppins, sans-serif; color:#1F1A1A; gap:calc(52 * var(--u)); }
+#s-code .ask::before, #s-code .ask::after { width:calc(62 * var(--u)); }
+.kbd { position:absolute; left:calc(787 * var(--u)); top:calc(49 * var(--u)); width:calc(613 * var(--u)); display:grid; gap:calc(13 * var(--u)); }
+.kbd .krow { display:flex; gap:calc(5 * var(--u)); height:calc(60 * var(--u)); }
+.kbd .krow.r2 { padding:0 calc(22 * var(--u)) 0 calc(33 * var(--u)); }
+.kbd button { flex:1; min-width:0; height:100%; padding:0; border:0; border-radius:calc(9 * var(--u)); background:linear-gradient(180deg, #D8262F, #B91D25); color:#fff; font:700 calc(27 * var(--u))/1 Poppins, sans-serif; box-shadow:0 calc(4 * var(--u)) 0 #8E141B, inset 0 calc(1.5 * var(--u)) 0 rgba(255,255,255,.28); cursor:pointer; display:grid; place-items:center; }
+.kbd button:active { transform:translateY(calc(3 * var(--u))); box-shadow:0 calc(1 * var(--u)) 0 #8E141B; }
+.kbd button svg { width:calc(34 * var(--u)); height:calc(34 * var(--u)); }
+.kbd .shift { flex:0 0 calc(81 * var(--u)); } .kbd .bksp { flex:0 0 calc(73 * var(--u)); } .kbd .num { flex:0 0 calc(124 * var(--u)); font-size:calc(24 * var(--u)); } .kbd .space { font-size:calc(24 * var(--u)); letter-spacing:.12em; }
+#code-go { left:calc(820 * var(--u)); top:calc(393 * var(--u)); width:calc(543 * var(--u)); height:calc(100 * var(--u)); }
+/* mic check */
+#s-ready .box { height:calc(490 * var(--u)); }
+#s-ready .sub2 { top:calc(137 * var(--u)); font:600 calc(34 * var(--u))/1 Poppins, sans-serif; color:#1F1A1A; }
+#s-ready .sub2 b { color:var(--red); font-style:italic; font-weight:900; }
+#wave-ready { left:calc(238 * var(--u)); top:calc(177 * var(--u)); width:calc(955 * var(--u)); height:calc(95 * var(--u)); }
+#mic-pill { left:calc(543 * var(--u)); top:calc(301 * var(--u)); width:calc(354 * var(--u)); height:calc(53 * var(--u)); border:calc(2 * var(--u)) solid rgba(205,32,40,.28); }
+#mic-pill .dot { background:var(--cyan); } #mic-pill:not(.ok) .dot { background:var(--red); animation:blink 1s steps(2) infinite; }
+#go { left:calc(435 * var(--u)); top:calc(380 * var(--u)); width:calc(594 * var(--u)); height:calc(93 * var(--u)); }
 /* countdown */
-.cdgrid { display:grid; grid-template-columns:1fr auto; gap:6vw; align-items:center; width:100%; text-align:left; padding:0 4vw; }
-.cdgrid .l { display:grid; gap:2.6vmin; justify-items:start; }
-.cdgrid .l .display::after { content:""; display:block; width:8vmin; height:.4vmin; background:var(--red); margin-top:2.4vmin; }
-.ringwrap { position:relative; width:52vmin; height:52vmin; display:grid; place-items:center; }
-.ringwrap::before { content:""; position:absolute; inset:-14%; border-radius:50%; background:repeating-radial-gradient(circle, transparent 0 7vmin, rgba(205,32,40,.14) 7vmin 7.35vmin); -webkit-mask:radial-gradient(circle, transparent 0 20vmin, #000 22vmin, transparent 36vmin); mask:radial-gradient(circle, transparent 0 20vmin, #000 22vmin, transparent 36vmin); }
-.ringwrap canvas { position:absolute; inset:0; width:100%; height:100%; }
-.ringwrap .num { position:relative; font:italic 900 32vmin/1 Poppins, sans-serif; color:var(--red); }
-.ringwrap .num.sm { font-size:18vmin; }
-.ringwrap .lbl { position:relative; margin-top:-2vmin; font-size:1.9vmin; letter-spacing:.3em; text-transform:uppercase; font-weight:800; }
-.dots { font-size:3.2vmin; letter-spacing:.4em; font-weight:900; font-style:italic; color:var(--ink); }
-.dots span { opacity:.25; } .dots span.on { opacity:1; }
-/* live meter */
-.scream-grid { display:grid; grid-template-rows:auto auto auto; gap:3vh; width:100%; justify-items:stretch; }
-.scream-grid .top { display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:3vw; text-align:left; }
-.scream-grid .top .display { font-size:7vmin; } .scream-grid .top .display span { display:block; }
-.scoreblock { display:grid; justify-items:center; } .scoreblock .lbl { font-size:1.9vmin; letter-spacing:.3em; text-transform:uppercase; font-weight:800; color:var(--ink); }
-.scoreblock .num { font:italic 900 17vmin/1 Poppins, sans-serif; color:var(--red); }
-.target { display:inline-flex; align-items:center; gap:1.6vmin; font:italic 800 3vmin/1 Poppins, sans-serif; letter-spacing:.1em; text-transform:uppercase; justify-self:start; }
-.target::before { content:""; width:.3vmin; height:6vmin; background:var(--red); transform:rotate(20deg); margin-right:1vmin; }
-.target b { color:var(--red); font-size:3.8vmin; }
-.scream-grid canvas.wave { width:100%; height:20vmin; }
-.scream-grid .bottom { display:flex; align-items:center; justify-content:center; gap:4vmin; }
-.timeleft { display:flex; align-items:center; gap:2vmin; }
-.timeleft b { font:italic 900 5vmin/1 Poppins, sans-serif; color:var(--red); } .timeleft b small { font-size:2.4vmin; font-style:normal; font-weight:800; letter-spacing:.1em; color:var(--ink); }
-.bar { width:22vmin; height:1.2vmin; border-radius:999px; background:var(--line); overflow:hidden; }
-.bar i { display:block; height:100%; width:100%; background:var(--red); border-radius:999px; transform-origin:left; }
-#ring-gauge, #wave-r { display:none; }
-/* judge */
-.judge { display:flex; gap:2vmin; }
+#go-count { height:calc(500 * var(--u)); }
+#go-count .t { left:calc(104 * var(--u)); top:calc(108 * var(--u)); font-size:calc(75 * var(--u)); line-height:.88; }
+#go-count .rule { left:calc(104 * var(--u)); top:calc(277 * var(--u)); width:calc(100 * var(--u)); height:calc(4 * var(--u)); background:var(--red); }
+.dots { position:absolute; left:calc(128 * var(--u)); top:calc(325 * var(--u)); font:italic 900 calc(39 * var(--u))/1 Poppins, sans-serif; color:#1F1A1A; letter-spacing:.06em; white-space:nowrap; }
+.dots span { opacity:.28; transition:opacity .2s; } .dots span.on { opacity:1; } .dots em { font-style:normal; margin:0 calc(14 * var(--u)); }
+#ring-count { left:calc(458 * var(--u)); top:calc(-161 * var(--u)); width:calc(800 * var(--u)); height:calc(800 * var(--u)); }
+#cnt { left:calc(558 * var(--u)); top:calc(66 * var(--u)); width:calc(600 * var(--u)); text-align:center; font:italic 900 calc(360 * var(--u))/1 Poppins, sans-serif; color:var(--red); text-shadow:0 calc(8 * var(--u)) 0 #8E1219, 0 calc(18 * var(--u)) calc(30 * var(--u)) rgba(120,20,30,.18); }
+/* live */
+#go-meter { height:calc(529 * var(--u)); }
+#go-meter .t { left:calc(69 * var(--u)); top:calc(42 * var(--u)); font-size:calc(104 * var(--u)); line-height:.79; } #go-meter .t span { display:block; }
+#go-meter .lbl { left:calc(628 * var(--u)); width:calc(400 * var(--u)); top:calc(36 * var(--u)); text-align:center; font:italic 800 calc(22 * var(--u))/1 Poppins, sans-serif; letter-spacing:.2em; text-transform:uppercase; color:#1F1A1A; }
+#gauge-num { left:calc(647 * var(--u)); width:calc(400 * var(--u)); top:calc(54 * var(--u)); text-align:center; font:italic 900 calc(185 * var(--u))/1 Poppins, sans-serif; color:var(--red); }
+#go-meter .slash { left:calc(1079 * var(--u)); top:calc(80 * var(--u)); width:calc(4 * var(--u)); height:calc(84 * var(--u)); background:var(--red); transform:rotate(24deg); }
+.target { position:absolute; left:calc(1139 * var(--u)); top:calc(93 * var(--u)); display:flex; align-items:baseline; gap:calc(18 * var(--u)); font:italic 800 calc(28 * var(--u))/1 Poppins, sans-serif; letter-spacing:.12em; text-transform:uppercase; color:#1F1A1A; }
+.target b { font:italic 900 calc(52 * var(--u))/1 Poppins, sans-serif; color:var(--red); letter-spacing:0; }
+#wave-l { left:calc(33 * var(--u)); top:calc(212 * var(--u)); width:calc(1376 * var(--u)); height:calc(200 * var(--u)); }
+#ring-gauge, #wave-r, #go-meter .bar, #trans { display:none; }
+#go-meter .pillx { left:calc(364 * var(--u)); top:calc(447 * var(--u)); width:calc(297 * var(--u)); height:calc(62 * var(--u)); border:calc(3 * var(--u)) solid var(--red); font-size:calc(26 * var(--u)); }
+#go-meter .pillx .dot { animation:blink 1s steps(2) infinite; }
+#go-meter .vr { left:calc(724 * var(--u)); top:calc(458 * var(--u)); width:calc(3 * var(--u)); height:calc(40 * var(--u)); background:rgba(205,32,40,.45); }
+.timeleft { position:absolute; left:calc(788 * var(--u)); top:calc(435 * var(--u)); display:flex; align-items:baseline; gap:calc(16 * var(--u)); }
+.timeleft b { font:italic 900 calc(78 * var(--u))/1 Poppins, sans-serif; color:var(--red); }
+.timeleft small { font:italic 800 calc(30 * var(--u))/1 Poppins, sans-serif; letter-spacing:.12em; color:#1F1A1A; }
 /* result */
-.result { display:grid; grid-template-columns:auto auto auto auto; gap:4vw; align-items:center; text-align:left; justify-items:start; }
-.result .score { font:italic 900 20vmin/1 Poppins, sans-serif; color:var(--red); }
-.result .lbl { font-size:1.9vmin; letter-spacing:.3em; text-transform:uppercase; font-weight:800; color:var(--ink); }
-.result .lbl.lined { display:flex; align-items:center; gap:1.4vmin; } .result .lbl.lined::before, .result .lbl.lined::after { content:""; width:4vmin; height:.25vmin; background:var(--red); }
-.result .vr { height:18vmin; }
-.reward { display:grid; gap:1.2vmin; }
-.reward .code { background:#fff; color:var(--red); border:.35vmin solid var(--red); font:italic 900 5.2vmin/1 Poppins, sans-serif; padding:2vmin 3vmin; border-radius:1.6vmin; box-shadow:0 .8vmin 2vmin rgba(205,32,40,.14); letter-spacing:.02em; }
-.reward small { font-size:1.7vmin; color:rgba(31,26,26,.75); font-weight:600; }
+#s-result .box { height:calc(519 * var(--u)); }
+#res-title { left:calc(62 * var(--u)); top:calc(37 * var(--u)); width:calc(560 * var(--u)); font-size:calc(71 * var(--u)); line-height:.95; }
+#res-score { left:calc(30 * var(--u)); width:calc(460 * var(--u)); top:calc(192 * var(--u)); text-align:center; font:italic 900 calc(266 * var(--u))/1 Poppins, sans-serif; color:var(--red); text-shadow:0 calc(6 * var(--u)) 0 #8E1219; }
+#res-eyebrow { left:calc(30 * var(--u)); width:calc(460 * var(--u)); top:calc(444 * var(--u)); font:italic 800 calc(31 * var(--u))/1 Poppins, sans-serif; letter-spacing:.2em; text-transform:uppercase; color:#1F1A1A; }
+#s-result .spark { left:calc(410 * var(--u)); top:calc(182 * var(--u)); width:calc(75 * var(--u)); height:calc(75 * var(--u)); }
+#s-result .vdiv { left:calc(543 * var(--u)); top:calc(148 * var(--u)); width:calc(2 * var(--u)); height:calc(219 * var(--u)); background:rgba(205,32,40,.4); }
+#res-coupon { left:calc(579 * var(--u)); top:calc(136 * var(--u)); width:calc(560 * var(--u)); display:grid; }
+#res-coupon .lbl { margin-left:calc(13 * var(--u)); font:italic 800 calc(28 * var(--u))/1 Poppins, sans-serif; letter-spacing:.15em; text-transform:uppercase; color:#1F1A1A; }
+#res-code { margin-top:calc(22 * var(--u)); width:calc(532 * var(--u)); height:calc(88 * var(--u)); box-sizing:border-box; border:calc(3 * var(--u)) solid var(--red); border-radius:calc(15 * var(--u)); background:#fff; display:grid; place-items:center; font:italic 900 calc(47 * var(--u))/1 Poppins, sans-serif; color:var(--red); letter-spacing:0; box-shadow:0 calc(6 * var(--u)) calc(16 * var(--u)) rgba(205,32,40,.1); }
+#res-coupon small { margin-left:calc(37 * var(--u)); font:500 calc(23 * var(--u))/1.35 Poppins, sans-serif; color:#1F1A1A; white-space:nowrap; }
+#res-coupon small:first-of-type { margin-top:calc(18 * var(--u)); }
+#res-detail { left:calc(592 * var(--u)); top:calc(170 * var(--u)); width:calc(520 * var(--u)); font:600 calc(30 * var(--u))/1.35 Poppins, sans-serif; color:#1F1A1A; }
+#s-result .qrcard { position:absolute; left:calc(1146 * var(--u)); top:calc(64 * var(--u)); width:calc(232 * var(--u)); height:calc(296 * var(--u)); padding:calc(24 * var(--u)) 0 0; box-sizing:border-box; border-radius:calc(22 * var(--u)); gap:calc(12 * var(--u)); align-content:start; }
+#qr-profile { width:calc(179 * var(--u)) !important; height:calc(179 * var(--u)) !important; }
+#qr-label { font-size:calc(26 * var(--u)) !important; letter-spacing:.12em; }
+#s-result .btn { left:calc(607 * var(--u)); top:calc(404 * var(--u)); width:calc(561 * var(--u)); height:calc(91 * var(--u)); }
+.conf-static i { position:absolute; width:calc(16 * var(--u)); height:calc(9 * var(--u)); border-radius:calc(2 * var(--u)); }
 .confetti { position:absolute; inset:0; pointer-events:none; z-index:3; overflow:hidden; }
 .confetti i { position:absolute; width:1.4vmin; height:2.6vmin; border-radius:.2vmin; animation:fall 3s linear forwards; }
 @keyframes fall { to { transform:translateY(110vh) rotate(720deg); opacity:.3 } }
@@ -141,17 +169,11 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
 .k-input.err { animation:shake .4s; }
 .rise { animation:rise .5s ease both; } .rise-2 { animation:rise .5s .1s ease both; } .rise-3 { animation:rise .5s .2s ease both; }
 @keyframes rise { from { transform:translateY(2vmin); opacity:0 } to { transform:none; opacity:1 } }
-@media (orientation:portrait) {
-  .screen { padding:4vh 6vw 10vh; }
-  .codegrid, .cdgrid, .result, .scream-grid .top { grid-template-columns:1fr; justify-items:center; text-align:center; }
-  .codegrid .l, .cdgrid .l { justify-items:center; }
-  .result .vr { display:none; } .target { justify-self:center; }
-}
 </style>
 </head>
 <body>
 <div class="stage">
-  <canvas id="field"></canvas>
+  <canvas id="field"></canvas><i id="uprobe"></i>
   <div class="flash" id="flash"></div>
   <header class="hdr"><div class="brand"><img src="../assets/wendys-horiz-white.svg" alt="Wendy's"><i></i><b>Wendy Fest</b></div><div class="step"><i id="step-n">1</i><span id="step-l">Register</span></div></header>
 
@@ -173,49 +195,46 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
   </div><canvas class="wave" id="wave-idle"></canvas></section>
 
   <!-- CODE -->
-  <section class="screen" id="s-code"><div class="codegrid">
-    <div class="l">
-      <div class="display h2">Let’s hear you.</div>
-      <div class="sub">Enter your 6-character code</div>
-      <input id="code" autocomplete="off" aria-label="Guest code">
-      <div class="boxes" id="boxes"><i class="cur"></i><i></i><i></i><i></i><i></i><i></i></div>
-      <span class="help"><i>i</i> Ask your host for help.</span>
-      <div class="msg" id="code-msg"></div>
-    </div>
-    <div style="display:grid;gap:3vmin;justify-items:center">
-      <div class="kbd" id="kbd"></div>
-      <div style="display:flex;align-items:center;gap:2vmin"><button class="btn" id="code-go">Continue</button><button class="btn ghost" style="height:5.6vmin;font-size:1.9vmin" onclick="goIdle()">Back</button></div>
-    </div>
+  <section class="screen bx" id="s-code"><div class="box">
+    <div class="abs" style="left:calc(57 * var(--u));top:calc(57 * var(--u))"><span class="t" data-fit="662" data-fs="94">Let’s hear you.</span></div>
+    <div class="abs sub2">Enter your 6-character guest code<br>to start the experience.</div>
+    <input id="code" autocomplete="off" aria-label="Guest code">
+    <div class="boxes" id="boxes"><i class="cur"></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="abs msg" id="code-msg"></div>
+    <div class="abs ask lined">Ask your host for help.</div>
+    <div class="kbd" id="kbd"></div>
+    <button class="btn" id="code-go">Continue</button>
   </div></section>
 
   <!-- READY -->
-  <section class="screen" id="s-ready"><div style="display:grid;gap:2.2vmin;justify-items:center">
-    <div class="eyebrow">Mic check</div>
-    <div class="display h2">Ready, <span id="r-name">Hirusha</span>?</div>
-    <div class="sub">When the count hits zero, scream <b>“WENDY’S!”</b></div>
-    <canvas class="wave" id="wave-ready"></canvas>
-    <div class="pill ok" id="mic-pill"><span class="dot"></span><span id="mic-status">Checking microphone…</span></div>
-    <div style="display:flex;gap:2vmin;margin-top:1vmin"><button class="btn" id="go">Let’s go</button><button class="btn ghost" onclick="goIdle()">Cancel</button></div>
+  <section class="screen bx" id="s-ready"><div class="box">
+    <div class="crow" style="top:calc(31 * var(--u))"><span class="t" data-fit="859" data-fs="104">Ready, <span id="r-name">Hirusha</span>?</span></div>
+    <div class="crow sub2"><span style="display:inline-block" data-fit="900" data-fs="34">When the count hits zero, scream <b>“WENDY’S!”</b></span></div>
+    <canvas class="abs" id="wave-ready"></canvas>
+    <div class="pillx ok" id="mic-pill"><span class="dot"></span><span id="mic-status">Checking microphone…</span></div>
+    <button class="btn" id="go">Let’s go</button>
   </div></section>
 
   <!-- GO: countdown then scream -->
-  <section class="screen" id="s-go">
-    <div id="go-count" class="cdgrid" style="display:grid">
-      <div class="l"><div class="display h2">Get ready<br>to scream.</div><div class="dots" id="dots"><span class="on">3</span> · <span>2</span> · <span>1</span></div></div>
-      <div class="ringwrap"><canvas id="ring-count"></canvas><div class="num" id="cnt">3</div></div>
+  <section class="screen bx" id="s-go">
+    <div class="box" id="go-count">
+      <canvas class="abs" id="ring-count"></canvas>
+      <div class="abs t" data-fit="383" data-fs="75">Get ready<br>to scream.</div>
+      <i class="abs rule"></i>
+      <div class="dots" id="dots"><span class="on">3</span><em>•</em><span>2</span><em>•</em><span>1</span></div>
+      <div class="abs" id="cnt">3</div>
     </div>
-    <div id="go-meter" class="scream-grid" style="display:none">
-      <div class="top">
-        <div class="display h3"><span>Scream</span><span class="red">Wendy’s!</span></div>
-        <div class="scoreblock"><div class="lbl">Loudness score</div><div class="num" id="gauge-num">0</div></div>
-        <span class="target" id="target">Target <b id="thr">70</b></span>
-      </div>
-      <canvas class="wave" id="wave-l"></canvas><canvas class="wave" id="wave-r"></canvas><canvas id="ring-gauge"></canvas>
-      <div class="bottom">
-        <span class="pill"><span class="dot"></span>Listening</span><span class="vr"></span>
-        <div class="timeleft"><b><span id="tleft">3.0</span>s <small>LEFT</small></b><div class="bar"><i id="tbar"></i></div></div>
-      </div>
-      <div class="muted" id="trans" style="font-size:1.8vmin;min-height:2.4vmin">…</div>
+    <div class="box" id="go-meter" style="display:none">
+      <div class="abs t" data-fit="534" data-fs="104"><span>Scream</span><span class="red">Wendy’s!</span></div>
+      <div class="abs lbl">Loudness score</div>
+      <div class="abs" id="gauge-num">0</div>
+      <i class="abs slash"></i>
+      <span class="target" id="target">Target <b id="thr">70</b></span>
+      <canvas class="abs" id="wave-l"></canvas><canvas id="wave-r"></canvas><canvas id="ring-gauge"></canvas>
+      <span class="pillx"><span class="dot"></span>Listening</span>
+      <i class="abs vr"></i>
+      <div class="timeleft"><b><span id="tleft">3.0</span>s</b><small>LEFT</small></div>
+      <div class="bar"><i id="tbar"></i></div><div id="trans">…</div>
     </div>
   </section>
 
@@ -227,19 +246,18 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
   </div></section>
 
   <!-- RESULT -->
-  <section class="screen" id="s-result">
-    <div style="display:grid;gap:3vmin;justify-items:center;width:100%">
-      <div class="display h2" id="res-title" style="font-size:7vmin">You brought the loud.</div>
-      <div class="result">
-        <div style="display:grid;justify-items:center"><div class="score" id="res-score">84</div><div class="lbl lined" id="res-eyebrow">Final score</div></div>
-        <span class="vr"></span>
-        <div class="reward" id="res-coupon"><div class="lbl">Your reward code</div><div class="code" id="res-code">WENDY10-AAA111</div><small id="res-label"></small><small>Sent by SMS · saved on your Wendy Fest pass</small></div>
-        <div class="card qrcard" style="width:24vmin;padding:1.4vmin"><img id="qr-profile" alt="QR" style="width:18vmin;height:18vmin"><b style="font-size:1.7vmin" id="qr-label">Save your<br>reward</b></div>
-      </div>
-      <div class="sub" id="res-detail" style="font-size:2.3vmin;font-weight:600"></div>
-      <button class="btn" onclick="goIdle()">Next player</button>
-    </div>
-  </section>
+  <section class="screen bx" id="s-result"><div class="box">
+    <div class="conf-static" id="res-conf"></div>
+    <div class="abs t wrap" id="res-title">You brought the loud.</div>
+    <div class="abs" id="res-score">84</div>
+    <div class="abs lined" id="res-eyebrow">Final score</div>
+    <svg class="abs spark" viewBox="0 0 40 40" fill="none" stroke="#CD2028" stroke-width="2.6" stroke-linecap="round"><path d="M6 20 9 8M14 24 26 6M18 30 34 26M17 36 30 40"/></svg>
+    <i class="abs vdiv"></i>
+    <div class="abs" id="res-coupon"><div class="lbl">Your reward code</div><div id="res-code">WENDY10-AAA111</div><small id="res-label"></small><small>Sent by SMS · saved on your Wendy Fest pass</small></div>
+    <div class="abs" id="res-detail"></div>
+    <div class="card qrcard"><img id="qr-profile" alt="QR"><b id="qr-label">Save your<br>reward</b></div>
+    <button class="btn" onclick="goIdle()">Next player</button>
+  </div></section>
 
   <footer class="foot"><span class="c"><img src="../assets/cameo.png" alt="">© 2026 Wendy’s Sri Lanka</span><span id="corner-l">Station A</span><span class="links"><a href="#">Terms</a><a href="#">Privacy</a></span></footer>
   <svg class="gear" viewBox="0 0 24 24" fill="#1F1A1A" onclick="document.getElementById('settings').classList.toggle('open')"><path d="M12 8a4 4 0 100 8 4 4 0 000-8zm9 4a7 7 0 00-.1-1.2l2-1.5-2-3.5-2.4 1a7 7 0 00-2-1.2L16 3H8l-.5 2.6a7 7 0 00-2 1.2l-2.4-1-2 3.5 2 1.5A7 7 0 003 12a7 7 0 00.1 1.2l-2 1.5 2 3.5 2.4-1a7 7 0 002 1.2L8 21h8l.5-2.6a7 7 0 002-1.2l2.4 1 2-3.5-2-1.5c.1-.4.1-.8.1-1.2z"/></svg>
@@ -254,7 +272,7 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
   </aside>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwi1zrrx"></script><script src="../js/kiosk.js?v=mwi1zrrx"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwi2evd7"></script><script src="../js/kiosk.js?v=mwi2evd7"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let CFG = { scream: { threshold: 70, durationMs: 3000, dbFloor: -42, dbCeil: -6, loudWeight: .6, accWeight: .4 } };
@@ -317,7 +335,7 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
       audio = audio || new (window.AudioContext || window.webkitAudioContext)(); if (audio.state === "suspended") await audio.resume();
       const src = audio.createMediaStreamSource(stream); analyser = audio.createAnalyser(); analyser.fftSize = 2048; analyser.smoothingTimeConstant = .6; src.connect(analyser);
       buf = new Float32Array(analyser.fftSize); fbuf = new Uint8Array(analyser.frequencyBinCount);
-      await listMics(); $("mic-status").textContent = "Mic connected · " + (micSel.selectedOptions[0]?.textContent || "default"); $("mic-pill").classList.add("ok");
+      await listMics(); $("mic-status").textContent = "Mic connected"; $("mic-pill").classList.add("ok");
       return true;
     } catch (e) { $("mic-status").textContent = "Microphone blocked: " + e.message; $("mic-pill").classList.remove("ok"); return false; }
   }
@@ -378,6 +396,62 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
     }
   }
 
+  // ---------- cream bars (mic check + live) ----------
+  const bell = (u, c, w) => Math.exp(-Math.pow((u - c) / w, 2));
+  const ENV_MIC = (u) => Math.min(1, .07 + bell(u, .5, .1) * .93 + bell(u, .33, .09) * .5 + bell(u, .67, .09) * .5 + bell(u, .5, .3) * .2);
+  const ENV_LIVE = (u) => Math.min(1, .06 + bell(u, .5, .1) * .94 + bell(u, .27, .09) * .55 + bell(u, .73, .09) * .6 + bell(u, .5, .32) * .25);
+  function drawBars(c, { n, env, level, fadeBottom = false, marker = false, dotEnds = false }) {
+    if (!c._sized) sizeCanvas(c);
+    const ctx = c.getContext("2d"), W = c.width, H = c.height, t = performance.now(); ctx.clearRect(0, 0, W, H);
+    if (analyser && fbuf) analyser.getByteFrequencyData(fbuf);
+    const gap = W / n, w = gap * .52, top0 = marker ? H * .1 : 0, maxH = (H - top0) * (fadeBottom ? .86 : 1);
+    let best = -1, bx = 0, by = H;
+    for (let i = 0; i < n; i++) {
+      const u = (i + .5) / n, e = env(u), mid = Math.abs(u - .5) * 2;
+      const spec = analyser && fbuf ? fbuf[Math.floor(mid * fbuf.length * .3)] / 255 : 0;
+      const jig = .62 + .38 * Math.abs(Math.sin(i * 1.71 + t * .0052) * Math.sin(i * .43 - t * .0031));
+      const v = e * Math.min(1, level * Math.max(jig, spec) * 1.12);
+      const base = fadeBottom ? H * .86 : H, h = Math.max(dotEnds ? w * .9 : w, v * maxH), x = i * gap + (gap - w) / 2;
+      const edge = Math.min(1, u / .1, (1 - u) / .1), a = .25 + .75 * edge;
+      const g = ctx.createLinearGradient(0, base - h, 0, fadeBottom ? H : base);
+      g.addColorStop(0, `rgba(214,36,46,${a.toFixed(2)})`); g.addColorStop(fadeBottom ? .55 : .7, `rgba(196,28,38,${(a * .85).toFixed(2)})`); g.addColorStop(1, fadeBottom ? "rgba(205,32,40,0)" : `rgba(232,140,148,${(a * .5).toFixed(2)})`);
+      ctx.fillStyle = g; ctx.beginPath(); ctx.roundRect(x, base - h, w, h + (fadeBottom ? H - base : 0), [w / 2, w / 2, 0, 0]); ctx.fill();
+      if (h > best) { best = h; bx = x + w / 2; by = base - h; }
+    }
+    if (marker && best > 0) { const r = 8 * fd; ctx.lineWidth = 3.5 * fd; ctx.strokeStyle = "#29C9E0"; ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(bx, by - r - 3 * fd, r, 0, 7); ctx.fill(); ctx.stroke(); }
+  }
+  // ---------- cream LED countdown ring ----------
+  function drawCountRing(c, pct) {
+    if (!c._sized) sizeCanvas(c);
+    const ctx = c.getContext("2d"), W = c.width, cx = W / 2, cy = c.height / 2, R = W * .315; ctx.clearRect(0, 0, W, c.height);
+    const glow = ctx.createRadialGradient(cx, cy, R * .2, cx, cy, R * 1.05); glow.addColorStop(0, "rgba(242,212,215,.45)"); glow.addColorStop(1, "rgba(242,212,215,0)");
+    ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(cx, cy, R * 1.05, 0, 7); ctx.fill();
+    for (let k = 0; k < 4; k++) {                                   // faint dotted outer rings, strongest at the sides
+      const r = R * (1.17 + k * .1), dr = W * .0027;
+      for (let d = 0; d < 360; d += 2.4) { const th = d * Math.PI / 180, side = Math.abs(Math.cos(th)); const a = (.3 - k * .065) * (.25 + .75 * side);
+        ctx.fillStyle = `rgba(205,32,40,${a.toFixed(3)})`; ctx.beginPath(); ctx.arc(cx + Math.cos(th) * r, cy + Math.sin(th) * r, dr, 0, 7); ctx.fill(); }
+    }
+    ctx.strokeStyle = "rgba(205,32,40,.22)"; ctx.lineWidth = W * .003; ctx.beginPath(); ctx.arc(cx, cy, R * .8, 0, 7); ctx.stroke();
+    const N = 120, len = R * .14, lit = pct / 100 * N; ctx.lineCap = "round";
+    for (let i = 0; i < N; i++) {                                   // LED ticks, sweeping clockwise from 12 o'clock
+      const th = -Math.PI / 2 + i / N * Math.PI * 2, on = i < lit, lead = on ? i / Math.max(1, lit) : 0;
+      ctx.strokeStyle = on ? `rgba(${200 + 20 * lead | 0},${30 + 20 * lead | 0},40,${(.55 + .45 * lead).toFixed(2)})` : "rgba(205,32,40,.13)";
+      ctx.lineWidth = W * (on ? .0062 : .005);
+      ctx.beginPath(); ctx.moveTo(cx + Math.cos(th) * (R - len), cy + Math.sin(th) * (R - len)); ctx.lineTo(cx + Math.cos(th) * R, cy + Math.sin(th) * R); ctx.stroke();
+    }
+    ctx.strokeStyle = "#29C9E0"; ctx.lineWidth = W * .008;                // cyan markers at 12, 3 and 8 o'clock
+    for (const deg of [-90, 0, 150]) { const th = deg * Math.PI / 180; ctx.beginPath(); ctx.moveTo(cx + Math.cos(th) * (R - len * 1.25), cy + Math.sin(th) * (R - len * 1.25)); ctx.lineTo(cx + Math.cos(th) * (R + len * .35), cy + Math.sin(th) * (R + len * .35)); ctx.stroke(); }
+  }
+  // ---------- fit headings to their measured width ----------
+  function fitText() {
+    const u = $("uprobe").getBoundingClientRect().width / 1000; if (!u) return;
+    document.querySelectorAll("[data-fit]").forEach((el) => {
+      const fs = +el.dataset.fs; el.style.fontSize = `calc(${fs} * var(--u))`;
+      const w = el.getBoundingClientRect().width / u; if (w > +el.dataset.fit) el.style.fontSize = `calc(${(fs * el.dataset.fit / w).toFixed(2)} * var(--u))`;
+    });
+  }
+  document.fonts.ready.then(fitText); addEventListener("resize", fitText);
+
   // ---------- rings ----------
   function drawRing(c, pct, { ticks = 60, color = "#CD2028", dim = "rgba(205,32,40,.16)", glow = true, marker = null } = {}) {
     if (!c._sized) sizeCanvas(c);
@@ -401,12 +475,12 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
     const pct = dbToPct(smooth);
     $("lvl-set").style.width = pct + "%"; $("db-set").textContent = db.toFixed(1) + " dB";
     if (mode === "idle") drawWave($("wave-idle"));
-    if (mode === "ready") drawWave($("wave-ready"));
-    if (mode === "count") drawRing($("ring-count"), countPct, { ticks: 72, color: "#CD2028" });
+    if (mode === "ready") drawBars($("wave-ready"), { n: 54, env: ENV_MIC, level: Math.max(.85, pct / 100), dotEnds: true });
+    if (mode === "count") drawCountRing($("ring-count"), countPct);
     if (mode === "scream") {
       if (windowOpen && db > peakDb) peakDb = db;
       gaugeShown += (pct - gaugeShown) * .25;
-      drawWave($("wave-l"), false, true);
+      drawBars($("wave-l"), { n: 78, env: ENV_LIVE, level: Math.max(.6, gaugeShown / 100), fadeBottom: true, marker: true });
       $("gauge-num").textContent = Math.round(dbToPct(peakDb));
     }
   }
@@ -424,9 +498,20 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
 
   // ---------- code entry ----------
   const codeEl = $("code");
-  const KEYS = [["Q","W","E","R","T","Y","U","I","O","P"],["A","S","D","F","G","H","J","K","L"],["Z","X","C","V","B","N","M"],["2","3","4","5","6","7","8","9"]];
-  KEYS.forEach((row, ri) => { const r = document.createElement("div"); r.className = "row"; if (ri === 2) { const d = document.createElement("button"); d.className = "wide"; d.textContent = "⌫"; d.onclick = () => { codeEl.value = codeEl.value.slice(0, -1); paintBoxes(); }; r.appendChild(d); }
-    row.forEach((k) => { const b = document.createElement("button"); b.textContent = k; b.onclick = () => { if (codeEl.value.length < 6) { codeEl.value += k; paintBoxes(); } }; r.appendChild(b); }); $("kbd").appendChild(r); });
+  const SVG_SHIFT = '<svg viewBox="0 0 24 24" fill="#fff"><path d="M12 3 21 13h-5v8H8v-8H3z"/></svg>';
+  const SVG_BKSP = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M21 5H9l-6.5 7L9 19h12z"/><path d="M12.5 9.5l5 5M17.5 9.5l-5 5"/></svg>';
+  const typeKey = (k) => { if (codeEl.value.length < 6) { codeEl.value += k; paintBoxes(); } K.resetIdle(60000, goIdle); };
+  const krow = (cls) => { const r = document.createElement("div"); r.className = "krow " + cls; $("kbd").appendChild(r); return r; };
+  const key = (r, label, fn, cls = "") => { const b = document.createElement("button"); b.className = cls; b.innerHTML = label; b.onclick = fn; r.appendChild(b); return b; };
+  const r1 = krow("r1"), r2 = krow("r2"), r3 = krow("r3"), r4 = krow("r4");
+  const r1keys = [..."QWERTYUIOP"].map((k) => key(r1, k, (e) => typeKey(e.currentTarget.textContent)));
+  [..."ASDFGHJKL"].forEach((k) => key(r2, k, () => typeKey(k)));
+  key(r3, SVG_SHIFT, () => {}, "shift");
+  [..."ZXCVBNM"].forEach((k) => key(r3, k, () => typeKey(k)));
+  key(r3, SVG_BKSP, () => { codeEl.value = codeEl.value.slice(0, -1); paintBoxes(); }, "bksp");
+  let numMode = false;
+  const numKey = key(r4, "123", () => { numMode = !numMode; numKey.textContent = numMode ? "ABC" : "123"; const set = numMode ? "1234567890" : "QWERTYUIOP"; r1keys.forEach((b, i) => { b.textContent = set[i]; }); }, "num");
+  key(r4, "SPACE", () => {}, "space");
   function paintBoxes() { const v = codeEl.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6); if (codeEl.value !== v) codeEl.value = v; [...$("boxes").children].forEach((b, i) => { b.textContent = v[i] || ""; b.classList.toggle("cur", i === v.length); b.classList.remove("err"); }); }
   codeEl.addEventListener("input", paintBoxes); codeEl.addEventListener("keydown", (e) => e.key === "Enter" && lookup(codeEl.value));
   $("code-go").onclick = () => lookup(codeEl.value);
@@ -443,21 +528,22 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
   // ---------- flow ----------
   function goIdle() { K.resetIdle(0); stopRecog(); windowOpen = false; guest = null; codeEl.value = ""; paintBoxes(); $("code-msg").textContent = ""; mode = "idle"; document.querySelectorAll(".confetti").forEach((c) => c.remove()); K.show("s-idle"); }
   document.addEventListener("kiosk-home", goIdle);
-  $("start").onclick = () => { K.show("s-code"); codeEl.focus(); startAudio(); };
+  $("start").onclick = () => { K.show("s-code"); codeEl.focus(); startAudio(); K.resetIdle(60000, goIdle); };
+  document.querySelector(".brand").onclick = () => { if (!$("s-pin").classList.contains("on")) goIdle(); };
   const STEPS = { "s-pin": ["•", "Host"], "s-idle": ["1", "Register"], "s-code": ["2", "Enter code"], "s-ready": ["3", "Mic check"], "s-go": ["4", "Countdown"], "s-judge": ["5", "Host call"], "s-result": ["6", "Result"] };
   function setStep(n, label) { $("step-n").textContent = n; $("step-l").textContent = label; }
-  document.addEventListener("screen", (e) => { if (STEPS[e.detail]) setStep(...STEPS[e.detail]); if (e.detail === "s-code") setTimeout(() => codeEl.focus(), 50); });
+  document.addEventListener("screen", (e) => { setTimeout(fitText, 0); if (STEPS[e.detail]) setStep(...STEPS[e.detail]); if (e.detail === "s-code") setTimeout(() => codeEl.focus(), 50); });
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
   $("go").onclick = async () => {
     if (!(await startAudio())) return;
-    K.resetIdle(0); K.show("s-go"); $("go-count").style.display = "grid"; $("go-meter").style.display = "none"; mode = "count";
+    K.resetIdle(0); K.show("s-go"); $("go-count").style.display = "block"; $("go-meter").style.display = "none"; mode = "count";
     const dots = [...$("dots").querySelectorAll("span")];
     for (let n = 3; n >= 1; n--) {
       $("cnt").textContent = n; dots.forEach((d, i) => d.classList.toggle("on", i <= 3 - n));
       if (n === 2) startRecog();
       const t0 = performance.now(); while (performance.now() - t0 < 1000) { countPct = ((4 - n) - 1 + (performance.now() - t0) / 1000) / 3 * 100; await wait(16); }
     }
-    $("go-count").style.display = "none"; $("go-meter").style.display = "grid"; setStep("5", "Live");
+    $("go-count").style.display = "none"; $("go-meter").style.display = "block"; setStep("5", "Live"); fitText();
     peakDb = -100; gaugeShown = 0; windowOpen = true; mode = "scream";
     const dur = CFG.scream.durationMs || 3000, t0 = performance.now();
     while (performance.now() - t0 < dur) { const left = dur - (performance.now() - t0); $("tleft").textContent = (left / 1000).toFixed(1); $("tbar").style.transform = `scaleX(${left / dur})`; await wait(50); }
@@ -476,10 +562,13 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
     for (let i = 0; i < n; i++) { const el = document.createElement("i"); el.style.left = Math.random() * 100 + "vw"; el.style.top = -4 - Math.random() * 20 + "vh"; el.style.background = colors[i % colors.length]; el.style.animationDelay = Math.random() * .9 + "s"; el.style.transform = `rotate(${Math.random() * 360}deg)`; box.appendChild(el); }
     setTimeout(() => box.remove(), 4200);
   }
+  // static confetti positions measured from the reference result screen
+  [[35,85,"#CD2028",30],[60,110,"#CD2028",-20],[78,158,"#CD2028",50],[160,165,"#CD2028",-35],[380,80,"#CD2028",40],[405,84,"#29C9E0",20],[428,60,"#CD2028",-25],[488,68,"#CD2028",10],[530,73,"#29C9E0",35],[580,82,"#CD2028",-30],[610,75,"#CD2028",60],[606,112,"#29C9E0",-15],[285,165,"#29C9E0",25],[763,65,"#29C9E0",0],[790,78,"#CD2028",15],[787,140,"#CD2028",-50]]
+    .forEach(([x, y, col, rot]) => { const i = document.createElement("i"); i.style.cssText = `left:calc(${((x - 18) * 1.827).toFixed(0)} * var(--u));top:calc(${((y - 51) * 1.827).toFixed(0)} * var(--u));background:${col};transform:rotate(${rot}deg)`; $("res-conf").appendChild(i); });
   function showResult(r) {
     mode = "result"; K.show("s-result");
     $("res-score").textContent = r.score; $("res-eyebrow").textContent = "Final score";
-    $("res-coupon").style.display = r.coupon ? "grid" : "none";
+    $("res-coupon").style.display = r.coupon ? "grid" : "none"; $("res-detail").style.display = r.coupon ? "none" : "block"; $("res-conf").style.display = r.won ? "block" : "none";
     if (r.won) {
       $("res-title").textContent = r.couponPoolEmpty ? "You beat the meter!" : "You brought the loud.";
       $("res-detail").textContent = r.couponPoolEmpty ? "Reward pool is empty – see a host." : `Loud ${r.loudness} · Clarity ${r.accuracy} · Win line ${r.threshold}. Fresh, never frozen, just like that scream.`;

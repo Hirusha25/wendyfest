@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="/css/brand.css">
 <style>
 /* ================= STUDIO CREAM · Scream & Win ================= */
-:root { --u:calc(100vw / 1495); --v:var(--u); --red:#CD2028; --red2:#DA2A33; --red-dark:#8E141B; --ink:#1F1A1A; --cream:#F7F2EC; --blush:#F2D4D7; --cyan:#29C9E0; --line:rgba(205,32,40,.18); }
+:root { --u:calc(100vw / 1440); --v:var(--u); --red:#CD2028; --red2:#DA2A33; --red-dark:#8E141B; --ink:#1F1A1A; --cream:#F7F2EC; --blush:#F2D4D7; --cyan:#29C9E0; --line:rgba(205,32,40,.18); }
 html, body { height:100%; overflow:hidden; }
 body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,'Noto Sans Sinhala','Noto Sans Tamil',system-ui,sans-serif; user-select:none; cursor:default; }
 .stage { position:relative; width:100vw; height:100vh; overflow:hidden; background:var(--cream); }
@@ -51,20 +51,21 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
 .help::before, .help::after { content:""; width:5vmin; height:.25vmin; background:var(--red); }
 .help i { display:none; }
 .vr { width:.25vmin; height:5vmin; background:var(--line); }
-/* idle · laid out on the reference banner grid (1495 x 668), uniform scale */
-.idle.on { display:block; padding:0; top:calc(105 * var(--u)); bottom:0; }
-.idle .left { position:absolute; left:calc(125 * var(--u)); top:calc(40 * var(--u)); bottom:calc(190 * var(--u)); display:grid; gap:0; justify-items:start; align-content:center; }
+/* idle · reference banner grid (1495 x 668) scaled to the width, block centred between header and footer */
+.idle.on { display:block; padding:0; top:calc(105 * var(--u)); bottom:calc(44 * var(--u)); }
+.idle .box { position:absolute; left:0; width:100%; top:50%; height:calc(563 * var(--u)); transform:translateY(-50%); }
+.idle .left { position:absolute; left:calc(98 * var(--u)); top:calc(44 * var(--u)); display:grid; gap:0; justify-items:start; }
 .idle .eyebrow { justify-content:flex-start; font-size:calc(21 * var(--u)); letter-spacing:.2em; margin-left:calc(35 * var(--u)); color:#1F1A1A; } .idle .eyebrow::before { display:none; } .idle .eyebrow::after { width:calc(58 * var(--u)); height:calc(3 * var(--u)); margin-left:calc(22 * var(--u)); }
 .idle .h1 { font-size:calc(176 * var(--u)); line-height:.77; letter-spacing:-.035em; margin-top:calc(10 * var(--u)); }
 .idle .h1 .l1, .idle .h1 .l2 { display:block; } .idle .h1 .amp { color:#B81E26; margin-right:.12em; }
 .idle .h1 .l1 { color:#1F1A1A; text-shadow:0 calc(3 * var(--u)) 0 #8E8782, 0 calc(6 * var(--u)) 0 #5E5852, 0 calc(14 * var(--u)) calc(22 * var(--u)) rgba(60,30,30,.28); }
 .idle .h1 .amp, .idle .h1 .red { text-shadow:0 calc(3 * var(--u)) 0 #8E1219, 0 calc(6 * var(--u)) 0 #4E0A0E, 0 calc(14 * var(--u)) calc(22 * var(--u)) rgba(120,20,30,.25); }
 .idle .sub { font-size:calc(43 * var(--u)); font-weight:600; margin-top:calc(14 * var(--u)); letter-spacing:-.01em; }
-.idle canvas.wave { position:absolute; left:calc(60 * var(--u)); bottom:calc(34 * var(--u)); width:calc(840 * var(--u)); height:calc(150 * var(--u)); }
-.idle .qrcard { position:absolute; left:calc(1005 * var(--u)); top:calc(35 * var(--u)); width:calc(350 * var(--u)); height:calc(372 * var(--u)); padding:calc(18 * var(--u)) calc(20 * var(--u)) calc(16 * var(--u)); border-radius:calc(24 * var(--u)); gap:calc(6 * var(--u)); align-content:start; box-shadow:0 calc(14 * var(--u)) calc(40 * var(--u)) rgba(80,20,20,.16), 0 0 0 .15vmin rgba(205,32,40,.08); }
+.idle canvas.wave { position:absolute; left:calc(33 * var(--u)); top:calc(428 * var(--u)); width:calc(840 * var(--u)); height:calc(112 * var(--u)); }
+.idle .qrcard { position:absolute; left:calc(978 * var(--u)); top:calc(35 * var(--u)); width:calc(350 * var(--u)); height:calc(372 * var(--u)); padding:calc(18 * var(--u)) calc(20 * var(--u)) calc(16 * var(--u)); border-radius:calc(24 * var(--u)); gap:calc(6 * var(--u)); align-content:start; box-shadow:0 calc(14 * var(--u)) calc(40 * var(--u)) rgba(80,20,20,.16), 0 0 0 .15vmin rgba(205,32,40,.08); }
 .idle .qrcard img { width:calc(292 * var(--u)); height:calc(292 * var(--u)); } .idle .qrcard b { font-size:calc(22 * var(--u)); letter-spacing:.14em; white-space:nowrap; } .idle .qrcard b::after { width:calc(90 * var(--u)); height:calc(4 * var(--u)); margin-top:calc(7 * var(--u)); }
 .stage:has(#s-idle.on) .gear { display:none; }
-.idle .cta-wrap { position:absolute; left:calc(920 * var(--u)); bottom:calc(40 * var(--u)); }
+.idle .cta-wrap { position:absolute; left:calc(893 * var(--u)); top:calc(435 * var(--u)); }
 .idle .btn { width:calc(505 * var(--u)); height:calc(90 * var(--u)); font-size:calc(36 * var(--u)); white-space:nowrap; padding:0 calc(20 * var(--u)) 0 calc(28 * var(--u)); gap:calc(26 * var(--u)); justify-content:center; letter-spacing:.02em; background:linear-gradient(90deg, #DB323B 0%, #CA242D 55%, #AE1C24 100%); box-shadow:0 calc(7 * var(--u)) 0 #7E1016, 0 calc(16 * var(--u)) calc(30 * var(--u)) -1vmin rgba(205,32,40,.4), inset 0 .2vmin 0 rgba(255,255,255,.35); }
 .idle .btn::after { width:calc(50 * var(--u)); height:calc(50 * var(--u)); }
 /* code */
@@ -161,7 +162,7 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
     <button class="btn" id="pin-go">Unlock</button></div></section>
 
   <!-- IDLE -->
-  <section class="screen on idle" id="s-idle">
+  <section class="screen on idle" id="s-idle"><div class="box">
     <div class="left">
       <div class="eyebrow rise">Interactive LED wall experience</div>
       <h1 class="display h1 rise-2"><span class="l1">Scream</span><span class="l2"><span class="amp">&amp;</span><span class="red">Win</span></span></h1>
@@ -170,7 +171,7 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
     <canvas class="wave" id="wave-idle"></canvas>
     <div class="card qrcard rise-2"><img id="qr-reg" alt="QR"><b>Scan to register</b></div>
     <div class="cta-wrap rise-3"><button class="btn" id="start">Enter your code</button></div>
-  </section>
+  </div></section>
 
   <!-- CODE -->
   <section class="screen" id="s-code"><div class="codegrid">

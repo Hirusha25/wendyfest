@@ -3,26 +3,26 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Scream & Win · Studio Cream · Wendy Fest</title><link rel="icon" href="../assets/cameo.png">
-<link rel="stylesheet" href="../css/brand.css?v=mwhuk968">
+<link rel="stylesheet" href="../css/brand.css?v=mwhur4d1">
 <style>
 /* ================= STUDIO CREAM · Scream & Win ================= */
-:root { --red:#CD2028; --red2:#DA2A33; --red-dark:#8E141B; --ink:#1F1A1A; --cream:#F7F2EC; --blush:#F2D4D7; --cyan:#29C9E0; --line:rgba(205,32,40,.18); }
+:root { --u:calc(100vw / 1495); --v:calc(100vh / 668); --red:#CD2028; --red2:#DA2A33; --red-dark:#8E141B; --ink:#1F1A1A; --cream:#F7F2EC; --blush:#F2D4D7; --cyan:#29C9E0; --line:rgba(205,32,40,.18); }
 html, body { height:100%; overflow:hidden; }
 body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,'Noto Sans Sinhala','Noto Sans Tamil',system-ui,sans-serif; user-select:none; cursor:default; }
 .stage { position:relative; width:100vw; height:100vh; overflow:hidden; background:var(--cream); }
-.stage::before { content:""; position:absolute; inset:0; background:radial-gradient(70% 50% at 50% 110%, rgba(205,32,40,.08), transparent 70%); pointer-events:none; }
+.stage::before { content:""; position:absolute; inset:0; background:radial-gradient(60% 55% at 25% 105%, rgba(205,32,40,.09), transparent 70%), radial-gradient(50% 60% at 100% 50%, rgba(205,32,40,.05), transparent 70%), linear-gradient(180deg, #FBF8F3, #F6F0EA); pointer-events:none; }
 #field { display:none; }
 /* header bar */
-.hdr { position:absolute; top:0; left:0; right:0; height:9vh; background:linear-gradient(180deg,#D8262F,#C21E27); display:flex; align-items:center; justify-content:space-between; padding:0 3.2vw; z-index:5; box-shadow:0 .4vmin 2vmin rgba(120,0,10,.22); }
-.brand { display:flex; align-items:center; gap:1.8vmin; } .brand img { height:5.4vmin; width:auto; } .brand i { width:.2vmin; height:4vmin; background:rgba(255,255,255,.55); }
-.brand b { font:italic 700 2vmin/1 Poppins, sans-serif; letter-spacing:.22em; text-transform:uppercase; color:#fff; }
-.step { display:flex; align-items:center; gap:1.4vmin; font:italic 800 1.9vmin/1 Poppins, sans-serif; letter-spacing:.2em; text-transform:uppercase; color:#fff; }
-.step i { width:3.8vmin; height:3.8vmin; border-radius:50%; background:#fff; color:var(--red); display:grid; place-items:center; font:900 2.1vmin/1 Poppins, sans-serif; font-style:normal; }
+.hdr { position:absolute; top:0; left:0; right:0; height:calc(105 * var(--v)); background:linear-gradient(180deg,#D8262F,#C21E27); display:flex; align-items:center; justify-content:space-between; padding:0 calc(70 * var(--u)) 0 calc(90 * var(--u)); z-index:5; box-shadow:0 .4vmin 2vmin rgba(120,0,10,.22); }
+.brand { display:flex; align-items:center; gap:calc(30 * var(--u)); } .brand img { height:calc(58 * var(--v)); width:auto; } .brand i { width:.2vmin; height:calc(44 * var(--v)); background:rgba(255,255,255,.6); }
+.brand b { font:italic 800 calc(26 * var(--u))/1 Poppins, sans-serif; letter-spacing:.22em; text-transform:uppercase; color:#fff; }
+.step { display:flex; align-items:center; gap:calc(26 * var(--u)); font:italic 800 calc(26 * var(--u))/1 Poppins, sans-serif; letter-spacing:.2em; text-transform:uppercase; color:#fff; }
+.step i { width:calc(56 * var(--u)); height:calc(56 * var(--u)); border-radius:50%; background:#fff; color:var(--red); display:grid; place-items:center; font:900 calc(30 * var(--u))/1 Poppins, sans-serif; font-style:normal; }
 .foot { position:absolute; left:0; right:0; bottom:0; z-index:5; display:flex; justify-content:space-between; align-items:center; padding:1.4vmin 3.2vw; font-size:1.4vmin; letter-spacing:.16em; text-transform:uppercase; font-weight:700; color:rgba(31,26,26,.45); }
 .foot .c { display:flex; align-items:center; gap:1.2vmin; } .foot .c img { height:2.4vmin; }
 .gear { position:absolute; bottom:5.2vmin; right:3vmin; width:3vmin; height:3vmin; opacity:.25; cursor:pointer; z-index:60; } .gear:hover { opacity:.7; }
 /* screens */
-.screen { position:absolute; left:0; right:0; top:9vh; bottom:0; z-index:4; display:none; padding:4vh 6vw 7vh; align-content:center; justify-items:center; text-align:center; }
+.screen { position:absolute; left:0; right:0; top:calc(105 * var(--v)); bottom:0; z-index:4; display:none; padding:4vh 6vw 7vh; align-content:center; justify-items:center; text-align:center; }
 .screen.on { display:grid; }
 .display { font-weight:900; font-style:italic; text-transform:uppercase; letter-spacing:-.02em; line-height:.9; color:var(--ink); }
 .h1 { font-size:13vmin; } .h2 { font-size:8vmin; } .h3 { font-size:5.4vmin; }
@@ -51,17 +51,20 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
 .help::before, .help::after { content:""; width:5vmin; height:.25vmin; background:var(--red); }
 .help i { display:none; }
 .vr { width:.25vmin; height:5vmin; background:var(--line); }
-/* idle */
-.idle.on { display:grid; grid-template-columns:1.25fr 1fr; align-items:center; gap:4vw; text-align:left; justify-items:start; padding-left:7vw; padding-right:7vw; }
-.idle .left { display:grid; gap:0; justify-items:start; width:100%; }
-.idle .eyebrow { justify-content:flex-start; font-size:2.2vmin; letter-spacing:.3em; } .idle .eyebrow::before { display:none; } .idle .eyebrow::after { width:7vmin; }
-.idle .h1 { font-size:21vmin; line-height:.84; letter-spacing:-.03em; margin-top:1.6vh; }
-.idle .h1 .l1, .idle .h1 .l2 { display:block; } .idle .h1 .amp { color:var(--red); margin-right:.2em; }
-.idle .sub { font-size:4.6vmin; margin-top:1.6vh; }
-.idle canvas.wave { width:100%; height:16vmin; margin-top:2.4vh; }
-.idle .right { display:grid; gap:4.5vh; justify-items:center; justify-self:center; }
-.idle .qrcard { width:38vmin; padding:2.6vmin; } .idle .qrcard img { width:31vmin; height:31vmin; } .idle .qrcard b { font-size:2.4vmin; }
-.idle .btn { height:10.5vmin; font-size:3.6vmin; padding:0 3.4vmin 0 6vmin; } .idle .btn::after { width:5.4vmin; height:5.4vmin; }
+/* idle · laid out on the reference banner grid */
+.idle.on { display:block; padding:0; top:0; }
+.idle .left { position:absolute; left:calc(125 * var(--u)); top:calc(148 * var(--v)); display:grid; gap:0; justify-items:start; }
+.idle .eyebrow { justify-content:flex-start; font-size:calc(22 * var(--u)); letter-spacing:.22em; margin-left:calc(35 * var(--u)); } .idle .eyebrow::before { display:none; } .idle .eyebrow::after { width:calc(60 * var(--u)); height:calc(3 * var(--v)); margin-left:calc(22 * var(--u)); }
+.idle .h1 { font-size:calc(178 * var(--u)); line-height:.76; letter-spacing:-.035em; margin-top:calc(6 * var(--v)); }
+.idle .h1 .l1, .idle .h1 .l2 { display:block; } .idle .h1 .amp { color:var(--red); margin-right:.12em; }
+.idle .sub { font-size:calc(43 * var(--u)); font-weight:600; margin-top:calc(10 * var(--v)); letter-spacing:-.01em; }
+.idle canvas.wave { position:absolute; left:calc(60 * var(--u)); top:calc(520 * var(--v)); width:calc(840 * var(--u)); height:calc(118 * var(--v)); }
+.idle .qrcard { position:absolute; left:calc(1005 * var(--u)); top:calc(140 * var(--v)); width:calc(350 * var(--u)); padding:calc(22 * var(--v)) calc(20 * var(--u)) calc(20 * var(--v)); border-radius:calc(24 * var(--u)); gap:calc(10 * var(--v)); box-shadow:0 calc(14 * var(--v)) calc(40 * var(--u)) rgba(80,20,20,.16), 0 0 0 .15vmin rgba(205,32,40,.08); }
+.idle .qrcard img { width:calc(296 * var(--u)); height:calc(296 * var(--u)); } .idle .qrcard b { font-size:calc(22 * var(--u)); letter-spacing:.12em; white-space:nowrap; } .idle .qrcard b::after { width:calc(90 * var(--u)); height:calc(4 * var(--v)); margin-top:calc(8 * var(--v)); }
+.stage:has(#s-idle.on) .foot, .stage:has(#s-idle.on) .gear { display:none; }
+.idle .cta-wrap { position:absolute; left:calc(920 * var(--u)); top:calc(540 * var(--v)); }
+.idle .btn { width:calc(505 * var(--u)); height:calc(90 * var(--v)); font-size:calc(34 * var(--u)); white-space:nowrap; padding:0 calc(28 * var(--u)) 0 calc(50 * var(--u)); gap:calc(30 * var(--u)); justify-content:space-between; }
+.idle .btn::after { width:calc(50 * var(--u)); height:calc(50 * var(--u)); }
 /* code */
 .codegrid { display:grid; grid-template-columns:1fr auto; gap:4vw; align-items:center; width:100%; text-align:left; }
 .codegrid .l { display:grid; gap:2.4vmin; justify-items:start; }
@@ -137,8 +140,8 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
 @keyframes rise { from { transform:translateY(2vmin); opacity:0 } to { transform:none; opacity:1 } }
 @media (orientation:portrait) {
   .screen { padding:4vh 6vw 10vh; }
-  .idle.on, .codegrid, .cdgrid, .result, .scream-grid .top { grid-template-columns:1fr; justify-items:center; text-align:center; }
-  .idle .left { justify-items:center; } .idle .eyebrow { justify-content:center; } .codegrid .l, .cdgrid .l { justify-items:center; }
+  .codegrid, .cdgrid, .result, .scream-grid .top { grid-template-columns:1fr; justify-items:center; text-align:center; }
+  .codegrid .l, .cdgrid .l { justify-items:center; }
   .result .vr { display:none; } .target { justify-self:center; }
 }
 </style>
@@ -161,12 +164,10 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
       <div class="eyebrow rise">Interactive experience</div>
       <h1 class="display h1 rise-2"><span class="l1">Scream</span><span class="l2"><span class="amp">&amp;</span><span class="red">Win</span></span></h1>
       <div class="sub rise-3">Say <b>WENDY’S.</b> Make some noise.</div>
-      <canvas class="wave" id="wave-idle"></canvas>
     </div>
-    <div class="right">
-      <div class="card qrcard rise-2"><img id="qr-reg" alt="QR"><b>Scan to<br>register</b></div>
-      <div class="rise-3"><button class="btn" id="start">Enter your code</button></div>
-    </div>
+    <canvas class="wave" id="wave-idle"></canvas>
+    <div class="card qrcard rise-2"><img id="qr-reg" alt="QR"><b>Scan to register</b></div>
+    <div class="cta-wrap rise-3"><button class="btn" id="start">Enter your code</button></div>
   </section>
 
   <!-- CODE -->
@@ -251,7 +252,7 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
   </aside>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwhuk968"></script><script src="../js/kiosk.js?v=mwhuk968"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwhur4d1"></script><script src="../js/kiosk.js?v=mwhur4d1"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let CFG = { scream: { threshold: 70, durationMs: 3000, dbFloor: -42, dbCeil: -6, loudWeight: .6, accWeight: .4 } };
@@ -323,6 +324,7 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
 
   // ---------- waveform ----------
   function drawWave(c, mirror, marker) {
+    if (c.id === "wave-idle") return drawHill(c);
     if (!c._sized) sizeCanvas(c);
     const ctx = c.getContext("2d"), W = c.width, H = c.height; ctx.clearRect(0, 0, W, H);
     const n = 72, gap = W / n; let maxH = 0, maxX = 0;
@@ -337,6 +339,20 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
       if (h > maxH) { maxH = h; maxX = x + gap * .28; }
     }
     if (marker) { ctx.fillStyle = "#29C9E0"; ctx.beginPath(); ctx.arc(maxX, (H - maxH) / 2 - 7 * fd, 5 * fd, 0, 7); ctx.fill(); ctx.strokeStyle = "#fff"; ctx.lineWidth = 2 * fd; ctx.stroke(); }
+  }
+
+  function drawHill(c) {
+    if (!c._sized) sizeCanvas(c);
+    const ctx = c.getContext("2d"), W = c.width, H = c.height; ctx.clearRect(0, 0, W, H);
+    const n = 78, gap = W / n, t = performance.now();
+    if (analyser && fbuf) analyser.getByteFrequencyData(fbuf);
+    for (let i = 0; i < n; i++) {
+      const u = (i + .5) / n, env = Math.pow(Math.sin(u * Math.PI), 1.6);
+      let v = analyser && fbuf ? Math.max(.12, fbuf[Math.floor(i / n * fbuf.length * .35)] / 255) : .3 + Math.abs(Math.sin(i * .55 + t * .003)) * .4 + Math.abs(Math.sin(i * 1.9 - t * .002)) * .3;
+      const h = Math.max(3 * fd, (.06 + .94 * env * Math.min(1, v)) * H), x = i * gap + gap * .3;
+      const g = ctx.createLinearGradient(0, H - h, 0, H); g.addColorStop(0, `rgba(205,32,40,${(.35 + .65 * env).toFixed(2)})`); g.addColorStop(1, `rgba(242,180,186,${(.3 + .4 * env).toFixed(2)})`);
+      ctx.fillStyle = g; ctx.fillRect(x, H - h, gap * .5, h);
+    }
   }
 
   // ---------- rings ----------

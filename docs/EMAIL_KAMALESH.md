@@ -23,6 +23,8 @@ The Wendy Fest activation platform is built and running (guest registration with
 6. **Brand fonts** – GT Walsheim Ultra Bold and Wendy's Fresh are licensed; we're using stand-ins. If the client can supply the font files, I'll swap them in.
 7. **Roast guardrails** – the roasts never mention body, skin, age, religion or anything a person can't change, and stay on outfit, pose and local references. Worth the client seeing a few samples and signing off on the tone.
 
+You can try the whole flow on the demo here (kiosk PIN 2468): https://hirusha25.github.io/wendyfest/kiosk/scream-cream.html
+
 Once I have the codes and the sender ID is moving, the rest can be loaded in a day. Happy to walk you through the admin panel whenever suits.
 
 Thanks,

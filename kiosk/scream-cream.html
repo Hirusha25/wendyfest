@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>[DEMO] Scream & Win · Studio Cream · Wendy Fest</title><link rel="icon" href="../assets/cameo.png">
+<link rel="stylesheet" href="../css/brand.css?v=mwhuk968">
+<style>
+/* ================= STUDIO CREAM · Scream & Win ================= */
+:root { --red:#CD2028; --red2:#DA2A33; --red-dark:#8E141B; --ink:#1F1A1A; --cream:#F7F2EC; --blush:#F2D4D7; --cyan:#29C9E0; --line:rgba(205,32,40,.18); }
+html, body { height:100%; overflow:hidden; }
+body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,'Noto Sans Sinhala','Noto Sans Tamil',system-ui,sans-serif; user-select:none; cursor:default; }
+.stage { position:relative; width:100vw; height:100vh; overflow:hidden; background:var(--cream); }
+.stage::before { content:""; position:absolute; inset:0; background:radial-gradient(70% 50% at 50% 110%, rgba(205,32,40,.08), transparent 70%); pointer-events:none; }
+#field { display:none; }
+/* header bar */
+.hdr { position:absolute; top:0; left:0; right:0; height:9vh; background:linear-gradient(180deg,#D8262F,#C21E27); display:flex; align-items:center; justify-content:space-between; padding:0 3.2vw; z-index:5; box-shadow:0 .4vmin 2vmin rgba(120,0,10,.22); }
+.brand { display:flex; align-items:center; gap:1.8vmin; } .brand img { height:5.4vmin; width:auto; } .brand i { width:.2vmin; height:4vmin; background:rgba(255,255,255,.55); }
+.brand b { font:italic 700 2vmin/1 Poppins, sans-serif; letter-spacing:.22em; text-transform:uppercase; color:#fff; }
+.step { display:flex; align-items:center; gap:1.4vmin; font:italic 800 1.9vmin/1 Poppins, sans-serif; letter-spacing:.2em; text-transform:uppercase; color:#fff; }
+.step i { width:3.8vmin; height:3.8vmin; border-radius:50%; background:#fff; color:var(--red); display:grid; place-items:center; font:900 2.1vmin/1 Poppins, sans-serif; font-style:normal; }
+.foot { position:absolute; left:0; right:0; bottom:0; z-index:5; display:flex; justify-content:space-between; align-items:center; padding:1.4vmin 3.2vw; font-size:1.4vmin; letter-spacing:.16em; text-transform:uppercase; font-weight:700; color:rgba(31,26,26,.45); }
+.foot .c { display:flex; align-items:center; gap:1.2vmin; } .foot .c img { height:2.4vmin; }
+.gear { position:absolute; bottom:5.2vmin; right:3vmin; width:3vmin; height:3vmin; opacity:.25; cursor:pointer; z-index:60; } .gear:hover { opacity:.7; }
+/* screens */
+.screen { position:absolute; left:0; right:0; top:9vh; bottom:0; z-index:4; display:none; padding:4vh 6vw 7vh; align-content:center; justify-items:center; text-align:center; }
+.screen.on { display:grid; }
+.display { font-weight:900; font-style:italic; text-transform:uppercase; letter-spacing:-.02em; line-height:.9; color:var(--ink); }
+.h1 { font-size:13vmin; } .h2 { font-size:8vmin; } .h3 { font-size:5.4vmin; }
+.red { color:var(--red); }
+.eyebrow { display:flex; align-items:center; justify-content:center; gap:1.6vmin; font-size:1.8vmin; letter-spacing:.28em; text-transform:uppercase; font-weight:800; color:var(--ink); }
+.eyebrow::before, .eyebrow::after { content:""; width:5vmin; height:.25vmin; background:var(--red); }
+.sub { font-size:3vmin; font-weight:600; color:var(--ink); }
+.sub b { font-weight:900; font-style:italic; color:var(--red); }
+.btn { display:inline-flex; align-items:center; justify-content:center; gap:2vmin; padding:0 3vmin 0 4.6vmin; height:7.6vmin; border-radius:999px; border:0; cursor:pointer; background:linear-gradient(180deg, #E0303A 0%, #CD2028 55%, #B5181F 100%); color:#fff; font:italic 900 2.6vmin/1 Poppins, sans-serif; text-transform:uppercase; letter-spacing:.04em; box-shadow:0 .7vmin 0 var(--red-dark), 0 1.8vmin 3.6vmin -1vmin rgba(205,32,40,.45), inset 0 .2vmin 0 rgba(255,255,255,.4); transition:transform .1s; }
+.btn:active { transform:translateY(.4vmin); box-shadow:0 .3vmin 0 var(--red-dark); }
+.btn::after { content:""; width:4vmin; height:4vmin; border-radius:50%; background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23CD2028' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center/55% no-repeat; }
+.btn.ghost { background:transparent; color:var(--red); box-shadow:none; border:.3vmin solid var(--red); padding:0 4vmin; } .btn.ghost::after { display:none; }
+.btn.ink { background:linear-gradient(180deg, #2A2424, #1F1A1A); box-shadow:0 .7vmin 0 #000; }
+.pill { display:inline-flex; align-items:center; gap:1.2vmin; padding:1.1vmin 2.4vmin; border-radius:999px; border:.25vmin solid var(--red); background:#fff; font-size:1.9vmin; font-weight:800; font-style:italic; letter-spacing:.1em; text-transform:uppercase; color:var(--ink); }
+.pill .dot { width:1.4vmin; height:1.4vmin; border-radius:50%; background:var(--red); animation:blink 1s steps(2) infinite; }
+.pill.ok .dot { background:var(--cyan); animation:none; }
+.pill.cyan { border-color:var(--cyan); }
+@keyframes blink { 50% { opacity:.2 } }
+.card { background:#fff; border-radius:2.2vmin; box-shadow:0 1.6vmin 4vmin rgba(80,20,20,.14), 0 0 0 .15vmin rgba(205,32,40,.08); }
+.qrcard { padding:2vmin; display:grid; gap:1.2vmin; justify-items:center; width:30vmin; }
+.qrcard img { width:24vmin; height:24vmin; }
+.qrcard b { font-size:2vmin; letter-spacing:.12em; text-transform:uppercase; font-weight:900; font-style:italic; text-align:center; line-height:1.15; color:var(--ink); }
+.qrcard b::after { content:""; display:block; width:6vmin; height:.3vmin; background:var(--red); margin:1vmin auto 0; }
+.muted { color:rgba(31,26,26,.6); font-size:1.9vmin; }
+.help { display:inline-flex; align-items:center; gap:1.6vmin; color:var(--ink); font-size:2vmin; font-weight:600; }
+.help::before, .help::after { content:""; width:5vmin; height:.25vmin; background:var(--red); }
+.help i { display:none; }
+.vr { width:.25vmin; height:5vmin; background:var(--line); }
+/* idle */
+.idle.on { display:grid; grid-template-columns:1.25fr 1fr; align-items:center; gap:4vw; text-align:left; justify-items:start; padding-left:7vw; padding-right:7vw; }
+.idle .left { display:grid; gap:0; justify-items:start; width:100%; }
+.idle .eyebrow { justify-content:flex-start; font-size:2.2vmin; letter-spacing:.3em; } .idle .eyebrow::before { display:none; } .idle .eyebrow::after { width:7vmin; }
+.idle .h1 { font-size:21vmin; line-height:.84; letter-spacing:-.03em; margin-top:1.6vh; }
+.idle .h1 .l1, .idle .h1 .l2 { display:block; } .idle .h1 .amp { color:var(--red); margin-right:.2em; }
+.idle .sub { font-size:4.6vmin; margin-top:1.6vh; }
+.idle canvas.wave { width:100%; height:16vmin; margin-top:2.4vh; }
+.idle .right { display:grid; gap:4.5vh; justify-items:center; justify-self:center; }
+.idle .qrcard { width:38vmin; padding:2.6vmin; } .idle .qrcard img { width:31vmin; height:31vmin; } .idle .qrcard b { font-size:2.4vmin; }
+.idle .btn { height:10.5vmin; font-size:3.6vmin; padding:0 3.4vmin 0 6vmin; } .idle .btn::after { width:5.4vmin; height:5.4vmin; }
+/* code */
+.codegrid { display:grid; grid-template-columns:1fr auto; gap:4vw; align-items:center; width:100%; text-align:left; }
+.codegrid .l { display:grid; gap:2.4vmin; justify-items:start; }
+.codegrid .l .sub { font-size:2.6vmin; font-weight:600; } .codegrid .l .h2 { font-size:9vmin; white-space:nowrap; }
+.boxes { display:flex; gap:1.6vmin; }
+.boxes i { width:9vmin; height:9vmin; border-radius:1.4vmin; background:#fff; border:.35vmin solid var(--red); color:var(--red); display:grid; place-items:center; font:900 5.4vmin/1 Poppins, sans-serif; font-style:italic; box-shadow:0 .6vmin 1.6vmin rgba(205,32,40,.12); }
+.boxes i.cur { box-shadow:0 0 0 .5vmin rgba(205,32,40,.22); }
+.boxes i.err { animation:shake .4s; background:var(--blush); }
+.kbd { display:grid; gap:1.2vmin; justify-items:center; }
+.kbd .row { display:flex; gap:1vmin; }
+.kbd button { height:7vmin; min-width:7vmin; padding:0 1.6vmin; border-radius:1.2vmin; border:0; background:linear-gradient(180deg, #DA2A33, #C21E27); color:#fff; font:800 2.7vmin/1 Poppins, sans-serif; box-shadow:0 .55vmin 0 var(--red-dark), inset 0 .15vmin 0 rgba(255,255,255,.3); cursor:pointer; }
+.kbd button:active { transform:translateY(.3vmin); box-shadow:0 .25vmin 0 var(--red-dark); }
+.kbd button.wide { min-width:9vmin; }
+#code { position:absolute; opacity:0; width:1px; height:1px; left:-9999px; }
+.msg { min-height:3vmin; font-size:2.2vmin; font-weight:700; color:var(--red); }
+/* waveform */
+canvas.wave { width:70vw; height:12vmin; display:block; }
+/* countdown */
+.cdgrid { display:grid; grid-template-columns:1fr auto; gap:6vw; align-items:center; width:100%; text-align:left; padding:0 4vw; }
+.cdgrid .l { display:grid; gap:2.6vmin; justify-items:start; }
+.cdgrid .l .display::after { content:""; display:block; width:8vmin; height:.4vmin; background:var(--red); margin-top:2.4vmin; }
+.ringwrap { position:relative; width:52vmin; height:52vmin; display:grid; place-items:center; }
+.ringwrap::before { content:""; position:absolute; inset:-14%; border-radius:50%; background:repeating-radial-gradient(circle, transparent 0 7vmin, rgba(205,32,40,.14) 7vmin 7.35vmin); -webkit-mask:radial-gradient(circle, transparent 0 20vmin, #000 22vmin, transparent 36vmin); mask:radial-gradient(circle, transparent 0 20vmin, #000 22vmin, transparent 36vmin); }
+.ringwrap canvas { position:absolute; inset:0; width:100%; height:100%; }
+.ringwrap .num { position:relative; font:italic 900 32vmin/1 Poppins, sans-serif; color:var(--red); }
+.ringwrap .num.sm { font-size:18vmin; }
+.ringwrap .lbl { position:relative; margin-top:-2vmin; font-size:1.9vmin; letter-spacing:.3em; text-transform:uppercase; font-weight:800; }
+.dots { font-size:3.2vmin; letter-spacing:.4em; font-weight:900; font-style:italic; color:var(--ink); }
+.dots span { opacity:.25; } .dots span.on { opacity:1; }
+/* live meter */
+.scream-grid { display:grid; grid-template-rows:auto auto auto; gap:3vh; width:100%; justify-items:stretch; }
+.scream-grid .top { display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:3vw; text-align:left; }
+.scream-grid .top .display { font-size:7vmin; } .scream-grid .top .display span { display:block; }
+.scoreblock { display:grid; justify-items:center; } .scoreblock .lbl { font-size:1.9vmin; letter-spacing:.3em; text-transform:uppercase; font-weight:800; color:var(--ink); }
+.scoreblock .num { font:italic 900 17vmin/1 Poppins, sans-serif; color:var(--red); }
+.target { display:inline-flex; align-items:center; gap:1.6vmin; font:italic 800 3vmin/1 Poppins, sans-serif; letter-spacing:.1em; text-transform:uppercase; justify-self:start; }
+.target::before { content:""; width:.3vmin; height:6vmin; background:var(--red); transform:rotate(20deg); margin-right:1vmin; }
+.target b { color:var(--red); font-size:3.8vmin; }
+.scream-grid canvas.wave { width:100%; height:20vmin; }
+.scream-grid .bottom { display:flex; align-items:center; justify-content:center; gap:4vmin; }
+.timeleft { display:flex; align-items:center; gap:2vmin; }
+.timeleft b { font:italic 900 5vmin/1 Poppins, sans-serif; color:var(--red); } .timeleft b small { font-size:2.4vmin; font-style:normal; font-weight:800; letter-spacing:.1em; color:var(--ink); }
+.bar { width:22vmin; height:1.2vmin; border-radius:999px; background:var(--line); overflow:hidden; }
+.bar i { display:block; height:100%; width:100%; background:var(--red); border-radius:999px; transform-origin:left; }
+#ring-gauge, #wave-r { display:none; }
+/* judge */
+.judge { display:flex; gap:2vmin; }
+/* result */
+.result { display:grid; grid-template-columns:auto auto auto auto; gap:4vw; align-items:center; text-align:left; justify-items:start; }
+.result .score { font:italic 900 20vmin/1 Poppins, sans-serif; color:var(--red); }
+.result .lbl { font-size:1.9vmin; letter-spacing:.3em; text-transform:uppercase; font-weight:800; color:var(--ink); }
+.result .lbl.lined { display:flex; align-items:center; gap:1.4vmin; } .result .lbl.lined::before, .result .lbl.lined::after { content:""; width:4vmin; height:.25vmin; background:var(--red); }
+.result .vr { height:18vmin; }
+.reward { display:grid; gap:1.2vmin; }
+.reward .code { background:#fff; color:var(--red); border:.35vmin solid var(--red); font:italic 900 5.2vmin/1 Poppins, sans-serif; padding:2vmin 3vmin; border-radius:1.6vmin; box-shadow:0 .8vmin 2vmin rgba(205,32,40,.14); letter-spacing:.02em; }
+.reward small { font-size:1.7vmin; color:rgba(31,26,26,.75); font-weight:600; }
+.confetti { position:absolute; inset:0; pointer-events:none; z-index:3; overflow:hidden; }
+.confetti i { position:absolute; width:1.4vmin; height:2.6vmin; border-radius:.2vmin; animation:fall 3s linear forwards; }
+@keyframes fall { to { transform:translateY(110vh) rotate(720deg); opacity:.3 } }
+@keyframes shake { 0%,100% { transform:translateX(0) } 25% { transform:translateX(-1vmin) } 75% { transform:translateX(1vmin) } }
+.flash { position:absolute; inset:0; background:#fff; opacity:0; pointer-events:none; z-index:70; }
+.flash.go { animation:flash .5s ease; } @keyframes flash { 0% { opacity:.9 } 100% { opacity:0 } }
+.settings { position:absolute; top:0; right:0; width:44vmin; height:100%; background:#1F1A1A; color:#fff; padding:4vmin; transform:translateX(100%); transition:transform .3s; z-index:80; font-size:1.8vmin; overflow:auto; box-shadow:-2vmin 0 5vmin rgba(0,0,0,.4); }
+.settings.open { transform:none; }
+.settings .eyebrow { color:#fff; } .settings .eyebrow::before, .settings .eyebrow::after { display:none; }
+.settings label { display:block; margin:1.6vmin 0 .4vmin; font-weight:700; }
+.settings select, .settings input { width:100%; padding:1vmin; border-radius:1vmin; border:0; font-size:1.8vmin; }
+.settings .btn.ghost { color:#fff; border-color:rgba(255,255,255,.6); }
+.lvl { width:100%; height:1.2vmin; background:rgba(255,255,255,.12); border-radius:999px; overflow:hidden; } .lvl div { height:100%; width:0; background:var(--red); }
+.k-input { font:900 6vmin/1 Poppins, sans-serif; letter-spacing:.3em; text-align:center; width:40vmin; padding:2vmin; border-radius:1.6vmin; border:.35vmin solid var(--red); background:#fff; color:var(--red); outline:0; }
+.k-input.err { animation:shake .4s; }
+.rise { animation:rise .5s ease both; } .rise-2 { animation:rise .5s .1s ease both; } .rise-3 { animation:rise .5s .2s ease both; }
+@keyframes rise { from { transform:translateY(2vmin); opacity:0 } to { transform:none; opacity:1 } }
+@media (orientation:portrait) {
+  .screen { padding:4vh 6vw 10vh; }
+  .idle.on, .codegrid, .cdgrid, .result, .scream-grid .top { grid-template-columns:1fr; justify-items:center; text-align:center; }
+  .idle .left { justify-items:center; } .idle .eyebrow { justify-content:center; } .codegrid .l, .cdgrid .l { justify-items:center; }
+  .result .vr { display:none; } .target { justify-self:center; }
+}
+</style>
+</head>
+<body>
+<div class="stage">
+  <canvas id="field"></canvas>
+  <div class="flash" id="flash"></div>
+  <header class="hdr"><div class="brand"><img src="../assets/wendys-horiz-white.svg" alt="Wendy's"><i></i><b>Wendy Fest</b></div><div class="step"><i id="step-n">1</i><span id="step-l">Register</span></div></header>
+
+  <!-- PIN -->
+  <section class="screen" id="s-pin"><div style="display:grid;gap:3vmin;justify-items:center">
+    <div class="eyebrow">Host console</div><div class="display h2">Enter PIN</div>
+    <input class="k-input" id="pin" type="password" inputmode="numeric" maxlength="8">
+    <button class="btn" id="pin-go">Unlock</button></div></section>
+
+  <!-- IDLE -->
+  <section class="screen on idle" id="s-idle">
+    <div class="left">
+      <div class="eyebrow rise">Interactive experience</div>
+      <h1 class="display h1 rise-2"><span class="l1">Scream</span><span class="l2"><span class="amp">&amp;</span><span class="red">Win</span></span></h1>
+      <div class="sub rise-3">Say <b>WENDY’S.</b> Make some noise.</div>
+      <canvas class="wave" id="wave-idle"></canvas>
+    </div>
+    <div class="right">
+      <div class="card qrcard rise-2"><img id="qr-reg" alt="QR"><b>Scan to<br>register</b></div>
+      <div class="rise-3"><button class="btn" id="start">Enter your code</button></div>
+    </div>
+  </section>
+
+  <!-- CODE -->
+  <section class="screen" id="s-code"><div class="codegrid">
+    <div class="l">
+      <div class="display h2">Let’s hear you.</div>
+      <div class="sub">Enter your 6-character code</div>
+      <input id="code" autocomplete="off" aria-label="Guest code">
+      <div class="boxes" id="boxes"><i class="cur"></i><i></i><i></i><i></i><i></i><i></i></div>
+      <span class="help"><i>i</i> Ask your host for help.</span>
+      <div class="msg" id="code-msg"></div>
+    </div>
+    <div style="display:grid;gap:3vmin;justify-items:center">
+      <div class="kbd" id="kbd"></div>
+      <div style="display:flex;align-items:center;gap:2vmin"><button class="btn" id="code-go">Continue</button><button class="btn ghost" style="height:5.6vmin;font-size:1.9vmin" onclick="goIdle()">Back</button></div>
+    </div>
+  </div></section>
+
+  <!-- READY -->
+  <section class="screen" id="s-ready"><div style="display:grid;gap:2.2vmin;justify-items:center">
+    <div class="eyebrow">Mic check</div>
+    <div class="display h2">Ready, <span id="r-name">Hirusha</span>?</div>
+    <div class="sub">When the count hits zero, scream <b>“WENDY’S!”</b></div>
+    <canvas class="wave" id="wave-ready"></canvas>
+    <div class="pill ok" id="mic-pill"><span class="dot"></span><span id="mic-status">Checking microphone…</span></div>
+    <div style="display:flex;gap:2vmin;margin-top:1vmin"><button class="btn" id="go">Let’s go</button><button class="btn ghost" onclick="goIdle()">Cancel</button></div>
+  </div></section>
+
+  <!-- GO: countdown then scream -->
+  <section class="screen" id="s-go">
+    <div id="go-count" class="cdgrid" style="display:grid">
+      <div class="l"><div class="display h2">Get ready<br>to scream.</div><div class="dots" id="dots"><span class="on">3</span> · <span>2</span> · <span>1</span></div></div>
+      <div class="ringwrap"><canvas id="ring-count"></canvas><div class="num" id="cnt">3</div></div>
+    </div>
+    <div id="go-meter" class="scream-grid" style="display:none">
+      <div class="top">
+        <div class="display h3"><span>Scream</span><span class="red">Wendy’s!</span></div>
+        <div class="scoreblock"><div class="lbl">Loudness score</div><div class="num" id="gauge-num">0</div></div>
+        <span class="target" id="target">Target <b id="thr">70</b></span>
+      </div>
+      <canvas class="wave" id="wave-l"></canvas><canvas class="wave" id="wave-r"></canvas><canvas id="ring-gauge"></canvas>
+      <div class="bottom">
+        <span class="pill"><span class="dot"></span>Listening</span><span class="vr"></span>
+        <div class="timeleft"><b><span id="tleft">3.0</span>s <small>LEFT</small></b><div class="bar"><i id="tbar"></i></div></div>
+      </div>
+      <div class="muted" id="trans" style="font-size:1.8vmin;min-height:2.4vmin">…</div>
+    </div>
+  </section>
+
+  <!-- HOST JUDGE -->
+  <section class="screen" id="s-judge"><div style="display:grid;gap:3vmin;justify-items:center">
+    <div class="eyebrow">Host call · speech recognition unavailable</div>
+    <div class="display h2">Did they say “Wendy’s”?</div>
+    <div class="judge"><button class="btn" onclick="submitScream(100)">Crystal clear</button><button class="btn ink" onclick="submitScream(60)">Close enough</button><button class="btn ghost" onclick="submitScream(15)">Nope</button></div>
+  </div></section>
+
+  <!-- RESULT -->
+  <section class="screen" id="s-result">
+    <div style="display:grid;gap:3vmin;justify-items:center;width:100%">
+      <div class="display h2" id="res-title" style="font-size:7vmin">You brought the loud.</div>
+      <div class="result">
+        <div style="display:grid;justify-items:center"><div class="score" id="res-score">84</div><div class="lbl lined" id="res-eyebrow">Final score</div></div>
+        <span class="vr"></span>
+        <div class="reward" id="res-coupon"><div class="lbl">Your reward code</div><div class="code" id="res-code">WENDY10-AAA111</div><small id="res-label"></small><small>Sent by SMS · saved on your Wendy Fest pass</small></div>
+        <div class="card qrcard" style="width:24vmin;padding:1.4vmin"><img id="qr-profile" alt="QR" style="width:18vmin;height:18vmin"><b style="font-size:1.7vmin" id="qr-label">Save your<br>reward</b></div>
+      </div>
+      <div class="sub" id="res-detail" style="font-size:2.3vmin;font-weight:600"></div>
+      <button class="btn" onclick="goIdle()">Next player</button>
+    </div>
+  </section>
+
+  <footer class="foot"><span class="c"><img src="../assets/cameo.png" alt="">© 2026 Wendy’s Sri Lanka</span><span id="corner-l">Station A</span><span>Scream &amp; Win</span></footer>
+  <svg class="gear" viewBox="0 0 24 24" fill="#1F1A1A" onclick="document.getElementById('settings').classList.toggle('open')"><path d="M12 8a4 4 0 100 8 4 4 0 000-8zm9 4a7 7 0 00-.1-1.2l2-1.5-2-3.5-2.4 1a7 7 0 00-2-1.2L16 3H8l-.5 2.6a7 7 0 00-2 1.2l-2.4-1-2 3.5 2 1.5A7 7 0 003 12a7 7 0 00.1 1.2l-2 1.5 2 3.5 2.4-1a7 7 0 002 1.2L8 21h8l.5-2.6a7 7 0 002-1.2l2.4 1 2-3.5-2-1.5c.1-.4.1-.8.1-1.2z"/></svg>
+  <aside class="settings" id="settings">
+    <div class="eyebrow" style="justify-content:flex-start">Station settings</div>
+    <label>Microphone (this screen)</label><select id="mic"></select>
+    <label>Live level</label><div class="lvl"><div id="lvl-set"></div></div><div id="db-set" style="margin-top:.6vmin">— dB</div>
+    <label>Clarity scoring</label><select id="judge-mode"><option value="auto">Auto (speech recognition, Chrome + internet)</option><option value="host">Host judges after each scream</option></select>
+    <label>Scoring (from admin)</label><div id="thr-info">—</div>
+    <p style="opacity:.7;margin-top:2vmin">Calibrate: have a staff member scream at the real distance. Their peak should land near 100. Adjust dB floor/ceiling in Admin if screams never reach it or always do.</p>
+    <button class="btn ghost" style="margin-top:2vmin;height:5.6vmin;font-size:1.9vmin" onclick="document.getElementById('settings').classList.remove('open')">Close</button>
+  </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwhuk968"></script><script src="../js/kiosk.js?v=mwhuk968"></script>
+<script>
+  const $ = (id) => document.getElementById(id);
+  let CFG = { scream: { threshold: 70, durationMs: 3000, dbFloor: -42, dbCeil: -6, loudWeight: .6, accWeight: .4 } };
+  let guest = null, audio = null, analyser = null, buf = null, fbuf = null, stream = null, rafId = null;
+  let peakDb = -100, transcript = "", recog = null, windowOpen = false, smooth = -100, gaugeShown = 0, mode = "idle";
+  $("corner-l").textContent = "Station " + K.station;
+  $("qr-reg").src = qrUrl(location.href.replace(/[#?].*$/, "").replace(/\/(kiosk\/)?[^/]*$/, "") + "/register.html");
+  fetch("/api/config").then((r) => r.json()).then((c) => { CFG = c; $("qr-reg").src = qrUrl(c.baseUrl + "/register.html"); $("thr").textContent = c.scream.threshold; $("thr-info").textContent = `Win at ${c.scream.threshold} · loud ${Math.round(c.scream.loudWeight * 100)}% / clarity ${Math.round(c.scream.accWeight * 100)}% · dB ${c.scream.dbFloor}→${c.scream.dbCeil}`; });
+
+  // ---------- PIN ----------
+  async function unlock() { if (await K.login($("pin").value)) goIdle(); else { $("pin").classList.add("err"); setTimeout(() => $("pin").classList.remove("err"), 500); $("pin").value = ""; } }
+  $("pin-go").onclick = unlock; $("pin").addEventListener("keydown", (e) => e.key === "Enter" && unlock());
+  if (!document.cookie.includes("wf_kiosk=")) K.show("s-pin"); else setStep("1", "Register");
+
+  // ---------- background particle field ----------
+  const field = $("field"), fx = field.getContext("2d");
+  function sizeCanvas(c) { const r = c.getBoundingClientRect(); const d = Math.min(2, devicePixelRatio || 1); if (!r.width || !r.height) return d; const w = Math.round(r.width * d), h = Math.round(r.height * d); if (c.width !== w || c.height !== h) { c.width = w; c.height = h; } c._sized = true; return d; }
+  let fd = Math.min(2, devicePixelRatio || 1); addEventListener("resize", () => { fd = sizeCanvas(field); document.querySelectorAll("canvas").forEach((c) => { c._sized = false; }); });
+  function drawField(t) {
+    if (!field._sized) fd = sizeCanvas(field);
+    const W = field.width, H = field.height; fx.clearRect(0, 0, W, H);
+    const energy = windowOpen ? Math.min(1, Math.max(0, (smooth - CFG.scream.dbFloor) / (CFG.scream.dbCeil - CFG.scream.dbFloor))) : 0.12;
+    const cols = 240, rows = 26, top = H * .74, bottom = H * 1.0;
+    fx.globalCompositeOperation = "lighter";
+    for (let j = 0; j < rows; j++) {
+      const depth = j / rows;
+      const baseY = top + (bottom - top) * depth;
+      for (let i = 0; i <= cols; i++) {
+        const u = i / cols; const x = u * W;
+        const side = Math.abs(u - .5) * 2;
+        const mtn = 0.18 + 0.82 * Math.pow(Math.max(0, side - .05) / .95, 1.2);
+        const w1 = Math.sin(u * 9 + t * .0011 + depth * 2.2) * (10 + 60 * energy);
+        const w2 = Math.sin(u * 23 - t * .0019 + depth * 5) * (4 + 26 * energy);
+        const ridge = Math.pow(Math.max(0, Math.sin(u * 3.1 + depth * 1.6 + t * .0004)), 2) * 50 * (1 - depth);
+        const lift = mtn * 190 * (1 - depth * .5);
+        const y = baseY - (w1 * (.25 + mtn) + w2 * mtn + ridge * mtn + lift) * fd * (0.35 + depth);
+        const a = (0.08 + 0.95 * depth) * (0.1 + mtn * 1.6) * (0.7 + energy);
+        const r = (1.1 + 2.5 * depth) * fd;
+        fx.fillStyle = `rgba(255,${40 + 60 * energy | 0},60,${Math.min(1, a).toFixed(3)})`;
+        fx.beginPath(); fx.arc(x, y, r, 0, 7); fx.fill();
+      }
+    }
+    fx.globalCompositeOperation = "source-over";
+    const g1 = fx.createRadialGradient(W * .07, H, 0, W * .07, H, W * .3); g1.addColorStop(0, "rgba(240,50,65,.5)"); g1.addColorStop(1, "rgba(240,50,65,0)");
+    const g2 = fx.createRadialGradient(W * .93, H, 0, W * .93, H, W * .3); g2.addColorStop(0, "rgba(240,50,65,.5)"); g2.addColorStop(1, "rgba(240,50,65,0)");
+    fx.fillStyle = g1; fx.fillRect(0, 0, W, H); fx.fillStyle = g2; fx.fillRect(0, 0, W, H);
+  }
+
+  // ---------- audio ----------
+  const micSel = $("mic");
+  async function listMics() { const devs = (await navigator.mediaDevices.enumerateDevices()).filter((d) => d.kind === "audioinput"); const saved = localStorage.getItem("wf_mic_" + K.station); micSel.innerHTML = devs.map((d, i) => `<option value="${d.deviceId}" ${d.deviceId === saved ? "selected" : ""}>${d.label || "Microphone " + (i + 1)}</option>`).join(""); }
+  micSel.onchange = () => { localStorage.setItem("wf_mic_" + K.station, micSel.value); startAudio(true); };
+  $("judge-mode").value = localStorage.getItem("wf_judge") || "auto"; $("judge-mode").onchange = () => localStorage.setItem("wf_judge", $("judge-mode").value);
+  async function startAudio(restart) {
+    if (stream && !restart) return true;
+    if (stream) stream.getTracks().forEach((t) => t.stop());
+    try {
+      const id = localStorage.getItem("wf_mic_" + K.station);
+      stream = await navigator.mediaDevices.getUserMedia({ audio: { deviceId: id ? { exact: id } : undefined, echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+      audio = audio || new (window.AudioContext || window.webkitAudioContext)(); if (audio.state === "suspended") await audio.resume();
+      const src = audio.createMediaStreamSource(stream); analyser = audio.createAnalyser(); analyser.fftSize = 2048; analyser.smoothingTimeConstant = .6; src.connect(analyser);
+      buf = new Float32Array(analyser.fftSize); fbuf = new Uint8Array(analyser.frequencyBinCount);
+      await listMics(); $("mic-status").textContent = "Mic connected · " + (micSel.selectedOptions[0]?.textContent || "default"); $("mic-pill").classList.add("ok");
+      return true;
+    } catch (e) { $("mic-status").textContent = "Microphone blocked: " + e.message; $("mic-pill").classList.remove("ok"); return false; }
+  }
+  function currentDb() { if (!analyser) return -100; analyser.getFloatTimeDomainData(buf); let s = 0; for (let i = 0; i < buf.length; i++) s += buf[i] * buf[i]; const rms = Math.sqrt(s / buf.length); return rms > 0 ? Math.max(-100, 20 * Math.log10(rms)) : -100; }
+  const dbToPct = (db) => Math.max(0, Math.min(100, ((db - CFG.scream.dbFloor) / (CFG.scream.dbCeil - CFG.scream.dbFloor)) * 100));
+
+  // ---------- waveform ----------
+  function drawWave(c, mirror, marker) {
+    if (!c._sized) sizeCanvas(c);
+    const ctx = c.getContext("2d"), W = c.width, H = c.height; ctx.clearRect(0, 0, W, H);
+    const n = 72, gap = W / n; let maxH = 0, maxX = 0;
+    if (analyser && fbuf) analyser.getByteFrequencyData(fbuf);
+    for (let i = 0; i < n; i++) {
+      let v;
+      if (analyser && fbuf) { const idx = Math.floor((mirror ? (n - 1 - i) : i) / n * fbuf.length * .35); v = Math.max(.14, fbuf[idx] / 255); }
+      else v = .1 + Math.abs(Math.sin(i * .4 + performance.now() * .004)) * .2;
+      const env = Math.sin((i + .5) / n * Math.PI); v = v * (.3 + .7 * env);
+      const h = Math.max(2 * fd, v * H * .95), x = i * gap + gap * .22;
+      ctx.fillStyle = `rgba(205,32,40,${(.22 + .78 * env).toFixed(2)})`; ctx.fillRect(x, (H - h) / 2, gap * .56, h);
+      if (h > maxH) { maxH = h; maxX = x + gap * .28; }
+    }
+    if (marker) { ctx.fillStyle = "#29C9E0"; ctx.beginPath(); ctx.arc(maxX, (H - maxH) / 2 - 7 * fd, 5 * fd, 0, 7); ctx.fill(); ctx.strokeStyle = "#fff"; ctx.lineWidth = 2 * fd; ctx.stroke(); }
+  }
+
+  // ---------- rings ----------
+  function drawRing(c, pct, { ticks = 60, color = "#CD2028", dim = "rgba(205,32,40,.16)", glow = true, marker = null } = {}) {
+    if (!c._sized) sizeCanvas(c);
+    const ctx = c.getContext("2d"), W = c.width, H = c.height, cx = W / 2, cy = H / 2, R = Math.min(W, H) * .44; ctx.clearRect(0, 0, W, H);
+    const a0 = Math.PI * .75, span = Math.PI * 1.5, lit = Math.round((pct / 100) * ticks);
+    for (let i = 0; i < ticks; i++) {
+      const a = a0 + (i / (ticks - 1)) * span, on = i < lit, len = (i % 5 === 0 ? .09 : .06) * R;
+      ctx.strokeStyle = on ? color : dim; ctx.lineWidth = (on ? 4 : 3) * fd; ctx.lineCap = "round";
+      if (on && glow) { ctx.shadowColor = color; ctx.shadowBlur = 14 * fd; } else ctx.shadowBlur = 0;
+      ctx.beginPath(); ctx.moveTo(cx + Math.cos(a) * (R - len), cy + Math.sin(a) * (R - len)); ctx.lineTo(cx + Math.cos(a) * R, cy + Math.sin(a) * R); ctx.stroke();
+    }
+    ctx.shadowBlur = 0; ctx.strokeStyle = "rgba(205,32,40,.1)"; ctx.lineWidth = 2 * fd; ctx.beginPath(); ctx.arc(cx, cy, R * .82, a0, a0 + span); ctx.stroke();
+    if (marker !== null) { const a = a0 + (marker / 100) * span; ctx.strokeStyle = "#4DE3F2"; ctx.lineWidth = 5 * fd; ctx.shadowColor = "#4DE3F2"; ctx.shadowBlur = 12 * fd; ctx.beginPath(); ctx.moveTo(cx + Math.cos(a) * (R - .14 * R), cy + Math.sin(a) * (R - .14 * R)); ctx.lineTo(cx + Math.cos(a) * (R + .03 * R), cy + Math.sin(a) * (R + .03 * R)); ctx.stroke(); ctx.shadowBlur = 0; }
+  }
+
+  // ---------- main loop ----------
+  let countPct = 0;
+  function loop(t) {
+    rafId = requestAnimationFrame(loop);
+    const db = currentDb(); smooth = db > smooth ? db : smooth * .9 + db * .1;
+    const pct = dbToPct(smooth);
+    $("lvl-set").style.width = pct + "%"; $("db-set").textContent = db.toFixed(1) + " dB";
+    if (mode === "idle") drawWave($("wave-idle"));
+    if (mode === "ready") drawWave($("wave-ready"));
+    if (mode === "count") drawRing($("ring-count"), countPct, { ticks: 72, color: "#CD2028" });
+    if (mode === "scream") {
+      if (windowOpen && db > peakDb) peakDb = db;
+      gaugeShown += (pct - gaugeShown) * .25;
+      drawWave($("wave-l"), false, true);
+      $("gauge-num").textContent = Math.round(dbToPct(peakDb));
+    }
+  }
+  requestAnimationFrame(loop);
+
+  // ---------- speech ----------
+  function startRecog() {
+    transcript = ""; $("trans").textContent = "…";
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition; if (!SR || $("judge-mode").value === "host") return;
+    try { recog = new SR(); recog.lang = "en-US"; recog.interimResults = true; recog.continuous = true; recog.maxAlternatives = 3;
+      recog.onresult = (e) => { let s = ""; for (let i = 0; i < e.results.length; i++) for (let j = 0; j < e.results[i].length; j++) s += " " + e.results[i][j].transcript; transcript = s.trim(); $("trans").textContent = "We heard: " + (transcript || "…"); };
+      recog.onerror = () => {}; recog.start(); } catch { recog = null; }
+  }
+  function stopRecog() { try { recog && recog.stop(); } catch {} }
+
+  // ---------- code entry ----------
+  const codeEl = $("code");
+  const KEYS = [["Q","W","E","R","T","Y","U","I","O","P"],["A","S","D","F","G","H","J","K","L"],["Z","X","C","V","B","N","M"],["2","3","4","5","6","7","8","9"]];
+  KEYS.forEach((row, ri) => { const r = document.createElement("div"); r.className = "row"; if (ri === 2) { const d = document.createElement("button"); d.className = "wide"; d.textContent = "⌫"; d.onclick = () => { codeEl.value = codeEl.value.slice(0, -1); paintBoxes(); }; r.appendChild(d); }
+    row.forEach((k) => { const b = document.createElement("button"); b.textContent = k; b.onclick = () => { if (codeEl.value.length < 6) { codeEl.value += k; paintBoxes(); } }; r.appendChild(b); }); $("kbd").appendChild(r); });
+  function paintBoxes() { const v = codeEl.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6); if (codeEl.value !== v) codeEl.value = v; [...$("boxes").children].forEach((b, i) => { b.textContent = v[i] || ""; b.classList.toggle("cur", i === v.length); b.classList.remove("err"); }); }
+  codeEl.addEventListener("input", paintBoxes); codeEl.addEventListener("keydown", (e) => e.key === "Enter" && lookup(codeEl.value));
+  $("code-go").onclick = () => lookup(codeEl.value);
+  async function lookup(code) {
+    $("code-msg").textContent = "Looking up…";
+    try {
+      guest = await K.api("/api/kiosk/lookup", { code });
+      if (guest.screamsLeft <= 0) { $("code-msg").textContent = `${guest.firstName} has already used their attempt${guest.alreadyWon ? " (and won!)" : ""}.`; shakeBoxes(); return; }
+      $("r-name").textContent = guest.firstName; mode = "ready"; K.show("s-ready"); await startAudio(); K.resetIdle(90000, goIdle);
+    } catch (e) { $("code-msg").textContent = e.message; shakeBoxes(); }
+  }
+  function shakeBoxes() { [...$("boxes").children].forEach((b) => { b.classList.add("err"); setTimeout(() => b.classList.remove("err"), 500); }); }
+
+  // ---------- flow ----------
+  function goIdle() { K.resetIdle(0); stopRecog(); windowOpen = false; guest = null; codeEl.value = ""; paintBoxes(); $("code-msg").textContent = ""; mode = "idle"; document.querySelectorAll(".confetti").forEach((c) => c.remove()); K.show("s-idle"); }
+  document.addEventListener("kiosk-home", goIdle);
+  $("start").onclick = () => { K.show("s-code"); codeEl.focus(); startAudio(); };
+  const STEPS = { "s-pin": ["•", "Host"], "s-idle": ["1", "Register"], "s-code": ["2", "Enter code"], "s-ready": ["3", "Mic check"], "s-go": ["4", "Countdown"], "s-judge": ["5", "Host call"], "s-result": ["6", "Result"] };
+  function setStep(n, label) { $("step-n").textContent = n; $("step-l").textContent = label; }
+  document.addEventListener("screen", (e) => { if (STEPS[e.detail]) setStep(...STEPS[e.detail]); if (e.detail === "s-code") setTimeout(() => codeEl.focus(), 50); });
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+  $("go").onclick = async () => {
+    if (!(await startAudio())) return;
+    K.resetIdle(0); K.show("s-go"); $("go-count").style.display = "grid"; $("go-meter").style.display = "none"; mode = "count";
+    const dots = [...$("dots").querySelectorAll("span")];
+    for (let n = 3; n >= 1; n--) {
+      $("cnt").textContent = n; dots.forEach((d, i) => d.classList.toggle("on", i <= 3 - n));
+      if (n === 2) startRecog();
+      const t0 = performance.now(); while (performance.now() - t0 < 1000) { countPct = ((4 - n) - 1 + (performance.now() - t0) / 1000) / 3 * 100; await wait(16); }
+    }
+    $("go-count").style.display = "none"; $("go-meter").style.display = "grid"; setStep("5", "Live");
+    peakDb = -100; gaugeShown = 0; windowOpen = true; mode = "scream";
+    const dur = CFG.scream.durationMs || 3000, t0 = performance.now();
+    while (performance.now() - t0 < dur) { const left = dur - (performance.now() - t0); $("tleft").textContent = (left / 1000).toFixed(1); $("tbar").style.transform = `scaleX(${left / dur})`; await wait(50); }
+    $("tleft").textContent = "0.0"; $("tbar").style.transform = "scaleX(0)"; windowOpen = false;
+    await wait(900); stopRecog(); await wait(400);
+    if ($("judge-mode").value === "host" || !(window.SpeechRecognition || window.webkitSpeechRecognition)) { K.show("s-judge"); return; }
+    submitScream(null);
+  };
+  async function submitScream(accuracyOverride) {
+    try { const r = await K.api("/api/kiosk/scream", { code: guest.code, peakDb, transcript, accuracyOverride }); showResult(r); }
+    catch (e) { alert("Could not submit: " + e.message); goIdle(); }
+  }
+  function confetti(n = 90) {
+    const box = document.createElement("div"); box.className = "confetti"; document.querySelector(".stage").appendChild(box);
+    const colors = ["#CD2028", "#29C9E0", "#1F1A1A", "#F2D4D7", "#A32539"];
+    for (let i = 0; i < n; i++) { const el = document.createElement("i"); el.style.left = Math.random() * 100 + "vw"; el.style.top = -4 - Math.random() * 20 + "vh"; el.style.background = colors[i % colors.length]; el.style.animationDelay = Math.random() * .9 + "s"; el.style.transform = `rotate(${Math.random() * 360}deg)`; box.appendChild(el); }
+    setTimeout(() => box.remove(), 4200);
+  }
+  function showResult(r) {
+    mode = "result"; K.show("s-result");
+    $("res-score").textContent = r.score; $("res-eyebrow").textContent = "Final score";
+    $("res-coupon").style.display = r.coupon ? "grid" : "none";
+    if (r.won) {
+      $("res-title").textContent = r.couponPoolEmpty ? "You beat the meter!" : "You brought the loud.";
+      $("res-detail").textContent = r.couponPoolEmpty ? "Reward pool is empty – see a host." : `Loud ${r.loudness} · Clarity ${r.accuracy} · Win line ${r.threshold}. Fresh, never frozen, just like that scream.`;
+      if (r.coupon) { $("res-code").textContent = r.coupon.code; $("res-label").textContent = r.coupon.label; }
+      $("qr-label").innerHTML = "Save your<br>reward";
+      $("flash").classList.remove("go"); void $("flash").offsetWidth; $("flash").classList.add("go"); confetti();
+    } else {
+      $("res-title").textContent = r.loudness < r.accuracy ? "Louder next time." : "We heard… something.";
+      $("res-detail").textContent = (r.accuracy < 40 ? "The meter heard you. It just didn’t hear “Wendy’s”. " : "Close one. Colombo traffic is louder. ") + `Loud ${r.loudness} · Clarity ${r.accuracy} · Win line ${r.threshold}.`;
+      $("qr-label").innerHTML = "Scan for<br>your pass";
+    }
+    $("qr-profile").src = qrUrl(r.profileUrl);
+    K.resetIdle(30000, goIdle);
+  }
+</script>
+</body></html>

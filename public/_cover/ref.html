@@ -1,0 +1,94 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Scream &amp; Win · cover</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,600;0,700;0,800;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<style>
+/* Geometry is expressed in the reference banner's own pixel grid (812 x 364):
+   --u = one reference pixel horizontally, --v = one reference pixel vertically. */
+:root { --u: calc(100vw / 812); --v: var(--u); --red:#D8232C; --red2:#E8303A; --dark-red:#A5171F; --ink:#141112; }
+* { box-sizing:border-box } html,body { margin:0; height:100%; overflow:hidden; background:#0E0C0D; font-family:Poppins,sans-serif; color:#fff }
+.stage { position:relative; width:100vw; height:100vh; overflow:hidden;
+  background:radial-gradient(90% 90% at 50% 40%, #1E1719 0%, #161213 45%, #0E0C0D 100%); }
+/* ---- background layers ---- */
+.wedge { position:absolute; inset:0; }
+.wedge.l { background:linear-gradient(98deg, #E12A33 0%, #C81F28 6%, #8E131B 11%, #4A0C11 16%, #24090C 22%); clip-path:polygon(0 4%, 0 100%, 15% 100%); }
+.wedge.l::after { content:""; position:absolute; inset:0; background:linear-gradient(98deg, transparent 10%, rgba(255,80,90,.18) 13%, transparent 15%); }
+.wedge.r { background:linear-gradient(262deg, #E12A33 0%, #C81F28 5%, #8E131B 11%, #4A0C11 17%, #24090C 24%); clip-path:polygon(85% 0, 100% 0, 100% 100%, 95.5% 100%); }
+.rings { position:absolute; inset:0; pointer-events:none;
+  background:repeating-radial-gradient(circle at 94% 4%, transparent 0 5.2vw, rgba(232,48,58,.55) 5.2vw 5.35vw, transparent 5.35vw 5.4vw);
+  -webkit-mask:radial-gradient(circle at 94% 4%, #000 0 9vw, rgba(0,0,0,.6) 18vw, transparent 30vw); mask:radial-gradient(circle at 94% 4%, #000 0 9vw, rgba(0,0,0,.6) 18vw, transparent 30vw); }
+canvas.fx { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+/* ---- banner band ---- */
+.band { position:absolute; left:0; width:100vw; height:calc(364 * var(--v)); top:50%; transform:translateY(-50%); }
+.band.fill { top:0; transform:none; height:100vh; }
+.at { position:absolute; }
+.brand { left:calc(48*var(--u)); top:calc(16*var(--v)); display:flex; align-items:center; gap:calc(12*var(--u)); }
+.brand img { height:calc(36*var(--v)); display:block; } .brand i { width:calc(1.5*var(--u)); height:calc(26*var(--v)); background:rgba(255,255,255,.55); }
+.brand b { font:italic 700 calc(13*var(--u))/1 Poppins; letter-spacing:.22em; text-transform:uppercase; color:#F1EAE0; }
+.col { left:calc(118*var(--u)); width:calc(430*var(--u)); top:calc(78*var(--v)); text-align:center; }
+.eyebrow { display:flex; align-items:center; justify-content:center; gap:calc(12*var(--u)); font:italic 700 calc(11*var(--u))/1 Poppins; letter-spacing:.32em; text-transform:uppercase; color:#F1EAE0; }
+.eyebrow::before,.eyebrow::after { content:""; width:calc(34*var(--u)); height:1.5px; background:rgba(255,255,255,.7); }
+.h1 { margin:calc(8*var(--v)) 0 0; font:italic 900 calc(100*var(--u))/.78 Poppins; letter-spacing:-.025em; text-transform:uppercase; }
+.h1 .w { color:#F7F2EA; text-shadow:0 calc(3*var(--u)) calc(2*var(--u)) rgba(0,0,0,.45); display:block; }
+.h1 .r { display:block; } .h1 .amp { color:var(--dark-red); } .h1 .win { color:var(--red2); text-shadow:0 calc(3*var(--u)) calc(2*var(--u)) rgba(0,0,0,.45); }
+.sub { margin-top:calc(10*var(--v)); font:italic 600 calc(22*var(--u))/1.2 Poppins; color:#F7F2EA; }
+.sub b { font-weight:800; }
+.qr { left:calc(560*var(--u)); top:calc(70*var(--v)); width:calc(145*var(--u)); padding:calc(12*var(--u)) calc(10*var(--u)) calc(12*var(--u)); background:#fff; border-radius:calc(14*var(--u)); display:grid; gap:calc(4*var(--u)); justify-items:center; box-shadow:0 0 calc(30*var(--u)) rgba(255,255,255,.25), 0 calc(18*var(--u)) calc(40*var(--u)) rgba(0,0,0,.6); }
+.qr img { width:calc(122*var(--u)); height:calc(122*var(--u)); display:block; }
+.qr b { font:italic 800 calc(14*var(--u))/1.1 Poppins; color:#1C1A1A; text-transform:uppercase; text-align:center; letter-spacing:.01em; }
+.cta { left:calc(290*var(--u)); top:calc(298*var(--v)); width:calc(292*var(--u)); height:calc(52*var(--v)); border-radius:999px; display:flex; align-items:center; justify-content:center; gap:calc(14*var(--u));
+  background:linear-gradient(180deg,#F0343E 0%,#D8232C 55%,#B5181F 100%); box-shadow:0 0 calc(40*var(--u)) rgba(232,48,58,.55), 0 calc(6*var(--u)) calc(14*var(--u)) rgba(0,0,0,.6), inset 0 1.5px 0 rgba(255,255,255,.45), inset 0 -3px 0 rgba(0,0,0,.25);
+  font:italic 900 calc(22*var(--u))/1 Poppins; text-transform:uppercase; letter-spacing:.02em; color:#fff; text-shadow:0 1px 1px rgba(0,0,0,.4); cursor:pointer; }
+.cta i { width:calc(26*var(--u)); height:calc(26*var(--u)); border-radius:50%; background:#fff; display:grid; place-items:center; }
+.cta i::after { content:""; width:calc(10*var(--u)); height:calc(10*var(--u)); border-top:calc(3*var(--u)) solid var(--red); border-right:calc(3*var(--u)) solid var(--red); transform:translateX(-25%) rotate(45deg); }
+.cta i::before { content:""; position:absolute; width:calc(12*var(--u)); height:calc(3*var(--u)); background:var(--red); transform:translateX(-5%); }
+.cta i { position:relative; }
+.cta.pulse { animation:glow 2.2s ease-in-out infinite; } @keyframes glow { 50% { box-shadow:0 0 calc(70*var(--u)) rgba(232,48,58,.85), 0 calc(6*var(--u)) calc(14*var(--u)) rgba(0,0,0,.6), inset 0 1.5px 0 rgba(255,255,255,.45), inset 0 -3px 0 rgba(0,0,0,.25); } }
+/* ---- option 3 extras ---- */
+.v3 .h1 .w { text-shadow:0 calc(2*var(--u)) 0 #9A9289, 0 calc(4*var(--u)) 0 #5E5852, 0 calc(10*var(--u)) calc(14*var(--u)) rgba(0,0,0,.6); }
+.v3 .h1 .win { text-shadow:0 calc(2*var(--u)) 0 #8E1219, 0 calc(4*var(--u)) 0 #4E0A0E, 0 calc(10*var(--u)) calc(14*var(--u)) rgba(0,0,0,.6); }
+.v3 .rings { animation:breathe 6s ease-in-out infinite; } @keyframes breathe { 50% { opacity:.55 } }
+.mono { position:absolute; right:4vw; bottom:3vh; width:10vw; opacity:.14; filter:grayscale(1) brightness(3); display:none; } .v3 .mono { display:block; }
+.foot { position:absolute; left:0; right:0; bottom:1.4vh; display:none; justify-content:space-between; padding:0 3vw; font:700 1.3vmin/1 Poppins; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.45); } .v3 .foot { display:flex; }
+</style></head><body><div class="stage" id="stage">
+<div class="wedge l"></div><div class="wedge r"></div><div class="rings"></div>
+<canvas class="fx" id="fx"></canvas>
+<div class="band" id="band">
+  <div class="at brand"><img src="/assets/wendys-horiz-white.svg" alt="Wendy's"><i></i><b>Wendy Fest</b></div>
+  <div class="at col">
+    <div class="eyebrow">Interactive experience</div>
+    <h1 class="h1"><span class="w">Scream</span><span class="r"><span class="amp">&amp;</span> <span class="win">Win</span></span></h1>
+    <div class="sub">Say <b>WENDY’S.</b> Make some noise.</div>
+  </div>
+  <div class="at qr"><img id="qr" alt="QR"><b>Scan to<br>register</b></div>
+  <button class="at cta pulse">Enter your code <i></i></button>
+</div>
+<img class="mono" src="/assets/cameo.png" alt="">
+<div class="foot"><span>© 2026 Wendy’s Sri Lanka</span><span>Station A · Scream &amp; Win</span></div>
+</div>
+<script>
+const v = new URLSearchParams(location.search).get("v") || "1";
+if (v === "2" || v === "3") { document.getElementById("band").classList.add("fill"); document.documentElement.style.setProperty("--v", "calc(100vh / 364)"); }
+if (v === "3") document.getElementById("stage").classList.add("v3");
+document.getElementById("qr").src = "/api/qr?text=" + encodeURIComponent(location.origin + "/register");
+const c = document.getElementById("fx"), x = c.getContext("2d"), d = Math.min(2, devicePixelRatio || 1);
+function sz() { c.width = innerWidth * d; c.height = innerHeight * d; } sz(); addEventListener("resize", sz);
+// dotted terrain: a dome bottom-left, a rolling surface bottom-right, plus a glowing waveform strip under the QR card
+function f(t) {
+  const W = c.width, H = c.height; x.clearRect(0, 0, W, H); x.globalCompositeOperation = "lighter";
+  const rows = 34;
+  for (let j = 0; j < rows; j++) { const dp = j / rows;
+    for (let i = 0; i <= 230; i++) { const u = i / 230, xx = u * W;
+      const dome = Math.exp(-Math.pow((u - .17) / .19, 2)) * (.72 + .05 * Math.sin(t * .001));                     // left dome
+      const surf = u > .5 ? Math.pow((u - .5) / .5, 1.3) * (0.55 + .45 * Math.sin(u * 14 - t * .0012)) : 0; // right surface
+      const m = Math.max(dome, surf);
+      if (m < .03) continue;
+      const y = H * (.84 + dp * .19) - (m * 190 + Math.sin(u * 30 + t * .0016 + dp * 3) * 8) * d * (.3 + dp);
+      const a = (.04 + .8 * dp) * Math.min(1, m * 1.5) * (dp > .9 ? 1.3 : 1);
+      x.fillStyle = `rgba(255,60,72,${a.toFixed(3)})`; x.beginPath(); x.arc(xx, y, (1 + 2.2 * dp) * d, 0, 7); x.fill(); } }
+  // waveform strip
+  const wx0 = W * .5, wx1 = W * .8, wy = H * .9, n = 90;
+  for (let i = 0; i < n; i++) { const u = i / n, xx = wx0 + u * (wx1 - wx0);
+    const env = Math.sin(u * Math.PI); const h = (3 + 34 * env * Math.abs(Math.sin(i * 1.7 + t * .004)) ) * d;
+    x.fillStyle = `rgba(255,${i % 3 ? 90 : 230},${i % 3 ? 100 : 230},${(.35 + .5 * env).toFixed(2)})`; x.fillRect(xx, wy - h / 2, 2 * d, h); }
+  x.globalCompositeOperation = "source-over"; requestAnimationFrame(f);
+} requestAnimationFrame(f);
+</script></body></html>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Scream & Win · Studio Cream · Wendy Fest</title><link rel="icon" href="../assets/cameo.png">
-<link rel="stylesheet" href="../css/brand.css?v=mwi2pfnz">
+<link rel="stylesheet" href="../css/brand.css?v=mwi2vkfa">
 <style>
 /* ================= STUDIO CREAM · Scream & Win ================= */
 :root { --u:min(calc(100vw / 1440), calc(100vh / 760)); --v:var(--u); --blue:#029CD4; --red:#CD2028; --red2:#DA2A33; --red-dark:#8E141B; --ink:#1F1A1A; --cream:#F7F2EC; --blush:#F2D4D7; --cyan:#29C9E0; --line:rgba(205,32,40,.18); }
@@ -167,11 +167,33 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
 .k-input.err { animation:shake .4s; }
 .rise { animation:rise .5s ease both; } .rise-2 { animation:rise .5s .1s ease both; } .rise-3 { animation:rise .5s .2s ease both; }
 @keyframes rise { from { transform:translateY(2vmin); opacity:0 } to { transform:none; opacity:1 } }
+
+/* ===== background options (preview with ?bg=a|b|c|d) ===== */
+.bgfx { position:absolute; inset:0; z-index:0; pointer-events:none; overflow:hidden; display:none; }
+.bgfx > * { position:absolute; }
+.bg-a .bgfx, .bg-b .bgfx, .bg-c .bgfx, .bg-d .bgfx { display:block; }
+/* A · Ghost cameo: oversized embossed white cameo behind everything */
+.bg-a .bgfx .cam { width:118vh; left:50%; top:16vh; transform:translateX(-38%); filter:grayscale(1) brightness(2.4) drop-shadow(0 .4vh .8vh rgba(150,60,60,.18)); opacity:.42; }
+.bg-a .bgfx .glow { inset:0; background:radial-gradient(45% 55% at 60% 58%, rgba(255,255,255,.75), transparent 70%), radial-gradient(60% 40% at 20% 100%, rgba(205,32,40,.08), transparent 70%); }
+/* B · Cameo sound rings: cameo peeks from the corner, pale rings pulse outward */
+.bg-b .bgfx .rings2 { width:240vh; height:240vh; right:-120vh; bottom:-120vh; border-radius:50%; background:repeating-radial-gradient(circle, transparent 0 6.6vh, rgba(205,32,40,.10) 6.6vh 6.9vh); -webkit-mask:radial-gradient(circle, transparent 0 18vh, #000 22vh, transparent 95vh); mask:radial-gradient(circle, transparent 0 18vh, #000 22vh, transparent 95vh); animation:ripple 3.2s linear infinite; }
+@keyframes ripple { from { transform:scale(1) } to { transform:scale(1.058) } }
+.bg-b .bgfx .cam { width:46vh; right:-6vh; bottom:-8vh; opacity:.2; filter:saturate(.6); }
+.bg-b .bgfx .glow { inset:0; background:radial-gradient(50% 50% at 30% 45%, rgba(255,255,255,.7), transparent 70%); }
+/* C · Retro sunburst: slow-turning blush rays behind a faint cameo */
+.bg-c .bgfx .rays { width:300vh; height:300vh; left:calc(62% - 150vh); top:calc(56% - 150vh); background:repeating-conic-gradient(from 0deg, rgba(205,32,40,.065) 0 5deg, transparent 5deg 10deg); -webkit-mask:radial-gradient(circle, #000 0 18vh, rgba(0,0,0,.55) 45vh, transparent 85vh); mask:radial-gradient(circle, #000 0 18vh, rgba(0,0,0,.55) 45vh, transparent 85vh); animation:spin 90s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg) } }
+.bg-c .bgfx .cam { width:56vh; left:62%; top:56%; transform:translate(-50%,-50%); opacity:.12; filter:grayscale(.3); }
+.bg-c .bgfx .glow { inset:0; background:radial-gradient(40% 60% at 25% 50%, rgba(251,248,243,.9), transparent 75%); }
+/* D · Wendy Fest wallpaper: faint line icons (mic, burger, fries, Frosty, star), frosted centre */
+.bg-d .bgfx .pat { inset:-10%; background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240' fill='none' stroke='%23CD2028' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' opacity='.11'><g transform='translate(18 20)'><rect x='12' y='0' width='22' height='36' rx='11'/><path d='M4 28a19 19 0 0 0 38 0M23 47v12M13 59h20'/></g><g transform='translate(140 30)'><path d='M4 22a26 18 0 0 1 52 0z'/><path d='M2 30h56M4 38h52M6 38c0 8 48 8 48 0'/></g><g transform='translate(30 140)'><path d='M8 20h36l-5 50H13z'/><path d='M14 20 12 0M22 20 21 4M30 20 31 2M38 20 41 6'/></g><g transform='translate(150 140)'><path d='M6 14h44l-6 58H12z'/><path d='M2 14h52M18 14l4-12h12l4 12M24 2 30-10'/></g><g transform='translate(100 95)'><path d='M20 0l6 13 14 2-10 10 2 14-12-7-12 7 2-14L0 15l14-2z'/></g></svg>") 0 0 / 22vh 22vh; transform:rotate(-8deg); }
+.bg-d .bgfx .glow { inset:0; background:radial-gradient(55% 60% at 45% 52%, rgba(251,248,243,.96) 35%, rgba(251,248,243,.55) 70%, transparent 100%); }
+.bg-d .bgfx .cam { width:20vh; right:3vw; bottom:9vh; opacity:.16; }
 </style>
 </head>
 <body>
 <div class="stage">
-  <canvas id="field"></canvas><i id="uprobe"></i>
+  <div class="bgfx" id="bgfx"><div class="rays"></div><div class="rings2"></div><div class="pat"></div><img class="cam" src="../assets/cameo.png" alt=""><div class="glow"></div></div><canvas id="field"></canvas><i id="uprobe"></i>
   <div class="flash" id="flash"></div>
   <header class="hdr"><div class="brand"><img src="../assets/wendys-horiz-white.svg" alt="Wendy's"><i></i><b>Wendy Fest</b></div><div class="step"><i id="step-n">1</i><span id="step-l">Register</span></div></header>
 
@@ -269,7 +291,7 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
   </aside>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwi2pfnz"></script><script src="../js/kiosk.js?v=mwi2pfnz"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwi2vkfa"></script><script src="../js/kiosk.js?v=mwi2vkfa"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let CFG = { scream: { threshold: 70, durationMs: 3000, dbFloor: -42, dbCeil: -6, loudWeight: .6, accWeight: .4 } };
@@ -443,6 +465,7 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
       const w = el.getBoundingClientRect().width / u; if (w > +el.dataset.fit) el.style.fontSize = `calc(${(fs * el.dataset.fit / w).toFixed(2)} * var(--u))`;
     });
   }
+  { const bg = new URLSearchParams(location.search).get("bg"); if (/^[abcd]$/.test(bg || "")) document.querySelector(".stage").classList.add("bg-" + bg); }
   const toggleSettings = () => $("settings").classList.toggle("open");
   document.addEventListener("keydown", (e) => { if ((e.key === "s" || e.key === "S") && !e.target.matches("input,select,textarea")) toggleSettings(); });
   let taps = [];

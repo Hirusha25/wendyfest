@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Scream & Win · Studio Cream · Wendy Fest</title><link rel="icon" href="../assets/cameo.png">
-<link rel="stylesheet" href="../css/brand.css?v=mwj0hqqh">
+<link rel="stylesheet" href="../css/brand.css?v=mwj0plmy">
 <style>
 /* ================= STUDIO CREAM · Scream & Win ================= */
 :root { --u:min(calc(100vw / 1440), calc(100vh / 760)); --v:var(--u); --blue:#029CD4; --red:#CD2028; --red2:#DA2A33; --red-dark:#8E141B; --ink:#1F1A1A; --cream:#F7F2EC; --blush:#F2D4D7; --cyan:#29C9E0; --line:rgba(205,32,40,.18); }
-html, body { height:100%; overflow:hidden; }
+html, body { height:100%; overflow:hidden; overscroll-behavior:none; }
 body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,'Noto Sans Sinhala','Noto Sans Tamil',system-ui,sans-serif; user-select:none; cursor:default; }
 .stage { position:relative; width:100vw; height:100vh; overflow:hidden; background:var(--cream); }
 .stage::before { content:""; position:absolute; inset:0; background:radial-gradient(60% 55% at 25% 105%, rgba(205,32,40,.09), transparent 70%), radial-gradient(50% 60% at 100% 50%, rgba(205,32,40,.05), transparent 70%), linear-gradient(180deg, #FBF8F3, #F6F0EA); pointer-events:none; }
@@ -308,7 +308,7 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
   </aside>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwj0hqqh"></script><script src="../js/kiosk.js?v=mwj0hqqh"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwj0plmy"></script><script src="../js/kiosk.js?v=mwj0plmy"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let CFG = { scream: { threshold: 70, durationMs: 3000, dbFloor: -42, dbCeil: -6, loudWeight: .6, accWeight: .4 } };
@@ -416,7 +416,7 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
     const ctx = c.getContext("2d"), W = c.width, H = c.height, now = performance.now(); ctx.clearRect(0, 0, W, H);
     if (!VOICE.last) VOICE.last = now;
     while (now - VOICE.last >= VOICE.step) { VOICE.hist.pop(); VOICE.hist.unshift(nextVoiceSample()); VOICE.count++; VOICE.last += VOICE.step; }
-    const ease = (q) => q * q * (3 - 2 * q), frac = ease((now - VOICE.last) / VOICE.step), n = VOICE.n, gap = W / n, w = gap * .5;
+    const frac = Math.min(1, (now - VOICE.last) / VOICE.step), n = VOICE.n, gap = W / n, w = gap * .5;
     for (let i = 0; i < n; i++) {
       const x = (i + frac) * gap + gap * .25, u = (x + w / 2) / W;
       if (u < 0 || u > 1) continue;
@@ -497,6 +497,9 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
     });
   }
   { const bg = new URLSearchParams(location.search).get("bg"); if (/^[abcd]$/.test(bg || "")) document.querySelector(".stage").classList.add("bg-" + bg); }
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  const pin = (el) => el.addEventListener("scroll", () => { if (el.scrollTop || el.scrollLeft) { el.scrollTop = 0; el.scrollLeft = 0; } }, { passive: true });
+  pin(document.querySelector(".stage")); addEventListener("scroll", () => { if (scrollY || scrollX) scrollTo(0, 0); }, { passive: true }); scrollTo(0, 0);
   const toggleSettings = () => $("settings").classList.toggle("open");
   document.addEventListener("keydown", (e) => { if ((e.key === "s" || e.key === "S") && !e.target.matches("input,select,textarea")) toggleSettings(); });
   let taps = [];
@@ -586,11 +589,11 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
   // ---------- flow ----------
   function goIdle() { K.resetIdle(0); stopRecog(); windowOpen = false; guest = null; codeEl.value = ""; paintBoxes(); $("code-msg").textContent = ""; mode = "idle"; document.querySelectorAll(".confetti").forEach((c) => c.remove()); K.show("s-idle"); }
   document.addEventListener("kiosk-home", goIdle);
-  $("start").onclick = () => { K.show("s-code"); codeEl.focus(); startAudio(); K.resetIdle(60000, goIdle); };
+  $("start").onclick = () => { K.show("s-code"); codeEl.focus({ preventScroll: true }); startAudio(); K.resetIdle(60000, goIdle); };
   document.querySelector(".brand").onclick = () => { if (!$("s-pin").classList.contains("on")) goIdle(); };
   const STEPS = { "s-pin": ["•", "Host"], "s-idle": ["1", "Register"], "s-code": ["2", "Enter code"], "s-ready": ["3", "Mic check"], "s-go": ["4", "Countdown"], "s-judge": ["5", "Host call"], "s-result": ["6", "Result"] };
   function setStep(n, label) { $("step-n").textContent = n; $("step-l").textContent = label; }
-  document.addEventListener("screen", (e) => { setTimeout(fitText, 0); if (STEPS[e.detail]) setStep(...STEPS[e.detail]); if (e.detail === "s-code") setTimeout(() => codeEl.focus(), 50); });
+  document.addEventListener("screen", (e) => { setTimeout(fitText, 0); if (STEPS[e.detail]) setStep(...STEPS[e.detail]); if (e.detail === "s-code") setTimeout(() => codeEl.focus({ preventScroll: true }), 50); });
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
   $("go").onclick = async () => {
     if (mode !== "ready") return;

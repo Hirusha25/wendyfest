@@ -330,6 +330,15 @@ body.tt3 .idle .h1 .l1 { color:#F6F0E6 !important; text-shadow:0 calc(3 * var(--
 body.tt3 .idle .h1 .amp, body.tt3 .idle .h1 .red { color:#CD2028 !important; text-shadow:0 calc(3 * var(--u)) 0 #F6F0E6, 0 calc(6 * var(--u)) 0 #01476A, 0 calc(14 * var(--u)) calc(22 * var(--u)) rgba(0,20,40,.4) !important; }
 body.tt4 .idle .h1 .l1 { color:#fff !important; text-shadow:0 calc(3 * var(--u)) 0 #CD2028, 0 calc(6 * var(--u)) 0 #8E141B, 0 calc(14 * var(--u)) calc(22 * var(--u)) rgba(0,40,70,.35) !important; }
 body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; text-shadow:0 calc(3 * var(--u)) 0 #CD2028, 0 calc(6 * var(--u)) 0 #8E141B, 0 calc(14 * var(--u)) calc(22 * var(--u)) rgba(0,40,70,.35) !important; }
+
+/* Live title: "WENDY'S!" springs up and settles on a loop; louder scream = bigger pop */
+#pop-w { display:inline-block; transform-origin:0 100%; margin-left:calc(6 * var(--u)); --lv:0; animation:wPop 1.4s cubic-bezier(.3,1.6,.5,1) infinite; }
+@keyframes wPop {
+  0%, 62%, 100% { transform:translateY(0) scale(1) rotate(0); }
+  14% { transform:translateY(calc((-6 - 8 * var(--lv)) * var(--u))) scale(calc(1.06 + .07 * var(--lv))) rotate(-2deg); }
+  30% { transform:translateY(calc(3 * var(--u))) scale(.98) rotate(.6deg); }
+  44% { transform:translateY(0) scale(1.02) rotate(0); }
+}
 </style>
 </head>
 <body>
@@ -388,12 +397,11 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     </div>
     <div class="box" id="go-meter" style="display:none">
       <canvas class="abs" id="live-cv"></canvas>
-      <div class="crow"><span class="t" data-fit="1100" data-fs="80">Scream <span class="red">Wendy’s!</span></span></div>
+      <div class="crow"><span class="t" data-fit="1100" data-fs="80">Scream <span class="red pop-w" id="pop-w">Wendy’s!</span></span></div>
       <span class="pillx" id="listen-pill"><span class="dot"></span><span id="listen-l">Listening</span></span>
       <span id="target">Target <b id="thr">70</b></span>
       <div class="abs" id="gauge-num">0</div>
       <div class="abs lbl">Loudness<br>score</div>
-      <svg class="abs off" id="live-burst" viewBox="0 0 40 40" fill="none" stroke="#CD2028" stroke-width="3" stroke-linecap="round"><path d="M6 20 9 8M14 24 26 6M18 30 34 26"/><circle cx="36" cy="10" r="3" fill="#29C9E0" stroke="none"/></svg>
       <div class="abs heard" id="heard"><small>We heard</small><b id="heard-v">…</b></div>
       <div class="tleft"><div class="v"><b><span id="tleft">10.0</span>s</b><small>Left</small></div><div class="tbar"><i id="tbar"></i></div></div>
       <div id="trans">…</div>
@@ -720,7 +728,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     if (mode === "scream") {
       if (windowOpen && db > peakDb) peakDb = db;
       gaugeShown += (pct - gaugeShown) * .25;
-      drawLiveA($("live-cv"), gaugeShown / 100, t); $("live-burst").classList.toggle("off", gaugeShown < (CFG.scream.threshold || 70));
+      drawLiveA($("live-cv"), gaugeShown / 100, t); $("pop-w").style.setProperty("--lv", Math.min(1, gaugeShown / 100).toFixed(2));
       $("gauge-num").textContent = Math.round(dbToPct(peakDb));
     }
   }

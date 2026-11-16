@@ -63,20 +63,107 @@
   /* Scream & Win halftone dots: a small, faint patch in the bottom-left corner of the charcoal side */
   #s-idle .dots { inset:0; clip-path:polygon(0 0, 1088p 0, 698p 1080p, 0 1080p); background:radial-gradient(circle, rgba(255,255,255,.08) calc(3 * var(--p)), transparent calc(3.7 * var(--p))) 0 0 / calc(36 * var(--p)) calc(36 * var(--p));
     -webkit-mask:radial-gradient(circle at 0 100%, #000 0, rgba(0,0,0,.6) 18%, transparent 38%); mask:radial-gradient(circle at 0 100%, #000 0, rgba(0,0,0,.6) 18%, transparent 38%); }
+
+  /* ===== Roast Me inner screens: same system as the welcome screen ===== */
+  .stage > .k-logo, .stage > .k-cameo, .stage > .k-foot, .stage > .frame { display:none !important; }
+  body.kiosk.roast-kiosk::after { display:none; }
+  .chrome { position:absolute; inset:0; display:grid; place-items:center; background:#151313; z-index:0; }
+  .chrome .s, .cv .s { position:relative; flex:none; width:calc(1920 * var(--p)); height:calc(1080 * var(--p)); font-family:Poppins, sans-serif; color:#fff; }
+  .chrome .s { overflow:hidden; background:#1E1B1B; }
+  .chrome .s > *, .cv .s > * { position:absolute; }
+  .chrome .panel { inset:0; background:linear-gradient(170deg, #D92530 0%, #CD2028 50%, #B81C24 100%); clip-path:polygon(calc(1130 * var(--p)) 0, calc(1920 * var(--p)) 0, calc(1920 * var(--p)) calc(1080 * var(--p)), calc(740 * var(--p)) calc(1080 * var(--p))); }
+  .chrome .band { inset:0; background:#fff; clip-path:polygon(calc(1088 * var(--p)) 0, calc(1130 * var(--p)) 0, calc(740 * var(--p)) calc(1080 * var(--p)), calc(698 * var(--p)) calc(1080 * var(--p))); }
+  .chrome .dots { inset:0; clip-path:polygon(0 0, calc(1088 * var(--p)) 0, calc(698 * var(--p)) calc(1080 * var(--p)), 0 calc(1080 * var(--p))); background:radial-gradient(circle, rgba(255,255,255,.08) calc(3 * var(--p)), transparent calc(3.7 * var(--p))) 0 0 / calc(36 * var(--p)) calc(36 * var(--p)); -webkit-mask:radial-gradient(circle at 0 100%, #000 0, rgba(0,0,0,.6) 18%, transparent 38%); mask:radial-gradient(circle at 0 100%, #000 0, rgba(0,0,0,.6) 18%, transparent 38%); }
+  .chrome .hd { left:0; right:0; top:0; height:calc(140 * var(--p)); display:flex; align-items:center; justify-content:space-between; padding:0 calc(93 * var(--p)) 0 calc(120 * var(--p)); background:linear-gradient(90deg, #01679A 0%, #0186B8 38%, #029CD4 72%, #1BB0E6 100%); box-shadow:0 calc(8 * var(--p)) calc(26 * var(--p)) rgba(0,0,0,.35); z-index:5; }
+  .chrome .hd .brand { display:flex; align-items:center; gap:calc(40 * var(--p)); } .chrome .hd .brand img { height:calc(77 * var(--p)); } .chrome .hd .brand i { width:calc(2 * var(--p)); height:calc(59 * var(--p)); background:rgba(255,255,255,.6); }
+  .chrome .hd .stp { cursor:pointer; display:flex; align-items:center; gap:calc(35 * var(--p)); font:italic 800 calc(35 * var(--p))/1 Poppins, sans-serif; letter-spacing:.22em; text-transform:uppercase; color:#fff; }
+  .chrome .hd .stp i { width:calc(75 * var(--p)); height:calc(75 * var(--p)); border-radius:50%; background:#fff; color:#0186B8; display:grid; place-items:center; font:900 calc(40 * var(--p))/1 Poppins; font-style:normal; letter-spacing:0; }
+  .chrome .strp { left:0; right:0; top:calc(140 * var(--p)); height:calc(27 * var(--p)); background:linear-gradient(180deg, #F6F0E6 0 calc(11 * var(--p)), #CD2028 calc(11 * var(--p)) calc(21 * var(--p)), #F6F0E6 calc(21 * var(--p)) calc(27 * var(--p))); z-index:5; box-shadow:0 calc(8 * var(--p)) calc(20 * var(--p)) rgba(0,0,0,.25); }
+  .chrome .ft { left:0; right:0; bottom:0; height:calc(59 * var(--p)); display:flex; justify-content:space-between; align-items:center; padding:0 calc(93 * var(--p)) 0 calc(120 * var(--p)); background:linear-gradient(90deg, #01679A 0%, #0186B8 38%, #029CD4 72%, #1BB0E6 100%); color:#fff; font:700 calc(20 * var(--p))/1 Poppins; letter-spacing:.14em; text-transform:uppercase; z-index:5; }
+  .chrome .ft .c { display:flex; align-items:center; gap:calc(16 * var(--p)); } .chrome .ft .c img { height:calc(32 * var(--p)); } .chrome .ft .lk { display:flex; gap:calc(30 * var(--p)); } .chrome .ft a { color:#fff; border-bottom:1px solid rgba(255,255,255,.5); }
+  .chrome .wf { display:inline-flex; align-items:flex-start; filter:drop-shadow(0 calc(5 * var(--p)) calc(7 * var(--p)) rgba(0,20,40,.5)); margin-top:calc(-4 * var(--p)); }
+  .chrome .wf .w1, .chrome .wf .w2 { display:inline-block; font:italic 900 calc(50 * var(--p))/.9 'Barlow Semi Condensed', 'Barlow Condensed', sans-serif; text-transform:uppercase; color:#fff; text-shadow:0 calc(2 * var(--p)) 0 rgba(0,0,0,.18); position:relative; }
+  .chrome .wf .w1 { padding:calc(7 * var(--p)) calc(21 * var(--p)) calc(13 * var(--p)) calc(18 * var(--p)); background:linear-gradient(180deg, #D8262F 0 82%, #951620 82%); transform:rotate(-5deg) skewX(-14deg); z-index:1; }
+  .chrome .wf .w2 { padding:calc(7 * var(--p)) calc(19 * var(--p)) calc(13 * var(--p)) calc(19 * var(--p)); margin:calc(10 * var(--p)) 0 0 calc(-18 * var(--p)); background:linear-gradient(180deg, #2BA9E1 0 82%, #01679A 82%); transform:rotate(-5deg) skewX(-14deg); z-index:2; }
+  .screen.cv.on { display:grid; place-items:center; padding:0; background:transparent; z-index:2; }
+  .cv .art { inset:0; background:#fff; clip-path:polygon(calc(1088 * var(--p)) calc(167 * var(--p)), calc(1920 * var(--p)) calc(167 * var(--p)), calc(1920 * var(--p)) calc(1021 * var(--p)), calc(698 * var(--p)) calc(1021 * var(--p))); }
+  .cv .art img { position:absolute; right:0; bottom:calc(-40 * var(--p)); width:calc(1220 * var(--p)); height:calc(1220 * var(--p)); object-fit:cover; }
+  /* type */
+  .cv .eb { font:italic 800 calc(24 * var(--p))/1 Poppins, sans-serif; letter-spacing:.24em; text-transform:uppercase; color:#029CD4; display:flex; align-items:center; gap:calc(18 * var(--p)); }
+  .cv .eb::after { content:""; width:calc(56 * var(--p)); height:calc(3 * var(--p)); background:currentColor; } .cv .eb.w { color:#fff; }
+  .cv .t3 { font:italic 900 calc(120 * var(--p))/.82 Poppins, sans-serif; text-transform:uppercase; letter-spacing:-.035em; white-space:nowrap; }
+  .cv .t3 span { display:block; }
+  .cv .t3 .l1 { color:#F6F0E6; text-shadow:0 calc(4 * var(--p)) 0 #029CD4, 0 calc(8 * var(--p)) 0 #01476A, 0 calc(20 * var(--p)) calc(28 * var(--p)) rgba(0,0,0,.5); }
+  .cv .t3 .l2 { color:#CD2028; -webkit-text-stroke:calc(3 * var(--p)) #fff; paint-order:stroke fill; text-shadow:0 calc(5 * var(--p)) 0 #fff, 0 calc(10 * var(--p)) 0 #014F72, 0 calc(20 * var(--p)) calc(28 * var(--p)) rgba(0,0,0,.5); margin-top:calc(8 * var(--p)); }
+  .cv .sub { font:600 calc(32 * var(--p))/1.3 Poppins, sans-serif; color:#fff; }
+  .cv .msg { font:700 calc(26 * var(--p))/1.3 Poppins, sans-serif; color:#FFD3D6; min-height:0; }
+  #cam-status { font:500 calc(18 * var(--p))/1.3 Poppins, sans-serif; color:rgba(255,255,255,.6); }
+  /* controls */
+  .cv .cbox { border:calc(4 * var(--p)) solid #fff; border-radius:calc(8 * var(--p)); background:#CD2028; box-sizing:border-box; display:flex; align-items:center; justify-content:space-between; padding:0 calc(50 * var(--p)) 0 calc(44 * var(--p)); box-shadow:0 calc(18 * var(--p)) calc(40 * var(--p)) rgba(60,0,8,.35); cursor:pointer; color:#fff; font:inherit; transition:transform .12s; }
+  .cv .cbox b { font:italic 900 calc(52 * var(--p))/.95 Poppins, sans-serif; text-transform:uppercase; letter-spacing:-.01em; text-align:left; text-shadow:0 calc(3 * var(--p)) 0 rgba(90,8,14,.45); }
+  .cv .cbox svg { width:calc(74 * var(--p)); height:calc(74 * var(--p)); flex:none; } .cv .cbox:active { transform:translateY(calc(4 * var(--p))); } .cv .cbox:disabled { opacity:.55; }
+  .cv .ghostb { height:calc(72 * var(--p)); padding:0 calc(36 * var(--p)); border-radius:calc(8 * var(--p)); border:calc(3 * var(--p)) solid rgba(255,255,255,.75); background:transparent; color:#fff; font:italic 800 calc(24 * var(--p))/1 Poppins, sans-serif; letter-spacing:.14em; text-transform:uppercase; cursor:pointer; }
+  .cv .ghostb.onred { border-color:#fff; background:#1E1B1B; box-shadow:0 10px 24px rgba(0,0,0,.3); }
+  .cv .k-input { width:calc(700 * var(--p)); height:calc(150 * var(--p)); padding:0; border:0; border-radius:calc(10 * var(--p)); background:#fff; color:#1E1B1B; font:italic 900 calc(96 * var(--p))/1 Poppins, sans-serif; letter-spacing:.22em; text-align:center; text-transform:uppercase; box-shadow:0 calc(10 * var(--p)) 0 #01679A, 0 calc(20 * var(--p)) calc(40 * var(--p)) rgba(0,0,0,.4); }
+  .cv .k-input::placeholder { color:#D6CFCB; }
+  .cv .kb { display:grid; grid-template-columns:repeat(8, calc(84 * var(--p))); gap:calc(12 * var(--p)); }
+  .cv .kb button { height:calc(84 * var(--p)); border-radius:calc(12 * var(--p)); border:0; background:rgba(255,255,255,.16); color:#fff; font:italic 900 calc(34 * var(--p))/1 Poppins, sans-serif; cursor:pointer; box-shadow:inset 0 calc(-5 * var(--p)) 0 rgba(0,0,0,.18); }
+  .cv .kb button:active { background:#fff; color:#CD2028; }
+  .cv .kb button.wide { grid-column:span 2; font-size:calc(26 * var(--p)); letter-spacing:.06em; }
+  .cv .kb button.wide:last-child { background:#fff; color:#CD2028; box-shadow:0 calc(6 * var(--p)) 0 #7E1016; }
+  /* consent */
+  .cv .lang-pick { display:flex; gap:calc(14 * var(--p)); }
+  .cv .lang-pick button { height:calc(58 * var(--p)); padding:0 calc(26 * var(--p)); border-radius:calc(999 * var(--p)); border:calc(2 * var(--p)) solid rgba(255,255,255,.35); background:transparent; color:#fff; font:italic 800 calc(22 * var(--p))/1 Poppins; letter-spacing:.06em; cursor:pointer; }
+  .cv .lang-pick button.on { background:#029CD4; border-color:#029CD4; }
+  .cv .consent-box { background:#fff; color:#1E1B1B; border-radius:calc(18 * var(--p)); padding:calc(30 * var(--p)) calc(34 * var(--p)); box-shadow:0 calc(10 * var(--p)) 0 #01679A, 0 calc(20 * var(--p)) calc(40 * var(--p)) rgba(0,0,0,.4); display:grid; gap:calc(16 * var(--p)); max-width:none; font-size:inherit; }
+  .cv .consent-box p { margin:0; font:500 calc(24 * var(--p))/1.5 Poppins, 'Noto Sans Sinhala', 'Noto Sans Tamil', sans-serif; }
+  .cv .consent-box p.note { font:italic 700 calc(18 * var(--p))/1.4 Poppins; color:#CD2028; }
+  /* camera */
+  .cv .cam { width:calc(900 * var(--p)); height:calc(675 * var(--p)); max-width:none; aspect-ratio:auto; border:calc(10 * var(--p)) solid #fff; border-radius:calc(24 * var(--p)); background:#0D1B26; overflow:hidden; box-shadow:0 calc(22 * var(--p)) calc(50 * var(--p)) rgba(0,0,0,.5); }
+  .cv .cam .count { font:italic 900 calc(360 * var(--p))/1 Poppins, sans-serif; color:#fff; text-shadow:0 calc(8 * var(--p)) 0 #029CD4, 0 calc(16 * var(--p)) 0 #01476A, 0 calc(30 * var(--p)) calc(50 * var(--p)) rgba(0,0,0,.5); }
+  .cv .cam .br { position:absolute; width:calc(70 * var(--p)); height:calc(70 * var(--p)); border:calc(7 * var(--p)) solid #fff; z-index:2; } .cv .cam .br.a { left:calc(28 * var(--p)); top:calc(28 * var(--p)); border-right:0; border-bottom:0; } .cv .cam .br.b { right:calc(28 * var(--p)); top:calc(28 * var(--p)); border-left:0; border-bottom:0; } .cv .cam .br.c { left:calc(28 * var(--p)); bottom:calc(28 * var(--p)); border-right:0; border-top:0; } .cv .cam .br.d { right:calc(28 * var(--p)); bottom:calc(28 * var(--p)); border-left:0; border-top:0; }
+  .cv .cam .live { position:absolute; left:calc(120 * var(--p)); top:calc(36 * var(--p)); display:flex; align-items:center; gap:calc(10 * var(--p)); background:#CD2028; color:#fff; padding:calc(9 * var(--p)) calc(18 * var(--p)); border-radius:calc(999 * var(--p)); font:italic 900 calc(20 * var(--p))/1 Poppins; letter-spacing:.12em; z-index:2; }
+  .cv .cam .live::before { content:""; width:calc(12 * var(--p)); height:calc(12 * var(--p)); border-radius:50%; background:#fff; animation:blink 1s steps(2) infinite; } @keyframes blink { 50% { opacity:.25 } }
+  /* cooking */
+  .cv .cook { height:calc(22 * var(--p)); border-radius:calc(999 * var(--p)); background:rgba(255,255,255,.12); overflow:hidden; } .cv .cook i { display:block; height:100%; width:100%; background:repeating-linear-gradient(-45deg, #CD2028 0 calc(18 * var(--p)), #FF5A62 calc(18 * var(--p)) calc(36 * var(--p))); animation:sz 1s linear infinite; } @keyframes sz { to { background-position:calc(51 * var(--p)) 0; } }
+  .cv .cooking-line { font:italic 700 calc(34 * var(--p))/1.3 Poppins, sans-serif; color:#fff; min-height:0; }
+  .cv .bub { background:#fff; color:#1E1B1B; border:calc(5 * var(--p)) solid #029CD4; border-radius:calc(28 * var(--p)); padding:calc(20 * var(--p)) calc(28 * var(--p)); font:italic 900 calc(30 * var(--p))/1.2 Poppins; box-shadow:0 calc(12 * var(--p)) calc(28 * var(--p)) rgba(0,0,0,.3); z-index:3; }
+  .cv .bub::after { content:""; position:absolute; left:calc(60 * var(--p)); top:calc(-18 * var(--p)); width:calc(28 * var(--p)); height:calc(28 * var(--p)); background:#fff; border-left:calc(5 * var(--p)) solid #029CD4; border-top:calc(5 * var(--p)) solid #029CD4; transform:rotate(45deg); }
+  /* reveal */
+  .cv .pol { width:calc(520 * var(--p)); background:#fff; padding:calc(18 * var(--p)) calc(18 * var(--p)) calc(70 * var(--p)); border-radius:calc(6 * var(--p)); box-shadow:0 calc(20 * var(--p)) calc(44 * var(--p)) rgba(0,0,0,.5); rotate:-4deg; }
+  .cv .pol img { display:block; width:100%; aspect-ratio:4/3; object-fit:cover; background:#ddd; }
+  .cv .ribbon { background:#CD2028; color:#fff; font:italic 900 calc(34 * var(--p))/1.1 Poppins, sans-serif; text-transform:uppercase; padding:calc(14 * var(--p)) calc(26 * var(--p)); max-width:calc(460 * var(--p)); box-shadow:0 calc(8 * var(--p)) 0 #7E1016; border:calc(3 * var(--p)) solid #fff; transform:rotate(-3deg) skewX(-8deg); }
+  .cv .ribbon:empty { display:none; }
+  .cv .rcard { background:#fff; color:#1E1B1B; border-radius:calc(24 * var(--p)); padding:calc(34 * var(--p)) calc(38 * var(--p)) calc(30 * var(--p)); box-shadow:0 calc(12 * var(--p)) 0 #01679A, 0 calc(26 * var(--p)) calc(50 * var(--p)) rgba(0,0,0,.45); display:grid; gap:calc(16 * var(--p)); }
+  .cv .rtop { display:flex; align-items:center; justify-content:space-between; }
+  .cv .rtabs { display:inline-flex; gap:calc(6 * var(--p)); background:#F2E9E4; padding:calc(6 * var(--p)); border-radius:calc(999 * var(--p)); }
+  .cv .rtabs button { border:0; background:transparent; color:#CD2028; padding:calc(10 * var(--p)) calc(18 * var(--p)); border-radius:calc(999 * var(--p)); font:900 calc(18 * var(--p))/1 Poppins; cursor:pointer; opacity:1; }
+  .cv .rtabs button.on { background:#CD2028; color:#fff; }
+  .cv .rtitle { font:italic 900 calc(54 * var(--p))/1 Poppins, 'Noto Sans Sinhala', 'Noto Sans Tamil', sans-serif; text-transform:uppercase; letter-spacing:-.02em; color:#CD2028; }
+  .cv .rbody { font:500 calc(26 * var(--p))/1.5 Poppins, 'Noto Sans Sinhala', 'Noto Sans Tamil', sans-serif; color:#3B3333; }
+  .cv .rwho { font:italic 700 calc(20 * var(--p))/1 Poppins; color:#8A7F7F; }
+  .cv .qrc { width:calc(300 * var(--p)); background:#fff; border-radius:calc(18 * var(--p)); padding:calc(22 * var(--p)) calc(22 * var(--p)) calc(18 * var(--p)); display:grid; justify-items:center; gap:calc(12 * var(--p)); box-shadow:0 calc(10 * var(--p)) 0 #7E1016, 0 calc(20 * var(--p)) calc(40 * var(--p)) rgba(0,0,0,.35); }
+  .cv .qrc img { width:calc(256 * var(--p)); height:calc(256 * var(--p)); display:block; } .cv .qrc b { font:italic 900 calc(22 * var(--p))/1.15 Poppins; letter-spacing:.1em; text-transform:uppercase; color:#1E1B1B; text-align:center; }
+  .cv .qnote { font:600 calc(22 * var(--p))/1.4 Poppins; color:#fff; }
   .stage:has(#s-idle.on) > .k-logo, .stage:has(#s-idle.on) > .k-cameo, .stage:has(#s-idle.on) > .k-foot { display:none; }
 </style>
 </head>
 <body class="kiosk on-red freckles roast-kiosk">
 <div class="stage">
-  <img class="k-logo" src="/assets/wendys-horiz-white.svg" alt="Wendy's">
-  <img class="k-cameo" src="/assets/cameo.png" alt="">
-  <div class="frame"><i></i></div>
+  <div class="chrome"><div class="s">
+    <div class="dots"></div><div class="panel"></div><div class="band"></div>
+    <header class="hd"><div class="brand"><img src="/assets/wendys-horiz-white.svg" alt="Wendy's"><i></i><span class="wf"><span class="w1">Wendy</span><span class="w2">Fest</span></span></div><div class="stp" id="stp"><i id="stp-n">1</i><span id="stp-l">Welcome</span></div></header>
+    <div class="strp"></div>
+    <footer class="ft"><span class="c"><img src="/assets/cameo.png" alt="">© 2026 Wendy’s Sri Lanka</span><span><span id="corner-l">Station A</span> · Roast Me</span><span class="lk"><a>Terms</a><a>Privacy</a></span></footer>
+  </div></div>
   <div class="flash" id="flash"></div>
 
-  <section class="screen" id="s-pin" style="place-items:center"><div class="stack center" style="gap:3vmin">
-    <div class="k-eyebrow">Host console</div><div class="display big">Enter PIN</div>
-    <input class="k-input" id="pin" type="password" inputmode="numeric" maxlength="8" style="width:40vmin;letter-spacing:.5em">
-    <button class="btn blue k-btn" id="pin-go">Unlock</button></div></section>
+  <section class="screen cv" id="s-pin"><div class="s">
+    <div class="eb" style="left:calc(125 * var(--p));top:calc(250 * var(--p))">Host console</div>
+    <div class="t3" style="left:calc(112 * var(--p));top:calc(300 * var(--p));font-size:calc(150 * var(--p))"><span class="l1">Enter</span><span class="l2">PIN.</span></div>
+    <input class="k-input" id="pin" type="password" inputmode="numeric" maxlength="8" style="left:calc(125 * var(--p));top:calc(640 * var(--p))">
+    <button class="cbox" id="pin-go" style="left:calc(125 * var(--p));top:calc(830 * var(--p));width:calc(560 * var(--p));height:calc(130 * var(--p))"><b style="font-size:calc(46 * var(--p))">Unlock</b><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg></button>
+  </div></section>
 
   <section class="screen on" id="s-idle">
     <div class="s">
@@ -94,65 +181,65 @@
     </div>
   </section>
 
-  <section class="screen" id="s-code" style="place-items:center"><div class="stack center" style="gap:2.4vmin">
-    <div class="k-eyebrow">Guest code</div>
-    <input class="k-input" id="code" maxlength="6" autocomplete="off" placeholder="ABC123">
-    <div id="kb"></div>
-    <div class="k-sub" id="code-msg" style="min-height:3vmin;font-size:2.2vmin"></div>
-    <button class="btn ghost sm" style="color:#fff" onclick="goIdle()">← Back</button>
+  <section class="screen cv" id="s-code"><div class="s">
+    <div class="eb" style="left:calc(125 * var(--p));top:calc(230 * var(--p))">Guest code</div>
+    <div class="t3" style="left:calc(112 * var(--p));top:calc(280 * var(--p));font-size:calc(132 * var(--p))"><span class="l1">Your</span><span class="l2">code.</span></div>
+    <div class="sub" style="left:calc(125 * var(--p));top:calc(540 * var(--p));width:calc(640 * var(--p))">6 letters and numbers, from your SMS or your Wendy Fest pass.</div>
+    <input class="k-input" id="code" maxlength="6" autocomplete="off" placeholder="ABC123" style="left:calc(125 * var(--p));top:calc(660 * var(--p))">
+    <div class="msg" id="code-msg" style="left:calc(125 * var(--p));top:calc(830 * var(--p));width:calc(700 * var(--p))"></div>
+    <button class="ghostb" style="left:calc(125 * var(--p));top:calc(900 * var(--p))" onclick="goIdle()">← Back</button>
+    <div class="eb w" style="left:calc(1080 * var(--p));top:calc(230 * var(--p))">Tap your code</div>
+    <div id="kb" style="left:calc(1060 * var(--p));top:calc(290 * var(--p))"></div>
   </div></section>
 
-  <section class="screen" id="s-consent" style="place-items:center"><div class="stack center" style="gap:2.4vmin;justify-items:center">
-    <div class="k-eyebrow" style="color:var(--blue)">Before we roast you</div>
-    <div class="display mid" id="c-name">Hi!</div>
-    <div class="lang-pick"><button class="btn sm ink" data-l="en">English</button><button class="btn sm ink" data-l="si">සිංහල</button><button class="btn sm ink" data-l="ta">தமிழ்</button></div>
-    <div class="consent-box">
+  <section class="screen cv" id="s-consent"><div class="s">
+    <div class="art"><img src="/assets/roast-wendy.png" alt="" onerror="this.remove()"></div>
+    <div class="eb" style="left:calc(125 * var(--p));top:calc(220 * var(--p))">Before we roast you</div>
+    <div class="t3" style="left:calc(112 * var(--p));top:calc(268 * var(--p));font-size:calc(112 * var(--p))"><span class="l1" id="c-name">Hi!</span></div>
+    <div class="lang-pick" style="left:calc(125 * var(--p));top:calc(420 * var(--p))"><button data-l="en">English</button><button data-l="si">සිංහල</button><button data-l="ta">தமிழ்</button></div>
+    <div class="consent-box" style="left:calc(125 * var(--p));top:calc(510 * var(--p));width:calc(760 * var(--p))">
       <p lang="en">📸 We’ll take one photo of you at this booth. Wendy's AI will look at your style, outfit and expression to write a playful roast. The photo and roast are saved to your Wendy Fest profile and a link is sent to your phone so you can download and share it.</p>
       <p lang="si">📸 මෙම booth එකේදී ඔබේ ඡායාරූපයක් ගනු ලැබේ. ඔබේ style, ඇඳුම සහ මුහුණේ ඉරියව්ව බලා Wendy's AI විහිළු roast එකක් ලියයි. ඡායාරූපය සහ roast එක ඔබේ Wendy Fest profile එකේ save වී link එකක් ඔබේ දුරකථනයට යවනු ලැබේ.</p>
       <p lang="ta">📸 இந்த booth-இல் உங்கள் ஒரு புகைப்படம் எடுக்கப்படும். உங்கள் style, உடை, முகபாவனையைப் பார்த்து Wendy's AI ஒரு விளையாட்டான roast எழுதும். புகைப்படமும் roast-ும் உங்கள் Wendy Fest profile-இல் சேமிக்கப்பட்டு link உங்கள் போனுக்கு அனுப்பப்படும்.</p>
-      <p style="opacity:.7;font-size:1.8vmin">No roast is ever about body, skin, age, religion or anything you can’t change. Just your vibe.</p>
+      <p class="note">No roast is ever about body, skin, age, religion or anything you can’t change. Just your vibe.</p>
     </div>
-    <div class="row" style="gap:2vmin"><button class="btn blue k-btn" id="agree">I agree · එකඟයි · சம்மதம் →</button><button class="btn ghost k-btn" style="color:#fff" onclick="goIdle()">No thanks</button></div>
+    <button class="cbox" id="agree" style="left:calc(930 * var(--p));top:calc(760 * var(--p));width:calc(870 * var(--p));height:calc(150 * var(--p))"><b style="font-size:calc(52 * var(--p))">I’m in, roast me</b><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg></button>
+    <button class="ghostb onred" style="left:calc(930 * var(--p));top:calc(930 * var(--p));width:calc(870 * var(--p))" onclick="goIdle()">No thanks</button>
   </div></section>
 
-  <section class="screen" id="s-cam" style="place-items:center"><div class="cols" style="grid-template-columns:auto 1fr;gap:5vmin">
-    <div class="cam"><video id="video" autoplay playsinline muted></video><canvas id="shot" class="hidden"></canvas><div class="count hidden" id="count">3</div></div>
-    <div class="stack" style="gap:2vmin">
-      <div class="k-eyebrow" style="color:var(--blue)">Strike a pose</div>
-      <div class="display big" style="font-size:9vmin">Show us<br>your vibe.</div>
-      <p class="k-sub">Props, costumes and attitude all count. Hold still when the count hits one.</p>
-      <div class="row" style="gap:2vmin"><button class="btn blue k-btn" id="snap">Take the photo</button><button class="btn ghost k-btn" style="color:#fff" onclick="goIdle()">Cancel</button></div>
-      <div id="cam-status" style="font-size:1.8vmin;opacity:.8"></div>
-    </div>
+  <section class="screen cv" id="s-cam"><div class="s">
+    <div class="cam" style="left:calc(110 * var(--p));top:calc(210 * var(--p))"><video id="video" autoplay playsinline muted></video><canvas id="shot" class="hidden"></canvas><div class="count hidden" id="count">3</div><i class="br a"></i><i class="br b"></i><i class="br c"></i><i class="br d"></i><span class="live">LIVE</span></div>
+    <div class="eb w" style="left:calc(1100 * var(--p));top:calc(230 * var(--p))">Strike a pose</div>
+    <div class="t3" style="left:calc(1090 * var(--p));top:calc(280 * var(--p));font-size:calc(120 * var(--p))"><span class="l1">Show us</span><span class="l2">your vibe.</span></div>
+    <div class="sub" style="left:calc(1100 * var(--p));top:calc(540 * var(--p));width:calc(700 * var(--p))">Props, costumes and attitude all count. Hold still when the count hits one.</div>
+    <button class="cbox" id="snap" style="left:calc(1100 * var(--p));top:calc(700 * var(--p));width:calc(700 * var(--p));height:calc(150 * var(--p))"><b style="font-size:calc(54 * var(--p))">Take the photo</b><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg></button>
+    <button class="ghostb onred" style="left:calc(1100 * var(--p));top:calc(872 * var(--p));width:calc(700 * var(--p))" onclick="goIdle()">Cancel</button>
+    <div id="cam-status" style="left:calc(110 * var(--p));top:calc(905 * var(--p));width:calc(900 * var(--p))"></div>
   </div></section>
 
-  <section class="screen" id="s-cooking" style="place-items:center"><div class="stack center" style="gap:3vmin;justify-items:center">
-    <div class="spin"></div>
-    <div class="display big">Looking you over…</div>
-    <div class="cooking-line" id="cook-line">Checking the fit.</div>
+  <section class="screen cv" id="s-cooking"><div class="s">
+    <div class="art"><img src="/assets/roast-wendy.png" alt="" onerror="this.remove()"></div>
+    <div class="eb" style="left:calc(125 * var(--p));top:calc(260 * var(--p))">Wendy is writing</div>
+    <div class="t3" style="left:calc(112 * var(--p));top:calc(310 * var(--p));font-size:calc(132 * var(--p))"><span class="l1">Cooking</span><span class="l2">your roast…</span></div>
+    <div class="cook" style="left:calc(125 * var(--p));top:calc(640 * var(--p));width:calc(620 * var(--p))"><i></i></div>
+    <div class="cooking-line" id="cook-line" style="left:calc(125 * var(--p));top:calc(690 * var(--p));width:calc(620 * var(--p))">Checking the fit.</div>
+    <div class="bub" style="left:calc(1140 * var(--p));top:calc(740 * var(--p))">Fresh sass, coming right up.</div>
   </div></section>
 
-  <section class="screen" id="s-reveal" style="place-items:center">
-    <div class="reveal">
-      <div class="stack" style="gap:2vmin;justify-items:center">
-        <div class="photo"><img id="r-photo" alt=""></div>
-        <div class="row" style="gap:3vmin;align-items:center">
-          <div class="qr" style="width:20vmin;height:20vmin"><img id="qr-roast" alt="QR"></div>
-          <div><div class="k-eyebrow" style="color:var(--blue)">Scan to take it home</div><div style="font-size:1.9vmin;opacity:.85;margin-top:.6vmin">Download, share, send to the group chat.<br>Also sent to your phone by SMS.</div></div>
-        </div>
-      </div>
-      <div class="ticket pad" style="padding:4vmin;gap:1.4vmin;display:grid">
-        <div class="ticket-inner"></div>
-        <div class="row between"><div class="k-eyebrow" id="r-vibe"></div><div class="rtabs"><button data-l="en">EN</button><button data-l="si">සිං</button><button data-l="ta">தமிழ்</button></div></div>
-        <div class="display rtitle" id="r-title">…</div>
-        <div class="rbody" id="r-body"></div>
-        <div style="font-size:1.8vmin;opacity:.8">— Wendy's, to <span id="r-who"></span></div>
-        <div><button class="btn white k-btn" style="margin-top:1vmin" onclick="goIdle()">Next guest →</button></div>
-      </div>
+  <section class="screen cv" id="s-reveal"><div class="s">
+    <div class="pol" style="left:calc(110 * var(--p));top:calc(215 * var(--p))"><img id="r-photo" alt=""></div>
+    <div class="ribbon" style="left:calc(150 * var(--p));top:calc(700 * var(--p))"><span id="r-vibe"></span></div>
+    <div class="rcard" style="left:calc(700 * var(--p));top:calc(205 * var(--p));width:calc(700 * var(--p))">
+      <div class="rtop"><span class="eb" style="position:static">Wendy says</span><div class="rtabs"><button data-l="en">EN</button><button data-l="si">සිං</button><button data-l="ta">தமிழ்</button></div></div>
+      <div class="rtitle" id="r-title">…</div>
+      <div class="rbody" id="r-body"></div>
+      <div class="rwho">— Wendy’s, to <span id="r-who"></span></div>
     </div>
-  </section>
+    <div class="qrc" style="left:calc(1490 * var(--p));top:calc(215 * var(--p))"><img id="qr-roast" alt="QR"><b>Scan to<br>take it home</b></div>
+    <div class="qnote" style="left:calc(1470 * var(--p));top:calc(615 * var(--p));width:calc(340 * var(--p))">Download and share. Also sent to your phone by SMS.</div>
+    <button class="cbox" style="left:calc(1470 * var(--p));top:calc(800 * var(--p));width:calc(340 * var(--p));height:calc(130 * var(--p))" onclick="goIdle()"><b style="font-size:calc(40 * var(--p))">Next guest</b><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg></button>
+  </div></section>
 
-  <footer class="k-foot"><span class="c"><img src="/assets/cameo.png" alt="">© 2026 Wendy’s Sri Lanka</span><span class="st" id="corner-l">Station A</span><span class="links"><span>Terms</span><span>Privacy</span></span></footer>
   <aside class="settings" id="settings">
     <div class="k-eyebrow">Station settings</div>
     <label>Camera (this screen)</label><select id="camsel"></select>
@@ -208,6 +295,8 @@
   $("start").onclick = () => { K.show("s-code"); $("code").focus(); startCam(); };
   $("kb").appendChild(K.keypad($("code"), lookup));
   $("code").addEventListener("keydown", (e) => e.key === "Enter" && lookup($("code").value));
+  $("code").addEventListener("input", () => { $("code-msg").textContent = ""; });
+  $("kb").addEventListener("click", () => { if (!/Looking/.test($("code-msg").textContent)) $("code-msg").textContent = ""; }, true);
   async function lookup(code) {
     $("code-msg").textContent = "Looking up…";
     try {
@@ -218,7 +307,7 @@
       K.show("s-consent"); K.resetIdle(120000, goIdle);
     } catch (e) { $("code-msg").textContent = e.message; $("code").classList.add("err"); setTimeout(() => $("code").classList.remove("err"), 500); }
   }
-  function setGLang(l) { glang = l; document.querySelectorAll(".lang-pick button").forEach((b) => b.classList.toggle("on", b.dataset.l === l)); document.querySelectorAll(".consent-box p[lang]").forEach((p) => p.style.order = p.lang === l ? -1 : 0); document.querySelectorAll(".consent-box p[lang]").forEach((p) => p.style.opacity = p.lang === l ? 1 : .55); }
+  function setGLang(l) { glang = l; document.querySelectorAll(".lang-pick button").forEach((b) => b.classList.toggle("on", b.dataset.l === l)); document.querySelectorAll(".consent-box p[lang]").forEach((p) => p.style.order = p.lang === l ? -1 : 0); document.querySelectorAll(".consent-box p[lang]").forEach((p) => p.style.display = p.lang === l ? "" : "none"); }
   document.querySelectorAll(".lang-pick button").forEach((b) => b.onclick = () => setGLang(b.dataset.l));
   $("agree").onclick = async () => { K.show("s-cam"); await startCam(); K.resetIdle(120000, goIdle); };
   $("snap").onclick = async () => {
@@ -250,10 +339,13 @@
     K.confetti(40); K.resetIdle(75000, goIdle);
   }
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+  const STEPS = { "s-pin": ["•", "Host"], "s-idle": ["1", "Welcome"], "s-code": ["2", "Your code"], "s-consent": ["3", "Ready?"], "s-cam": ["4", "Camera"], "s-cooking": ["5", "Cooking"], "s-reveal": ["6", "Your roast"] };
+  document.addEventListener("screen", (e) => { const st = STEPS[e.detail]; if (st) { $("stp-n").textContent = st[0]; $("stp-l").textContent = st[1]; } if (e.detail === "s-code") $("code-msg").textContent = ""; });
+  { const on = document.querySelector(".screen.on"); const st = on && STEPS[on.id]; if (st) { $("stp-n").textContent = st[0]; $("stp-l").textContent = st[1]; } }
   // staff settings: no visible gear. Press S, or tap the step badge three times quickly.
   const toggleSettings = () => $("settings").classList.toggle("open");
   document.addEventListener("keydown", (e) => { if ((e.key === "s" || e.key === "S") && !e.target.matches("input,select,textarea")) toggleSettings(); });
   let taps = [];
-  document.querySelectorAll("#s-idle .stp, .k-cameo").forEach((el) => el.addEventListener("click", () => { const now = Date.now(); taps = taps.filter((t) => now - t < 1500).concat(now); if (taps.length >= 3) { taps = []; toggleSettings(); } }));
+  document.querySelectorAll("#s-idle .stp, #stp").forEach((el) => el.addEventListener("click", () => { const now = Date.now(); taps = taps.filter((t) => now - t < 1500).concat(now); if (taps.length >= 3) { taps = []; toggleSettings(); } }));
 </script>
 </body></html>

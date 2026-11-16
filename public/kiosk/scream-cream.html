@@ -71,7 +71,7 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
 .bx .box { position:absolute; left:50%; top:50%; width:calc(1440 * var(--u)); transform:translate(-50%,-50%); }
 .bx .abs { position:absolute; }
 .bx .crow { position:absolute; left:0; width:100%; display:block; text-align:center; }
-.bx .t { display:inline-block; font-weight:900; font-style:italic; text-transform:uppercase; letter-spacing:-.03em; line-height:1; color:#1F1A1A; white-space:nowrap; }
+.bx .t { display:inline-block; font-weight:900; font-style:italic; text-transform:uppercase; letter-spacing:-.03em; line-height:1; color:#1F1A1A; white-space:nowrap; text-align:left; }
 .bx .t.wrap { white-space:normal; }
 .bx .btn { position:absolute; padding:0 calc(60 * var(--u)) 0 0; justify-content:center; font-size:calc(47 * var(--u)); letter-spacing:.02em; background:linear-gradient(90deg, #DB323B 0%, #CA242D 55%, #AE1C24 100%); box-shadow:0 calc(7 * var(--u)) 0 #7E1016, 0 calc(16 * var(--u)) calc(30 * var(--u)) -1vmin rgba(205,32,40,.4), inset 0 .2vmin 0 rgba(255,255,255,.35); }
 .bx .btn::after { position:absolute; right:calc(34 * var(--u)); top:50%; transform:translateY(-50%); width:calc(60 * var(--u)); height:calc(60 * var(--u)); }
@@ -144,7 +144,7 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
 #res-code { margin-top:calc(22 * var(--u)); width:calc(532 * var(--u)); height:calc(88 * var(--u)); box-sizing:border-box; border:calc(3 * var(--u)) solid var(--red); border-radius:calc(15 * var(--u)); background:#fff; display:grid; place-items:center; font:italic 900 calc(47 * var(--u))/1 Poppins, sans-serif; color:var(--red); letter-spacing:0; box-shadow:0 calc(6 * var(--u)) calc(16 * var(--u)) rgba(205,32,40,.1); }
 #res-coupon small { margin-left:calc(37 * var(--u)); font:500 calc(23 * var(--u))/1.35 Poppins, sans-serif; color:#1F1A1A; white-space:nowrap; }
 #res-coupon small:first-of-type { margin-top:calc(18 * var(--u)); }
-#res-detail { left:calc(592 * var(--u)); top:calc(170 * var(--u)); width:calc(520 * var(--u)); font:600 calc(30 * var(--u))/1.35 Poppins, sans-serif; color:#1F1A1A; }
+#res-detail { left:calc(592 * var(--u)); top:calc(170 * var(--u)); width:calc(520 * var(--u)); text-align:left; font:600 calc(30 * var(--u))/1.35 Poppins, sans-serif; color:#1F1A1A; }
 #s-result .qrcard { position:absolute; left:calc(1146 * var(--u)); top:calc(64 * var(--u)); width:calc(232 * var(--u)); height:calc(296 * var(--u)); padding:calc(24 * var(--u)) 0 0; box-sizing:border-box; border-radius:calc(22 * var(--u)); gap:calc(12 * var(--u)); align-content:start; }
 #qr-profile { width:calc(179 * var(--u)) !important; height:calc(179 * var(--u)) !important; }
 #qr-label { font-size:calc(26 * var(--u)) !important; letter-spacing:.12em; }
@@ -189,6 +189,21 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
 .bg-d .bgfx .pat { inset:-10%; background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240' fill='none' stroke='%23CD2028' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' opacity='.11'><g transform='translate(18 20)'><rect x='12' y='0' width='22' height='36' rx='11'/><path d='M4 28a19 19 0 0 0 38 0M23 47v12M13 59h20'/></g><g transform='translate(140 30)'><path d='M4 22a26 18 0 0 1 52 0z'/><path d='M2 30h56M4 38h52M6 38c0 8 48 8 48 0'/></g><g transform='translate(30 140)'><path d='M8 20h36l-5 50H13z'/><path d='M14 20 12 0M22 20 21 4M30 20 31 2M38 20 41 6'/></g><g transform='translate(150 140)'><path d='M6 14h44l-6 58H12z'/><path d='M2 14h52M18 14l4-12h12l4 12M24 2 30-10'/></g><g transform='translate(100 95)'><path d='M20 0l6 13 14 2-10 10 2 14-12-7-12 7 2-14L0 15l14-2z'/></g></svg>") 0 0 / 22vh 22vh; transform:rotate(-8deg); }
 .bg-d .bgfx .glow { inset:0; background:radial-gradient(55% 60% at 45% 52%, rgba(251,248,243,.96) 35%, rgba(251,248,243,.55) 70%, transparent 100%); }
 .bg-d .bgfx .cam { width:20vh; right:3vw; bottom:9vh; opacity:.16; }
+
+/* live · bottom row: listening | time left | what speech recognition heard */
+#go-meter .pillx { left:calc(120 * var(--u)); }
+#go-meter .vr { left:calc(460 * var(--u)); }
+.timeleft { left:calc(505 * var(--u)); }
+#go-meter .vr2 { left:calc(860 * var(--u)); }
+.heard { left:calc(900 * var(--u)); top:calc(440 * var(--u)); width:calc(500 * var(--u)); display:grid; gap:calc(8 * var(--u));  text-align:left; justify-items:start; }
+.heard small { font:italic 800 calc(20 * var(--u))/1 Poppins, sans-serif; letter-spacing:.2em; text-transform:uppercase; color:#1F1A1A; }
+.heard b { font:italic 900 calc(40 * var(--u))/1.1 Poppins, sans-serif; color:rgba(31,26,26,.45); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.heard.got b { color:var(--red); }
+.heard.got b::after { content:""; display:inline-block; width:calc(34 * var(--u)); height:calc(34 * var(--u)); margin-left:calc(14 * var(--u)); vertical-align:calc(-4 * var(--u)); border-radius:50%; background:#29C9E0 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/70% no-repeat; }
+#listen-pill.got { border-color:#29C9E0; } #listen-pill.got .dot { background:#29C9E0; animation:none; }
+/* mic check · pill grows with its text */
+#mic-pill { width:auto !important; left:50% !important; transform:translateX(-50%); padding:0 calc(30 * var(--u)); }
+#mic-pill.heard-ok { border-color:#29C9E0; }
 </style>
 </head>
 <body>
@@ -251,9 +266,11 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
       <i class="abs slash"></i>
       <span class="target" id="target">Target <b id="thr">70</b></span>
       <canvas class="abs" id="wave-l"></canvas><canvas id="wave-r"></canvas><canvas id="ring-gauge"></canvas>
-      <span class="pillx"><span class="dot"></span>Listening</span>
+      <span class="pillx" id="listen-pill"><span class="dot"></span><span id="listen-l">Listening</span></span>
       <i class="abs vr"></i>
-      <div class="timeleft"><b><span id="tleft">3.0</span>s</b><small>LEFT</small></div>
+      <div class="timeleft"><b><span id="tleft">10.0</span>s</b><small>LEFT</small></div>
+      <i class="abs vr vr2"></i>
+      <div class="abs heard" id="heard"><small>We heard</small><b id="heard-v">…</b></div>
       <div class="bar"><i id="tbar"></i></div><div id="trans">…</div>
     </div>
   </section>
@@ -382,7 +399,7 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
 
   // Register-screen wave (option B): one hill of rounded bars, every fourth bar Wendy's blue.
   // Gentle voice ripples drift slowly left → right through the hill; a live mic feeds them.
-  const VOICE = { n: 64, hist: [], count: 0, last: 0, sylLeft: 0, sylLen: 1, amp: 0, gap: 0, step: 460 };
+  const VOICE = { n: 64, hist: [], count: 0, last: 0, sylLeft: 0, sylLen: 1, amp: 0, gap: 0, step: 330 };
   for (let i = 0; i < VOICE.n; i++) { VOICE.hist.push(nextVoiceSample()); VOICE.count++; }
   function nextVoiceSample() {
     if (analyser) { const lv = dbToPct(currentDb()) / 100; if (lv > .12) return Math.min(1, .45 + lv * .6); }
@@ -415,7 +432,7 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
   const bell = (u, c, w) => Math.exp(-Math.pow((u - c) / w, 2));
   const ENV_MIC = (u) => Math.min(1, .07 + bell(u, .5, .1) * .93 + bell(u, .33, .09) * .5 + bell(u, .67, .09) * .5 + bell(u, .5, .3) * .2);
   const ENV_LIVE = (u) => Math.min(1, .06 + bell(u, .5, .1) * .94 + bell(u, .27, .09) * .55 + bell(u, .73, .09) * .6 + bell(u, .5, .32) * .25);
-  function drawBars(c, { n, env, level, fadeBottom = false, marker = false, dotEnds = false }) {
+  function drawBars(c, { n, env, level, real = false, fadeBottom = false, marker = false, dotEnds = false }) {
     if (!c._sized) sizeCanvas(c);
     const ctx = c.getContext("2d"), W = c.width, H = c.height, t = performance.now(); ctx.clearRect(0, 0, W, H);
     if (analyser && fbuf) analyser.getByteFrequencyData(fbuf);
@@ -425,7 +442,7 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
       const u = (i + .5) / n, e = env(u), mid = Math.abs(u - .5) * 2;
       const spec = analyser && fbuf ? fbuf[Math.floor(mid * fbuf.length * .3)] / 255 : 0;
       const jig = .62 + .38 * Math.abs(Math.sin(i * 1.71 + t * .0052) * Math.sin(i * .43 - t * .0031));
-      const v = e * Math.min(1, level * Math.max(jig, spec) * 1.12);
+      const v = real ? e * Math.min(1, (.06 + .94 * level) * (.55 + .45 * spec) * 1.15) : e * Math.min(1, level * Math.max(jig, spec) * 1.12);
       const base = fadeBottom ? H * .86 : H, h = Math.max(dotEnds ? w * .9 : w, v * maxH), x = i * gap + (gap - w) / 2;
       const edge = Math.min(1, u / .1, (1 - u) / .1), a = .25 + .75 * edge;
       const g = ctx.createLinearGradient(0, base - h, 0, fadeBottom ? H : base);
@@ -434,6 +451,20 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
       if (h > best) { best = h; bx = x + w / 2; by = base - h; }
     }
     if (marker && best > 0) { const r = 8 * fd; ctx.lineWidth = 3.5 * fd; ctx.strokeStyle = "#29C9E0"; ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(bx, by - r - 3 * fd, r, 0, 7); ctx.fill(); ctx.stroke(); }
+  }
+  // ---------- mic check: listen for a voice (e.g. "Hello"), then start automatically ----------
+  let VD = null;
+  function resetVoiceCheck() { const now = performance.now(); VD = { t0: now, last: now, base: 0, n: 0, ms: 0, fired: false }; }
+  function voiceCheck(t, pct) {
+    if (!VD || VD.fired || mode !== "ready") return;
+    const now = performance.now(), dt = now - VD.last; VD.last = now;
+    if (now - VD.t0 < 700) { VD.base = (VD.base * VD.n + pct) / ++VD.n; return; }   // learn the room's noise first
+    const thr = Math.max(18, VD.base + 14);
+    VD.ms = pct > thr ? VD.ms + dt : Math.max(0, VD.ms - dt * .6);
+    if (VD.ms > 280) {
+      VD.fired = true; $("mic-status").textContent = "Voice detected"; $("mic-pill").classList.add("heard-ok");
+      setTimeout(() => { if (mode === "ready" && $("s-ready").classList.contains("on")) $("go").click(); }, 800);
+    }
   }
   // ---------- cream LED countdown ring ----------
   function drawCountRing(c, pct) {
@@ -495,23 +526,30 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
     const pct = dbToPct(smooth);
     $("lvl-set").style.width = pct + "%"; $("db-set").textContent = db.toFixed(1) + " dB";
     if (mode === "idle") drawWave($("wave-idle"));
-    if (mode === "ready") drawBars($("wave-ready"), { n: 54, env: ENV_MIC, level: Math.max(.85, pct / 100), dotEnds: true });
+    if (mode === "ready") drawBars($("wave-ready"), { n: 54, env: ENV_MIC, level: analyser ? pct / 100 : .85, real: !!analyser, dotEnds: true }); if (analyser) voiceCheck(t, pct);
     if (mode === "count") drawCountRing($("ring-count"), countPct);
     if (mode === "scream") {
       if (windowOpen && db > peakDb) peakDb = db;
       gaugeShown += (pct - gaugeShown) * .25;
-      drawBars($("wave-l"), { n: 78, env: ENV_LIVE, level: Math.max(.6, gaugeShown / 100), fadeBottom: true, marker: true });
+      drawBars($("wave-l"), { n: 78, env: ENV_LIVE, level: analyser ? gaugeShown / 100 : .6, real: !!analyser, fadeBottom: true, marker: true });
       $("gauge-num").textContent = Math.round(dbToPct(peakDb));
     }
   }
   requestAnimationFrame(loop);
 
   // ---------- speech ----------
+  let heardAt = 0;
+  const WENDY_RE = /\b(w|v)h?[aei]nd(y|ie|i|ee|is|ys|eez|ies|y's)\b|\bwhen ?(these|days)\b/i;
+  function showHeard() {
+    const words = transcript.split(/\s+/).slice(-4).join(" ");
+    $("heard-v").textContent = words ? "“" + words.charAt(0).toUpperCase() + words.slice(1) + "”" : "…";
+    if (!heardAt && WENDY_RE.test(transcript)) { heardAt = performance.now(); $("heard").classList.add("got"); $("listen-pill").classList.add("got"); $("listen-l").textContent = "Heard it!"; }
+  }
   function startRecog() {
-    transcript = ""; $("trans").textContent = "…";
+    transcript = ""; $("trans").textContent = "…"; heardAt = 0; $("heard").classList.remove("got"); $("listen-pill").classList.remove("got"); $("listen-l").textContent = "Listening"; $("heard-v").textContent = (window.SpeechRecognition || window.webkitSpeechRecognition) && $("judge-mode").value !== "host" ? "…" : "Host will judge";
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition; if (!SR || $("judge-mode").value === "host") return;
     try { recog = new SR(); recog.lang = "en-US"; recog.interimResults = true; recog.continuous = true; recog.maxAlternatives = 3;
-      recog.onresult = (e) => { let s = ""; for (let i = 0; i < e.results.length; i++) for (let j = 0; j < e.results[i].length; j++) s += " " + e.results[i][j].transcript; transcript = s.trim(); $("trans").textContent = "We heard: " + (transcript || "…"); };
+      recog.onresult = (e) => { let s = ""; for (let i = 0; i < e.results.length; i++) for (let j = 0; j < e.results[i].length; j++) s += " " + e.results[i][j].transcript; transcript = s.trim(); $("trans").textContent = "We heard: " + (transcript || "…"); showHeard(); };
       recog.onerror = () => {}; recog.start(); } catch { recog = null; }
   }
   function stopRecog() { try { recog && recog.stop(); } catch {} }
@@ -540,7 +578,7 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
     try {
       guest = await K.api("/api/kiosk/lookup", { code });
       if (guest.screamsLeft <= 0) { $("code-msg").textContent = `${guest.firstName} has already used their attempt${guest.alreadyWon ? " (and won!)" : ""}.`; shakeBoxes(); return; }
-      $("r-name").textContent = guest.firstName; mode = "ready"; K.show("s-ready"); await startAudio(); K.resetIdle(90000, goIdle);
+      $("r-name").textContent = guest.firstName; mode = "ready"; $("mic-pill").classList.remove("heard-ok"); K.show("s-ready"); if (await startAudio()) $("mic-status").textContent = "Mic connected · say “Hello”"; resetVoiceCheck(); K.resetIdle(90000, goIdle);
     } catch (e) { $("code-msg").textContent = e.message; shakeBoxes(); }
   }
   function shakeBoxes() { [...$("boxes").children].forEach((b) => { b.classList.add("err"); setTimeout(() => b.classList.remove("err"), 500); }); }
@@ -555,6 +593,7 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
   document.addEventListener("screen", (e) => { setTimeout(fitText, 0); if (STEPS[e.detail]) setStep(...STEPS[e.detail]); if (e.detail === "s-code") setTimeout(() => codeEl.focus(), 50); });
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
   $("go").onclick = async () => {
+    if (mode !== "ready") return;
     if (!(await startAudio())) return;
     K.resetIdle(0); K.show("s-go"); $("go-count").style.display = "block"; $("go-meter").style.display = "none"; mode = "count";
     const dots = [...$("dots").querySelectorAll("span")];
@@ -565,8 +604,9 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
     }
     $("go-count").style.display = "none"; $("go-meter").style.display = "block"; setStep("5", "Live"); fitText();
     peakDb = -100; gaugeShown = 0; windowOpen = true; mode = "scream";
-    const dur = CFG.scream.durationMs || 3000, t0 = performance.now();
-    while (performance.now() - t0 < dur) { const left = dur - (performance.now() - t0); $("tleft").textContent = (left / 1000).toFixed(1); $("tbar").style.transform = `scaleX(${left / dur})`; await wait(50); }
+    const dur = 10000, t0 = performance.now();   // Studio Cream gives guests up to 10 s; it ends early once a clear "Wendy's" is heard
+    while (performance.now() - t0 < dur) {
+      if (heardAt && performance.now() - heardAt > 1300 && performance.now() - t0 > 1500) break; const left = dur - (performance.now() - t0); $("tleft").textContent = (left / 1000).toFixed(1); $("tbar").style.transform = `scaleX(${left / dur})`; await wait(50); }
     $("tleft").textContent = "0.0"; $("tbar").style.transform = "scaleX(0)"; windowOpen = false;
     await wait(900); stopRecog(); await wait(400);
     if ($("judge-mode").value === "host" || !(window.SpeechRecognition || window.webkitSpeechRecognition)) { K.show("s-judge"); return; }

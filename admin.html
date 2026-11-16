@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Admin · Wendy Fest</title><link rel="icon" href="./assets/cameo.png">
-<link rel="stylesheet" href="./css/brand.css?v=mwj6ep64">
+<link rel="stylesheet" href="./css/brand.css?v=mwj6ixhp">
 <style>
   body { background: var(--cream); }
   .head { background: var(--ink); color: #fff; padding: 18px 0; }
@@ -74,7 +74,7 @@
     </div>
   </section>
 </main>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js?v=mwj6ep64"></script><script src="./js/app.js?v=mwj6ep64"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js?v=mwj6ixhp"></script><script src="./js/app.js?v=mwj6ixhp"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   async function unlock() { try { await api("/api/admin/login", { method: "POST", body: { pin: $("pin").value } }); $("login").classList.add("hidden"); $("dash").classList.remove("hidden"); load(); } catch { toast("Wrong PIN"); } }

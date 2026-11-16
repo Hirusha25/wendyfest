@@ -144,3 +144,17 @@ Close-up of a young Sri Lankan woman screaming joyfully into a black podcast mic
 ```text
 Seamless subtle texture: soft white halftone dots fading diagonally on a transparent background, PNG, 2048x2048.
 ```
+
+---
+
+## Roast Me · Welcome screen illustration (for `public/_design/roast-welcome.html`)
+
+Save the result as `public/assets/roast-wendy.png`. It fills the red panel on the right and is cropped automatically.
+
+- **Size:** 2048 × 2048 px, PNG
+- **Background:** transparent. If the tool can't do transparency, use solid Wendy's red `#CD2028`.
+- **Colours:** Wendy's red `#CD2028` and white only
+
+```text
+Flat two-colour vector illustration of Wendy, the red-haired girl from the Wendy's logo, drawn only in Wendy's red (#CD2028) and white. No black outlines, no gradients, no shading, no other colours. Close-up of her face and shoulders in three-quarter view, looking slightly to the left with a confident, cheeky half-smile, big round eyes, a few freckles on her cheeks, and her signature pigtail tied with a bow sweeping out to the left. Bold retro screen-print poster style: big flat red shapes for her hair and collar, white negative space for her face. Her face sits in the right half of the frame; the top of her hair and the right side of her head are cropped off the edge. Transparent background, square PNG, 2048 x 2048 px. No text, no logo.
+```

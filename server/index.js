@@ -4,7 +4,7 @@ import fs from "node:fs";
 import QRCode from "qrcode";
 import { config } from "./config.js";
 import { db, getSetting, setSetting } from "./db.js";
-import { shortCode, token, normalisePhone, wendysAccuracy, loudnessScore, clamp, csvEscape } from "./util.js";
+import { shortCode, token, normalisePhone, judgeScream, clamp, csvEscape } from "./util.js";
 import { sendSms, templates } from "./sms.js";
 import { generateRoast } from "./roast.js";
 
@@ -204,17 +204,14 @@ app.post("/api/kiosk/lookup", requirePin("kiosk"), (req, res) => {
 });
 
 app.post("/api/kiosk/scream", requirePin("kiosk"), async (req, res) => {
-  const { code, peakDb, transcript, accuracyOverride, station } = req.body || {};
+  const { code, peakDb, sustainedDb, transcript, accuracyOverride, station } = req.body || {};
   const p = participantByCode.get(String(code || "").toUpperCase());
   if (!p) return res.status(404).json({ error: "code not found" });
   const s = screamSettings();
   const used = screamsFor.all(p.id);
   if (used.length >= s.attemptsPerPerson) return res.status(409).json({ error: "No attempts left for this guest", attempts: used.length });
 
-  const loud = loudnessScore(Number(peakDb), s.dbFloor, s.dbCeil);
-  const acc = accuracyOverride !== undefined && accuracyOverride !== null ? clamp(Number(accuracyOverride), 0, 100) : wendysAccuracy(transcript);
-  const score = Math.round(loud * s.loudWeight + acc * s.accWeight);
-  const won = score >= s.threshold;
+  const { loud, acc, score, won, reason } = judgeScream({ peakDb, sustainedDb, transcript, accuracyOverride }, s);
 
   let coupon = null;
   if (won) {
@@ -232,7 +229,7 @@ app.post("/api/kiosk/scream", requirePin("kiosk"), async (req, res) => {
   else sendSms(p.phone, t.lose(first, profileUrl(p)));
 
   res.json({
-    attemptId: info.lastInsertRowid, name: first, score, loudness: loud, accuracy: acc, threshold: s.threshold, won,
+    attemptId: info.lastInsertRowid, name: first, score, loudness: loud, accuracy: acc, threshold: s.threshold, minLoud: s.minLoud, minAcc: s.minAcc, reason, won,
     coupon: coupon ? { code: coupon.code, label } : null, couponPoolEmpty: won && !coupon,
     profileUrl: profileUrl(p), attemptsLeft: Math.max(0, s.attemptsPerPerson - used.length - 1),
   });

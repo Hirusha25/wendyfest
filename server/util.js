@@ -37,30 +37,57 @@ export function similarity(a, b) {
   return 1 - dp[m][n] / Math.max(m, n);
 }
 
-// How closely a speech-recognition transcript matches "Wendy's".
-// Recognisers hear screams as all sorts of things, so we score against a bank of
-// phonetic neighbours and take the best match of any word/bigram in the transcript.
-const TARGETS = ["wendys", "wendy", "wendies", "windies", "wendis", "vendis", "vendys", "whendies", "wendee", "wendeez", "wendies", "when these", "when days", "windys", "wendy's"];
-export function wendysAccuracy(transcript) {
-  if (!transcript) return 0;
-  const clean = transcript.toLowerCase().replace(/[^a-z\s']/g, " ").replace(/\s+/g, " ").trim();
-  if (!clean) return 0;
+// ---------- Scream judging (strict) ----------
+// The guest must say "WENDY'S" — with the S. "Wendy" alone, "windy", or other words don't pass.
+// Speech recognisers spell the same sound differently, so each group lists the spellings we accept.
+const WITH_S = ["wendys", "wendies"];                                                              // the real word
+const WITH_S_NEAR = ["wendis", "wendees", "wendeez", "wendyz", "windies", "windys", "vendys", "vendis", "whendies", "wendes", "when these", "wen these", "wendy is", "wendy s"];
+const NO_S = ["wendy", "wendi", "wendee", "windy", "vendy", "when the", "wendie"];
+const tokenise = (t) => (t || "").toLowerCase().replace(/[^a-z\s']/g, " ").replace(/'/g, "").replace(/\s+/g, " ").trim();
+const bestSim = (c, list) => list.reduce((m, t) => Math.max(m, similarity(c, t)), 0);
+
+// Looks only at the FIRST thing that sounds like the target word: one shot, no repeating until it lands.
+export function wendysCheck(transcript) {
+  const clean = tokenise(transcript);
+  if (!clean) return { accuracy: 0, reason: "unclear", heard: "" };
   const words = clean.split(" ");
-  const candidates = [...words];
-  for (let i = 0; i < words.length - 1; i++) candidates.push(words[i] + " " + words[i + 1], words[i] + words[i + 1]);
-  candidates.push(clean, clean.replace(/\s/g, ""));
-  let best = 0;
-  for (const c of candidates) for (const t of TARGETS) {
-    const s = similarity(c.replace(/'/g, ""), t.replace(/'/g, ""));
-    if (s > best) best = s;
+  const cands = [];
+  for (let i = 0; i < words.length; i++) { if (i < words.length - 1) cands.push(words[i] + " " + words[i + 1]); cands.push(words[i]); }   // two-word form first, so "wendy is" counts as Wendy's
+  let overall = 0;
+  for (const c of cands) {
+    const exact = bestSim(c, WITH_S), near = bestSim(c, WITH_S_NEAR), noS = bestSim(c, NO_S);
+    overall = Math.max(overall, exact, near, noS);
+    if (Math.max(exact, near, noS) < 0.75) continue;                           // not an attempt at the word yet
+    let accuracy, reason;
+    if (exact === 1) { accuracy = 100; reason = "ok"; }
+    else if (noS >= Math.max(exact, near)) { accuracy = Math.round(20 + 20 * noS); reason = "no_s"; }  // said Wendy, missed the S: max 40
+    else { accuracy = Math.round(60 + 30 * ((Math.max(exact, near) - 0.75) / 0.25)); reason = "ok"; }  // close spelling of Wendy's: 60–90
+    if (words.length > 4) accuracy = Math.max(0, accuracy - 10);              // lots of extra words: small penalty
+    return { accuracy, reason, heard: c };
   }
-  // Soften the curve: 0.6 similarity (e.g. "windy") still gets partial credit.
-  return clamp(Math.round(((best - 0.35) / 0.65) * 100), 0, 100);
+  return { accuracy: Math.round(overall * 25), reason: "unclear", heard: "" };  // never got near the word: max 25
 }
+export const wendysAccuracy = (transcript) => wendysCheck(transcript).accuracy;
 
 export function loudnessScore(peakDb, floor, ceil) {
   if (peakDb === null || peakDb === undefined || Number.isNaN(peakDb)) return 0;
   return clamp(Math.round(((peakDb - floor) / (ceil - floor)) * 100), 0, 100);
+}
+
+// Full verdict. Loudness uses the loudest SUSTAINED half-second (a single clap or tap can't max it).
+// To win, all three must pass: overall score ≥ threshold, loudness ≥ minLoud, clarity ≥ minAcc.
+export function judgeScream({ peakDb, sustainedDb, transcript, accuracyOverride }, s) {
+  const db = sustainedDb !== undefined && sustainedDb !== null && !Number.isNaN(Number(sustainedDb)) ? Number(sustainedDb) : Number(peakDb);
+  const loud = loudnessScore(db, s.dbFloor, s.dbCeil);
+  const check = accuracyOverride !== undefined && accuracyOverride !== null
+    ? { accuracy: clamp(Number(accuracyOverride), 0, 100), reason: Number(accuracyOverride) >= (s.minAcc ?? 70) ? "ok" : Number(accuracyOverride) >= 30 ? "no_s" : "unclear", heard: "" }
+    : wendysCheck(transcript);
+  const acc = check.accuracy;
+  const score = Math.round(loud * s.loudWeight + acc * s.accWeight);
+  const okLoud = loud >= (s.minLoud ?? 60), okAcc = acc >= (s.minAcc ?? 70);
+  const won = score >= s.threshold && okLoud && okAcc;
+  const reason = won ? "win" : check.reason === "no_s" ? "no_s" : !okAcc ? "unclear" : !okLoud ? "quiet" : "close";
+  return { loud, acc, score, won, reason, heard: check.heard };
 }
 
 export function csvEscape(v) {

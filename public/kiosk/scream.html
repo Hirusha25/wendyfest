@@ -224,7 +224,7 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
   <section class="screen" id="s-judge"><div style="display:grid;gap:3vmin;justify-items:center">
     <div class="eyebrow">Host call · speech recognition unavailable</div>
     <div class="display h2">Did they say “Wendy’s”?</div>
-    <div class="judge"><button class="btn" onclick="submitScream(100)">Crystal clear</button><button class="btn ink" onclick="submitScream(60)">Close enough</button><button class="btn ghost" onclick="submitScream(15)">Nope</button></div>
+    <div class="judge"><button class="btn" onclick="submitScream(100)">Said “Wendy’s”</button><button class="btn ink" onclick="submitScream(40)">Said “Wendy” (no S)</button><button class="btn ghost" onclick="submitScream(10)">Didn’t say it</button></div>
   </div></section>
 
   <!-- RESULT -->
@@ -260,6 +260,7 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
   const $ = (id) => document.getElementById(id);
   let CFG = { scream: { threshold: 70, durationMs: 3000, dbFloor: -42, dbCeil: -6, loudWeight: .6, accWeight: .4 } };
   let guest = null, audio = null, analyser = null, buf = null, fbuf = null, stream = null, rafId = null;
+  let SUS = [], susDb = -100;
   let peakDb = -100, transcript = "", recog = null, windowOpen = false, smooth = -100, gaugeShown = 0, mode = "idle";
   $("corner-l").textContent = "Station " + K.station;
   fetch("/api/config").then((r) => r.json()).then((c) => { CFG = c; $("thr").textContent = c.scream.threshold; $("thr-info").textContent = `Win at ${c.scream.threshold} · loud ${Math.round(c.scream.loudWeight * 100)}% / clarity ${Math.round(c.scream.accWeight * 100)}% · dB ${c.scream.dbFloor}→${c.scream.dbCeil}`; });
@@ -367,10 +368,11 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
     if (mode === "count") drawRing($("ring-count"), countPct, { ticks: 72, color: "#FF3B45" });
     if (mode === "scream") {
       if (windowOpen && db > peakDb) peakDb = db;
+      if (windowOpen) { SUS.push(Math.pow(10, db / 10)); if (SUS.length > 30) SUS.shift(); if (SUS.length >= 10) susDb = Math.max(susDb, 10 * Math.log10(SUS.reduce((a, b) => a + b, 0) / SUS.length)); }
       gaugeShown += (pct - gaugeShown) * .25;
       drawWave($("wave-l"), true); drawWave($("wave-r"), false);
       drawRing($("ring-gauge"), gaugeShown, { ticks: 72, color: "#FF3B45", marker: CFG.scream.threshold });
-      $("gauge-num").textContent = Math.round(dbToPct(peakDb));
+      $("gauge-num").textContent = Math.round(dbToPct(susDb));
     }
   }
   requestAnimationFrame(loop);
@@ -419,7 +421,7 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
       const t0 = performance.now(); while (performance.now() - t0 < 1000) { countPct = ((4 - n) - 1 + (performance.now() - t0) / 1000) / 3 * 100; await wait(16); }
     }
     $("go-count").style.display = "none"; $("go-meter").style.display = "grid";
-    peakDb = -100; gaugeShown = 0; windowOpen = true; mode = "scream";
+    peakDb = -100; SUS = []; susDb = -100; gaugeShown = 0; windowOpen = true; mode = "scream";
     const dur = CFG.scream.durationMs || 3000, t0 = performance.now();
     while (performance.now() - t0 < dur) { const left = dur - (performance.now() - t0); $("tleft").textContent = (left / 1000).toFixed(1); $("tbar").style.transform = `scaleX(${left / dur})`; await wait(50); }
     $("tleft").textContent = "0.0"; $("tbar").style.transform = "scaleX(0)"; windowOpen = false;
@@ -428,7 +430,7 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
     submitScream(null);
   };
   async function submitScream(accuracyOverride) {
-    try { const r = await K.api("/api/kiosk/scream", { code: guest.code, peakDb, transcript, accuracyOverride }); showResult(r); }
+    try { const r = await K.api("/api/kiosk/scream", { code: guest.code, peakDb, sustainedDb: susDb, transcript, accuracyOverride }); showResult(r); }
     catch (e) { alert("Could not submit: " + e.message); goIdle(); }
   }
   function confetti(n = 90) {
@@ -448,7 +450,7 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
       $("qr-label").innerHTML = "Save your<br>reward";
       $("flash").classList.remove("go"); void $("flash").offsetWidth; $("flash").classList.add("go"); confetti();
     } else {
-      $("res-title").textContent = r.loudness < r.accuracy ? "Louder next time." : "We heard… something.";
+      $("res-title").textContent = { no_s: "Don’t forget the S!", quiet: "Louder next time.", close: "So close!" }[r.reason] || (r.loudness < r.accuracy ? "Louder next time." : "We heard… something.");
       $("res-detail").textContent = (r.accuracy < 40 ? "The meter heard you. It just didn’t hear “Wendy’s”. " : "Close one. Colombo traffic is louder. ") + `Loud ${r.loudness} · Clarity ${r.accuracy} · Win line ${r.threshold}.`;
       $("qr-label").innerHTML = "Scan for<br>your pass";
     }

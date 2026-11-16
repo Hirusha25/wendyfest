@@ -38,7 +38,7 @@ const now = () => new Date().toISOString().slice(0, 19).replace("T", " ");
 if (!DB.participants.some((p) => p.code === "WENDYS")) { DB.participants.unshift({ id: 1000, code: "WENDYS", token: "demo-guest-token", name: "Demo Guest", phone: "94770000000", email: null, dob: null, lang: "en", created_at: now() }); save(); }
 const cookie = (n) => (document.cookie.match(new RegExp("(?:^|; )" + n + "=([^;]*)")) || [])[1];
 const setCookie = (n, v) => (document.cookie = n + "=" + v + "; path=/; max-age=31536000; SameSite=Lax");
-const scream = () => Object.assign({ threshold: 70, loudWeight: .6, accWeight: .4, dbFloor: -42, dbCeil: -6, attemptsPerPerson: 99, durationMs: 3000 }, DB.settings.scream || {});
+const scream = () => Object.assign({ threshold: 75, minLoud: 60, minAcc: 70, loudWeight: .6, accWeight: .4, dbFloor: -42, dbCeil: -6, attemptsPerPerson: 99, durationMs: 5000 }, DB.settings.scream || {});
 const coupon = () => Object.assign({ valueLabel: "10% OFF your next Wendy's order", terms: "Valid at Wendy's Sri Lanka outlets during the launch period. One use per code." }, DB.settings.coupon || {});
 const roastS = () => Object.assign({ attemptsPerPerson: 99 }, DB.settings.roast || {});
 const profileUrl = (p) => BASE + "/profile.html?t=" + p.token;
@@ -95,14 +95,12 @@ async function route(method, url, body) {
     if (p.endsWith("lookup")) return json({ name: pt.name, firstName: first(pt), lang: pt.lang, code: pt.code, screamsUsed: used.length, screamsLeft: Math.max(0, scream().attemptsPerPerson - used.length), roastsUsed: roasts.length, roastsLeft: Math.max(0, roastS().attemptsPerPerson - roasts.length), alreadyWon: used.some((s) => s.won), profileUrl: profileUrl(pt) });
     if (p.endsWith("scream")) {
       const s = scream(); if (used.length >= s.attemptsPerPerson) return json({ error: "No attempts left for this guest" }, 409);
-      const loud = loudnessScore(Number(body.peakDb), s.dbFloor, s.dbCeil);
-      const acc = body.accuracyOverride != null ? clamp(Number(body.accuracyOverride), 0, 100) : wendysAccuracy(body.transcript);
-      const score = Math.round(loud * s.loudWeight + acc * s.accWeight), won = score >= s.threshold;
+      const { loud, acc, score, won, reason } = judgeScream(body, s);
       let c = null; if (won) { c = DB.coupons.find((x) => !x.claimed_by); if (c) c.claimed_by = pt.id; }
       DB.screams.push({ id: DB.screams.length + 1, participant_id: pt.id, peakDb: Number(body.peakDb) || null, loudness: loud, accuracy: acc, score, transcript: body.transcript || null, won: won ? 1 : 0, coupon_code: c ? c.code : null, at: now() }); save();
       const label = coupon().valueLabel, t = templates(pt.lang);
       if (won && c) sendSms(pt.phone, t.win(first(pt), c.code, label, profileUrl(pt))); else sendSms(pt.phone, t.lose(first(pt), profileUrl(pt)));
-      return json({ name: first(pt), score, loudness: loud, accuracy: acc, threshold: s.threshold, won, coupon: c ? { code: c.code, label } : null, couponPoolEmpty: won && !c, profileUrl: profileUrl(pt), attemptsLeft: Math.max(0, s.attemptsPerPerson - used.length - 1) });
+      return json({ name: first(pt), score, loudness: loud, accuracy: acc, threshold: s.threshold, minLoud: s.minLoud, minAcc: s.minAcc, reason, won, coupon: c ? { code: c.code, label } : null, couponPoolEmpty: won && !c, profileUrl: profileUrl(pt), attemptsLeft: Math.max(0, s.attemptsPerPerson - used.length - 1) });
     }
     if (p.endsWith("roast")) {
       if (!body.consent) return json({ error: "consent required" }, 400);

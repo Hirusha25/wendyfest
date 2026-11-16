@@ -35,9 +35,11 @@ Open `http://localhost:3000`. Default PINs: kiosk `2468`, admin `1357` (change i
 
 ## Scoring details (Scream & Win)
 
-- Loudness: peak RMS dBFS during the window, mapped `dbFloor → 0`, `dbCeil → 100` (defaults −42/−6). **Calibrate on site** in `/admin`; every mic/interface is different.
-- Clarity: Chrome's Web Speech API transcript vs a phonetic bank ("wendys", "when these", "windies", …). Needs Chrome and internet. If unavailable, or if you set "Host judges" in the kiosk gear menu, the host picks Clear / Close / Nope after each scream.
-- Weights, threshold, window length and attempts-per-guest are live-editable in `/admin`.
+- **Loudness** is the loudest *sustained half-second* (mean power over ~30 frames), not a single peak, so a clap or tap can't max it. Mapped `dbFloor → 0`, `dbCeil → 100` (defaults −42/−6). **Calibrate on site** in `/admin`; every mic/interface is different.
+- **Clarity** must be "WENDY'S" **with the S**. Chrome's Web Speech API transcript is checked against accepted spellings ("wendys", "wendies", "when these", "wendy is", …). Only the guest's **first attempt** at the word counts. "Wendy" without the S scores at most 40; a word that never gets near it scores at most 25. If speech recognition is unavailable, or "Host judges" is set in kiosk settings, the host picks *Said "Wendy's"* / *Said "Wendy" (no S)* / *Didn't say it*.
+- **To win, all three must pass:** overall score ≥ `threshold` (default 75), loudness ≥ `minLoud` (60) and clarity ≥ `minAcc` (70). Score = loudness × 0.6 + clarity × 0.4.
+- **Window:** 5 seconds (`durationMs`). The round ends early about a second after the first attempt at the word is heard, and the Live screen shows "Heard it!" or "Missed the S!" straight away.
+- All of these are live-editable in `/admin`. The result screen tells the guest why they missed: no S, too quiet, unclear, or close.
 
 ## Roast Me engine
 

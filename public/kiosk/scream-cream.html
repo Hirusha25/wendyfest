@@ -348,12 +348,15 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
 .heard.got small::after { content:""; width:calc(26 * var(--u)); height:calc(26 * var(--u)); border-radius:50%; background:#CD2028 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/70% no-repeat; }
 
 /* Wendy cameo speaks the listening status */
-#listen-wendy { left:calc(70 * var(--u)); top:calc(96 * var(--u)); width:calc(86 * var(--u)); filter:drop-shadow(0 calc(8 * var(--u)) calc(12 * var(--u)) rgba(0,40,70,.4)); transform-origin:50% 100%; }
+#listen-wendy { left:calc(64 * var(--u)); top:calc(104 * var(--u)); width:calc(100 * var(--u)); filter:drop-shadow(0 calc(8 * var(--u)) calc(12 * var(--u)) rgba(0,40,70,.4)); transform-origin:50% 100%; }
 #listen-wendy.got { animation:wHop .6s cubic-bezier(.3,1.6,.5,1) 2; }
 @keyframes wHop { 0%,100% { transform:translateY(0) rotate(0); } 40% { transform:translateY(calc(-16 * var(--u))) rotate(-8deg); } 70% { transform:translateY(0) rotate(4deg); } }
 #go-meter .pillx#listen-pill { left:calc(176 * var(--u)) !important; border-radius:calc(20 * var(--u)) !important; overflow:visible; }
 #listen-pill::before { content:""; position:absolute; left:calc(-14 * var(--u)); top:50%; translate:0 -50%; border-top:calc(11 * var(--u)) solid transparent; border-bottom:calc(11 * var(--u)) solid transparent; border-right:calc(16 * var(--u)) solid #F6F0E6; }
 #listen-pill.got::before { border-right-color:#fff; }
+
+#listen-pill.miss { background:#FFE3E5 !important; } #listen-pill.miss::before { border-right-color:#FFE3E5; } #listen-pill.miss .dot { background:#CD2028; animation:none; }
+.heard.miss small::after { content:"!"; width:calc(26 * var(--u)); height:calc(26 * var(--u)); border-radius:50%; background:#FFC72C; color:#1F1A1A; display:grid; place-items:center; font:900 calc(17 * var(--u))/1 Poppins; }
 </style>
 </head>
 <body>
@@ -427,7 +430,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   <section class="screen" id="s-judge"><div style="display:grid;gap:3vmin;justify-items:center">
     <div class="eyebrow">Host call · speech recognition unavailable</div>
     <div class="display h2">Did they say “Wendy’s”?</div>
-    <div class="judge"><button class="btn" onclick="submitScream(100)">Crystal clear</button><button class="btn ink" onclick="submitScream(60)">Close enough</button><button class="btn ghost" onclick="submitScream(15)">Nope</button></div>
+    <div class="judge"><button class="btn" onclick="submitScream(100)">Said “Wendy’s”</button><button class="btn ink" onclick="submitScream(40)">Said “Wendy” (no S)</button><button class="btn ghost" onclick="submitScream(10)">Didn’t say it</button></div>
   </div></section>
 
   <!-- RESULT -->
@@ -462,6 +465,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   const $ = (id) => document.getElementById(id);
   let CFG = { scream: { threshold: 70, durationMs: 3000, dbFloor: -42, dbCeil: -6, loudWeight: .6, accWeight: .4 } };
   let guest = null, audio = null, analyser = null, buf = null, fbuf = null, stream = null, rafId = null;
+  let SUS = [], susDb = -100;
   let peakDb = -100, transcript = "", recog = null, windowOpen = false, smooth = -100, gaugeShown = 0, mode = "idle";
   $("corner-l").textContent = "Station " + K.station;
   $("qr-reg").src = `/api/qr?text=${encodeURIComponent(location.origin + "/register")}`;
@@ -744,23 +748,30 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     if (mode === "count") drawCountRing($("ring-count"), countPct);
     if (mode === "scream") {
       if (windowOpen && db > peakDb) peakDb = db;
+      if (windowOpen) { SUS.push(Math.pow(10, db / 10)); if (SUS.length > 30) SUS.shift(); if (SUS.length >= 10) susDb = Math.max(susDb, 10 * Math.log10(SUS.reduce((a, b) => a + b, 0) / SUS.length)); }
       gaugeShown += (pct - gaugeShown) * .25;
       drawLiveA($("live-cv"), gaugeShown / 100, t); $("pop-w").style.setProperty("--lv", Math.min(1, gaugeShown / 100).toFixed(2));
-      $("gauge-num").textContent = Math.round(dbToPct(peakDb));
+      $("gauge-num").textContent = Math.round(dbToPct(susDb));
     }
   }
   requestAnimationFrame(loop);
 
   // ---------- speech ----------
   let heardAt = 0;
-  const WENDY_RE = /\b(w|v)h?[aei]nd(y|ie|i|ee|is|ys|eez|ies|y's)\b|\bwhen ?(these|days)\b/i;
+  const WITH_S_RE = /\b(w|v)h?[aei]nd(ys|ies|is|ees|eez|yz|es)\b|\bwhen ?these\b|\bwendy is\b/i;
+  const NO_S_RE = /\b(w|v)h?[aei]nd(y|i|ee|ie)\b/i;
   function showHeard() {
+    const clean = transcript.toLowerCase().replace(/'/g, "");
     const words = transcript.split(/\s+/).slice(-6).join(" ");
     $("heard-v").textContent = words ? "“" + words.charAt(0).toUpperCase() + words.slice(1) + "”" : "…";
-    if (!heardAt && WENDY_RE.test(transcript)) { heardAt = performance.now(); $("heard").classList.add("got"); $("listen-pill").classList.add("got"); $("listen-wendy").classList.add("got"); $("listen-l").textContent = "Heard it!"; }
+    if (heardAt) return;
+    const w = clean.search(WITH_S_RE), n = clean.search(NO_S_RE);
+    const firstIsS = w >= 0 && (n < 0 || w <= n);                   // only the first attempt at the word counts
+    if (firstIsS) { heardAt = performance.now(); $("heard").classList.add("got"); $("listen-pill").classList.add("got"); $("listen-wendy").classList.add("got"); $("listen-l").textContent = "Heard it!"; }
+    else if (n >= 0) { heardAt = performance.now(); $("heard").classList.add("miss"); $("listen-pill").classList.add("miss"); $("listen-l").textContent = "Missed the S!"; }
   }
   function startRecog() {
-    transcript = ""; $("trans").textContent = "…"; heardAt = 0; $("heard").classList.remove("got"); $("listen-pill").classList.remove("got"); $("listen-wendy").classList.remove("got"); $("listen-l").textContent = "Listening…"; $("heard-v").textContent = (window.SpeechRecognition || window.webkitSpeechRecognition) && $("judge-mode").value !== "host" ? "…" : "Host will judge";
+    transcript = ""; $("trans").textContent = "…"; heardAt = 0; $("heard").classList.remove("got", "miss"); $("listen-pill").classList.remove("got", "miss"); $("listen-wendy").classList.remove("got"); $("listen-l").textContent = "Listening…"; $("heard-v").textContent = (window.SpeechRecognition || window.webkitSpeechRecognition) && $("judge-mode").value !== "host" ? "…" : "Host will judge";
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition; if (!SR || $("judge-mode").value === "host") return;
     try { recog = new SR(); recog.lang = "en-US"; recog.interimResults = true; recog.continuous = true; recog.maxAlternatives = 3;
       recog.onresult = (e) => { let s = ""; for (let i = 0; i < e.results.length; i++) for (let j = 0; j < e.results[i].length; j++) s += " " + e.results[i][j].transcript; transcript = s.trim(); $("trans").textContent = "We heard: " + (transcript || "…"); showHeard(); };
@@ -821,8 +832,8 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     }
     $("go-count").style.display = "none"; $("go-meter").style.display = "block"; setStep("5", "Live"); fitText(); enter($("go-meter"));
     SFX.go(); await wait(320);
-    peakDb = -100; gaugeShown = 0; windowOpen = true; mode = "scream";
-    const dur = 10000, t0 = performance.now();   // Studio Cream gives guests up to 10 s; it ends early once a clear "Wendy's" is heard
+    peakDb = -100; SUS = []; susDb = -100; gaugeShown = 0; windowOpen = true; mode = "scream";
+    const dur = CFG.scream.durationMs || 5000, t0 = performance.now();   // one short window; ends early once their first attempt at the word is heard
     while (performance.now() - t0 < dur) {
       if (heardAt && performance.now() - heardAt > 1300 && performance.now() - t0 > 1500) break; const left = dur - (performance.now() - t0); $("tleft").textContent = (left / 1000).toFixed(1); $("tbar").style.transform = `scaleX(${left / dur})`; await wait(50); }
     $("tleft").textContent = "0.0"; $("tbar").style.transform = "scaleX(0)"; windowOpen = false;
@@ -831,7 +842,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     submitScream(null);
   };
   async function submitScream(accuracyOverride) {
-    try { const r = await K.api("/api/kiosk/scream", { code: guest.code, peakDb, transcript, accuracyOverride }); showResult(r); }
+    try { const r = await K.api("/api/kiosk/scream", { code: guest.code, peakDb, sustainedDb: susDb, transcript, accuracyOverride }); showResult(r); }
     catch (e) { alert("Could not submit: " + e.message); goIdle(); }
   }
   function confetti(n = 90) {
@@ -844,8 +855,8 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   [[35,85,"#CD2028",30],[60,110,"#CD2028",-20],[78,158,"#CD2028",50],[160,165,"#CD2028",-35],[380,80,"#CD2028",40],[405,84,"#FFFFFF",20],[428,60,"#CD2028",-25],[488,68,"#CD2028",10],[530,73,"#FFFFFF",35],[580,82,"#CD2028",-30],[610,75,"#CD2028",60],[606,112,"#FFFFFF",-15],[285,165,"#FFFFFF",25],[763,65,"#FFFFFF",0],[790,78,"#CD2028",15],[787,140,"#CD2028",-50]]
     .forEach(([x, y, col, rot]) => { const i = document.createElement("i"); i.style.cssText = `left:calc(${((x - 18) * 1.827).toFixed(0)} * var(--u));top:calc(${((y - 51) * 1.827).toFixed(0)} * var(--u));background:${col};transform:rotate(${rot}deg)`; $("res-conf").appendChild(i); });
   function renderDetail(quip, r) {
-    const row = (k, v) => `<div class="st${v < 40 ? " low" : ""}"><small>${k}</small><i><em style="width:0%" data-w="${v}"></em></i><b>${v}</b></div>`;
-    $("res-detail").innerHTML = `<div class="quip">${quip}</div><div class="stats">${row("Loudness", r.loudness)}${row("Clarity", r.accuracy)}<div class="wl"><span>Win line <b>${r.threshold}</b></span><span>You scored <b>${r.score}</b></span></div></div>`;
+    const row = (k, v, min) => `<div class="st${v < min ? " low" : ""}"><small>${k}</small><i><em style="width:0%" data-w="${v}"></em></i><b>${v}</b></div>`;
+    $("res-detail").innerHTML = `<div class="quip">${quip}</div><div class="stats">${row("Loudness", r.loudness, r.minLoud || 60)}${row("Clarity", r.accuracy, r.minAcc || 70)}<div class="wl"><span>To win: <b>${r.threshold}+</b> overall · loud <b>${r.minLoud || 60}+</b> · clear <b>${r.minAcc || 70}+</b></span></div></div>`;
     setTimeout(() => $("res-detail").querySelectorAll("em").forEach((e) => { e.style.width = e.dataset.w + "%"; }), 350);
   }
   function showResult(r) {
@@ -861,8 +872,8 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
       $("qr-label").innerHTML = "Save your<br>reward";
       $("flash").classList.remove("go"); void $("flash").offsetWidth; $("flash").classList.add("go"); confetti(); SFX.win();
     } else {
-      $("res-title").textContent = r.loudness < r.accuracy ? "Louder next time." : "We heard… something.";
-      renderDetail(r.loudness < 40 ? "Louder! Colombo traffic is louder than that." : r.accuracy < 40 ? "The meter heard you. It just didn’t hear “Wendy’s”." : "So close. One more “Wendy’s” and it’s yours.", r);
+      $("res-title").textContent = { no_s: "Don’t forget the S!", quiet: "Louder next time.", close: "So close!" }[r.reason] || (r.loudness < r.accuracy ? "Louder next time." : "We heard… something.");
+      renderDetail({ no_s: "So close. It’s WENDY’S, with the S.", quiet: "Clear as day. Now say it LOUDER!", unclear: "The meter heard you. It just didn’t hear a clear “Wendy’s”.", close: "So close. Just a little more of both." }[r.reason] || (r.loudness < 40 ? "Louder! Colombo traffic is louder than that." : "The meter heard you. It just didn’t hear “Wendy’s”."), r);
       $("qr-label").innerHTML = "Scan for<br>your pass"; SFX.lose();
     }
     $("qr-profile").src = `/api/qr?text=${encodeURIComponent(r.profileUrl)}`;

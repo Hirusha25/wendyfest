@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
-<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwjimzmj" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwjipwqo" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Roast Me · Wendy Fest</title><link rel="icon" href="../assets/cameo.png">
-<link rel="stylesheet" href="../css/brand.css?v=mwjimzmj"><link rel="stylesheet" href="../css/kiosk.css?v=mwjimzmj">
+<link rel="stylesheet" href="../css/brand.css?v=mwjipwqo"><link rel="stylesheet" href="../css/kiosk.css?v=mwjipwqo">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@600;700&family=Barlow+Semi+Condensed:ital,wght@1,900&display=swap" rel="stylesheet">
 <style>
   body.kiosk { background: var(--ink); }
@@ -188,8 +188,6 @@
   /* camera: steeper diagonal further right, so the camera gets the room */
   .chrome[data-scr="s-cam"] .panel { clip-path:polygon(calc(1250 * var(--p)) 0, calc(1920 * var(--p)) 0, calc(1920 * var(--p)) calc(1080 * var(--p)), calc(1150 * var(--p)) calc(1080 * var(--p))); }
   .chrome[data-scr="s-cam"] .band { clip-path:polygon(calc(1208 * var(--p)) 0, calc(1250 * var(--p)) 0, calc(1150 * var(--p)) calc(1080 * var(--p)), calc(1108 * var(--p)) calc(1080 * var(--p))); }
-  .chrome[data-scr="s-cooking"] .panel { clip-path:polygon(calc(1550 * var(--p)) 0, calc(1920 * var(--p)) 0, calc(1920 * var(--p)) calc(1080 * var(--p)), calc(1330 * var(--p)) calc(1080 * var(--p))); }
-  .chrome[data-scr="s-cooking"] .band { clip-path:polygon(calc(1508 * var(--p)) 0, calc(1550 * var(--p)) 0, calc(1330 * var(--p)) calc(1080 * var(--p)), calc(1288 * var(--p)) calc(1080 * var(--p))); }
   .cv .ubar { display:block; width:calc(200 * var(--p)); height:calc(12 * var(--p)); background:#029CD4; }
   .cv .wpan { inset:0; background:#fff; clip-path:polygon(calc(1290 * var(--p)) calc(167 * var(--p)), calc(1920 * var(--p)) calc(167 * var(--p)), calc(1920 * var(--p)) calc(1021 * var(--p)), calc(1170 * var(--p)) calc(1021 * var(--p))); }
   .cv .rcor { inset:0; background:linear-gradient(170deg, #D92530, #B81C24); clip-path:polygon(calc(1920 * var(--p)) calc(790 * var(--p)), calc(1920 * var(--p)) calc(1021 * var(--p)), calc(1450 * var(--p)) calc(1021 * var(--p))); }
@@ -263,6 +261,21 @@
   #s-cam .heat button.on::after { width:calc(48 * var(--p)); height:calc(48 * var(--p)); background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23CD2028' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E"); }
   .cv .snapb { width:calc(557 * var(--p)); height:calc(116 * var(--p)); display:flex; align-items:center; justify-content:center; gap:calc(20 * var(--p)); padding:0; border-radius:calc(12 * var(--p)); border:calc(4 * var(--p)) solid #fff; box-sizing:border-box; color:#fff; cursor:pointer; background:linear-gradient(180deg, #2BB6EA 0%, #0186B8 100%); box-shadow:0 calc(8 * var(--p)) 0 #01476A, 0 calc(20 * var(--p)) calc(36 * var(--p)) rgba(0,0,0,.4), inset 0 calc(2 * var(--p)) 0 rgba(255,255,255,.3); font:italic 900 calc(42 * var(--p))/1 Poppins, sans-serif; text-transform:uppercase; letter-spacing:-.01em; text-shadow:0 calc(3 * var(--p)) 0 rgba(1,71,106,.6); white-space:nowrap; animation:yp 1.8s ease-in-out infinite; transition:transform .06s; z-index:4; }
   .cv .snapb svg { width:calc(56 * var(--p)); height:calc(56 * var(--p)); flex:none; } .cv .snapb:active { transform:translateY(calc(5 * var(--p))); } .cv .snapb:disabled { opacity:.6; animation:none; }
+  /* cooking, option C: Wendy's speech bubble, checklist, polaroid pinned over the stripe */
+  .cv .chk { display:grid; gap:calc(22 * var(--p)); } .cv .chk .st { display:flex; align-items:center; gap:calc(24 * var(--p)); }
+  .cv .chk .st i { width:calc(64 * var(--p)); height:calc(64 * var(--p)); border-radius:50%; background:#5A5252; box-sizing:border-box; flex:none; transition:all .3s; }
+  .cv .chk .st b { font:italic 800 calc(34 * var(--p))/1 Poppins, sans-serif; text-transform:uppercase; letter-spacing:-.01em; color:rgba(255,255,255,.55); transition:color .3s; }
+  .cv .chk .st.on b, .cv .chk .st.done b { color:#fff; }
+  .cv .chk .st.on i { background:#fff; border:calc(8 * var(--p)) solid #029CD4; box-shadow:0 0 0 calc(10 * var(--p)) rgba(2,156,212,.25); animation:stepP 1.2s ease-in-out infinite; }
+  .cv .chk .st.done i { background:#029CD4 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/56% no-repeat; }
+  .cv .cpol { width:calc(300 * var(--p)); background:#fff; padding:calc(18 * var(--p)) calc(18 * var(--p)) 0; border-radius:calc(6 * var(--p)); box-sizing:border-box; box-shadow:0 calc(22 * var(--p)) calc(50 * var(--p)) rgba(0,0,0,.5); rotate:6deg; z-index:6; }
+  .cv .cpol img { display:block; width:100%; aspect-ratio:4/3; object-fit:cover; background:#2A2626; }
+  .cv .cpol .cap { height:calc(60 * var(--p)); display:flex; align-items:center; justify-content:space-between; color:#1E1B1B; font:italic 900 calc(21 * var(--p))/1 Poppins, sans-serif; text-transform:uppercase; letter-spacing:-.01em; }
+  .cv .cpol .cap span { display:flex; gap:calc(2 * var(--p)); } .cv .cpol .cap svg { width:calc(24 * var(--p)); height:calc(24 * var(--p)); fill:#CD2028; }
+  .cv .wbub { width:calc(600 * var(--p)); min-height:calc(176 * var(--p)); background:#fff; color:#1E1B1B; border:calc(6 * var(--p)) solid #029CD4; border-radius:calc(28 * var(--p)); padding:calc(26 * var(--p)) calc(32 * var(--p)); box-sizing:border-box; box-shadow:0 calc(14 * var(--p)) calc(30 * var(--p)) rgba(0,0,0,.3); z-index:3; }
+  .cv .wbub small { display:block; margin-bottom:calc(8 * var(--p)); font:italic 800 calc(18 * var(--p))/1 Poppins, sans-serif; letter-spacing:.2em; text-transform:uppercase; color:#029CD4; }
+  .cv .wbub .cooking-line { position:static; color:#1E1B1B; font:italic 900 calc(40 * var(--p))/1.15 Poppins, sans-serif; }
+  .cv .wbub::after { content:""; position:absolute; right:calc(120 * var(--p)); bottom:calc(-21 * var(--p)); width:calc(30 * var(--p)); height:calc(30 * var(--p)); background:#fff; border-right:calc(6 * var(--p)) solid #029CD4; border-bottom:calc(6 * var(--p)) solid #029CD4; transform:rotate(45deg); }
   .stage:has(#s-idle.on) > .k-logo, .stage:has(#s-idle.on) > .k-cameo, .stage:has(#s-idle.on) > .k-foot { display:none; }
 </style>
 </head>
@@ -352,14 +365,14 @@
   </div></section>
 
   <section class="screen cv" id="s-cooking"><div class="s">
-    <div class="ckph" style="left:calc(120 * var(--p));top:calc(215 * var(--p))"><img id="ck-photo" alt=""></div>
-    <div class="t3" style="left:calc(675 * var(--p));top:calc(250 * var(--p));font-size:calc(100 * var(--p))"><span class="l1">Cooking</span><span class="l2">your roast…</span></div>
-    <i class="ubar" style="left:calc(688 * var(--p));top:calc(490 * var(--p))"></i>
-    <div class="cooking-line" id="cook-line" style="left:calc(688 * var(--p));top:calc(530 * var(--p));width:calc(640 * var(--p))">Checking the fit.</div>
-    <div class="steps3" id="steps3" style="left:calc(150 * var(--p));top:calc(730 * var(--p));width:calc(1000 * var(--p))">
-      <span class="trk"><em></em></span>
-      <div class="st"><i></i><b>Photo<br>captured</b></div><div class="st"><i></i><b>Adding<br>the sass</b></div><div class="st"><i></i><b>Plating<br>up</b></div>
+    <div class="art"><img src="../assets/roast-wendy.png" alt="" onerror="this.remove()"></div>
+    <div class="eb" style="left:calc(125 * var(--p));top:calc(230 * var(--p))">Hang tight</div>
+    <div class="t3" style="left:calc(112 * var(--p));top:calc(280 * var(--p));font-size:calc(104 * var(--p))"><span class="l1">Cooking</span><span class="l2">your roast…</span></div>
+    <div class="chk" id="steps3" style="left:calc(125 * var(--p));top:calc(560 * var(--p))">
+      <div class="st"><i></i><b>Photo captured</b></div><div class="st"><i></i><b>Adding the sass</b></div><div class="st"><i></i><b>Plating up</b></div>
     </div>
+    <div class="cpol" style="left:calc(600 * var(--p));top:calc(600 * var(--p))"><img id="ck-photo" alt=""><div class="cap"><b id="ck-heat">Medium</b><span id="ck-chili"></span></div></div>
+    <div class="wbub" style="left:calc(1130 * var(--p));top:calc(206 * var(--p))"><small>Wendy says</small><div class="cooking-line" id="cook-line">Checking the fit.</div></div>
   </div></section>
 
   <section class="screen cv" id="s-reveal"><div class="s">
@@ -394,7 +407,7 @@
   </aside>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwjimzmj"></script><script src="../js/i18n.js?v=mwjimzmj"></script><script src="../js/kiosk.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwjipwqo"></script><script src="../js/i18n.js?v=mwjipwqo"></script><script src="../js/kiosk.js"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let guest = null, stream = null, glang = "en", R = null, BASE = location.origin;
@@ -480,7 +493,7 @@
     $("count").classList.add("hidden");
     $("flash").classList.remove("go"); void $("flash").offsetWidth; $("flash").classList.add("go");
     const image = capture(); $("snap").disabled = false;
-    $("ck-photo").src = image; setCook(2); K.show("s-cooking"); cookLines();
+    $("ck-photo").src = image; paintHeatCap(); setCook(2); K.show("s-cooking"); cookLines();
     try {
       R = await K.api("/api/kiosk/roast", { code: guest.code, image, consent: true, heat });
       setCook(3); await wait(800); setCook(4); await wait(450);
@@ -505,6 +518,9 @@
     K.confetti(40); K.resetIdle(75000, goIdle);
   }
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+  // heat caption on the cooking polaroid
+  const HEATS = { mild: ["Mild", 1], medium: ["Medium", 2], extra: ["Extra spicy", 3] };
+  function paintHeatCap() { const [n, c] = HEATS[heat] || HEATS.medium; $("ck-heat").textContent = n; $("ck-chili").innerHTML = '<svg viewBox="0 0 24 24"><path d="M14 4c1-2 3-2 4-1-1 0-2 1-2 2 3 1 4 4 3 7-2 6-8 9-14 8 5-2 7-5 8-9 0-3 0-6 1-7z"/></svg>'.repeat(c); }
   // roast heat (sent to the AI with the photo)
   let heat = "medium";
   function setHeat(h) { heat = h; document.querySelectorAll("#heat button").forEach((b) => b.classList.toggle("on", b.dataset.h === h)); }

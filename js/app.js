@@ -97,30 +97,47 @@ window.renderProfileCard = async (p) => {
   return c;
 };
 
-// Roast card
+// Roast card: 1080x1920 "ROASTED." story poster (Roast Wall share template)
 window.renderRoastCard = async (r, lang) => {
   await fontsReady();
-  const c = document.createElement("canvas"); c.width = 1080; c.height = 1350; const ctx = c.getContext("2d");
-  ctx.fillStyle = C.cream; ctx.fillRect(0, 0, 1080, 1350);
-  ctx.save(); rr(ctx, 0, -60, 1080, 420, 60); ctx.clip(); redHeader(ctx, 1080, 360); ctx.restore();
-  try { const logo = await loadImg(location.href.replace(/[#?].*$/, "").replace(/\/(kiosk\/)?[^/]*$/, "") + "/assets/wendys-horiz-white.svg"); ctx.drawImage(logo, 70, 60, 240, 240 * (logo.height / logo.width)); } catch {}
-  ctx.fillStyle = "#fff"; ctx.font = "italic 800 28px Poppins, sans-serif"; ctx.fillText("ROASTED BY WENDY'S", 70, 190); ctx.fillRect(390, 180, 120, 4);
-  ctx.font = DISPLAY(96); ctx.fillText(String(r.name || "").split(" ")[0].toUpperCase(), 66, 290);
-  const PH = 470;
-  if (r.photo) { try { const img = await loadImg(r.photo); const s = 940 / img.width; const h = img.height * s; const ph = Math.min(h, PH); rr(ctx, 78, 318, 940, ph, 36); ctx.fillStyle = C.charcoal; ctx.fill(); ctx.save(); rr(ctx, 70, 310, 940, ph, 36); ctx.clip(); const sy = (img.height - (ph / s)) / 2; ctx.drawImage(img, 0, Math.max(0, sy), img.width, ph / s, 70, 310, 940, ph); ctx.restore(); ctx.strokeStyle = "#fff"; ctx.lineWidth = 8; rr(ctx, 70, 310, 940, ph, 36); ctx.stroke(); } catch {} }
-  const py = 820, ph2 = 440;
-  rr(ctx, 78, py + 8, 940, ph2, 40); ctx.fillStyle = C.charcoal; ctx.fill();
-  rr(ctx, 70, py, 940, ph2, 40); ctx.fillStyle = "#fff"; ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = C.charcoal; ctx.stroke();
-  ctx.save(); ctx.setLineDash([8, 8]); ctx.lineWidth = 3; ctx.strokeStyle = C.line; rr(ctx, 84, py + 14, 912, ph2 - 28, 30); ctx.stroke(); ctx.restore();
-  const isLatin = lang === "en";
-  ctx.fillStyle = C.blueDark; ctx.font = BODY(22, 800); ctx.fillText(String(r.vibe || "").toUpperCase(), 120, py + 60);
-  ctx.fillStyle = C.red; ctx.font = isLatin ? DISPLAY(54) : BODY(44, 800);
-  const title = (r.title && r.title[lang]) || r.title.en || "";
-  let y = py + 120; for (const l of wrap(ctx, isLatin ? title.toUpperCase() : title, 840).slice(0, 2)) { ctx.fillText(l, 120, y); y += isLatin ? 56 : 60; }
-  const body = (r.roast && r.roast[lang]) || r.roast.en || "";
-  let size = 30, lines;
-  for (;;) { ctx.font = BODY(size, 500); lines = wrap(ctx, body, 840); if (y + 16 + lines.length * size * 1.4 <= py + ph2 - 40 || size <= 20) break; size -= 2; }
-  y += 16; ctx.fillStyle = C.ink; for (const l of lines) { ctx.fillText(l, 120, y); y += size * 1.4; }
-  ctx.fillStyle = C.mute; ctx.font = BODY(22, 700); ctx.fillText("© 2026 WENDY'S SRI LANKA · WENDY FEST", 70, 1310);
+  const W = 1080, H = 1920, c = document.createElement("canvas"); c.width = W; c.height = H; const ctx = c.getContext("2d");
+  const poly = (pts, fill) => { ctx.beginPath(); pts.forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y))); ctx.closePath(); ctx.fillStyle = fill; ctx.fill(); };
+  const redG = () => { const g = ctx.createLinearGradient(0, 900, 300, 1920); g.addColorStop(0, "#D92530"); g.addColorStop(1, "#B81C24"); return g; };
+  ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, W, H);
+  poly([[0, 1120], [W, 860], [W, H], [0, H]], redG());
+  // top lockup: Wendy's logo | WENDY FEST slabs
+  try { const logo = await loadImg(location.href.replace(/[#?].*$/, "").replace(/\/(kiosk\/)?[^/]*$/, "") + "/assets/wendys-horiz.svg"); ctx.drawImage(logo, 70, 72, 300, 300 * (logo.height / logo.width)); } catch {}
+  ctx.fillStyle = "rgba(0,0,0,.18)"; ctx.fillRect(404, 70, 4, 88);
+  const slab = (txt, x, y, top, bot) => {
+    ctx.save(); ctx.translate(x, y); ctx.rotate(-5 * Math.PI / 180); ctx.transform(1, 0, -0.25, 1, 0, 0);
+    ctx.font = "italic 900 58px 'Barlow Semi Condensed', 'Barlow Condensed', Poppins, sans-serif"; const w = ctx.measureText(txt).width + 44;
+    ctx.fillStyle = bot; ctx.fillRect(0, 0, w, 82); ctx.fillStyle = top; ctx.fillRect(0, 0, w, 68);
+    ctx.fillStyle = "#fff"; ctx.textBaseline = "middle"; ctx.fillText(txt, 22, 36); ctx.restore(); return w;
+  };
+  const w1 = slab("WENDY", 446, 82, "#D8262F", "#951620"); slab("FEST", 446 + w1 - 30, 100, "#2BA9E1", "#01679A");
+  // ROASTED.
+  let rs = 250; ctx.font = DISPLAY(rs); while (ctx.measureText("ROASTED.").width > 960 && rs > 120) { rs -= 6; ctx.font = DISPLAY(rs); }
+  ctx.textAlign = "center"; ctx.fillStyle = "#7E1016"; ctx.fillText("ROASTED.", W / 2, 440 + 9); ctx.fillStyle = C.red; ctx.fillText("ROASTED.", W / 2, 440); ctx.textAlign = "left";
+  // photo, white frame, slight tilt
+  const PX = 110, PY = 510, PW = 860, PH = 720;
+  ctx.save(); ctx.translate(W / 2, PY + PH / 2); ctx.rotate(-2 * Math.PI / 180); ctx.translate(-W / 2, -(PY + PH / 2));
+  ctx.shadowColor = "rgba(0,0,0,.35)"; ctx.shadowBlur = 50; ctx.shadowOffsetY = 24; ctx.fillStyle = "#fff"; ctx.fillRect(PX - 18, PY - 18, PW + 36, PH + 36); ctx.shadowColor = "transparent";
+  ctx.fillStyle = "#2A2626"; ctx.fillRect(PX, PY, PW, PH);
+  if (r.photo) { try { const img = await loadImg(r.photo); const s = Math.max(PW / img.width, PH / img.height); const sw = PW / s, sh = PH / s; ctx.drawImage(img, (img.width - sw) / 2, (img.height - sh) / 2, sw, sh, PX, PY, PW, PH); } catch {} }
+  ctx.restore();
+  // black band: name + punchline
+  poly([[0, 1340], [W, 1290], [W, 1700], [0, 1700]], "#1E1B1B");
+  const first = String(r.name || "").split(" ")[0].toUpperCase();
+  let ns = 170; ctx.font = DISPLAY(ns); while (ctx.measureText(first).width > 930 && ns > 70) { ns -= 6; ctx.font = DISPLAY(ns); }
+  ctx.fillStyle = "#fff"; ctx.fillText(first, 72, 1360 + ns * .78);
+  const body = (r.roast && (r.roast[lang] || r.roast.en)) || "";
+  let punch = body.split(/(?<=[.!?।])\s+/)[0] || ""; if (punch.length > 110) punch = punch.slice(0, 106).replace(/\s+\S*$/, "") + "…";
+  let ps = 46, pl; for (;;) { ctx.font = BODY(ps, 700); pl = wrap(ctx, punch, 936); if (pl.length <= 2 || ps <= 30) break; ps -= 2; }
+  let y = 1360 + ns * .78 + 30 + ps; for (const l of pl.slice(0, 2)) { ctx.fillText(l, 72, y); y += ps * 1.25; }
+  // footer: cameo + hashtag + title tag
+  try { const cam = await loadImg(location.href.replace(/[#?].*$/, "").replace(/\/(kiosk\/)?[^/]*$/, "") + "/assets/cameo.png"); ctx.drawImage(cam, 50, 1735, 150, 150 * (cam.height / cam.width)); } catch {}
+  ctx.textAlign = "right"; ctx.fillStyle = "#fff"; ctx.font = "italic 900 54px Poppins, sans-serif"; ctx.fillText("#RoastedByWendy", 1020, 1835);
+  const title = (r.title && (r.title[lang] || r.title.en)) || "";
+  ctx.font = BODY(26, 800); ctx.globalAlpha = .85; ctx.fillText((lang === "en" ? title.toUpperCase() : title).slice(0, 48), 1020, 1878); ctx.globalAlpha = 1; ctx.textAlign = "left";
   return c;
 };

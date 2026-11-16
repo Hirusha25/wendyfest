@@ -173,9 +173,12 @@ for (const f of walk(out)) {
   // fetch("/api/config") in kiosk pages stays (shim intercepts). Keep page title hint.
   s = s.replace("<title>", "<title>[DEMO] ");
   s = s.replace(/(css\/(brand|kiosk|guest)\.css)"/g, `$1?v=${V}"`);
+  // GitHub Pages lets browsers keep a page for 10 minutes: each page checks version.txt and reloads itself if a newer build is out
+  s = s.replace("<head>", `<head><script>fetch("${pfx}version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "${V}" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>`);
   fs.writeFileSync(f, s);
 }
 // app.js: qrUrl is overridden by shim; nothing else to change. kiosk.js: K.api uses fetch – fine.
 fs.writeFileSync(path.join(out, ".nojekyll"), "");
+fs.writeFileSync(path.join(out, "version.txt"), V);
 function walk(d) { return fs.readdirSync(d, { withFileTypes: true }).flatMap((e) => e.isDirectory() ? walk(path.join(d, e.name)) : [path.join(d, e.name)]); }
 console.log("demo built →", out);

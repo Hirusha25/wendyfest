@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Scream & Win · Studio Cream · Wendy Fest</title><link rel="icon" href="../assets/cameo.png">
-<link rel="stylesheet" href="../css/brand.css?v=mwj3zx7c">
+<link rel="stylesheet" href="../css/brand.css?v=mwj42ufd">
 <style>
 /* ================= RETRO BLUE (formerly Studio Cream) · Scream & Win ================= */
 :root { --u:min(calc(100vw / 1440), calc(100vh / 760)); --v:var(--u); --blue:#029CD4; --red:#CD2028; --red2:#DA2A33; --red-dark:#8E141B; --ink:#1F1A1A; --cream:#F7F2EC; --blush:#F2D4D7; --cyan:#29C9E0; --line:rgba(205,32,40,.18); }
@@ -317,6 +317,10 @@ body { color:#fff; }
 #res-code::after { color:#CD2028 !important; left:calc(18 * var(--u)) !important; font-size:calc(30 * var(--u)) !important; }
 .tkt { filter:drop-shadow(0 calc(8 * var(--u)) 0 #7A0F16) drop-shadow(0 calc(16 * var(--u)) calc(18 * var(--u)) rgba(0,40,70,.35)); }
 
+
+/* approved title mix: SCREAM cream with deep-blue depth (option 3) + & WIN red with white outline (option 2) */
+.idle .h1 .l1 { color:#F6F0E6 !important; -webkit-text-stroke:0; text-shadow:0 calc(3 * var(--u)) 0 #01476A, 0 calc(6 * var(--u)) 0 #012F47, 0 calc(14 * var(--u)) calc(22 * var(--u)) rgba(0,20,40,.4) !important; }
+.idle .h1 .amp, .idle .h1 .red { color:#CD2028 !important; -webkit-text-stroke:calc(3 * var(--u)) #fff; paint-order:stroke fill; text-shadow:0 calc(4 * var(--u)) 0 #fff, 0 calc(8 * var(--u)) 0 #014F72, 0 calc(16 * var(--u)) calc(22 * var(--u)) rgba(0,40,70,.35) !important; }
 /* title colour previews (?title=1..4); default unchanged */
 body.tt1 .idle .h1 .l1 { color:#CD2028 !important; text-shadow:0 calc(3 * var(--u)) 0 #F6F0E6, 0 calc(6 * var(--u)) 0 #8E141B, 0 calc(14 * var(--u)) calc(22 * var(--u)) rgba(0,40,70,.35) !important; }
 body.tt1 .idle .h1 .amp, body.tt1 .idle .h1 .red { color:#F6F0E6 !important; text-shadow:0 calc(3 * var(--u)) 0 #CD2028, 0 calc(6 * var(--u)) 0 #8E141B, 0 calc(14 * var(--u)) calc(22 * var(--u)) rgba(0,40,70,.35) !important; }
@@ -430,7 +434,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   </aside>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwj3zx7c"></script><script src="../js/kiosk.js?v=mwj3zx7c"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwj42ufd"></script><script src="../js/kiosk.js?v=mwj42ufd"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let CFG = { scream: { threshold: 70, durationMs: 3000, dbFloor: -42, dbCeil: -6, loudWeight: .6, accWeight: .4 } };

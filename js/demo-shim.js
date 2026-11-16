@@ -39,30 +39,57 @@ function similarity(a, b) {
   return 1 - dp[m][n] / Math.max(m, n);
 }
 
-// How closely a speech-recognition transcript matches "Wendy's".
-// Recognisers hear screams as all sorts of things, so we score against a bank of
-// phonetic neighbours and take the best match of any word/bigram in the transcript.
-const TARGETS = ["wendys", "wendy", "wendies", "windies", "wendis", "vendis", "vendys", "whendies", "wendee", "wendeez", "wendies", "when these", "when days", "windys", "wendy's"];
-function wendysAccuracy(transcript) {
-  if (!transcript) return 0;
-  const clean = transcript.toLowerCase().replace(/[^a-z\s']/g, " ").replace(/\s+/g, " ").trim();
-  if (!clean) return 0;
+// ---------- Scream judging (strict) ----------
+// The guest must say "WENDY'S" — with the S. "Wendy" alone, "windy", or other words don't pass.
+// Speech recognisers spell the same sound differently, so each group lists the spellings we accept.
+const WITH_S = ["wendys", "wendies"];                                                              // the real word
+const WITH_S_NEAR = ["wendis", "wendees", "wendeez", "wendyz", "windies", "windys", "vendys", "vendis", "whendies", "wendes", "when these", "wen these", "wendy is", "wendy s"];
+const NO_S = ["wendy", "wendi", "wendee", "windy", "vendy", "when the", "wendie"];
+const tokenise = (t) => (t || "").toLowerCase().replace(/[^a-z\s']/g, " ").replace(/'/g, "").replace(/\s+/g, " ").trim();
+const bestSim = (c, list) => list.reduce((m, t) => Math.max(m, similarity(c, t)), 0);
+
+// Looks only at the FIRST thing that sounds like the target word: one shot, no repeating until it lands.
+function wendysCheck(transcript) {
+  const clean = tokenise(transcript);
+  if (!clean) return { accuracy: 0, reason: "unclear", heard: "" };
   const words = clean.split(" ");
-  const candidates = [...words];
-  for (let i = 0; i < words.length - 1; i++) candidates.push(words[i] + " " + words[i + 1], words[i] + words[i + 1]);
-  candidates.push(clean, clean.replace(/\s/g, ""));
-  let best = 0;
-  for (const c of candidates) for (const t of TARGETS) {
-    const s = similarity(c.replace(/'/g, ""), t.replace(/'/g, ""));
-    if (s > best) best = s;
+  const cands = [];
+  for (let i = 0; i < words.length; i++) { if (i < words.length - 1) cands.push(words[i] + " " + words[i + 1]); cands.push(words[i]); }   // two-word form first, so "wendy is" counts as Wendy's
+  let overall = 0;
+  for (const c of cands) {
+    const exact = bestSim(c, WITH_S), near = bestSim(c, WITH_S_NEAR), noS = bestSim(c, NO_S);
+    overall = Math.max(overall, exact, near, noS);
+    if (Math.max(exact, near, noS) < 0.75) continue;                           // not an attempt at the word yet
+    let accuracy, reason;
+    if (exact === 1) { accuracy = 100; reason = "ok"; }
+    else if (noS >= Math.max(exact, near)) { accuracy = Math.round(20 + 20 * noS); reason = "no_s"; }  // said Wendy, missed the S: max 40
+    else { accuracy = Math.round(60 + 30 * ((Math.max(exact, near) - 0.75) / 0.25)); reason = "ok"; }  // close spelling of Wendy's: 60–90
+    if (words.length > 4) accuracy = Math.max(0, accuracy - 10);              // lots of extra words: small penalty
+    return { accuracy, reason, heard: c };
   }
-  // Soften the curve: 0.6 similarity (e.g. "windy") still gets partial credit.
-  return clamp(Math.round(((best - 0.35) / 0.65) * 100), 0, 100);
+  return { accuracy: Math.round(overall * 25), reason: "unclear", heard: "" };  // never got near the word: max 25
 }
+const wendysAccuracy = (transcript) => wendysCheck(transcript).accuracy;
 
 function loudnessScore(peakDb, floor, ceil) {
   if (peakDb === null || peakDb === undefined || Number.isNaN(peakDb)) return 0;
   return clamp(Math.round(((peakDb - floor) / (ceil - floor)) * 100), 0, 100);
+}
+
+// Full verdict. Loudness uses the loudest SUSTAINED half-second (a single clap or tap can't max it).
+// To win, all three must pass: overall score ≥ threshold, loudness ≥ minLoud, clarity ≥ minAcc.
+function judgeScream({ peakDb, sustainedDb, transcript, accuracyOverride }, s) {
+  const db = sustainedDb !== undefined && sustainedDb !== null && !Number.isNaN(Number(sustainedDb)) ? Number(sustainedDb) : Number(peakDb);
+  const loud = loudnessScore(db, s.dbFloor, s.dbCeil);
+  const check = accuracyOverride !== undefined && accuracyOverride !== null
+    ? { accuracy: clamp(Number(accuracyOverride), 0, 100), reason: Number(accuracyOverride) >= (s.minAcc ?? 70) ? "ok" : Number(accuracyOverride) >= 30 ? "no_s" : "unclear", heard: "" }
+    : wendysCheck(transcript);
+  const acc = check.accuracy;
+  const score = Math.round(loud * s.loudWeight + acc * s.accWeight);
+  const okLoud = loud >= (s.minLoud ?? 60), okAcc = acc >= (s.minAcc ?? 70);
+  const won = score >= s.threshold && okLoud && okAcc;
+  const reason = won ? "win" : check.reason === "no_s" ? "no_s" : !okAcc ? "unclear" : !okLoud ? "quiet" : "close";
+  return { loud, acc, score, won, reason, heard: check.heard };
 }
 
 function csvEscape(v) {
@@ -151,7 +178,7 @@ const now = () => new Date().toISOString().slice(0, 19).replace("T", " ");
 if (!DB.participants.some((p) => p.code === "WENDYS")) { DB.participants.unshift({ id: 1000, code: "WENDYS", token: "demo-guest-token", name: "Demo Guest", phone: "94770000000", email: null, dob: null, lang: "en", created_at: now() }); save(); }
 const cookie = (n) => (document.cookie.match(new RegExp("(?:^|; )" + n + "=([^;]*)")) || [])[1];
 const setCookie = (n, v) => (document.cookie = n + "=" + v + "; path=/; max-age=31536000; SameSite=Lax");
-const scream = () => Object.assign({ threshold: 70, loudWeight: .6, accWeight: .4, dbFloor: -42, dbCeil: -6, attemptsPerPerson: 99, durationMs: 3000 }, DB.settings.scream || {});
+const scream = () => Object.assign({ threshold: 75, minLoud: 60, minAcc: 70, loudWeight: .6, accWeight: .4, dbFloor: -42, dbCeil: -6, attemptsPerPerson: 99, durationMs: 5000 }, DB.settings.scream || {});
 const coupon = () => Object.assign({ valueLabel: "10% OFF your next Wendy's order", terms: "Valid at Wendy's Sri Lanka outlets during the launch period. One use per code." }, DB.settings.coupon || {});
 const roastS = () => Object.assign({ attemptsPerPerson: 99 }, DB.settings.roast || {});
 const profileUrl = (p) => BASE + "/profile.html?t=" + p.token;
@@ -208,14 +235,12 @@ async function route(method, url, body) {
     if (p.endsWith("lookup")) return json({ name: pt.name, firstName: first(pt), lang: pt.lang, code: pt.code, screamsUsed: used.length, screamsLeft: Math.max(0, scream().attemptsPerPerson - used.length), roastsUsed: roasts.length, roastsLeft: Math.max(0, roastS().attemptsPerPerson - roasts.length), alreadyWon: used.some((s) => s.won), profileUrl: profileUrl(pt) });
     if (p.endsWith("scream")) {
       const s = scream(); if (used.length >= s.attemptsPerPerson) return json({ error: "No attempts left for this guest" }, 409);
-      const loud = loudnessScore(Number(body.peakDb), s.dbFloor, s.dbCeil);
-      const acc = body.accuracyOverride != null ? clamp(Number(body.accuracyOverride), 0, 100) : wendysAccuracy(body.transcript);
-      const score = Math.round(loud * s.loudWeight + acc * s.accWeight), won = score >= s.threshold;
+      const { loud, acc, score, won, reason } = judgeScream(body, s);
       let c = null; if (won) { c = DB.coupons.find((x) => !x.claimed_by); if (c) c.claimed_by = pt.id; }
       DB.screams.push({ id: DB.screams.length + 1, participant_id: pt.id, peakDb: Number(body.peakDb) || null, loudness: loud, accuracy: acc, score, transcript: body.transcript || null, won: won ? 1 : 0, coupon_code: c ? c.code : null, at: now() }); save();
       const label = coupon().valueLabel, t = templates(pt.lang);
       if (won && c) sendSms(pt.phone, t.win(first(pt), c.code, label, profileUrl(pt))); else sendSms(pt.phone, t.lose(first(pt), profileUrl(pt)));
-      return json({ name: first(pt), score, loudness: loud, accuracy: acc, threshold: s.threshold, won, coupon: c ? { code: c.code, label } : null, couponPoolEmpty: won && !c, profileUrl: profileUrl(pt), attemptsLeft: Math.max(0, s.attemptsPerPerson - used.length - 1) });
+      return json({ name: first(pt), score, loudness: loud, accuracy: acc, threshold: s.threshold, minLoud: s.minLoud, minAcc: s.minAcc, reason, won, coupon: c ? { code: c.code, label } : null, couponPoolEmpty: won && !c, profileUrl: profileUrl(pt), attemptsLeft: Math.max(0, s.attemptsPerPerson - used.length - 1) });
     }
     if (p.endsWith("roast")) {
       if (!body.consent) return json({ error: "consent required" }, 400);

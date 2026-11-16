@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Admin · Wendy Fest</title><link rel="icon" href="./assets/cameo.png">
-<link rel="stylesheet" href="./css/brand.css?v=mwj66sxp">
+<link rel="stylesheet" href="./css/brand.css?v=mwj6ep64">
 <style>
   body { background: var(--cream); }
   .head { background: var(--ink); color: #fff; padding: 18px 0; }
@@ -37,6 +37,8 @@
         <h3 class="eyebrow">Scream & Win scoring</h3>
         <div class="fields">
           <div class="field"><label>Win threshold</label><input class="input" id="threshold" type="number" min="1" max="100"></div>
+          <div class="field"><label>Min loudness to win</label><input class="input" id="minLoud" type="number" min="0" max="100"></div>
+          <div class="field"><label>Min clarity to win</label><input class="input" id="minAcc" type="number" min="0" max="100"></div>
           <div class="field"><label>Loud weight</label><input class="input" id="loudWeight" type="number" step=".05" min="0" max="1"></div>
           <div class="field"><label>Clarity weight</label><input class="input" id="accWeight" type="number" step=".05" min="0" max="1"></div>
           <div class="field"><label>dB floor (=0)</label><input class="input" id="dbFloor" type="number"></div>
@@ -45,7 +47,7 @@
           <div class="field"><label>Scream attempts</label><input class="input" id="attemptsPerPerson" type="number" min="1"></div>
           <div class="field"><label>Roast attempts</label><input class="input" id="roastAttempts" type="number" min="1"></div>
         </div>
-        <div class="help">Loudness is measured as peak dBFS from the kiosk mic. Calibrate on site: a normal talking voice at 1 m should read near the floor, a full scream near the ceiling.</div>
+        <div class="help">To win, a guest needs the overall score AND the minimum loudness AND the minimum clarity. Clarity only passes for a clear "Wendy's" with the S; only their first attempt at the word counts. Loudness is the loudest sustained half-second (dBFS) from the kiosk mic. Calibrate on site: a normal talking voice at 1 m should read near the floor, a full scream near the ceiling.</div>
         <button class="btn sm" id="save-scream">Save scoring</button>
       </div>
       <div class="card stack">
@@ -72,7 +74,7 @@
     </div>
   </section>
 </main>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js?v=mwj66sxp"></script><script src="./js/app.js?v=mwj66sxp"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js?v=mwj6ep64"></script><script src="./js/app.js?v=mwj6ep64"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   async function unlock() { try { await api("/api/admin/login", { method: "POST", body: { pin: $("pin").value } }); $("login").classList.add("hidden"); $("dash").classList.remove("hidden"); load(); } catch { toast("Wrong PIN"); } }
@@ -91,7 +93,7 @@
     if (S.smsFailed > 0) a.push(`<div class="warn">${S.smsFailed} SMS failed – check provider credentials / sender ID approval.</div>`);
     if (!a.length) a.push(`<div class="warn ok">All systems go.</div>`);
     $("alerts").innerHTML = a.join("");
-    const sc = S.settings.scream; ["threshold", "loudWeight", "accWeight", "dbFloor", "dbCeil", "durationMs", "attemptsPerPerson"].forEach((f) => $(f).value = sc[f]);
+    const sc = S.settings.scream; ["threshold", "minLoud", "minAcc", "loudWeight", "accWeight", "dbFloor", "dbCeil", "durationMs", "attemptsPerPerson"].forEach((f) => $(f).value = sc[f] ?? "");
     $("roastAttempts").value = S.settings.roast.attemptsPerPerson;
     $("valueLabel").value = S.settings.coupon.valueLabel; $("terms").value = S.settings.coupon.terms;
     $("pool").textContent = `${S.couponsLeft} unclaimed of ${S.couponsTotal}`;
@@ -100,7 +102,7 @@
     $("roasts").innerHTML = `<tr><th>Guest</th><th>Title</th><th></th></tr>` + S.recentRoasts.map((r) => `<tr><td>${r.name}</td><td>${r.title_en || ""} ${r.fallback ? "<span class='chip'>fallback</span>" : ""}</td><td><a href="/r/${r.token}" target="_blank">open</a></td></tr>`).join("");
     $("env").textContent = `BASE_URL ${S.settings.baseUrl} · SMS ${S.settings.sms.provider} (sender ${S.settings.sms.senderId}) · roast model ${S.settings.roastModel} · fallback roasts so far: ${S.roastFallbacks}`;
   }
-  $("save-scream").onclick = async () => { const scream = {}; ["threshold", "loudWeight", "accWeight", "dbFloor", "dbCeil", "durationMs", "attemptsPerPerson"].forEach((f) => scream[f] = $(f).value); await api("/api/admin/settings", { method: "PUT", body: { scream, roast: { attemptsPerPerson: $("roastAttempts").value } } }); toast("Saved"); load(); };
+  $("save-scream").onclick = async () => { const scream = {}; ["threshold", "minLoud", "minAcc", "loudWeight", "accWeight", "dbFloor", "dbCeil", "durationMs", "attemptsPerPerson"].forEach((f) => scream[f] = $(f).value); await api("/api/admin/settings", { method: "PUT", body: { scream, roast: { attemptsPerPerson: $("roastAttempts").value } } }); toast("Saved"); load(); };
   $("save-coupon").onclick = async () => { await api("/api/admin/settings", { method: "PUT", body: { coupon: { valueLabel: $("valueLabel").value, terms: $("terms").value } } }); toast("Saved"); load(); };
   $("import").onclick = async () => { const r = await api("/api/admin/coupons/import", { method: "POST", body: { text: $("codes").value } }); toast(`Imported ${r.added} codes`); $("codes").value = ""; load(); };
   $("gen").onclick = async () => { const r = await api("/api/admin/coupons/generate", { method: "POST", body: { count: 100 } }); toast(`Generated ${r.added} demo codes`); load(); };

@@ -339,6 +339,21 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   30% { transform:translateY(calc(3 * var(--u))) scale(.98) rotate(.6deg); }
   44% { transform:translateY(0) scale(1.02) rotate(0); }
 }
+
+/* "We heard" stays inside its column: max two lines, tick sits beside the label */
+.heard { width:calc(420 * var(--u)) !important; }
+.heard small { display:flex; align-items:center; gap:calc(12 * var(--u)); }
+.heard b { display:-webkit-box !important; -webkit-box-orient:vertical; -webkit-line-clamp:2; white-space:normal !important; overflow:hidden; max-width:calc(420 * var(--u)); font-size:calc(34 * var(--u)) !important; line-height:1.12 !important; }
+.heard.got b::after { display:none !important; }
+.heard.got small::after { content:""; width:calc(26 * var(--u)); height:calc(26 * var(--u)); border-radius:50%; background:#CD2028 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/70% no-repeat; }
+
+/* Wendy cameo speaks the listening status */
+#listen-wendy { left:calc(70 * var(--u)); top:calc(96 * var(--u)); width:calc(86 * var(--u)); filter:drop-shadow(0 calc(8 * var(--u)) calc(12 * var(--u)) rgba(0,40,70,.4)); transform-origin:50% 100%; }
+#listen-wendy.got { animation:wHop .6s cubic-bezier(.3,1.6,.5,1) 2; }
+@keyframes wHop { 0%,100% { transform:translateY(0) rotate(0); } 40% { transform:translateY(calc(-16 * var(--u))) rotate(-8deg); } 70% { transform:translateY(0) rotate(4deg); } }
+#go-meter .pillx#listen-pill { left:calc(176 * var(--u)) !important; border-radius:calc(20 * var(--u)) !important; overflow:visible; }
+#listen-pill::before { content:""; position:absolute; left:calc(-14 * var(--u)); top:50%; translate:0 -50%; border-top:calc(11 * var(--u)) solid transparent; border-bottom:calc(11 * var(--u)) solid transparent; border-right:calc(16 * var(--u)) solid #F6F0E6; }
+#listen-pill.got::before { border-right-color:#fff; }
 </style>
 </head>
 <body>
@@ -398,7 +413,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     <div class="box" id="go-meter" style="display:none">
       <canvas class="abs" id="live-cv"></canvas>
       <div class="crow"><span class="t" data-fit="1100" data-fs="80">Scream <span class="red pop-w" id="pop-w">Wendy’s!</span></span></div>
-      <span class="pillx" id="listen-pill"><span class="dot"></span><span id="listen-l">Listening</span></span>
+      <img class="abs" id="listen-wendy" src="/assets/cameo.png" alt=""><span class="pillx" id="listen-pill"><span class="dot"></span><span id="listen-l">Listening…</span></span>
       <span id="target">Target <b id="thr">70</b></span>
       <div class="abs" id="gauge-num">0</div>
       <div class="abs lbl">Loudness<br>score</div>
@@ -740,12 +755,12 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   let heardAt = 0;
   const WENDY_RE = /\b(w|v)h?[aei]nd(y|ie|i|ee|is|ys|eez|ies|y's)\b|\bwhen ?(these|days)\b/i;
   function showHeard() {
-    const words = transcript.split(/\s+/).slice(-4).join(" ");
+    const words = transcript.split(/\s+/).slice(-6).join(" ");
     $("heard-v").textContent = words ? "“" + words.charAt(0).toUpperCase() + words.slice(1) + "”" : "…";
-    if (!heardAt && WENDY_RE.test(transcript)) { heardAt = performance.now(); $("heard").classList.add("got"); $("listen-pill").classList.add("got"); $("listen-l").textContent = "Heard it!"; }
+    if (!heardAt && WENDY_RE.test(transcript)) { heardAt = performance.now(); $("heard").classList.add("got"); $("listen-pill").classList.add("got"); $("listen-wendy").classList.add("got"); $("listen-l").textContent = "Heard it!"; }
   }
   function startRecog() {
-    transcript = ""; $("trans").textContent = "…"; heardAt = 0; $("heard").classList.remove("got"); $("listen-pill").classList.remove("got"); $("listen-l").textContent = "Listening"; $("heard-v").textContent = (window.SpeechRecognition || window.webkitSpeechRecognition) && $("judge-mode").value !== "host" ? "…" : "Host will judge";
+    transcript = ""; $("trans").textContent = "…"; heardAt = 0; $("heard").classList.remove("got"); $("listen-pill").classList.remove("got"); $("listen-wendy").classList.remove("got"); $("listen-l").textContent = "Listening…"; $("heard-v").textContent = (window.SpeechRecognition || window.webkitSpeechRecognition) && $("judge-mode").value !== "host" ? "…" : "Host will judge";
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition; if (!SR || $("judge-mode").value === "host") return;
     try { recog = new SR(); recog.lang = "en-US"; recog.interimResults = true; recog.continuous = true; recog.maxAlternatives = 3;
       recog.onresult = (e) => { let s = ""; for (let i = 0; i < e.results.length; i++) for (let j = 0; j < e.results[i].length; j++) s += " " + e.results[i][j].transcript; transcript = s.trim(); $("trans").textContent = "We heard: " + (transcript || "…"); showHeard(); };

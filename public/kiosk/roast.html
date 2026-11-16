@@ -185,13 +185,15 @@
   .cv .qnote { font:600 calc(22 * var(--p))/1.4 Poppins; color:#fff; }
 
   /* ===== camera, cooking and reveal: Roast Wall reference layouts ===== */
-  .chrome[data-scr="s-cam"] .panel, .chrome[data-scr="s-cam"] .band { display:none; }
+  /* camera: steeper diagonal further right, so the camera gets the room */
+  .chrome[data-scr="s-cam"] .panel { clip-path:polygon(calc(1250 * var(--p)) 0, calc(1920 * var(--p)) 0, calc(1920 * var(--p)) calc(1080 * var(--p)), calc(1150 * var(--p)) calc(1080 * var(--p))); }
+  .chrome[data-scr="s-cam"] .band { clip-path:polygon(calc(1208 * var(--p)) 0, calc(1250 * var(--p)) 0, calc(1150 * var(--p)) calc(1080 * var(--p)), calc(1108 * var(--p)) calc(1080 * var(--p))); }
   .chrome[data-scr="s-cooking"] .panel { clip-path:polygon(calc(1550 * var(--p)) 0, calc(1920 * var(--p)) 0, calc(1920 * var(--p)) calc(1080 * var(--p)), calc(1330 * var(--p)) calc(1080 * var(--p))); }
   .chrome[data-scr="s-cooking"] .band { clip-path:polygon(calc(1508 * var(--p)) 0, calc(1550 * var(--p)) 0, calc(1330 * var(--p)) calc(1080 * var(--p)), calc(1288 * var(--p)) calc(1080 * var(--p))); }
   .cv .ubar { display:block; width:calc(200 * var(--p)); height:calc(12 * var(--p)); background:#029CD4; }
   .cv .wpan { inset:0; background:#fff; clip-path:polygon(calc(1290 * var(--p)) calc(167 * var(--p)), calc(1920 * var(--p)) calc(167 * var(--p)), calc(1920 * var(--p)) calc(1021 * var(--p)), calc(1170 * var(--p)) calc(1021 * var(--p))); }
   .cv .rcor { inset:0; background:linear-gradient(170deg, #D92530, #B81C24); clip-path:polygon(calc(1920 * var(--p)) calc(790 * var(--p)), calc(1920 * var(--p)) calc(1021 * var(--p)), calc(1450 * var(--p)) calc(1021 * var(--p))); }
-  #s-cam .cam { width:calc(1080 * var(--p)); height:calc(740 * var(--p)); border:calc(8 * var(--p)) solid #fff; border-radius:calc(6 * var(--p)); }
+  #s-cam .cam { width:calc(1010 * var(--p)); height:calc(700 * var(--p)); box-sizing:border-box; border:calc(8 * var(--p)) solid #fff; border-radius:calc(6 * var(--p)); }
   .cv .livet { left:calc(1580 * var(--p)); top:calc(186 * var(--p)); width:calc(340 * var(--p)); height:calc(92 * var(--p)); background:#CD2028; clip-path:polygon(calc(40 * var(--p)) 0, 100% 0, 100% 100%, 0 100%); display:flex; align-items:center; justify-content:center; gap:calc(18 * var(--p)); font:italic 900 calc(44 * var(--p))/1 Poppins, sans-serif; letter-spacing:.06em; color:#fff; }
   .cv .livet::before { content:""; width:calc(24 * var(--p)); height:calc(24 * var(--p)); border-radius:50%; background:#fff; animation:blink 1s steps(2) infinite; }
   .cv .t3.ink span { display:block; color:#1E1B1B; text-shadow:none; -webkit-text-stroke:0; } .cv .t3.ink b { color:#CD2028; }
@@ -247,6 +249,20 @@
   .cv .qrs { width:calc(300 * var(--p)); background:#fff; padding:calc(20 * var(--p)); box-sizing:border-box; border-radius:calc(8 * var(--p)); box-shadow:0 calc(10 * var(--p)) 0 #7E1016, 0 calc(20 * var(--p)) calc(40 * var(--p)) rgba(0,0,0,.35); }
   .cv .qrs img { width:100%; aspect-ratio:1; display:block; }
   .cv .cbox.out { background:transparent; box-shadow:none; }
+  /* camera, option A: LIVE tag in the frame, heat as 3D blocks on the red side, blue Take my photo */
+  #s-cam .cam .live { left:calc(120 * var(--p)); top:calc(36 * var(--p)); border-radius:calc(8 * var(--p)); padding:calc(11 * var(--p)) calc(20 * var(--p)); font-size:calc(22 * var(--p)); }
+  #s-cam .camtip { font:italic 800 calc(22 * var(--p))/1.3 Poppins, sans-serif; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.7); white-space:nowrap; }
+  #s-cam #cam-status { display:none; font:600 calc(18 * var(--p))/1.3 Poppins, sans-serif; color:#FFD3D6; }
+  #s-cam.camerr #cam-status { display:block; } #s-cam.camerr .camtip { display:none; }
+  #s-cam .ghostb { height:calc(60 * var(--p)); padding:0 calc(28 * var(--p)); font-size:calc(21 * var(--p)); }
+  #s-cam .heat { gap:calc(16 * var(--p)); width:calc(557 * var(--p)); }
+  #s-cam .heat button { height:calc(104 * var(--p)); padding:0 calc(30 * var(--p)) 0 calc(32 * var(--p)); border-radius:calc(12 * var(--p)); clip-path:none; color:#fff; font-size:calc(40 * var(--p)); background:linear-gradient(180deg, #403939 0%, #1E1B1B 100%); box-shadow:0 calc(6 * var(--p)) 0 #0A0909, 0 calc(12 * var(--p)) calc(16 * var(--p)) rgba(60,0,8,.3), inset 0 calc(2 * var(--p)) 0 rgba(255,255,255,.16); transition:transform .06s; }
+  #s-cam .heat button:active { transform:translateY(calc(5 * var(--p))); }
+  #s-cam .heat svg { width:calc(40 * var(--p)); height:calc(40 * var(--p)); fill:#FF5A62; stroke:none; }
+  #s-cam .heat button.on { background:#fff; color:#CD2028; box-shadow:0 calc(6 * var(--p)) 0 #7E1016, 0 calc(12 * var(--p)) calc(16 * var(--p)) rgba(60,0,8,.3); }
+  #s-cam .heat button.on::after { width:calc(48 * var(--p)); height:calc(48 * var(--p)); background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23CD2028' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E"); }
+  .cv .snapb { width:calc(557 * var(--p)); height:calc(116 * var(--p)); display:flex; align-items:center; justify-content:center; gap:calc(20 * var(--p)); padding:0; border-radius:calc(12 * var(--p)); border:calc(4 * var(--p)) solid #fff; box-sizing:border-box; color:#fff; cursor:pointer; background:linear-gradient(180deg, #2BB6EA 0%, #0186B8 100%); box-shadow:0 calc(8 * var(--p)) 0 #01476A, 0 calc(20 * var(--p)) calc(36 * var(--p)) rgba(0,0,0,.4), inset 0 calc(2 * var(--p)) 0 rgba(255,255,255,.3); font:italic 900 calc(42 * var(--p))/1 Poppins, sans-serif; text-transform:uppercase; letter-spacing:-.01em; text-shadow:0 calc(3 * var(--p)) 0 rgba(1,71,106,.6); white-space:nowrap; animation:yp 1.8s ease-in-out infinite; transition:transform .06s; z-index:4; }
+  .cv .snapb svg { width:calc(56 * var(--p)); height:calc(56 * var(--p)); flex:none; } .cv .snapb:active { transform:translateY(calc(5 * var(--p))); } .cv .snapb:disabled { opacity:.6; animation:none; }
   .stage:has(#s-idle.on) > .k-logo, .stage:has(#s-idle.on) > .k-cameo, .stage:has(#s-idle.on) > .k-foot { display:none; }
 </style>
 </head>
@@ -321,18 +337,18 @@
   </div></section>
 
   <section class="screen cv" id="s-cam"><div class="s">
-    <div class="wpan"></div><div class="rcor"></div>
-    <div class="cam" style="left:calc(80 * var(--p));top:calc(190 * var(--p))"><video id="video" autoplay playsinline muted></video><canvas id="shot" class="hidden"></canvas><div class="count hidden" id="count">3</div><i class="br a"></i><i class="br b"></i><i class="br c"></i><i class="br d"></i></div>
-    <div class="livet">LIVE</div>
-    <div class="t3 ink" style="left:calc(1300 * var(--p));top:calc(305 * var(--p));font-size:calc(68 * var(--p))"><span>Pick your</span><span>roast heat<b>.</b></span></div>
-    <div class="heat" id="heat" style="left:calc(1255 * var(--p));top:calc(470 * var(--p));width:calc(665 * var(--p))">
+    <div class="cam" style="left:calc(80 * var(--p));top:calc(195 * var(--p))"><video id="video" autoplay playsinline muted></video><canvas id="shot" class="hidden"></canvas><div class="count hidden" id="count">3</div><i class="br a"></i><i class="br b"></i><i class="br c"></i><i class="br d"></i><div class="live">Live</div></div>
+    <button class="ghostb" style="left:calc(80 * var(--p));top:calc(928 * var(--p))" onclick="goIdle()">← Cancel</button>
+    <div class="camtip" style="left:calc(300 * var(--p));top:calc(946 * var(--p))">Step back so your shoulders are in the frame</div>
+    <div id="cam-status" style="left:calc(300 * var(--p));top:calc(936 * var(--p));width:calc(780 * var(--p))"></div>
+    <div class="eb w" style="left:calc(1270 * var(--p));top:calc(230 * var(--p))">Roast heat</div>
+    <div class="t3" style="left:calc(1262 * var(--p));top:calc(272 * var(--p));font-size:calc(66 * var(--p))"><span class="l1">Pick your</span><span class="l1" style="margin-top:calc(6 * var(--p))">heat.</span></div>
+    <div class="heat" id="heat" style="left:calc(1270 * var(--p));top:calc(430 * var(--p))">
       <button data-h="mild">Mild<span class="ch"><svg viewBox="0 0 24 24"><path d="M14 4c1-2 3-2 4-1-1 0-2 1-2 2 3 1 4 4 3 7-2 6-8 9-14 8 5-2 7-5 8-9 0-3 0-6 1-7z"/></svg></span></button>
       <button data-h="medium" class="on">Medium<span class="ch"><svg viewBox="0 0 24 24"><path d="M14 4c1-2 3-2 4-1-1 0-2 1-2 2 3 1 4 4 3 7-2 6-8 9-14 8 5-2 7-5 8-9 0-3 0-6 1-7z"/></svg><svg viewBox="0 0 24 24"><path d="M14 4c1-2 3-2 4-1-1 0-2 1-2 2 3 1 4 4 3 7-2 6-8 9-14 8 5-2 7-5 8-9 0-3 0-6 1-7z"/></svg></span></button>
       <button data-h="extra">Extra spicy<span class="ch"><svg viewBox="0 0 24 24"><path d="M14 4c1-2 3-2 4-1-1 0-2 1-2 2 3 1 4 4 3 7-2 6-8 9-14 8 5-2 7-5 8-9 0-3 0-6 1-7z"/></svg><svg viewBox="0 0 24 24"><path d="M14 4c1-2 3-2 4-1-1 0-2 1-2 2 3 1 4 4 3 7-2 6-8 9-14 8 5-2 7-5 8-9 0-3 0-6 1-7z"/></svg><svg viewBox="0 0 24 24"><path d="M14 4c1-2 3-2 4-1-1 0-2 1-2 2 3 1 4 4 3 7-2 6-8 9-14 8 5-2 7-5 8-9 0-3 0-6 1-7z"/></svg></span></button>
     </div>
-    <button class="shut" id="snap" style="left:calc(545 * var(--p));top:calc(855 * var(--p))" aria-label="Take the photo"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.6"/></svg></button>
-    <button class="linkb" style="left:calc(80 * var(--p));top:calc(958 * var(--p))" onclick="goIdle()">← Cancel</button>
-    <div id="cam-status" style="left:calc(740 * var(--p));top:calc(972 * var(--p));width:calc(400 * var(--p))"></div>
+    <button class="snapb" id="snap" style="left:calc(1270 * var(--p));top:calc(838 * var(--p))"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.6"/></svg>Take my photo</button>
   </div></section>
 
   <section class="screen cv" id="s-cooking"><div class="s">
@@ -408,9 +424,9 @@
       const id = localStorage.getItem("wf_cam_" + K.station);
       stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId: id ? { exact: id } : undefined, width: { ideal: 1280 }, height: { ideal: 960 }, facingMode: "user" }, audio: false });
       $("video").srcObject = stream; await listCams(); applyMirror();
-      $("cam-status").textContent = "Camera: " + (camSel.selectedOptions[0]?.textContent || "default");
+      $("cam-status").textContent = "Camera: " + (camSel.selectedOptions[0]?.textContent || "default"); $("s-cam").classList.remove("camerr");
       return true;
-    } catch (e) { $("cam-status").textContent = "Camera blocked or missing: " + e.message + " · open settings (gear)"; return false; }
+    } catch (e) { $("cam-status").textContent = "Camera blocked or missing: " + e.message + " · staff: press S for settings"; $("s-cam").classList.add("camerr"); return false; }
   }
   function capture() {
     const v = $("video"), c = $("shot"); const w = 1024, h = Math.round(1024 * (v.videoHeight / v.videoWidth || .75));

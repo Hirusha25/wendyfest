@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Roast Me · Wendy Fest</title><link rel="icon" href="../assets/cameo.png">
-<link rel="stylesheet" href="../css/brand.css?v=mwjgdx3z"><link rel="stylesheet" href="../css/kiosk.css?v=mwjgdx3z">
+<link rel="stylesheet" href="../css/brand.css?v=mwjgiptn"><link rel="stylesheet" href="../css/kiosk.css?v=mwjgiptn">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@600;700&family=Barlow+Semi+Condensed:ital,wght@1,900&display=swap" rel="stylesheet">
 <style>
   body.kiosk { background: var(--ink); }
@@ -37,7 +37,7 @@
   #s-idle .hd { left:0; right:0; top:0; height:calc(140 * var(--p)); display:flex; align-items:center; justify-content:space-between; padding:0 calc(93 * var(--p)) 0 calc(120 * var(--p)); background:linear-gradient(90deg, #01679A 0%, #0186B8 38%, #029CD4 72%, #1BB0E6 100%); box-shadow:0 calc(8 * var(--p)) calc(26 * var(--p)) rgba(0,0,0,.35); z-index:5; }
   #s-idle .hd .brand { display:flex; align-items:center; gap:calc(40 * var(--p)); } #s-idle .hd .brand img { height:calc(77 * var(--p)); } #s-idle .hd .brand i { width:calc(2 * var(--p)); height:calc(59 * var(--p)); background:rgba(255,255,255,.6); }
   #s-idle .hd .brand b, #s-idle .hd .stp { font:italic 800 calc(35 * var(--p))/1 Poppins, sans-serif; letter-spacing:.22em; text-transform:uppercase; color:#fff; }
-  #s-idle .hd .stp { display:flex; align-items:center; gap:calc(35 * var(--p)); } #s-idle .hd .stp i { width:calc(75 * var(--p)); height:calc(75 * var(--p)); border-radius:50%; background:#fff; color:#0186B8; display:grid; place-items:center; font:900 calc(40 * var(--p))/1 Poppins; font-style:normal; letter-spacing:0; }
+  #s-idle .hd .stp { cursor:pointer; display:flex; align-items:center; gap:calc(35 * var(--p)); } #s-idle .hd .stp i { width:calc(75 * var(--p)); height:calc(75 * var(--p)); border-radius:50%; background:#fff; color:#0186B8; display:grid; place-items:center; font:900 calc(40 * var(--p))/1 Poppins; font-style:normal; letter-spacing:0; }
   #s-idle .strp { left:0; right:0; top:calc(140 * var(--p)); height:calc(27 * var(--p)); background:linear-gradient(180deg, #F6F0E6 0 calc(11 * var(--p)), #CD2028 calc(11 * var(--p)) calc(21 * var(--p)), #F6F0E6 calc(21 * var(--p)) calc(27 * var(--p))); z-index:5; box-shadow:0 calc(8 * var(--p)) calc(20 * var(--p)) rgba(0,0,0,.25); }
   #s-idle .ft { left:0; right:0; bottom:0; height:calc(59 * var(--p)); display:flex; justify-content:space-between; align-items:center; padding:0 calc(93 * var(--p)) 0 calc(120 * var(--p)); background:linear-gradient(90deg, #01679A 0%, #0186B8 38%, #029CD4 72%, #1BB0E6 100%); color:#fff; font:700 calc(20 * var(--p))/1 Poppins; letter-spacing:.14em; text-transform:uppercase; z-index:5; }
   #s-idle .ft .c { display:flex; align-items:center; gap:calc(16 * var(--p)); } #s-idle .ft .c img { height:calc(32 * var(--p)); } #s-idle .ft .lk { display:flex; gap:calc(30 * var(--p)); } #s-idle .ft a { color:#fff; border-bottom:1px solid rgba(255,255,255,.5); }
@@ -153,7 +153,6 @@
   </section>
 
   <footer class="k-foot"><span class="c"><img src="../assets/cameo.png" alt="">© 2026 Wendy’s Sri Lanka</span><span class="st" id="corner-l">Station A</span><span class="links"><span>Terms</span><span>Privacy</span></span></footer>
-  <svg class="gear" viewBox="0 0 24 24" fill="#fff" onclick="document.getElementById('settings').classList.toggle('open')"><path d="M12 8a4 4 0 100 8 4 4 0 000-8zm9 4a7 7 0 00-.1-1.2l2-1.5-2-3.5-2.4 1a7 7 0 00-2-1.2L16 3H8l-.5 2.6a7 7 0 00-2 1.2l-2.4-1-2 3.5 2 1.5A7 7 0 003 12a7 7 0 00.1 1.2l-2 1.5 2 3.5 2.4-1a7 7 0 002 1.2L8 21h8l.5-2.6a7 7 0 002-1.2l2.4 1 2-3.5-2-1.5c.1-.4.1-.8.1-1.2z"/></svg>
   <aside class="settings" id="settings">
     <div class="k-eyebrow">Station settings</div>
     <label>Camera (this screen)</label><select id="camsel"></select>
@@ -163,7 +162,7 @@
   </aside>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwjgdx3z"></script><script src="../js/i18n.js?v=mwjgdx3z"></script><script src="../js/kiosk.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwjgiptn"></script><script src="../js/i18n.js?v=mwjgiptn"></script><script src="../js/kiosk.js"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let guest = null, stream = null, glang = "en", R = null, BASE = location.origin;
@@ -251,5 +250,10 @@
     K.confetti(40); K.resetIdle(75000, goIdle);
   }
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+  // staff settings: no visible gear. Press S, or tap the step badge three times quickly.
+  const toggleSettings = () => $("settings").classList.toggle("open");
+  document.addEventListener("keydown", (e) => { if ((e.key === "s" || e.key === "S") && !e.target.matches("input,select,textarea")) toggleSettings(); });
+  let taps = [];
+  document.querySelectorAll("#s-idle .stp, .k-cameo").forEach((el) => el.addEventListener("click", () => { const now = Date.now(); taps = taps.filter((t) => now - t < 1500).concat(now); if (taps.length >= 3) { taps = []; toggleSettings(); } }));
 </script>
 </body></html>

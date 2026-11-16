@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Scream & Win · Studio Cream · Wendy Fest</title><link rel="icon" href="../assets/cameo.png">
-<link rel="stylesheet" href="../css/brand.css?v=mwj42ufd">
+<link rel="stylesheet" href="../css/brand.css?v=mwj4b9sz">
 <style>
 /* ================= RETRO BLUE (formerly Studio Cream) · Scream & Win ================= */
 :root { --u:min(calc(100vw / 1440), calc(100vh / 760)); --v:var(--u); --blue:#029CD4; --red:#CD2028; --red2:#DA2A33; --red-dark:#8E141B; --ink:#1F1A1A; --cream:#F7F2EC; --blush:#F2D4D7; --cyan:#29C9E0; --line:rgba(205,32,40,.18); }
@@ -385,7 +385,6 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
       <i class="abs rule"></i>
       <div class="dots" id="dots"><span class="on">3</span><em>•</em><span>2</span><em>•</em><span>1</span></div>
       <div class="abs" id="cnt">3</div>
-      <svg class="abs" id="cd-burst" viewBox="0 0 40 40" fill="none" stroke="#CD2028" stroke-width="3" stroke-linecap="round"><path d="M6 20 9 8M14 24 26 6M18 30 34 26"/><circle cx="36" cy="10" r="3" fill="#29C9E0" stroke="none"/></svg>
     </div>
     <div class="box" id="go-meter" style="display:none">
       <canvas class="abs" id="live-cv"></canvas>
@@ -427,6 +426,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     <div class="eyebrow" style="justify-content:flex-start">Station settings</div>
     <label>Microphone (this screen)</label><select id="mic"></select>
     <label>Live level</label><div class="lvl"><div id="lvl-set"></div></div><div id="db-set" style="margin-top:.6vmin">— dB</div>
+    <label>Sound effects</label><select id="sfx-mode"><option value="on">On</option><option value="off">Off</option></select>
     <label>Clarity scoring</label><select id="judge-mode"><option value="auto">Auto (speech recognition, Chrome + internet)</option><option value="host">Host judges after each scream</option></select>
     <label>Scoring (from admin)</label><div id="thr-info">—</div>
     <p style="opacity:.7;margin-top:2vmin">Calibrate: have a staff member scream at the real distance. Their peak should land near 100. Adjust dB floor/ceiling in Admin if screams never reach it or always do.</p>
@@ -434,7 +434,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   </aside>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwj42ufd"></script><script src="../js/kiosk.js?v=mwj42ufd"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwj4b9sz"></script><script src="../js/kiosk.js?v=mwj4b9sz"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let CFG = { scream: { threshold: 70, durationMs: 3000, dbFloor: -42, dbCeil: -6, loudWeight: .6, accWeight: .4 } };
@@ -546,8 +546,8 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     for (let i = 0; i < n; i++) {
       const x = (i + frac) * gap + gap * .25, u = (x + w / 2) / W;
       if (u < 0 || u > 1) continue;
-      const env = Math.exp(-Math.pow((u - .58) / .27, 2)) * .95 + Math.exp(-Math.pow((u - .22) / .12, 2)) * .25 + .05;
-      const v = Math.min(1, env * VOICE.hist[i] * 1.12), h = Math.max(w, v * H * .92), a = Math.min(1, .3 + env * 1.2);
+      const env = .82 + .18 * Math.exp(-Math.pow((u - .5) / .35, 2));   // even height across, no fade-out
+      const v = Math.min(1, env * VOICE.hist[i] * 1.12), h = Math.max(w, v * H * .92), a = 1;
       const red = (VOICE.count - i) % 4 === 0;
       ctx.fillStyle = red ? `rgba(205,32,40,${a.toFixed(2)})` : `rgba(250,244,235,${a.toFixed(2)})`;
       ctx.beginPath(); ctx.roundRect(x, H - h, w, h + w, w / 2); ctx.fill();
@@ -610,6 +610,33 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     ctx.lineWidth = 2.5 * fd; ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(px - 34 * U, py); ctx.lineTo(tip.x, tip.y); ctx.stroke();
     ctx.fillStyle = "#CD2028"; ctx.beginPath(); ctx.arc(tip.x, tip.y, 6 * fd, 0, 7); ctx.fill();
   }
+  // ---------- sound effects (Web Audio, synthesized; silent while the mic is scoring) ----------
+  const SFX = (() => {
+    let ac = null, master = null; const on = () => (localStorage.getItem("wf_sfx") || "on") === "on";
+    const ctx = () => { if (!ac) { ac = new (window.AudioContext || window.webkitAudioContext)(); master = ac.createGain(); master.gain.value = .5; master.connect(ac.destination); } if (ac.state === "suspended") ac.resume(); return ac; };
+    const tone = (f, t0, d, { type = "sine", vol = .5, to = null, attack = .005 } = {}) => { const a = ctx(), o = a.createOscillator(), g = a.createGain(), t = a.currentTime + t0;
+      o.type = type; o.frequency.setValueAtTime(f, t); if (to) o.frequency.exponentialRampToValueAtTime(to, t + d);
+      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + attack); g.gain.exponentialRampToValueAtTime(.0001, t + d); o.connect(g).connect(master); o.start(t); o.stop(t + d + .05); };
+    const noise = (t0, d, { vol = .3, from = 800, to = 3000, q = .8 } = {}) => { const a = ctx(), n = a.sampleRate * d, b = a.createBuffer(1, n, a.sampleRate), x = b.getChannelData(0); for (let i = 0; i < n; i++) x[i] = Math.random() * 2 - 1;
+      const src = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain(), t = a.currentTime + t0; src.buffer = b; f.type = "bandpass"; f.Q.value = q;
+      f.frequency.setValueAtTime(from, t); f.frequency.exponentialRampToValueAtTime(to, t + d); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + d * .3); g.gain.exponentialRampToValueAtTime(.0001, t + d);
+      src.connect(f).connect(g).connect(master); src.start(t); src.stop(t + d + .05); };
+    const play = (fn) => { if (!on() || windowOpen) return; try { fn(); } catch {} };
+    return {
+      whoosh: () => play(() => noise(0, .32, { vol: .22, from: 500, to: 3200 })),
+      click: () => play(() => tone(1500, 0, .045, { type: "triangle", vol: .22 })),
+      tick: () => play(() => { tone(660, 0, .22, { type: "square", vol: .16 }); tone(1320, 0, .12, { vol: .1 }); }),
+      last: () => play(() => { tone(990, 0, .3, { type: "square", vol: .18 }); tone(1980, 0, .16, { vol: .1 }); }),
+      go: () => play(() => { [523, 659, 784].forEach((f) => tone(f, 0, .55, { type: "sawtooth", vol: .1, attack: .02 })); tone(1046, .05, .5, { type: "square", vol: .08 }); noise(0, .4, { vol: .12, from: 2000, to: 6000 }); }),
+      voice: () => play(() => { tone(880, 0, .12, { vol: .2 }); tone(1320, .1, .18, { vol: .2 }); }),
+      win: () => play(() => { [[523, 0], [659, .12], [784, .24], [1046, .36]].forEach(([f, t]) => tone(f, t, .35, { type: "square", vol: .12 })); [523, 659, 784, 1046].forEach((f) => tone(f, .5, 1.1, { type: "sawtooth", vol: .06, attack: .03 })); noise(.48, .9, { vol: .1, from: 3000, to: 8000, q: .5 }); }),
+      lose: () => play(() => { tone(392, 0, .35, { type: "triangle", vol: .22, to: 370 }); tone(330, .32, .6, { type: "triangle", vol: .22, to: 262 }); }),
+      error: () => play(() => { tone(220, 0, .14, { type: "square", vol: .14 }); tone(185, .14, .2, { type: "square", vol: .14 }); }),
+      unlock: () => { try { ctx(); } catch {} },
+    };
+  })();
+  $("sfx-mode").value = localStorage.getItem("wf_sfx") || "on"; $("sfx-mode").onchange = () => { localStorage.setItem("wf_sfx", $("sfx-mode").value); SFX.click(); };
+  addEventListener("pointerdown", SFX.unlock, { once: true }); addEventListener("keydown", SFX.unlock, { once: true });
   // ---------- mic check: listen for a voice (e.g. "Hello"), then start automatically ----------
   let VD = null;
   function resetVoiceCheck() { const now = performance.now(); VD = { t0: now, last: now, base: 0, n: 0, ms: 0, fired: false }; }
@@ -620,7 +647,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     const thr = Math.max(18, VD.base + 14);
     VD.ms = pct > thr ? VD.ms + dt : Math.max(0, VD.ms - dt * .6);
     if (VD.ms > 280) {
-      VD.fired = true; $("mic-status").textContent = "Voice detected"; $("mic-pill").classList.add("heard-ok");
+      VD.fired = true; SFX.voice(); $("mic-status").textContent = "Voice detected"; $("mic-pill").classList.add("heard-ok");
       setTimeout(() => { if (mode === "ready" && $("s-ready").classList.contains("on")) $("go").click(); }, 800);
     }
   }
@@ -722,7 +749,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   const SVG_BKSP = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M21 5H9l-6.5 7L9 19h12z"/><path d="M12.5 9.5l5 5M17.5 9.5l-5 5"/></svg>';
   const typeKey = (k) => { if (codeEl.value.length < 6) { codeEl.value += k; paintBoxes(); } K.resetIdle(60000, goIdle); };
   const krow = (cls) => { const r = document.createElement("div"); r.className = "krow " + cls; $("kbd").appendChild(r); return r; };
-  const key = (r, label, fn, cls = "") => { const b = document.createElement("button"); b.className = cls; b.innerHTML = label; b.onclick = fn; r.appendChild(b); return b; };
+  const key = (r, label, fn, cls = "") => { const b = document.createElement("button"); b.className = cls; b.innerHTML = label; b.onclick = (e) => { SFX.click(); fn(e); }; r.appendChild(b); return b; };
   const r1 = krow("r1"), r2 = krow("r2"), r3 = krow("r3"), r4 = krow("r4");
   const r1keys = [..."QWERTYUIOP"].map((k) => key(r1, k, (e) => typeKey(e.currentTarget.textContent)));
   [..."ASDFGHJKL"].forEach((k) => key(r2, k, () => typeKey(k)));
@@ -744,7 +771,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
       $("r-name").textContent = guest.firstName; mode = "ready"; $("mic-pill").classList.remove("heard-ok"); K.show("s-ready"); if (await startAudio()) $("mic-status").textContent = "Mic connected · say “Hello”"; resetVoiceCheck(); K.resetIdle(90000, goIdle);
     } catch (e) { $("code-msg").textContent = e.message; shakeBoxes(); }
   }
-  function shakeBoxes() { [...$("boxes").children].forEach((b) => { b.classList.add("err"); setTimeout(() => b.classList.remove("err"), 500); }); }
+  function shakeBoxes() { SFX.error(); [...$("boxes").children].forEach((b) => { b.classList.add("err"); setTimeout(() => b.classList.remove("err"), 500); }); }
 
   // ---------- flow ----------
   function goIdle() { K.resetIdle(0); stopRecog(); windowOpen = false; guest = null; codeEl.value = ""; paintBoxes(); $("code-msg").textContent = ""; mode = "idle"; document.querySelectorAll(".confetti").forEach((c) => c.remove()); K.show("s-idle"); }
@@ -755,7 +782,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   function setStep(n, label) { $("step-n").textContent = n; $("step-l").textContent = label; const k = +n; $("track6").classList.add("hide"); [...$("track6").children].forEach((el, i) => { el.classList.toggle("done", i < k - 1); el.classList.toggle("now", i === k - 1); }); }
   function enter(box) { if (!box) return; box.classList.remove("enter"); [...box.children].forEach((el, i) => el.style.setProperty("--i", i)); void box.offsetWidth; box.classList.add("enter"); }
   const restart = (el, cls) => { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); };
-  document.addEventListener("screen", (e) => { setTimeout(fitText, 0); const sc = $(e.detail); enter(e.detail === "s-go" ? $("go-count") : sc && sc.querySelector(".box")); if (STEPS[e.detail]) setStep(...STEPS[e.detail]); if (e.detail === "s-code") setTimeout(() => codeEl.focus({ preventScroll: true }), 50); });
+  document.addEventListener("screen", (e) => { if (e.detail !== "s-result") SFX.whoosh(); setTimeout(fitText, 0); const sc = $(e.detail); enter(e.detail === "s-go" ? $("go-count") : sc && sc.querySelector(".box")); if (STEPS[e.detail]) setStep(...STEPS[e.detail]); if (e.detail === "s-code") setTimeout(() => codeEl.focus({ preventScroll: true }), 50); });
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
   $("go").onclick = async () => {
     if (mode !== "ready") return;
@@ -763,11 +790,12 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     K.resetIdle(0); K.show("s-go"); $("go-count").style.display = "block"; $("go-meter").style.display = "none"; mode = "count";
     const dots = [...$("dots").querySelectorAll("span")];
     for (let n = 3; n >= 1; n--) {
-      $("cnt").textContent = n; restart($("cnt"), "pop"); restart($("cd-burst"), "pop"); dots.forEach((d, i) => d.classList.toggle("on", i <= 3 - n));
+      $("cnt").textContent = n; restart($("cnt"), "pop"); n > 1 ? SFX.tick() : SFX.last(); dots.forEach((d, i) => d.classList.toggle("on", i <= 3 - n));
       if (n === 2) startRecog();
       const t0 = performance.now(); while (performance.now() - t0 < 1000) { countPct = ((4 - n) - 1 + (performance.now() - t0) / 1000) / 3 * 100; await wait(16); }
     }
     $("go-count").style.display = "none"; $("go-meter").style.display = "block"; setStep("5", "Live"); fitText(); enter($("go-meter"));
+    SFX.go(); await wait(320);
     peakDb = -100; gaugeShown = 0; windowOpen = true; mode = "scream";
     const dur = 10000, t0 = performance.now();   // Studio Cream gives guests up to 10 s; it ends early once a clear "Wendy's" is heard
     while (performance.now() - t0 < dur) {
@@ -806,11 +834,11 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
       renderDetail(r.couponPoolEmpty ? "You won! The reward pool is empty, so please see a host." : "Fresh, never frozen. Just like that scream.", r);
       if (r.coupon) { $("res-code").textContent = r.coupon.code; $("res-label").textContent = r.coupon.label; }
       $("qr-label").innerHTML = "Save your<br>reward";
-      $("flash").classList.remove("go"); void $("flash").offsetWidth; $("flash").classList.add("go"); confetti();
+      $("flash").classList.remove("go"); void $("flash").offsetWidth; $("flash").classList.add("go"); confetti(); SFX.win();
     } else {
       $("res-title").textContent = r.loudness < r.accuracy ? "Louder next time." : "We heard… something.";
       renderDetail(r.loudness < 40 ? "Louder! Colombo traffic is louder than that." : r.accuracy < 40 ? "The meter heard you. It just didn’t hear “Wendy’s”." : "So close. One more “Wendy’s” and it’s yours.", r);
-      $("qr-label").innerHTML = "Scan for<br>your pass";
+      $("qr-label").innerHTML = "Scan for<br>your pass"; SFX.lose();
     }
     $("qr-profile").src = qrUrl(r.profileUrl);
     K.resetIdle(30000, goIdle);

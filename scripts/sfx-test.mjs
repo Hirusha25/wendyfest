@@ -1,0 +1,23 @@
+// Checks the kiosk sound effects fire on screen change, key press, countdown and result, and stay silent while the mic is scoring. Usage: node scripts/sfx-test.mjs (app on :3000)
+import { createRequire } from "node:module";
+const { chromium } = createRequire("/opt/node-tools/node_modules/")("playwright");
+const base = "http://localhost:3000";
+const reg = async (name, phone) => { const r = await (await fetch(base + "/api/register", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, phone, lang: "en" }) })).json(); const v = await (await fetch(base + "/api/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ phone, code: r.devOtp }) })).json(); return v.code; };
+const code = await reg("Hirusha Dayananda", "077" + String(Date.now() % 10000000).padStart(7, "0"));
+const b = await chromium.launch({ args: ["--use-fake-ui-for-media-stream", "--use-fake-device-for-media-stream", "--autoplay-policy=no-user-gesture-required"] });
+const c = await b.newContext({ viewport: { width: 1920, height: 1080 }, permissions: ["microphone"] }); await c.addCookies([{ name: "wf_kiosk", value: "2468", url: base }]);
+const p = await c.newPage(); const errs = []; p.on("pageerror", (e) => errs.push(e.message));
+await p.addInitScript(() => { window.__sfx = []; const O = AudioContext.prototype.createOscillator, B = AudioContext.prototype.createBufferSource;
+  AudioContext.prototype.createOscillator = function () { window.__sfx.push(["osc", Math.round(this.currentTime * 100) / 100]); return O.call(this); };
+  AudioContext.prototype.createBufferSource = function () { window.__sfx.push(["noise", Math.round(this.currentTime * 100) / 100]); return B.call(this); }; });
+await p.goto(base + "/kiosk/scream-cream", { waitUntil: "networkidle" });
+const n = () => p.evaluate(() => window.__sfx.length);
+await p.click("#start"); await p.waitForTimeout(300); console.log("after screen change:", await n());
+await p.click("#kbd button"); await p.waitForTimeout(100); console.log("after key press:", await n());
+await p.evaluate(() => { codeEl.value = ""; paintBoxes(); }); await p.fill("#code", code); await p.keyboard.press("Enter"); await p.waitForTimeout(900);
+const beforeCount = await n(); await p.evaluate(() => { currentDb = () => -60; }); await p.click("#go"); await p.waitForTimeout(3600);
+console.log("countdown + go sounds:", (await n()) - beforeCount);
+const live0 = await n(); await p.waitForTimeout(1500); console.log("sounds while mic scoring (should be 0):", (await n()) - live0);
+await p.evaluate(() => showResult({ score: 84, loudness: 91, accuracy: 74, threshold: 70, won: true, coupon: { code: "WENDY10-AAA111", label: "x" }, profileUrl: location.origin + "/p/x" }));
+const w0 = await n(); await p.waitForTimeout(300); console.log("win fanfare voices:", (await n()) - w0 >= 0 ? "played" : "none");
+await b.close(); console.log("errors:", errs.length ? errs : "none");

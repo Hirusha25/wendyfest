@@ -536,14 +536,16 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   const VOICE = { n: 64, hist: [], count: 0, last: 0, sylLeft: 0, sylLen: 1, amp: 0, gap: 0, step: 330 };
   for (let i = 0; i < VOICE.n; i++) { VOICE.hist.push(nextVoiceSample()); VOICE.count++; }
   function nextVoiceSample() {
-    if (analyser) { const lv = dbToPct(currentDb()) / 100; if (lv > .12) return Math.min(1, .45 + lv * .6); }
-    if (VOICE.gap > 0) { VOICE.gap--; return .35 + Math.random() * .06; }
-    if (VOICE.sylLeft <= 0) {
-      if (Math.random() < .2) VOICE.gap = 1 + Math.floor(Math.random() * 2);
-      VOICE.sylLen = 4 + Math.floor(Math.random() * 4); VOICE.sylLeft = VOICE.sylLen; VOICE.amp = .55 + Math.random() * .45;
+    // always keep the varied syllable rhythm; a loud room only lifts it, it never flattens it into a smooth hill
+    let v;
+    if (VOICE.gap > 0) { VOICE.gap--; v = .35 + Math.random() * .06; }
+    else {
+      if (VOICE.sylLeft <= 0) { if (Math.random() < .2) VOICE.gap = 1 + Math.floor(Math.random() * 2); VOICE.sylLen = 4 + Math.floor(Math.random() * 4); VOICE.sylLeft = VOICE.sylLen; VOICE.amp = .55 + Math.random() * .45; }
+      const k = (VOICE.sylLen - VOICE.sylLeft + .5) / VOICE.sylLen; VOICE.sylLeft--;
+      v = .4 + .6 * VOICE.amp * Math.sin(Math.PI * k) * (.9 + Math.random() * .1);
     }
-    const k = (VOICE.sylLen - VOICE.sylLeft + .5) / VOICE.sylLen; VOICE.sylLeft--;
-    return .4 + .6 * VOICE.amp * Math.sin(Math.PI * k) * (.9 + Math.random() * .1);
+    if (analyser && typeof currentDb === "function") { const lv = dbToPct(currentDb()) / 100; if (lv > .3) v = Math.min(1, v * (1 + (lv - .3) * .9)); }
+    return v;
   }
   function drawHill(c) {
     if (!c._sized) sizeCanvas(c);

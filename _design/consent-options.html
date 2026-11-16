@@ -1,0 +1,120 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>[DEMO] Roast Me · Ready? · options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;0,800;0,900;1,700;1,800;1,900&family=Barlow+Semi+Condensed:ital,wght@1,900&display=swap" rel="stylesheet">
+<style>
+/* Mockups only. Each screen is a fixed 1920x1080 canvas, scaled to fit. Open with ?v=a, ?v=b or ?v=c for one screen full size. */
+html, body { margin:0; background:#151313; color:#fff; font-family:Poppins, sans-serif; }
+.board { padding:32px 24px 60px; display:grid; gap:44px; justify-items:center; }
+.opt { width:min(100vw - 48px, 1500px); }
+.opt h2 { margin:0 0 6px; font:italic 900 30px/1.1 Poppins; text-transform:uppercase; }
+.opt p { margin:0 0 14px; font:500 16px/1.5 Poppins; color:rgba(255,255,255,.75); max-width:1000px; }
+.fit { width:min(100vw - 48px, 1500px); aspect-ratio:16/9; overflow:hidden; }
+.s { --k:calc(min(100vw - 48px, 1500px) / 1920px); position:relative; width:1920px; height:1080px; overflow:hidden; background:#1E1B1B; transform-origin:0 0; }
+body.one { overflow:hidden; } body.one .board { padding:0; display:block; } body.one .opt, body.one .fit { width:100vw; } body.one .opt h2, body.one .opt p { display:none; }
+.s > * { position:absolute; }
+/* chrome: copied from the live kiosk */
+.panel { inset:0; background:linear-gradient(170deg, #D92530 0%, #CD2028 50%, #B81C24 100%); clip-path:polygon(1130px 0, 1920px 0, 1920px 1080px, 740px 1080px); }
+.band { inset:0; background:#fff; clip-path:polygon(1088px 0, 1130px 0, 740px 1080px, 698px 1080px); }
+.dots { inset:0; clip-path:polygon(0 0, 1088px 0, 698px 1080px, 0 1080px); background:radial-gradient(circle, rgba(255,255,255,.08) 3px, transparent 3.7px) 0 0 / 36px 36px; -webkit-mask:radial-gradient(circle at 0 100%, #000 0, rgba(0,0,0,.6) 18%, transparent 38%); mask:radial-gradient(circle at 0 100%, #000 0, rgba(0,0,0,.6) 18%, transparent 38%); }
+.hd { left:0; right:0; top:0; height:140px; display:flex; align-items:center; justify-content:space-between; padding:0 93px 0 120px; box-sizing:border-box; background:linear-gradient(90deg, #01679A 0%, #0186B8 38%, #029CD4 72%, #1BB0E6 100%); box-shadow:0 8px 26px rgba(0,0,0,.35); z-index:5; }
+.hd .brand { display:flex; align-items:center; gap:40px; } .hd .brand img { height:77px; } .hd .brand i { width:2px; height:59px; background:rgba(255,255,255,.6); }
+.hd .stp { display:flex; align-items:center; gap:35px; font:italic 800 35px/1 Poppins; letter-spacing:.22em; text-transform:uppercase; }
+.hd .stp i { width:75px; height:75px; border-radius:50%; background:#fff; color:#0186B8; display:grid; place-items:center; font:900 40px/1 Poppins; letter-spacing:0; }
+.strp { left:0; right:0; top:140px; height:27px; background:linear-gradient(180deg, #F6F0E6 0 11px, #CD2028 11px 21px, #F6F0E6 21px 27px); z-index:5; box-shadow:0 8px 20px rgba(0,0,0,.25); }
+.ft { left:0; right:0; bottom:0; height:59px; display:flex; justify-content:space-between; align-items:center; padding:0 93px 0 120px; box-sizing:border-box; background:linear-gradient(90deg, #01679A 0%, #0186B8 38%, #029CD4 72%, #1BB0E6 100%); font:700 20px/1 Poppins; letter-spacing:.14em; text-transform:uppercase; z-index:5; }
+.ft .c { display:flex; align-items:center; gap:16px; } .ft .c img { height:32px; } .ft .lk { display:flex; gap:30px; } .ft a { border-bottom:1px solid rgba(255,255,255,.5); }
+.wf { display:inline-flex; align-items:flex-start; filter:drop-shadow(0 5px 7px rgba(0,20,40,.5)); margin-top:-4px; }
+.wf .w1, .wf .w2 { display:inline-block; font:italic 900 50px/.9 'Barlow Semi Condensed', sans-serif; text-transform:uppercase; color:#fff; text-shadow:0 2px 0 rgba(0,0,0,.18); position:relative; }
+.wf .w1 { padding:7px 21px 13px 18px; background:linear-gradient(180deg, #D8262F 0 82%, #951620 82%); transform:rotate(-5deg) skewX(-14deg); z-index:1; }
+.wf .w2 { padding:7px 19px 13px; margin:10px 0 0 -18px; background:linear-gradient(180deg, #2BA9E1 0 82%, #01679A 82%); transform:rotate(-5deg) skewX(-14deg); z-index:2; }
+/* type: copied from the live kiosk */
+.eb { font:italic 800 24px/1 Poppins; letter-spacing:.24em; text-transform:uppercase; color:#029CD4; display:flex; align-items:center; gap:18px; white-space:nowrap; }
+.eb::after { content:""; width:56px; height:3px; background:currentColor; } .eb.w { color:#fff; }
+.t3 { font:italic 900 132px/.82 Poppins; text-transform:uppercase; letter-spacing:-.035em; white-space:nowrap; } .t3 span { display:block; }
+.t3 .l1 { color:#F6F0E6; text-shadow:0 4px 0 #029CD4, 0 8px 0 #01476A, 0 20px 28px rgba(0,0,0,.5); }
+.t3 .l2 { color:#CD2028; -webkit-text-stroke:3px #fff; paint-order:stroke fill; text-shadow:0 5px 0 #fff, 0 10px 0 #014F72, 0 20px 28px rgba(0,0,0,.5); margin-top:8px; }
+.sub { font:600 32px/1.3 Poppins; }
+.ghostb { height:72px; padding:0 36px; border-radius:8px; border:3px solid rgba(255,255,255,.75); background:transparent; color:#fff; font:italic 800 24px/72px Poppins; letter-spacing:.14em; text-transform:uppercase; box-sizing:border-box; display:flex; align-items:center; }
+/* keys-style 3D blocks, reused from the approved code screen */
+.blk { border-radius:12px; color:#fff; background:linear-gradient(180deg, #403939 0%, #1E1B1B 100%); box-shadow:0 6px 0 #0A0909, 0 12px 16px rgba(60,0,8,.3), inset 0 2px 0 rgba(255,255,255,.16); box-sizing:border-box; }
+.act { display:grid; grid-template-columns:273px 1fr; gap:12px; width:747px; height:116px; }
+.act > * { display:flex; align-items:center; justify-content:center; gap:22px; font:italic 900 30px/1 Poppins; letter-spacing:.06em; text-transform:uppercase; }
+.go { border-radius:12px; background:#fff; color:#CD2028; font:italic 900 46px/1 Poppins !important; letter-spacing:-.01em !important; box-shadow:0 8px 0 #7E1016, 0 20px 36px rgba(60,0,8,.35); text-transform:uppercase; display:flex; align-items:center; justify-content:center; gap:24px; }
+.go svg { width:60px; height:60px; flex:none; } .go { white-space:nowrap; } .go.sm { font-size:35px !important; gap:16px; } .go.sm svg { width:46px; height:46px; }
+.go.red { background:#CD2028; color:#fff; border:4px solid #fff; box-sizing:border-box; box-shadow:0 8px 0 #7E1016, 0 20px 36px rgba(60,0,8,.4); }
+.art { inset:0; background:#fff; clip-path:polygon(1088px 167px, 1920px 167px, 1920px 1021px, 698px 1021px); }
+.art img { position:absolute; right:0; bottom:-40px; width:1220px; height:1220px; object-fit:cover; }
+.hi { font:italic 900 104px/1 Poppins; text-transform:uppercase; letter-spacing:-.035em; white-space:nowrap; }
+.hi .l1 { color:#F6F0E6; text-shadow:0 4px 0 #029CD4, 0 8px 0 #01476A, 0 20px 28px rgba(0,0,0,.5); }
+.hi .l2 { color:#CD2028; -webkit-text-stroke:3px #fff; paint-order:stroke fill; text-shadow:0 5px 0 #fff, 0 10px 0 #014F72, 0 20px 28px rgba(0,0,0,.5); margin-left:.12em; }
+/* language: squared tabs / segmented control instead of round pills */
+.tabs { display:flex; gap:8px; } .tabs b { height:56px; padding:0 26px; display:grid; place-items:center; border-radius:10px 10px 0 0; background:rgba(255,255,255,.14); font:italic 800 22px/1 Poppins, 'Noto Sans Sinhala', 'Noto Sans Tamil'; } .tabs b.on { background:#fff; color:#1E1B1B; }
+.seg { display:flex; gap:10px; } .seg b { height:58px; padding:0 26px; display:grid; place-items:center; border-radius:8px; border:3px solid rgba(255,255,255,.4); box-sizing:border-box; font:italic 800 22px/1 Poppins; } .seg b.on { background:#029CD4; border-color:#029CD4; box-shadow:0 5px 0 #01476A; }
+/* A: consent as three short rows in the white card */
+.card { background:#fff; color:#1E1B1B; border-radius:0 10px 10px 10px; box-shadow:0 10px 0 #01679A, 0 20px 40px rgba(0,0,0,.4); overflow:hidden; }
+.card .rows { padding:22px 26px 18px; display:grid; gap:14px; }
+.row { display:flex; align-items:center; gap:20px; } .row i { width:60px; height:60px; border-radius:50%; background:#029CD4; display:grid; place-items:center; flex:none; } .row i svg { width:32px; height:32px; }
+.row b { display:block; font:italic 900 24px/1.1 Poppins; text-transform:uppercase; letter-spacing:-.01em; } .row span { display:block; margin-top:4px; font:500 18px/1.3 Poppins; color:#5A5050; }
+.card .no { background:#CD2028; color:#fff; padding:15px 26px; font:italic 800 17px/1.2 Poppins; }
+/* B: three step blocks on the red side */
+.step { width:747px; height:158px; display:flex; align-items:center; gap:30px; padding:0 34px; }
+.step i { width:84px; height:84px; border-radius:50%; background:#fff; color:#CD2028; display:grid; place-items:center; font:900 44px/1 Poppins; font-style:normal; flex:none; }
+.step b { display:block; font:italic 900 36px/1 Poppins; text-transform:uppercase; letter-spacing:-.01em; } .step span { display:block; margin-top:8px; font:500 20px/1.3 Poppins; color:rgba(255,255,255,.82); }
+.promise { width:600px; padding-left:26px; border-left:8px solid #029CD4; font:700 27px/1.35 Poppins; } .promise em { font-style:italic; font-weight:900; color:#7FCBEA; }
+.rdots { inset:0; clip-path:polygon(1130px 0, 1920px 0, 1920px 1080px, 740px 1080px); background:radial-gradient(circle, rgba(255,255,255,.13) 3px, transparent 3.7px) 0 5px / 36px 36px; -webkit-mask:radial-gradient(circle at 100% 15%, #000 0, rgba(0,0,0,.6) 20%, transparent 42%); mask:radial-gradient(circle at 100% 15%, #000 0, rgba(0,0,0,.6) 20%, transparent 42%); }
+/* C: numbered lines on charcoal + Wendy's speech bubble */
+.ln { display:flex; align-items:center; gap:26px; width:610px; } .ln i { width:64px; flex:none; text-align:center; font:italic 900 76px/1 Poppins; color:#F6F0E6; text-shadow:0 4px 0 #029CD4, 0 8px 0 #01476A; }
+.ln b { font:600 27px/1.3 Poppins; } .ln b u { text-decoration:none; font-weight:900; font-style:italic; text-transform:uppercase; color:#7FCBEA; }
+.bub { width:520px; background:#fff; color:#1E1B1B; border:6px solid #029CD4; border-radius:28px; padding:24px 30px; box-sizing:border-box; font:italic 900 31px/1.2 Poppins; box-shadow:0 14px 30px rgba(0,0,0,.3); z-index:3; }
+.bub small { display:block; margin-top:8px; font:600 19px/1.35 Poppins; color:#5A5050; font-style:normal; }
+.bub::after { content:""; position:absolute; right:90px; bottom:-21px; width:30px; height:30px; background:#fff; border-right:6px solid #029CD4; border-bottom:6px solid #029CD4; transform:rotate(45deg); }
+</style></head><body>
+<div class="board" id="board"></div>
+<script>
+const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>';
+const ic = { cam:'<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h4l2-3h6l2 3h4v11H3z"/><circle cx="12" cy="13" r="3.6"/></svg>',
+  fire:'<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1 4 5 5.500 5 10.500a5 5 0 0 1-10 0c0-2 1-3.500 2-4.500 0 2 1 3 2 3 0-3-1-5 1-9z"/></svg>',
+  phone:'<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.500" width="10" height="19" rx="2"/><path d="M11 18h2"/></svg>' };
+const chrome = (red) => `<div class="dots"></div><div class="panel"></div><div class="band"></div>${red ? '<div class="rdots"></div>' : '<div class="art"><img src="../assets/roast-wendy.png" alt=""></div>'}
+  <header class="hd"><div class="brand"><img src="../assets/wendys-horiz-white.svg" alt="Wendy's"><i></i><span class="wf"><span class="w1">Wendy</span><span class="w2">Fest</span></span></div><div class="stp"><i>3</i><span>Ready?</span></div></header>
+  <div class="strp"></div>
+  <footer class="ft"><span class="c"><img src="../assets/cameo.png" alt="">© 2026 Wendy’s Sri Lanka</span><span>Station A · Roast Me</span><span class="lk"><a>Terms</a><a>Privacy</a></span></footer>`;
+const hi = `<div class="eb" style="left:125px;top:230px">Before we roast you</div><div class="hi" style="left:112px;top:270px"><span class="l1">Hi</span><span class="l2">Demo!</span></div>`;
+const OPTS = {
+  a: { title: "A · Tidy", red: false, note: "Closest to today. The paragraph becomes three short rows, the language picker becomes tabs on the card, the card no longer runs into the white stripe, and the two buttons share one row in the same spot as Delete + Go on the code screen.",
+    html: hi + `
+      <div class="tabs" style="left:125px;top:412px"><b class="on">English</b><b>සිංහල</b><b>தமிழ்</b></div>
+      <div class="card" style="left:125px;top:468px;width:650px"><div class="rows">
+        <div class="row"><i>${ic.cam}</i><div><b>One photo</b><span>We take one photo of you at this booth.</span></div></div>
+        <div class="row"><i>${ic.fire}</i><div><b>A playful roast</b><span>Wendy’s AI looks at your style, outfit and expression.</span></div></div>
+        <div class="row"><i>${ic.phone}</i><div><b>Sent to your phone</b><span>Saved to your Wendy Fest profile, with a link by SMS.</span></div></div>
+      </div><div class="no">Never about body, skin, age or religion. Just your vibe.</div></div>
+      <div class="act" style="left:1080px;top:838px"><div class="blk">No thanks</div><div class="go red sm">I’m in, roast me${arrow}</div></div>` },
+  b: { title: "B · Three steps on red", red: true, note: "Matches the code screen most closely: Wendy’s face is replaced by the red panel with three numbered step blocks in the same style as the keys. The promise sits on the left, and one big white button says yes.",
+    html: hi + `
+      <div class="sub" style="left:125px;top:416px;width:620px">A quick heads-up before the camera comes on.</div>
+      <div class="seg" style="left:125px;top:540px"><b class="on">English</b><b>සිංහල</b><b>தமிழ்</b></div>
+      <div class="promise" style="left:125px;top:660px"><em>Just your vibe.</em><br>Never about body, skin, age, religion or anything you can’t change.</div>
+      <div class="ghostb" style="left:125px;top:888px">← No thanks</div>
+      <div class="eb w" style="left:1080px;top:230px">How it works</div>
+      <div class="blk step" style="left:1080px;top:284px"><i>1</i><div><b>One photo</b><span>We take one photo of you at this booth.</span></div></div>
+      <div class="blk step" style="left:1080px;top:466px"><i>2</i><div><b>A playful roast</b><span>Wendy’s AI looks at your style, outfit and expression.</span></div></div>
+      <div class="blk step" style="left:1080px;top:648px"><i>3</i><div><b>Sent to your phone</b><span>Saved to your Wendy Fest profile, with a link by SMS.</span></div></div>
+      <div class="go" style="left:1080px;top:838px;width:747px;height:116px">I’m in, roast me${arrow}</div>` },
+  c: { title: "C · Wendy makes the promise", red: false, note: "Keeps Wendy. The three points sit directly on the charcoal as big numbered lines (no white box), and the promise becomes Wendy’s speech bubble. One full-width yes button on the right, No thanks as the quiet button on the left.",
+    html: hi + `
+      <div class="seg" style="left:125px;top:412px"><b class="on">English</b><b>සිංහල</b><b>தமிழ்</b></div>
+      <div class="ln" style="left:125px;top:512px"><i>1</i><b><u>One photo</u> of you, taken at this booth.</b></div>
+      <div class="ln" style="left:125px;top:618px"><i>2</i><b><u>A playful roast</u> from Wendy’s AI, based on your style and outfit.</b></div>
+      <div class="ln" style="left:125px;top:724px"><i>3</i><b><u>Sent to your phone</u> and saved to your profile.</b></div>
+      <div class="ghostb" style="left:125px;top:888px">← No thanks</div>
+      <div class="bub" style="left:1150px;top:206px">Just your vibe. Promise.<small>Never your body, skin, age, religion or anything you can’t change.</small></div>
+      <div class="go red" style="left:1080px;top:838px;width:747px;height:116px">I’m in, roast me${arrow}</div>` },
+};
+const v = new URLSearchParams(location.search).get("v");
+if (v) document.body.classList.add("one");
+document.getElementById("board").innerHTML = Object.entries(OPTS).filter(([k]) => !v || k === v).map(([k, o]) =>
+  `<section class="opt"><h2>${o.title}</h2><p>${o.note}</p><div class="fit"><div class="s">${chrome(o.red)}${o.html}</div></div></section>`).join("");
+function fit() { document.querySelectorAll(".fit").forEach(f => { f.firstElementChild.style.transform = `scale(${f.clientWidth / 1920})`; }); }
+addEventListener("resize", fit); fit();
+</script></body></html>

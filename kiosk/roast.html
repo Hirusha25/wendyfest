@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Roast Me · Wendy Fest</title><link rel="icon" href="../assets/cameo.png">
-<link rel="stylesheet" href="../css/brand.css?v=mwjhr09o"><link rel="stylesheet" href="../css/kiosk.css?v=mwjhr09o">
+<link rel="stylesheet" href="../css/brand.css?v=mwjicmjh"><link rel="stylesheet" href="../css/kiosk.css?v=mwjicmjh">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@600;700&family=Barlow+Semi+Condensed:ital,wght@1,900&display=swap" rel="stylesheet">
 <style>
   body.kiosk { background: var(--ink); }
@@ -135,13 +135,27 @@
   .cv .help .q { width:calc(132 * var(--p)); height:calc(132 * var(--p)); background:#fff; padding:calc(9 * var(--p)); box-sizing:border-box; flex:none; } .cv .help .q img { width:100%; height:100%; display:block; }
   .cv .help > i { width:calc(3 * var(--p)); height:calc(112 * var(--p)); background:rgba(255,255,255,.5); flex:none; }
   .cv .help div { font:italic 800 calc(23 * var(--p))/1.35 Poppins, sans-serif; letter-spacing:.12em; text-transform:uppercase; color:#F6F0E6; } .cv .help em { font-style:italic; color:#7FCBEA; }
-  /* consent */
-  .cv .lang-pick { display:flex; gap:calc(14 * var(--p)); }
-  .cv .lang-pick button { height:calc(58 * var(--p)); padding:0 calc(26 * var(--p)); border-radius:calc(999 * var(--p)); border:calc(2 * var(--p)) solid rgba(255,255,255,.35); background:transparent; color:#fff; font:italic 800 calc(22 * var(--p))/1 Poppins; letter-spacing:.06em; cursor:pointer; }
-  .cv .lang-pick button.on { background:#029CD4; border-color:#029CD4; }
-  .cv .consent-box { background:#fff; color:#1E1B1B; border-radius:calc(18 * var(--p)); padding:calc(30 * var(--p)) calc(34 * var(--p)); box-shadow:0 calc(10 * var(--p)) 0 #01679A, 0 calc(20 * var(--p)) calc(40 * var(--p)) rgba(0,0,0,.4); display:grid; gap:calc(16 * var(--p)); max-width:none; font-size:inherit; }
-  .cv .consent-box p { margin:0; font:500 calc(24 * var(--p))/1.5 Poppins, 'Noto Sans Sinhala', 'Noto Sans Tamil', sans-serif; }
-  .cv .consent-box p.note { font:italic 700 calc(18 * var(--p))/1.4 Poppins; color:#CD2028; }
+  /* consent: language tabs on a white card, three short rows, promise strip, 3D buttons */
+  .cv .hi { font:italic 900 calc(104 * var(--p))/1 Poppins, sans-serif; text-transform:uppercase; letter-spacing:-.035em; white-space:nowrap; }
+  .cv .hi .l1 { color:#F6F0E6; text-shadow:0 calc(4 * var(--p)) 0 #029CD4, 0 calc(8 * var(--p)) 0 #01476A, 0 calc(20 * var(--p)) calc(28 * var(--p)) rgba(0,0,0,.5); }
+  .cv .hi .l2 { color:#CD2028; -webkit-text-stroke:calc(3 * var(--p)) #fff; paint-order:stroke fill; text-shadow:0 calc(5 * var(--p)) 0 #fff, 0 calc(10 * var(--p)) 0 #014F72, 0 calc(20 * var(--p)) calc(28 * var(--p)) rgba(0,0,0,.5); margin-left:.12em; }
+  .cv .lang-pick { display:flex; gap:calc(8 * var(--p)); }
+  .cv .lang-pick button { height:calc(56 * var(--p)); padding:0 calc(26 * var(--p)); border:0; border-radius:calc(10 * var(--p)) calc(10 * var(--p)) 0 0; background:rgba(255,255,255,.14); color:#fff; font:italic 800 calc(22 * var(--p))/1 Poppins, 'Noto Sans Sinhala', 'Noto Sans Tamil', sans-serif; cursor:pointer; }
+  .cv .lang-pick button.on { background:#fff; color:#1E1B1B; }
+  .cv .consent-box { width:calc(640 * var(--p)); background:#fff; color:#1E1B1B; border-radius:0 calc(10 * var(--p)) calc(10 * var(--p)) calc(10 * var(--p)); box-shadow:0 calc(10 * var(--p)) 0 #01679A, 0 calc(20 * var(--p)) calc(40 * var(--p)) rgba(0,0,0,.4); overflow:hidden; display:block; padding:0; border:0; max-width:none; font-size:inherit; }
+  .cv .consent-box .rows { padding:calc(22 * var(--p)) calc(26 * var(--p)) calc(18 * var(--p)); display:grid; gap:calc(14 * var(--p)); }
+  .cv .consent-box .row { display:flex; align-items:center; gap:calc(20 * var(--p)); }
+  .cv .consent-box .row i { width:calc(60 * var(--p)); height:calc(60 * var(--p)); border-radius:50%; background:#029CD4; display:grid; place-items:center; flex:none; } .cv .consent-box .row i svg { width:calc(32 * var(--p)); height:calc(32 * var(--p)); }
+  .cv .consent-box .row b { display:block; font:italic 900 calc(24 * var(--p))/1.15 Poppins, 'Noto Sans Sinhala', 'Noto Sans Tamil', sans-serif; text-transform:uppercase; letter-spacing:-.01em; }
+  .cv .consent-box .row span { display:block; margin-top:calc(4 * var(--p)); font:500 calc(var(--cf, 18) * var(--p))/1.3 Poppins, 'Noto Sans Sinhala', 'Noto Sans Tamil', sans-serif; color:#5A5050; }
+  .cv .consent-box .no { background:#CD2028; color:#fff; padding:calc(14 * var(--p)) calc(26 * var(--p)); font:italic 800 calc(17 * var(--p))/1.25 Poppins, sans-serif; }
+  .cv .cact { display:grid; grid-template-columns:calc(230 * var(--p)) 1fr; gap:calc(12 * var(--p)); width:calc(747 * var(--p)); height:calc(116 * var(--p)); z-index:4; }
+  .cv .cact button { border:0; padding:0; border-radius:calc(12 * var(--p)); color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center; text-transform:uppercase; white-space:nowrap; transition:transform .06s; }
+  .cv .cact .nope { font:italic 900 calc(27 * var(--p))/1 Poppins, sans-serif; letter-spacing:.06em; background:linear-gradient(180deg, #403939 0%, #1E1B1B 100%); box-shadow:0 calc(6 * var(--p)) 0 #0A0909, 0 calc(14 * var(--p)) calc(22 * var(--p)) rgba(0,0,0,.35), inset 0 calc(2 * var(--p)) 0 rgba(255,255,255,.16); }
+  .cv .cact .yes { gap:calc(18 * var(--p)); font:italic 900 calc(40 * var(--p))/1 Poppins, sans-serif; letter-spacing:-.01em; background:linear-gradient(180deg, #2BB6EA 0%, #0186B8 100%); border:calc(4 * var(--p)) solid #fff; box-sizing:border-box; box-shadow:0 calc(8 * var(--p)) 0 #01476A, 0 calc(20 * var(--p)) calc(36 * var(--p)) rgba(0,0,0,.4), inset 0 calc(2 * var(--p)) 0 rgba(255,255,255,.3); text-shadow:0 calc(3 * var(--p)) 0 rgba(1,71,106,.6); animation:yp 1.8s ease-in-out infinite; }
+  .cv .cact .yes svg { width:calc(54 * var(--p)); height:calc(54 * var(--p)); flex:none; }
+  .cv .cact button:active { transform:translateY(calc(5 * var(--p))); }
+  @keyframes yp { 50% { box-shadow:0 calc(8 * var(--p)) 0 #01476A, 0 calc(20 * var(--p)) calc(36 * var(--p)) rgba(0,0,0,.4), inset 0 calc(2 * var(--p)) 0 rgba(255,255,255,.3), 0 0 0 calc(12 * var(--p)) rgba(255,255,255,.35); } }
   /* camera */
   .cv .cam { width:calc(900 * var(--p)); height:calc(675 * var(--p)); max-width:none; aspect-ratio:auto; border:calc(10 * var(--p)) solid #fff; border-radius:calc(24 * var(--p)); background:#0D1B26; overflow:hidden; box-shadow:0 calc(22 * var(--p)) calc(50 * var(--p)) rgba(0,0,0,.5); }
   .cv .cam .count { font:italic 900 calc(360 * var(--p))/1 Poppins, sans-serif; color:#fff; text-shadow:0 calc(8 * var(--p)) 0 #029CD4, 0 calc(16 * var(--p)) 0 #01476A, 0 calc(30 * var(--p)) calc(50 * var(--p)) rgba(0,0,0,.5); }
@@ -289,17 +303,21 @@
 
   <section class="screen cv" id="s-consent"><div class="s">
     <div class="art"><img src="../assets/roast-wendy.png" alt="" onerror="this.remove()"></div>
-    <div class="eb" style="left:calc(125 * var(--p));top:calc(220 * var(--p))">Before we roast you</div>
-    <div class="t3" style="left:calc(112 * var(--p));top:calc(268 * var(--p));font-size:calc(112 * var(--p))"><span class="l1" id="c-name">Hi!</span></div>
-    <div class="lang-pick" style="left:calc(125 * var(--p));top:calc(420 * var(--p))"><button data-l="en">English</button><button data-l="si">සිංහල</button><button data-l="ta">தமிழ்</button></div>
-    <div class="consent-box" style="left:calc(125 * var(--p));top:calc(510 * var(--p));width:calc(760 * var(--p))">
-      <p lang="en">📸 We’ll take one photo of you at this booth. Wendy's AI will look at your style, outfit and expression to write a playful roast. The photo and roast are saved to your Wendy Fest profile and a link is sent to your phone so you can download and share it.</p>
-      <p lang="si">📸 මෙම booth එකේදී ඔබේ ඡායාරූපයක් ගනු ලැබේ. ඔබේ style, ඇඳුම සහ මුහුණේ ඉරියව්ව බලා Wendy's AI විහිළු roast එකක් ලියයි. ඡායාරූපය සහ roast එක ඔබේ Wendy Fest profile එකේ save වී link එකක් ඔබේ දුරකථනයට යවනු ලැබේ.</p>
-      <p lang="ta">📸 இந்த booth-இல் உங்கள் ஒரு புகைப்படம் எடுக்கப்படும். உங்கள் style, உடை, முகபாவனையைப் பார்த்து Wendy's AI ஒரு விளையாட்டான roast எழுதும். புகைப்படமும் roast-ும் உங்கள் Wendy Fest profile-இல் சேமிக்கப்பட்டு link உங்கள் போனுக்கு அனுப்பப்படும்.</p>
-      <p class="note">No roast is ever about body, skin, age, religion or anything you can’t change. Just your vibe.</p>
+    <div class="eb" style="left:calc(125 * var(--p));top:calc(230 * var(--p))">Before we roast you</div>
+    <div class="hi" id="c-hi" style="left:calc(112 * var(--p));top:calc(270 * var(--p))"><span class="l1">Hi</span><span class="l2" id="c-name">there!</span></div>
+    <div class="lang-pick" style="left:calc(125 * var(--p));top:calc(412 * var(--p))"><button data-l="en">English</button><button data-l="si">සිංහල</button><button data-l="ta">தமிழ்</button></div>
+    <div class="consent-box" id="c-box" style="left:calc(125 * var(--p));top:calc(468 * var(--p))">
+      <div class="rows">
+        <div class="row"><i><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h4l2-3h6l2 3h4v11H3z"/><circle cx="12" cy="13" r="3.6"/></svg></i><div><b lang="en">One photo</b><b lang="si">එක ඡායාරූපයක්</b><b lang="ta">ஒரு புகைப்படம்</b><span lang="en">We’ll take one photo of you at this booth.</span><span lang="si">මෙම booth එකේදී ඔබේ ඡායාරූපයක් ගනු ලැබේ.</span><span lang="ta">இந்த booth-இல் உங்கள் ஒரு புகைப்படம் எடுக்கப்படும்.</span></div></div>
+        <div class="row"><i><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1 4 5 5.500 5 10.500a5 5 0 0 1-10 0c0-2 1-3.500 2-4.500 0 2 1 3 2 3 0-3-1-5 1-9z"/></svg></i><div><b lang="en">A playful roast</b><b lang="si">විහිළු roast එකක්</b><b lang="ta">விளையாட்டான roast</b><span lang="en">Wendy's AI will look at your style, outfit and expression to write a playful roast.</span><span lang="si">ඔබේ style, ඇඳුම සහ මුහුණේ ඉරියව්ව බලා Wendy's AI විහිළු roast එකක් ලියයි.</span><span lang="ta">உங்கள் style, உடை, முகபாவனையைப் பார்த்து Wendy's AI ஒரு விளையாட்டான roast எழுதும்.</span></div></div>
+        <div class="row"><i><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.500" width="10" height="19" rx="2"/><path d="M11 18h2"/></svg></i><div><b lang="en">Sent to your phone</b><b lang="si">ඔබේ දුරකථනයට</b><b lang="ta">உங்கள் போனுக்கு</b><span lang="en">The photo and roast are saved to your Wendy Fest profile and a link is sent to your phone so you can download and share it.</span><span lang="si">ඡායාරූපය සහ roast එක ඔබේ Wendy Fest profile එකේ save වී link එකක් ඔබේ දුරකථනයට යවනු ලැබේ.</span><span lang="ta">புகைப்படமும் roast-ும் உங்கள் Wendy Fest profile-இல் சேமிக்கப்பட்டு link உங்கள் போனுக்கு அனுப்பப்படும்.</span></div></div>
+      </div>
+      <div class="no">No roast is ever about body, skin, age, religion or anything you can’t change. Just your vibe.</div>
     </div>
-    <button class="cbox" id="agree" style="left:calc(930 * var(--p));top:calc(760 * var(--p));width:calc(870 * var(--p));height:calc(150 * var(--p))"><b style="font-size:calc(52 * var(--p))">I’m in, roast me</b><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg></button>
-    <button class="ghostb onred" style="left:calc(930 * var(--p));top:calc(930 * var(--p));width:calc(870 * var(--p))" onclick="goIdle()">No thanks</button>
+    <div class="cact" style="left:calc(1080 * var(--p));top:calc(838 * var(--p))">
+      <button class="nope" onclick="goIdle()">No thanks</button>
+      <button class="yes" id="agree">I’m in, roast me<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg></button>
+    </div>
   </div></section>
 
   <section class="screen cv" id="s-cam"><div class="s">
@@ -360,7 +378,7 @@
   </aside>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwjhr09o"></script><script src="../js/i18n.js?v=mwjhr09o"></script><script src="../js/kiosk.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwjicmjh"></script><script src="../js/i18n.js?v=mwjicmjh"></script><script src="../js/kiosk.js"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let guest = null, stream = null, glang = "en", R = null, BASE = location.origin;
@@ -426,11 +444,18 @@
       guest = await K.api("/api/kiosk/lookup", { code });
       if (guest.roastsLeft <= 0) { $("code-msg").textContent = `${guest.firstName} has already been roasted. One roast per guest.`; return; }
       glang = guest.lang || "en"; setGLang(glang);
-      $("c-name").textContent = `Hi ${guest.firstName}!`;
-      K.show("s-consent"); K.resetIdle(120000, goIdle);
+      $("c-name").textContent = `${guest.firstName}!`;
+      K.show("s-consent"); fitConsent(); K.resetIdle(120000, goIdle);
     } catch (e) { $("code-msg").textContent = e.message; $("slots").classList.add("err"); setTimeout(() => $("slots").classList.remove("err"), 500); }
   }
-  function setGLang(l) { glang = l; document.querySelectorAll(".lang-pick button").forEach((b) => b.classList.toggle("on", b.dataset.l === l)); document.querySelectorAll(".consent-box p[lang]").forEach((p) => p.style.order = p.lang === l ? -1 : 0); document.querySelectorAll(".consent-box p[lang]").forEach((p) => p.style.display = p.lang === l ? "" : "none"); }
+  function setGLang(l) { glang = l; document.querySelectorAll(".lang-pick button").forEach((b) => b.classList.toggle("on", b.dataset.l === l)); document.querySelectorAll("#c-box [lang]").forEach((p) => p.style.display = p.lang === l ? "" : "none"); fitConsent(); }
+  // keep the greeting on the charcoal side and the card above the footer, whatever the name or language
+  function fitConsent() {
+    const u = Math.min(innerWidth / 1920, innerHeight / 1080), hi = $("c-hi"), box = $("c-box");
+    let fs = 104; hi.style.fontSize = fs * u + "px"; while (hi.offsetWidth > 800 * u && fs > 48) { fs -= 4; hi.style.fontSize = fs * u + "px"; }
+    let cf = 18; box.style.setProperty("--cf", cf); while (box.offsetHeight > 480 * u && cf > 13) { cf -= 1; box.style.setProperty("--cf", cf); }
+  }
+  addEventListener("resize", () => { if ($("s-consent").classList.contains("on")) fitConsent(); });
   document.querySelectorAll(".lang-pick button").forEach((b) => b.onclick = () => setGLang(b.dataset.l));
   $("agree").onclick = async () => { K.show("s-cam"); await startCam(); K.resetIdle(120000, goIdle); };
   $("snap").onclick = async () => {

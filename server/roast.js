@@ -49,7 +49,8 @@ function getClient() {
   return client;
 }
 
-export async function generateRoast({ imageBase64, mediaType = "image/jpeg", name, lang = "en" }) {
+const HEAT = { mild: "MILD: gentle and sweet, mostly compliments with a light tease.", medium: "MEDIUM: playful and cheeky, the default.", extra: "EXTRA SPICY: bolder punchlines and sharper wit, still kind and never about looks they cannot change." };
+export async function generateRoast({ imageBase64, mediaType = "image/jpeg", name, lang = "en", heat = "medium" }) {
   const c = getClient();
   if (!c) return fallbackRoast({ name, reason: "no ANTHROPIC_API_KEY configured" });
   try {
@@ -64,7 +65,7 @@ export async function generateRoast({ imageBase64, mediaType = "image/jpeg", nam
         role: "user",
         content: [
           { type: "image", source: { type: "base64", media_type: mediaType, data: imageBase64 } },
-          { type: "text", text: `Guest first name: ${name || "friend"}. Their preferred language: ${lang}. Roast them.` },
+          { type: "text", text: `Guest first name: ${name || "friend"}. Their preferred language: ${lang}. Roast heat they picked: ${HEAT[heat] || HEAT.medium} Every rule above still applies at every heat. Roast them.` },
         ],
       }],
     });

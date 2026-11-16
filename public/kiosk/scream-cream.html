@@ -382,7 +382,7 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
 
   // Register-screen wave (option B): one hill of rounded bars, every fourth bar Wendy's blue.
   // Gentle voice ripples drift slowly left → right through the hill; a live mic feeds them.
-  const VOICE = { n: 64, hist: [], count: 0, last: 0, sylLeft: 0, sylLen: 1, amp: 0, gap: 0, step: 230 };
+  const VOICE = { n: 64, hist: [], count: 0, last: 0, sylLeft: 0, sylLen: 1, amp: 0, gap: 0, step: 460 };
   for (let i = 0; i < VOICE.n; i++) { VOICE.hist.push(nextVoiceSample()); VOICE.count++; }
   function nextVoiceSample() {
     if (analyser) { const lv = dbToPct(currentDb()) / 100; if (lv > .12) return Math.min(1, .45 + lv * .6); }

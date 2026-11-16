@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Scream & Win · Studio Cream · Wendy Fest</title><link rel="icon" href="../assets/cameo.png">
-<link rel="stylesheet" href="../css/brand.css?v=mwj6ixhp">
+<link rel="stylesheet" href="../css/brand.css?v=mwj6l06u">
 <style>
 /* ================= RETRO BLUE (formerly Studio Cream) · Scream & Win ================= */
 :root { --u:min(calc(100vw / 1440), calc(100vh / 760)); --v:var(--u); --blue:#029CD4; --red:#CD2028; --red2:#DA2A33; --red-dark:#8E141B; --ink:#1F1A1A; --cream:#F7F2EC; --blush:#F2D4D7; --cyan:#29C9E0; --line:rgba(205,32,40,.18); }
@@ -348,10 +348,10 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
 .heard.got small::after { content:""; width:calc(26 * var(--u)); height:calc(26 * var(--u)); border-radius:50%; background:#CD2028 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/70% no-repeat; }
 
 /* Wendy cameo speaks the listening status */
-#listen-wendy { left:calc(64 * var(--u)); top:calc(150 * var(--u)); width:calc(100 * var(--u)); filter:drop-shadow(0 calc(8 * var(--u)) calc(12 * var(--u)) rgba(0,40,70,.4)); transform-origin:50% 100%; }
+#listen-wendy { left:calc(64 * var(--u)); top:calc(128 * var(--u)); width:calc(100 * var(--u)); filter:drop-shadow(0 calc(8 * var(--u)) calc(12 * var(--u)) rgba(0,40,70,.4)); transform-origin:50% 100%; }
 #listen-wendy.got { animation:wHop .6s cubic-bezier(.3,1.6,.5,1) 2; }
 @keyframes wHop { 0%,100% { transform:translateY(0) rotate(0); } 40% { transform:translateY(calc(-16 * var(--u))) rotate(-8deg); } 70% { transform:translateY(0) rotate(4deg); } }
-#go-meter .pillx#listen-pill { left:calc(176 * var(--u)) !important; top:calc(166 * var(--u)) !important; border-radius:calc(20 * var(--u)) !important; overflow:visible; }
+#go-meter .pillx#listen-pill { left:calc(176 * var(--u)) !important; top:calc(144 * var(--u)) !important; border-radius:calc(20 * var(--u)) !important; overflow:visible; }
 #listen-pill::before { content:""; position:absolute; left:calc(-14 * var(--u)); top:50%; translate:0 -50%; border-top:calc(11 * var(--u)) solid transparent; border-bottom:calc(11 * var(--u)) solid transparent; border-right:calc(16 * var(--u)) solid #F6F0E6; }
 #listen-pill.got::before { border-right-color:#fff; }
 
@@ -460,7 +460,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   </aside>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwj6ixhp"></script><script src="../js/kiosk.js?v=mwj6ixhp"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwj6l06u"></script><script src="../js/kiosk.js?v=mwj6l06u"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let CFG = { scream: { threshold: 70, durationMs: 3000, dbFloor: -42, dbCeil: -6, loudWeight: .6, accWeight: .4 } };

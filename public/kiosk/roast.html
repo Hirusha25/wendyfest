@@ -39,7 +39,7 @@
   #s-idle .hd .brand b, #s-idle .hd .stp { font:italic 800 calc(35 * var(--p))/1 Poppins, sans-serif; letter-spacing:.22em; text-transform:uppercase; color:#fff; }
   #s-idle .hd .stp { display:flex; align-items:center; gap:calc(35 * var(--p)); } #s-idle .hd .stp i { width:calc(75 * var(--p)); height:calc(75 * var(--p)); border-radius:50%; background:#fff; color:#0186B8; display:grid; place-items:center; font:900 calc(40 * var(--p))/1 Poppins; font-style:normal; letter-spacing:0; }
   #s-idle .strp { left:0; right:0; top:calc(140 * var(--p)); height:calc(27 * var(--p)); background:linear-gradient(180deg, #F6F0E6 0 calc(11 * var(--p)), #CD2028 calc(11 * var(--p)) calc(21 * var(--p)), #F6F0E6 calc(21 * var(--p)) calc(27 * var(--p))); z-index:5; box-shadow:0 calc(8 * var(--p)) calc(20 * var(--p)) rgba(0,0,0,.25); }
-  #s-idle .ft { left:0; right:0; bottom:0; height:calc(59 * var(--p)); display:flex; justify-content:space-between; align-items:center; padding:0 calc(93 * var(--p)) 0 calc(120 * var(--p)); background:#01476A; color:#CDEBF7; font:700 calc(20 * var(--p))/1 Poppins; letter-spacing:.14em; text-transform:uppercase; z-index:5; }
+  #s-idle .ft { left:0; right:0; bottom:0; height:calc(59 * var(--p)); display:flex; justify-content:space-between; align-items:center; padding:0 calc(93 * var(--p)) 0 calc(120 * var(--p)); background:linear-gradient(90deg, #01679A 0%, #0186B8 38%, #029CD4 72%, #1BB0E6 100%); color:#fff; font:700 calc(20 * var(--p))/1 Poppins; letter-spacing:.14em; text-transform:uppercase; z-index:5; }
   #s-idle .ft .c { display:flex; align-items:center; gap:calc(16 * var(--p)); } #s-idle .ft .c img { height:calc(32 * var(--p)); } #s-idle .ft .lk { display:flex; gap:calc(30 * var(--p)); } #s-idle .ft a { color:#fff; border-bottom:1px solid rgba(255,255,255,.5); }
   /* WENDY FEST lockup (approved) */
     #s-idle .wf { display:inline-flex; align-items:flex-start; filter:drop-shadow(0 calc(5 * var(--p)) calc(7 * var(--p)) rgba(0,20,40,.5)); margin-top:calc(-4 * var(--p)); }
@@ -60,6 +60,9 @@
   #s-idle .cta b { font:italic 900 calc(62 * var(--p))/.95 Poppins, sans-serif; text-transform:uppercase; letter-spacing:-.01em; text-align:left; text-shadow:0 calc(3 * var(--p)) 0 rgba(90,8,14,.45); }
   #s-idle .cta svg { width:calc(92 * var(--p)); height:calc(92 * var(--p)); } #s-idle .cta:active { transform:translateY(calc(4 * var(--p))); }
   @keyframes ctaPulse { 50% { box-shadow:0 calc(18 * var(--p)) calc(40 * var(--p)) rgba(60,0,8,.35), 0 0 0 calc(10 * var(--p)) rgba(255,255,255,.18); } }
+  /* Scream & Win halftone dots on the charcoal side, fading in from the left corners */
+  #s-idle .dots { inset:0; clip-path:polygon(0 0, 1088p 0, 698p 1080p, 0 1080p); background:radial-gradient(circle, rgba(255,255,255,.13) calc(3.6 * var(--p)), transparent calc(4.4 * var(--p))) 0 0 / calc(36 * var(--p)) calc(36 * var(--p));
+    -webkit-mask:radial-gradient(circle at 0 100%, #000 0, rgba(0,0,0,.75) 30%, transparent 62%), radial-gradient(circle at 0 0, rgba(0,0,0,.8) 0, rgba(0,0,0,.4) 25%, transparent 50%); mask:radial-gradient(circle at 0 100%, #000 0, rgba(0,0,0,.75) 30%, transparent 62%), radial-gradient(circle at 0 0, rgba(0,0,0,.8) 0, rgba(0,0,0,.4) 25%, transparent 50%); }
   .stage:has(#s-idle.on) > .k-logo, .stage:has(#s-idle.on) > .k-cameo, .stage:has(#s-idle.on) > .k-foot { display:none; }
 </style>
 </head>
@@ -77,7 +80,7 @@
 
   <section class="screen on" id="s-idle">
     <div class="s">
-      <div class="panel"></div><div class="band"></div>
+      <div class="dots"></div><div class="panel"></div><div class="band"></div>
       <div class="art"><img src="/assets/roast-wendy.png" alt="" onerror="this.remove()"></div>
       <header class="hd"><div class="brand"><img src="/assets/wendys-horiz-white.svg" alt="Wendy's"><i></i><span class="wf"><span class="w1">Wendy</span><span class="w2">Fest</span></span></div><div class="stp"><i>1</i><span>Welcome</span></div></header>
       <div class="strp"></div>

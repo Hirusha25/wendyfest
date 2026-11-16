@@ -1,0 +1,263 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Roast Me · design</title><link rel="stylesheet" href="/css/brand.css"><style>
+:root { --u:min(calc(100vw / 1440), calc(100vh / 760)); --red:#CD2028; --ink:#1F1A1A; --cream:#F6F0E6; --navy:#014F72; --gold:#FFC72C; }
+html, body { height:100%; margin:0; overflow:hidden; } body { font-family:Poppins, sans-serif; color:#fff; }
+.stage { position:relative; width:100vw; height:100vh; overflow:hidden; background:linear-gradient(180deg, #19B2E8 0%, #029CD4 45%, #016F9F 100%); }
+.stage::before { content:""; position:absolute; inset:0; background:radial-gradient(60% 60% at 50% 55%, rgba(255,255,255,.14), transparent 70%); }
+.dots { position:absolute; inset:0; pointer-events:none; }
+.dots i { position:absolute; width:calc(820 * var(--u)); height:calc(600 * var(--u)); background:radial-gradient(circle, rgba(255,255,255,.14) calc(2.8 * var(--u)), transparent calc(3.4 * var(--u))) 0 0 / calc(27 * var(--u)) calc(27 * var(--u)); }
+.dots i.tr { right:0; top:calc(125 * var(--u)); -webkit-mask:radial-gradient(circle at 100% 0, #000, rgba(0,0,0,.8) 30%, transparent 75%); mask:radial-gradient(circle at 100% 0, #000, rgba(0,0,0,.8) 30%, transparent 75%); }
+.dots i.bl { left:0; bottom:calc(44 * var(--u)); -webkit-mask:radial-gradient(circle at 0 100%, #000, rgba(0,0,0,.75) 28%, transparent 72%); mask:radial-gradient(circle at 0 100%, #000, rgba(0,0,0,.75) 28%, transparent 72%); }
+.hdr { position:absolute; top:0; left:0; right:0; height:calc(105 * var(--u)); background:linear-gradient(90deg, #DB323B 0%, #CF2730 40%, #BD2028 70%, #A51A22 100%); display:flex; align-items:center; justify-content:space-between; padding:0 calc(70 * var(--u)) 0 calc(90 * var(--u)); z-index:5; box-shadow:0 calc(6 * var(--u)) calc(20 * var(--u)) rgba(0,40,70,.35); }
+.brand { display:flex; align-items:center; gap:calc(30 * var(--u)); } .brand img { height:calc(58 * var(--u)); } .brand i { width:2px; height:calc(44 * var(--u)); background:rgba(255,255,255,.6); }
+.brand b, .step { font:italic 800 calc(26 * var(--u))/1 Poppins, sans-serif; letter-spacing:.22em; text-transform:uppercase; color:#fff; }
+.step { display:flex; align-items:center; gap:calc(26 * var(--u)); } .step i { width:calc(56 * var(--u)); height:calc(56 * var(--u)); border-radius:50%; background:#fff; color:var(--red); display:grid; place-items:center; font:900 calc(30 * var(--u))/1 Poppins; font-style:normal; }
+.stripe { position:absolute; left:0; right:0; top:calc(105 * var(--u)); height:calc(20 * var(--u)); z-index:5; background:linear-gradient(180deg, #F6F0E6 0 calc(8 * var(--u)), #CD2028 calc(8 * var(--u)) calc(16 * var(--u)), #F6F0E6 calc(16 * var(--u)) calc(20 * var(--u))); }
+.foot { position:absolute; left:0; right:0; bottom:0; height:calc(44 * var(--u)); background:#01476A; color:#CDEBF7; display:flex; justify-content:space-between; align-items:center; padding:0 calc(70 * var(--u)) 0 calc(90 * var(--u)); font:700 calc(15 * var(--u))/1 Poppins; letter-spacing:.14em; text-transform:uppercase; z-index:5; }
+.foot .c { display:flex; align-items:center; gap:calc(12 * var(--u)); } .foot .c img { height:calc(24 * var(--u)); }
+.area { position:absolute; left:0; right:0; top:calc(125 * var(--u)); bottom:calc(44 * var(--u)); z-index:2; }
+.box { position:absolute; left:50%; top:50%; width:calc(1440 * var(--u)); height:calc(560 * var(--u)); transform:translate(-50%,-50%); display:none; } .box > * { position:absolute; }
+body.s1 #b1, body.s2 #b2, body.s3 #b3, body.s4 #b4, body.s5 #b5, body.s6 #b6, body.s7 #b7 { display:block; }
+.t3 { font:italic 900 calc(var(--fs) * var(--u))/.86 Poppins, sans-serif; text-transform:uppercase; letter-spacing:-.03em; color:#F6F0E6; white-space:nowrap; text-shadow:0 calc(3 * var(--u)) 0 #01476A, 0 calc(6 * var(--u)) 0 #012F47, 0 calc(14 * var(--u)) calc(22 * var(--u)) rgba(0,20,40,.4); }
+.t3 .r { color:#CD2028; -webkit-text-stroke:calc(3 * var(--u)) #fff; paint-order:stroke fill; text-shadow:0 calc(4 * var(--u)) 0 #fff, 0 calc(8 * var(--u)) 0 #014F72, 0 calc(16 * var(--u)) calc(22 * var(--u)) rgba(0,40,70,.35); }
+.t3.sm { text-shadow:0 calc(3 * var(--u)) 0 #A5171F, 0 calc(6 * var(--u)) 0 #7A0F16, 0 calc(14 * var(--u)) calc(22 * var(--u)) rgba(0,40,70,.35); } .t3.sm .r { color:#fff; -webkit-text-stroke:0; text-shadow:0 calc(3 * var(--u)) 0 #A5171F, 0 calc(6 * var(--u)) 0 #7A0F16; }
+.eyebrow { font:italic 800 calc(20 * var(--u))/1 Poppins; letter-spacing:.24em; text-transform:uppercase; color:#F6F0E6; display:flex; align-items:center; gap:calc(18 * var(--u)); } .eyebrow::after { content:""; width:calc(56 * var(--u)); height:calc(3 * var(--u)); background:#CD2028; }
+.sub { font:600 calc(30 * var(--u))/1.25 Poppins; color:#fff; } .sub b { font-style:italic; font-weight:900; text-shadow:0 calc(3 * var(--u)) 0 #A5171F, 0 calc(6 * var(--u)) 0 #7A0F16; }
+.card { background:#F6F0E6; color:#1F1A1A; border-radius:calc(24 * var(--u)); box-shadow:0 calc(8 * var(--u)) 0 #014F72, 0 calc(18 * var(--u)) calc(34 * var(--u)) rgba(0,40,70,.3); }
+.btn { display:flex; align-items:center; justify-content:center; gap:calc(22 * var(--u)); border-radius:999px; background:linear-gradient(90deg, #DB323B, #CA242D 55%, #AE1C24); color:#fff; font:italic 900 calc(32 * var(--u))/1 Poppins; text-transform:uppercase; letter-spacing:.02em; box-shadow:0 calc(7 * var(--u)) 0 #7E1016, 0 calc(16 * var(--u)) calc(30 * var(--u)) -1vmin rgba(0,40,70,.4), inset 0 .2vmin 0 rgba(255,255,255,.35); }
+.btn::after { content:""; width:calc(46 * var(--u)); height:calc(46 * var(--u)); border-radius:50%; background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23D8232C' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center/55% no-repeat; }
+.btn.ghost { background:#F6F0E6; color:#CD2028; box-shadow:0 calc(7 * var(--u)) 0 #014F72; } .btn.ghost::after { display:none; }
+.pill { display:flex; align-items:center; gap:calc(12 * var(--u)); height:calc(52 * var(--u)); padding:0 calc(24 * var(--u)); border-radius:999px; background:#F6F0E6; color:#CD2028; font:italic 900 calc(21 * var(--u))/1 Poppins; letter-spacing:.08em; text-transform:uppercase; box-shadow:0 calc(6 * var(--u)) 0 #014F72; white-space:nowrap; }
+.pill .dot { width:calc(16 * var(--u)); height:calc(16 * var(--u)); border-radius:50%; background:#CD2028; animation:blink 1s steps(2) infinite; } @keyframes blink { 50% { opacity:.25 } }
+.pill.red { background:#CD2028; color:#fff; box-shadow:0 calc(6 * var(--u)) 0 #7A0F16; } .pill.red .dot { background:#fff; }
+.wendy { display:flex; flex-direction:column; align-items:flex-start; gap:calc(22 * var(--u)); }
+.wendy img { filter:drop-shadow(0 calc(8 * var(--u)) calc(12 * var(--u)) rgba(0,40,70,.4)); animation:bob 3s ease-in-out infinite; } @keyframes bob { 50% { transform:translateY(calc(-6 * var(--u))) rotate(-3deg); } }
+.bub { position:relative; background:#F6F0E6; color:#1F1A1A; border-radius:calc(20 * var(--u)); padding:calc(16 * var(--u)) calc(22 * var(--u)); font:700 calc(20 * var(--u))/1.3 Poppins; box-shadow:0 calc(6 * var(--u)) 0 #014F72; }
+.bub::after { content:""; position:absolute; left:calc(40 * var(--u)); bottom:calc(-16 * var(--u)); border-left:calc(16 * var(--u)) solid transparent; border-right:calc(16 * var(--u)) solid transparent; border-top:calc(18 * var(--u)) solid #F6F0E6; }
+.polaroid { background:#fff; padding:calc(16 * var(--u)) calc(16 * var(--u)) calc(64 * var(--u)); border-radius:calc(6 * var(--u)); box-shadow:0 calc(14 * var(--u)) calc(30 * var(--u)) rgba(0,30,60,.35), 0 calc(3 * var(--u)) 0 rgba(0,0,0,.08); }
+.polaroid .ph { width:100%; aspect-ratio:1; overflow:hidden; border-radius:calc(2 * var(--u)); } .polaroid .ph svg { width:100%; height:100%; display:block; }
+.polaroid .cap { position:absolute; left:0; right:0; bottom:calc(14 * var(--u)); text-align:center; font:italic 900 calc(20 * var(--u))/1.1 Poppins; color:#CD2028; text-transform:uppercase; }
+.tape { position:absolute; width:calc(110 * var(--u)); height:calc(30 * var(--u)); background:rgba(255,199,44,.85); top:calc(-14 * var(--u)); left:50%; translate:-50% 0; rotate:-4deg; }
+.qr { display:grid; justify-items:center; gap:calc(10 * var(--u)); padding:calc(20 * var(--u)); } .qr .code { width:calc(220 * var(--u)); height:calc(220 * var(--u)); background:conic-gradient(from 90deg at 50% 50%, #1F1A1A 25%, #fff 0 50%, #1F1A1A 0 75%, #fff 0) 0 0 / calc(22 * var(--u)) calc(22 * var(--u)); border:calc(12 * var(--u)) solid #fff; outline:calc(3 * var(--u)) solid #1F1A1A; outline-offset:calc(-12 * var(--u)); position:relative; }
+.qr .code::before, .qr .code::after { content:""; position:absolute; width:calc(56 * var(--u)); height:calc(56 * var(--u)); background:#fff; border:calc(10 * var(--u)) solid #1F1A1A; box-shadow:inset 0 0 0 calc(8 * var(--u)) #fff, inset 0 0 0 calc(30 * var(--u)) #1F1A1A; }
+.qr .code::before { left:0; top:0; } .qr .code::after { right:0; top:0; }
+.qr b { font:italic 900 calc(21 * var(--u))/1.1 Poppins; letter-spacing:.12em; text-transform:uppercase; text-align:center; color:#1F1A1A; } .qr b::after { content:""; display:block; width:calc(80 * var(--u)); height:calc(4 * var(--u)); background:#CD2028; margin:calc(8 * var(--u)) auto 0; }
+.tk { width:calc(34 * var(--u)); height:calc(34 * var(--u)); border-radius:50%; background:#CD2028; display:grid; place-items:center; flex:none; } .tk svg { width:calc(20 * var(--u)); height:calc(20 * var(--u)); }
+.list { display:grid; gap:calc(18 * var(--u)); padding:calc(26 * var(--u)) calc(30 * var(--u)); } .list div { display:flex; gap:calc(16 * var(--u)); align-items:center; font:600 calc(22 * var(--u))/1.3 Poppins; }
+.chips { display:flex; gap:calc(14 * var(--u)); } .chip { display:flex; align-items:center; gap:calc(10 * var(--u)); height:calc(58 * var(--u)); padding:0 calc(22 * var(--u)); border-radius:999px; background:rgba(0,50,85,.3); color:#fff; font:italic 900 calc(20 * var(--u))/1 Poppins; text-transform:uppercase; letter-spacing:.06em; box-shadow:inset 0 0 0 calc(2 * var(--u)) rgba(255,255,255,.25); white-space:nowrap; }
+.chip.on { background:#F6F0E6; color:#CD2028; box-shadow:0 calc(6 * var(--u)) 0 #014F72; }
+.chip svg { width:calc(24 * var(--u)); height:calc(24 * var(--u)); }
+svg.chili1 { fill:#CD2028; stroke:#2E7D32; } svg.chili0 { fill:rgba(255,255,255,.35); stroke:rgba(255,255,255,.35); } .chip.on svg.chili0 { fill:rgba(205,32,40,.25); stroke:rgba(205,32,40,.25); }
+.cam { border-radius:calc(30 * var(--u)); background:#0D2A3D; overflow:hidden; box-shadow:0 0 0 calc(10 * var(--u)) #F6F0E6, 0 calc(10 * var(--u)) 0 calc(10 * var(--u)) #014F72, 0 calc(26 * var(--u)) calc(40 * var(--u)) rgba(0,30,60,.4); }
+.cam .ph { position:absolute; inset:0; } .cam .ph svg { width:100%; height:100%; display:block; }
+.cam .br { position:absolute; width:calc(70 * var(--u)); height:calc(70 * var(--u)); border:calc(7 * var(--u)) solid #CD2028; } .br.a { left:calc(24 * var(--u)); top:calc(24 * var(--u)); border-right:0; border-bottom:0; border-radius:calc(16 * var(--u)) 0 0 0; } .br.b { right:calc(24 * var(--u)); top:calc(24 * var(--u)); border-left:0; border-bottom:0; border-radius:0 calc(16 * var(--u)) 0 0; } .br.c { left:calc(24 * var(--u)); bottom:calc(24 * var(--u)); border-right:0; border-top:0; border-radius:0 0 0 calc(16 * var(--u)); } .br.d { right:calc(24 * var(--u)); bottom:calc(24 * var(--u)); border-left:0; border-top:0; border-radius:0 0 calc(16 * var(--u)) 0; }
+.cam .oval { position:absolute; left:50%; top:46%; width:calc(230 * var(--u)); height:calc(290 * var(--u)); translate:-50% -50%; border-radius:50%; border:calc(4 * var(--u)) dashed rgba(255,255,255,.85); box-shadow:0 0 0 calc(2000 * var(--u)) rgba(1,40,70,.28); }
+.cam .grid { position:absolute; inset:0; background:linear-gradient(90deg, transparent 33.2%, rgba(255,255,255,.2) 33.3% 33.5%, transparent 33.6% 66.5%, rgba(255,255,255,.2) 66.6% 66.8%, transparent 66.9%), linear-gradient(180deg, transparent 33.2%, rgba(255,255,255,.2) 33.3% 33.5%, transparent 33.6% 66.5%, rgba(255,255,255,.2) 66.6% 66.8%, transparent 66.9%); }
+.snap { width:calc(160 * var(--u)); height:calc(160 * var(--u)); border-radius:50%; background:radial-gradient(circle at 40% 35%, #F0444E, #B51F28 70%); border:calc(10 * var(--u)) solid #F6F0E6; box-shadow:0 calc(10 * var(--u)) 0 #014F72, 0 0 0 0 rgba(246,240,230,.6); display:grid; place-items:center; animation:pulse 1.6s infinite; }
+@keyframes pulse { 70% { box-shadow:0 calc(10 * var(--u)) 0 #014F72, 0 0 0 calc(26 * var(--u)) rgba(246,240,230,0); } }
+.snap svg { width:calc(70 * var(--u)); height:calc(70 * var(--u)); }
+.steps { display:grid; gap:calc(16 * var(--u)); } .steps div { display:flex; align-items:center; gap:calc(16 * var(--u)); font:italic 800 calc(24 * var(--u))/1 Poppins; text-transform:uppercase; letter-spacing:.04em; }
+.steps .sp { width:calc(34 * var(--u)); height:calc(34 * var(--u)); border-radius:50%; border:calc(4 * var(--u)) solid rgba(255,255,255,.35); border-top-color:#fff; animation:spin .8s linear infinite; flex:none; } @keyframes spin { to { rotate:360deg; } }
+.steps .wait { width:calc(34 * var(--u)); height:calc(34 * var(--u)); border-radius:50%; border:calc(3 * var(--u)) solid rgba(255,255,255,.35); flex:none; } .steps .dim { opacity:.5; }
+.sizzle { width:calc(560 * var(--u)); height:calc(22 * var(--u)); border-radius:999px; background:rgba(0,50,85,.4); overflow:hidden; } .sizzle i { display:block; height:100%; width:68%; border-radius:999px; background:repeating-linear-gradient(-45deg, #E0303A 0 calc(16 * var(--u)), #FF5A62 calc(16 * var(--u)) calc(32 * var(--u))); animation:sz 1s linear infinite; } @keyframes sz { to { background-position:calc(45 * var(--u)) 0; } }
+.develop { filter:sepia(.5) blur(2.5px) brightness(1.15) contrast(.75); animation:dev 4s ease-in-out infinite alternate; } @keyframes dev { to { filter:sepia(.1) blur(.6px) brightness(1.02) contrast(.95); } }
+.roastbub { background:#F6F0E6; color:#1F1A1A; border-radius:calc(28 * var(--u)); padding:calc(30 * var(--u)) calc(34 * var(--u)); box-shadow:0 calc(8 * var(--u)) 0 #014F72, 0 calc(18 * var(--u)) calc(34 * var(--u)) rgba(0,40,70,.3); }
+.roastbub p { margin:0; font:600 calc(25 * var(--u))/1.42 Poppins; } .roastbub p b { color:#CD2028; font-style:italic; }
+.roastbub::before { content:""; position:absolute; left:calc(-24 * var(--u)); top:calc(70 * var(--u)); border-top:calc(18 * var(--u)) solid transparent; border-bottom:calc(18 * var(--u)) solid transparent; border-right:calc(26 * var(--u)) solid #F6F0E6; }
+.spice { display:flex; align-items:center; gap:calc(10 * var(--u)); font:italic 800 calc(17 * var(--u))/1 Poppins; letter-spacing:.16em; text-transform:uppercase; color:#CD2028; } .spice svg { width:calc(26 * var(--u)); height:calc(26 * var(--u)); }
+.lang { display:flex; gap:calc(8 * var(--u)); } .lang span { padding:calc(9 * var(--u)) calc(16 * var(--u)); border-radius:999px; font:900 calc(16 * var(--u))/1 Poppins; letter-spacing:.1em; background:rgba(205,32,40,.12); color:#CD2028; } .lang span.on { background:#CD2028; color:#fff; }
+.titletag { background:#CD2028; color:#fff; font:italic 900 calc(24 * var(--u))/1.05 Poppins; text-transform:uppercase; padding:calc(14 * var(--u)) calc(20 * var(--u)); border-radius:calc(10 * var(--u)); box-shadow:0 calc(6 * var(--u)) 0 #7A0F16; border:calc(3 * var(--u)) solid #fff; text-align:center; }
+.phone { width:calc(300 * var(--u)); height:calc(540 * var(--u)); border-radius:calc(46 * var(--u)); background:#1F1A1A; padding:calc(12 * var(--u)); box-shadow:0 calc(20 * var(--u)) calc(40 * var(--u)) rgba(0,30,60,.4); }
+.phone .scr { width:100%; height:100%; border-radius:calc(36 * var(--u)); overflow:hidden; background:linear-gradient(180deg, #19B2E8, #016F9F); position:relative; }
+.flash { position:absolute; inset:0; background:#fff; opacity:.0; animation:fl 2s infinite; } @keyframes fl { 0%, 80% { opacity:0 } 84% { opacity:.85 } 100% { opacity:0 } }
+.new { position:absolute; background:#FFC72C; color:#1F1A1A; font:italic 900 calc(15 * var(--u))/1 Poppins; letter-spacing:.16em; text-transform:uppercase; padding:calc(8 * var(--u)) calc(14 * var(--u)); border-radius:999px; box-shadow:0 calc(4 * var(--u)) 0 #B8860B; }
+
+/* ===== Roast Me palette: current charcoal stage + Wendy's blue, white type, red accents ===== */
+.stage { background:radial-gradient(80% 70% at 42% 40%, #343030 0%, #262222 45%, #1A1717 100%); }
+.stage::before { background:radial-gradient(60% 50% at 50% 115%, rgba(2,156,212,.16), transparent 70%); }
+.dots i { background:radial-gradient(circle, rgba(255,255,255,.08) calc(2.8 * var(--u)), transparent calc(3.4 * var(--u))) 0 0 / calc(27 * var(--u)) calc(27 * var(--u)); }
+.hdr { background:linear-gradient(90deg, #1BB0E6 0%, #029CD4 45%, #0186B8 75%, #016F9F 100%); box-shadow:0 calc(6 * var(--u)) calc(20 * var(--u)) rgba(0,0,0,.45); } .step i { color:#029CD4; }
+.stripe { background:linear-gradient(180deg, #fff 0 calc(8 * var(--u)), #CD2028 calc(8 * var(--u)) calc(16 * var(--u)), #fff calc(16 * var(--u)) calc(20 * var(--u))); }
+.foot { background:#493533; color:#D9CFCB; }
+.t3 { color:#029CD4; text-shadow:0 calc(3 * var(--u)) 0 #016F9F, 0 calc(6 * var(--u)) 0 #01476A, 0 calc(14 * var(--u)) calc(22 * var(--u)) rgba(0,0,0,.5); }
+.t3 .r { color:#fff; -webkit-text-stroke:0; text-shadow:0 calc(3 * var(--u)) 0 #029CD4, 0 calc(6 * var(--u)) 0 #01476A, 0 calc(14 * var(--u)) calc(22 * var(--u)) rgba(0,0,0,.5); }
+.t3.sm { color:#fff; text-shadow:0 calc(3 * var(--u)) 0 #029CD4, 0 calc(6 * var(--u)) 0 #01476A, 0 calc(14 * var(--u)) calc(22 * var(--u)) rgba(0,0,0,.5); }
+.t3.sm .r { color:#029CD4; text-shadow:0 calc(3 * var(--u)) 0 #016F9F, 0 calc(6 * var(--u)) 0 #01476A, 0 calc(14 * var(--u)) calc(22 * var(--u)) rgba(0,0,0,.5); }
+.eyebrow { color:#029CD4; } .eyebrow::after { background:#029CD4; }
+.sub { color:#fff; } .sub b { color:#029CD4; text-shadow:0 calc(3 * var(--u)) 0 #01476A; }
+.card { background:#fff; box-shadow:0 calc(8 * var(--u)) 0 #016F9F, 0 calc(18 * var(--u)) calc(34 * var(--u)) rgba(0,0,0,.45); }
+.btn { background:linear-gradient(90deg, #1BB0E6, #029CD4 55%, #0182B3); box-shadow:0 calc(7 * var(--u)) 0 #01476A, 0 calc(16 * var(--u)) calc(30 * var(--u)) -1vmin rgba(0,0,0,.5), inset 0 .2vmin 0 rgba(255,255,255,.35); }
+.btn::after { background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23029CD4' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center/55% no-repeat; }
+.btn.ghost { background:transparent; color:#fff; box-shadow:inset 0 0 0 calc(3 * var(--u)) #fff; }
+.pill { background:#fff; color:#029CD4; box-shadow:0 calc(6 * var(--u)) 0 #016F9F; } .pill .dot { background:#029CD4; }
+.bub { background:#fff; box-shadow:0 calc(6 * var(--u)) 0 #016F9F; } .bub::after { border-top-color:#fff; }
+.tk { background:#029CD4; }
+.chip { background:rgba(255,255,255,.07); box-shadow:inset 0 0 0 calc(2 * var(--u)) rgba(255,255,255,.18); }
+.chip.on { background:#fff; color:#029CD4; box-shadow:0 calc(6 * var(--u)) 0 #016F9F; } .chip.on svg.chili0 { fill:rgba(2,156,212,.25); stroke:rgba(2,156,212,.25); }
+.cam { box-shadow:0 0 0 calc(10 * var(--u)) #fff, 0 calc(10 * var(--u)) 0 calc(10 * var(--u)) #016F9F, 0 calc(26 * var(--u)) calc(40 * var(--u)) rgba(0,0,0,.5); } .cam .br { border-color:#029CD4; }
+.snap { background:radial-gradient(circle at 40% 35%, #3CC3F0, #0182B3 70%); border-color:#fff; box-shadow:0 calc(10 * var(--u)) 0 #016F9F; }
+@keyframes pulse { 70% { box-shadow:0 calc(10 * var(--u)) 0 #016F9F, 0 0 0 calc(26 * var(--u)) rgba(2,156,212,0); } }
+.steps .sp { border-top-color:#029CD4; }
+.sizzle { background:rgba(255,255,255,.1); } .sizzle i { background:repeating-linear-gradient(-45deg, #029CD4 0 calc(16 * var(--u)), #3CC3F0 calc(16 * var(--u)) calc(32 * var(--u))); }
+.roastbub { background:#fff; box-shadow:0 calc(8 * var(--u)) 0 #016F9F, 0 calc(18 * var(--u)) calc(34 * var(--u)) rgba(0,0,0,.45); } .roastbub::before { border-right-color:#fff; }
+.lang span { background:rgba(2,156,212,.12); color:#029CD4; } .lang span.on { background:#029CD4; color:#fff; }
+.qr b::after { background:#029CD4; }
+.phone .scr { background:radial-gradient(80% 70% at 42% 40%, #343030 0%, #1A1717 100%); }
+</style></head>
+<body><div class="stage">
+<div class="dots"><i class="tr"></i><i class="bl"></i></div>
+<header class="hdr"><div class="brand"><img src="/assets/wendys-horiz-white.svg" alt="Wendy's"><i></i><b>Wendy Fest</b></div><div class="step"><i id="sn">1</i><span id="sl">Register</span></div></header>
+<div class="stripe"></div>
+<div class="area">
+
+<!-- 1 · Register -->
+<div class="box" id="b1">
+  <div class="eyebrow" style="left:calc(98 * var(--u));top:calc(40 * var(--u))">AI-powered roast booth</div>
+  <div class="t3" style="--fs:140;left:calc(92 * var(--u));top:calc(96 * var(--u))">Roast<br><span class="r">me.</span></div>
+  <div class="sub" style="left:calc(98 * var(--u));top:calc(372 * var(--u));width:calc(520 * var(--u))">Let Wendy roast your look. <b>Nicely.</b></div>
+  <div class="polaroid" style="left:calc(700 * var(--u));top:calc(40 * var(--u));width:calc(190 * var(--u));rotate:8deg"><div class="ph"><svg viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="bgP" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE9C9"/><stop offset="1" stop-color="#F4B183"/></linearGradient></defs>
+<rect width="300" height="300" fill="url(#bgP)"/><circle cx="235" cy="60" r="70" fill="#fff" opacity=".35"/>
+<path d="M40 300c6-70 52-104 110-104s104 34 110 104z" fill="#2F4A73"/><path d="M118 200l32 40 32-40" fill="#F6F0E6"/>
+<rect x="128" y="168" width="44" height="40" rx="14" fill="#C98B62"/><ellipse cx="150" cy="128" rx="54" ry="62" fill="#D79B70"/>
+<path d="M94 104c4-40 32-58 62-56 32 2 56 22 56 52-22-12-60-16-118 4z" fill="#CD2028"/><rect x="88" y="98" width="128" height="14" rx="7" fill="#A5171F"/><path d="M200 106l44 6-6 10-40-4z" fill="#A5171F"/>
+<rect x="106" y="122" width="38" height="22" rx="9" fill="#1F1A1A"/><rect x="156" y="122" width="38" height="22" rx="9" fill="#1F1A1A"/><rect x="142" y="128" width="16" height="5" fill="#1F1A1A"/>
+<path d="M128 164q22 16 44 0" stroke="#7A3B22" stroke-width="5" fill="none" stroke-linecap="round"/>
+<g transform="translate(222 176) rotate(14)"><rect x="0" y="22" width="34" height="46" rx="14" fill="#D79B70"/><rect x="2" y="-12" width="11" height="44" rx="5.5" fill="#D79B70"/><rect x="17" y="-16" width="11" height="48" rx="5.5" fill="#D79B70"/></g></svg></div><div class="cap">Colombo’s finest fit</div></div>
+  <div class="polaroid" style="left:calc(630 * var(--u));top:calc(130 * var(--u));width:calc(210 * var(--u));rotate:-6deg"><i class="tape"></i><div class="ph"><svg viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="bgP" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE9C9"/><stop offset="1" stop-color="#F4B183"/></linearGradient></defs>
+<rect width="300" height="300" fill="url(#bgP)"/><circle cx="235" cy="60" r="70" fill="#fff" opacity=".35"/>
+<path d="M40 300c6-70 52-104 110-104s104 34 110 104z" fill="#2F4A73"/><path d="M118 200l32 40 32-40" fill="#F6F0E6"/>
+<rect x="128" y="168" width="44" height="40" rx="14" fill="#C98B62"/><ellipse cx="150" cy="128" rx="54" ry="62" fill="#D79B70"/>
+<path d="M94 104c4-40 32-58 62-56 32 2 56 22 56 52-22-12-60-16-118 4z" fill="#CD2028"/><rect x="88" y="98" width="128" height="14" rx="7" fill="#A5171F"/><path d="M200 106l44 6-6 10-40-4z" fill="#A5171F"/>
+<rect x="106" y="122" width="38" height="22" rx="9" fill="#1F1A1A"/><rect x="156" y="122" width="38" height="22" rx="9" fill="#1F1A1A"/><rect x="142" y="128" width="16" height="5" fill="#1F1A1A"/>
+<path d="M128 164q22 16 44 0" stroke="#7A3B22" stroke-width="5" fill="none" stroke-linecap="round"/>
+<g transform="translate(222 176) rotate(14)"><rect x="0" y="22" width="34" height="46" rx="14" fill="#D79B70"/><rect x="2" y="-12" width="11" height="44" rx="5.5" fill="#D79B70"/><rect x="17" y="-16" width="11" height="48" rx="5.5" fill="#D79B70"/></g></svg></div><div class="cap">Main character energy</div></div>
+  <div class="card qr" style="left:calc(978 * var(--u));top:calc(30 * var(--u));width:calc(350 * var(--u))"><div class="code"><img src="/api/qr?text=https%3A%2F%2Fwendyfest.lk%2Fregister" alt="" onerror="this.remove()" style="position:absolute;inset:0;width:100%;height:100%;background:#fff;z-index:3"></div><b>Scan to register</b></div>
+  <div class="btn" style="left:calc(900 * var(--u));top:calc(420 * var(--u));width:calc(500 * var(--u));height:calc(90 * var(--u))">Enter your code</div>
+  <div class="wendy" style="left:calc(98 * var(--u));top:calc(440 * var(--u));flex-direction:row;align-items:center"><img src="/assets/cameo.png" style="width:calc(86 * var(--u))"><div class="bub" style="font-size:calc(19 * var(--u))">Think you can handle it?</div></div>
+</div>
+
+<!-- 2 · Consent + spice level -->
+<div class="box" id="b2">
+  <div class="t3 sm" style="--fs:76;left:calc(98 * var(--u));top:calc(30 * var(--u))">Quick one,<br><span class="r">Dilshan.</span></div>
+  <div class="card list" style="left:calc(98 * var(--u));top:calc(190 * var(--u));width:calc(620 * var(--u))">
+    <div><i class="tk"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i>We take one photo for your roast</div>
+    <div><i class="tk"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i>It’s saved to your Wendy Fest pass</div>
+    <div><i class="tk"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i>Playful, never mean. No looks-shaming.</div></div>
+  <div class="eyebrow" style="left:calc(780 * var(--u));top:calc(40 * var(--u))">Pick your spice</div>
+  <div class="chips" style="left:calc(780 * var(--u));top:calc(84 * var(--u));flex-direction:column;align-items:flex-start;gap:calc(16 * var(--u))">
+    <div class="chip"><svg viewBox="0 0 24 24" class="chili1"><path d="M14 4c1-2 3-2 4-1-1 0-2 1-2 2 3 1 4 4 3 7-2 6-8 9-14 8 5-2 7-5 8-9 0-3 0-6 1-7z"/><path d="M16 5c0-1 1-2 2-2" stroke-width="2" fill="none"/></svg><svg viewBox="0 0 24 24" class="chili0"><path d="M14 4c1-2 3-2 4-1-1 0-2 1-2 2 3 1 4 4 3 7-2 6-8 9-14 8 5-2 7-5 8-9 0-3 0-6 1-7z"/><path d="M16 5c0-1 1-2 2-2" stroke-width="2" fill="none"/></svg><svg viewBox="0 0 24 24" class="chili0"><path d="M14 4c1-2 3-2 4-1-1 0-2 1-2 2 3 1 4 4 3 7-2 6-8 9-14 8 5-2 7-5 8-9 0-3 0-6 1-7z"/><path d="M16 5c0-1 1-2 2-2" stroke-width="2" fill="none"/></svg>Mild</div>
+    <div class="chip on"><svg viewBox="0 0 24 24" class="chili1"><path d="M14 4c1-2 3-2 4-1-1 0-2 1-2 2 3 1 4 4 3 7-2 6-8 9-14 8 5-2 7-5 8-9 0-3 0-6 1-7z"/><path d="M16 5c0-1 1-2 2-2" stroke-width="2" fill="none"/></svg><svg viewBox="0 0 24 24" class="chili1"><path d="M14 4c1-2 3-2 4-1-1 0-2 1-2 2 3 1 4 4 3 7-2 6-8 9-14 8 5-2 7-5 8-9 0-3 0-6 1-7z"/><path d="M16 5c0-1 1-2 2-2" stroke-width="2" fill="none"/></svg><svg viewBox="0 0 24 24" class="chili0"><path d="M14 4c1-2 3-2 4-1-1 0-2 1-2 2 3 1 4 4 3 7-2 6-8 9-14 8 5-2 7-5 8-9 0-3 0-6 1-7z"/><path d="M16 5c0-1 1-2 2-2" stroke-width="2" fill="none"/></svg>Medium</div>
+    <div class="chip"><svg viewBox="0 0 24 24" class="chili1"><path d="M14 4c1-2 3-2 4-1-1 0-2 1-2 2 3 1 4 4 3 7-2 6-8 9-14 8 5-2 7-5 8-9 0-3 0-6 1-7z"/><path d="M16 5c0-1 1-2 2-2" stroke-width="2" fill="none"/></svg><svg viewBox="0 0 24 24" class="chili1"><path d="M14 4c1-2 3-2 4-1-1 0-2 1-2 2 3 1 4 4 3 7-2 6-8 9-14 8 5-2 7-5 8-9 0-3 0-6 1-7z"/><path d="M16 5c0-1 1-2 2-2" stroke-width="2" fill="none"/></svg><svg viewBox="0 0 24 24" class="chili1"><path d="M14 4c1-2 3-2 4-1-1 0-2 1-2 2 3 1 4 4 3 7-2 6-8 9-14 8 5-2 7-5 8-9 0-3 0-6 1-7z"/><path d="M16 5c0-1 1-2 2-2" stroke-width="2" fill="none"/></svg>Extra spicy</div></div>
+  <div class="wendy" style="left:calc(1110 * var(--u));top:calc(70 * var(--u));width:calc(240 * var(--u))"><div class="bub right">I’ll be nice.<br>Mostly.</div><img src="/assets/cameo.png" style="width:calc(120 * var(--u))"></div>
+  <div class="btn" style="left:calc(98 * var(--u));top:calc(430 * var(--u));width:calc(520 * var(--u));height:calc(90 * var(--u))">I’m in, roast me</div>
+  <div class="btn ghost" style="left:calc(650 * var(--u));top:calc(430 * var(--u));width:calc(260 * var(--u));height:calc(90 * var(--u));font-size:calc(26 * var(--u))">Not today</div>
+  <div class="new" style="right:calc(30 * var(--u));top:calc(500 * var(--u))">New · spice level</div>
+</div>
+
+<!-- 3 · Camera -->
+<div class="box" id="b3">
+  <div class="cam" style="left:calc(110 * var(--u));top:calc(30 * var(--u));width:calc(660 * var(--u));height:calc(495 * var(--u))"><div class="ph"><svg viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="bgP" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE9C9"/><stop offset="1" stop-color="#F4B183"/></linearGradient></defs>
+<rect width="300" height="300" fill="url(#bgP)"/><circle cx="235" cy="60" r="70" fill="#fff" opacity=".35"/>
+<path d="M40 300c6-70 52-104 110-104s104 34 110 104z" fill="#2F4A73"/><path d="M118 200l32 40 32-40" fill="#F6F0E6"/>
+<rect x="128" y="168" width="44" height="40" rx="14" fill="#C98B62"/><ellipse cx="150" cy="128" rx="54" ry="62" fill="#D79B70"/>
+<path d="M94 104c4-40 32-58 62-56 32 2 56 22 56 52-22-12-60-16-118 4z" fill="#CD2028"/><rect x="88" y="98" width="128" height="14" rx="7" fill="#A5171F"/><path d="M200 106l44 6-6 10-40-4z" fill="#A5171F"/>
+<rect x="106" y="122" width="38" height="22" rx="9" fill="#1F1A1A"/><rect x="156" y="122" width="38" height="22" rx="9" fill="#1F1A1A"/><rect x="142" y="128" width="16" height="5" fill="#1F1A1A"/>
+<path d="M128 164q22 16 44 0" stroke="#7A3B22" stroke-width="5" fill="none" stroke-linecap="round"/>
+<g transform="translate(222 176) rotate(14)"><rect x="0" y="22" width="34" height="46" rx="14" fill="#D79B70"/><rect x="2" y="-12" width="11" height="44" rx="5.5" fill="#D79B70"/><rect x="17" y="-16" width="11" height="48" rx="5.5" fill="#D79B70"/></g></svg></div><div class="grid"></div><div class="oval"></div><i class="br a"></i><i class="br b"></i><i class="br c"></i><i class="br d"></i>
+    <div class="pill red" style="position:absolute;left:calc(30 * var(--u));top:calc(30 * var(--u));height:calc(44 * var(--u));font-size:calc(18 * var(--u))"><span class="dot"></span>Live</div></div>
+  <div class="t3 sm" style="--fs:84;left:calc(850 * var(--u));top:calc(24 * var(--u))">Strike<br><span class="r">a pose.</span></div>
+  <div class="chips" style="left:calc(850 * var(--u));top:calc(212 * var(--u));flex-wrap:wrap;width:calc(520 * var(--u))">
+    <div class="chip on">✌ Peace sign</div><div class="chip">💪 Power pose</div><div class="chip">😎 Main character</div><div class="chip">👯 Squad</div></div>
+  <div class="snap" style="left:calc(850 * var(--u));top:calc(372 * var(--u))"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.6"/></svg></div>
+  <div class="wendy" style="left:calc(1050 * var(--u));top:calc(360 * var(--u));width:calc(290 * var(--u))"><div class="bub right">Smile, or don’t.<br>I’ll roast it anyway.</div><img src="/assets/cameo.png" style="width:calc(90 * var(--u))"></div>
+  <div class="new" style="right:calc(30 * var(--u));top:calc(-6 * var(--u))">New · pose prompts</div>
+</div>
+
+<!-- 4 · Snap countdown -->
+<div class="box" id="b4">
+  <div class="cam" style="left:calc(110 * var(--u));top:calc(30 * var(--u));width:calc(660 * var(--u));height:calc(495 * var(--u))"><div class="ph"><svg viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="bgP" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE9C9"/><stop offset="1" stop-color="#F4B183"/></linearGradient></defs>
+<rect width="300" height="300" fill="url(#bgP)"/><circle cx="235" cy="60" r="70" fill="#fff" opacity=".35"/>
+<path d="M40 300c6-70 52-104 110-104s104 34 110 104z" fill="#2F4A73"/><path d="M118 200l32 40 32-40" fill="#F6F0E6"/>
+<rect x="128" y="168" width="44" height="40" rx="14" fill="#C98B62"/><ellipse cx="150" cy="128" rx="54" ry="62" fill="#D79B70"/>
+<path d="M94 104c4-40 32-58 62-56 32 2 56 22 56 52-22-12-60-16-118 4z" fill="#CD2028"/><rect x="88" y="98" width="128" height="14" rx="7" fill="#A5171F"/><path d="M200 106l44 6-6 10-40-4z" fill="#A5171F"/>
+<rect x="106" y="122" width="38" height="22" rx="9" fill="#1F1A1A"/><rect x="156" y="122" width="38" height="22" rx="9" fill="#1F1A1A"/><rect x="142" y="128" width="16" height="5" fill="#1F1A1A"/>
+<path d="M128 164q22 16 44 0" stroke="#7A3B22" stroke-width="5" fill="none" stroke-linecap="round"/>
+<g transform="translate(222 176) rotate(14)"><rect x="0" y="22" width="34" height="46" rx="14" fill="#D79B70"/><rect x="2" y="-12" width="11" height="44" rx="5.5" fill="#D79B70"/><rect x="17" y="-16" width="11" height="48" rx="5.5" fill="#D79B70"/></g></svg></div><div class="oval" style="border-color:rgba(255,255,255,.4)"></div><i class="br a"></i><i class="br b"></i><i class="br c"></i><i class="br d"></i>
+    <div style="position:absolute;inset:0;display:grid;place-items:center;font:italic 900 calc(330 * var(--u))/1 Poppins;color:#fff;text-shadow:0 calc(6 * var(--u)) 0 #029CD4, 0 calc(12 * var(--u)) 0 #01476A, 0 calc(24 * var(--u)) calc(40 * var(--u)) rgba(0,0,0,.4)">2</div><div class="flash"></div></div>
+  <div class="t3" style="--fs:110;left:calc(850 * var(--u));top:calc(90 * var(--u))">Say<br><span class="r">Frosty!</span></div>
+  <div style="left:calc(856 * var(--u));top:calc(380 * var(--u));display:flex;gap:calc(16 * var(--u));font:italic 900 calc(46 * var(--u))/1 Poppins;color:#F6F0E6"><span>3</span><span style="color:#029CD4">•</span><span style="color:#029CD4;text-shadow:0 calc(3 * var(--u)) 0 #01476A">2</span><span style="color:#029CD4">•</span><span style="opacity:.35">1</span></div>
+  <div class="new" style="right:calc(30 * var(--u));top:calc(500 * var(--u))">New · shutter flash + sound</div>
+</div>
+
+<!-- 5 · Cooking -->
+<div class="box" id="b5">
+  <div class="polaroid" style="left:calc(130 * var(--u));top:calc(40 * var(--u));width:calc(380 * var(--u));rotate:-4deg"><i class="tape"></i><div class="develop"><div class="ph"><svg viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="bgP" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE9C9"/><stop offset="1" stop-color="#F4B183"/></linearGradient></defs>
+<rect width="300" height="300" fill="url(#bgP)"/><circle cx="235" cy="60" r="70" fill="#fff" opacity=".35"/>
+<path d="M40 300c6-70 52-104 110-104s104 34 110 104z" fill="#2F4A73"/><path d="M118 200l32 40 32-40" fill="#F6F0E6"/>
+<rect x="128" y="168" width="44" height="40" rx="14" fill="#C98B62"/><ellipse cx="150" cy="128" rx="54" ry="62" fill="#D79B70"/>
+<path d="M94 104c4-40 32-58 62-56 32 2 56 22 56 52-22-12-60-16-118 4z" fill="#CD2028"/><rect x="88" y="98" width="128" height="14" rx="7" fill="#A5171F"/><path d="M200 106l44 6-6 10-40-4z" fill="#A5171F"/>
+<rect x="106" y="122" width="38" height="22" rx="9" fill="#1F1A1A"/><rect x="156" y="122" width="38" height="22" rx="9" fill="#1F1A1A"/><rect x="142" y="128" width="16" height="5" fill="#1F1A1A"/>
+<path d="M128 164q22 16 44 0" stroke="#7A3B22" stroke-width="5" fill="none" stroke-linecap="round"/>
+<g transform="translate(222 176) rotate(14)"><rect x="0" y="22" width="34" height="46" rx="14" fill="#D79B70"/><rect x="2" y="-12" width="11" height="44" rx="5.5" fill="#D79B70"/><rect x="17" y="-16" width="11" height="48" rx="5.5" fill="#D79B70"/></g></svg></div></div><div class="cap" style="color:rgba(205,32,40,.4)">Developing…</div></div>
+  <div class="t3 sm" style="--fs:80;left:calc(640 * var(--u));top:calc(30 * var(--u))">Cooking your<br><span class="r">roast…</span></div>
+  <div class="steps" style="left:calc(640 * var(--u));top:calc(210 * var(--u))">
+    <div><i class="tk"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i>Studying the fit</div><div><i class="tk"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i>Finding the angle</div><div><i class="sp"></i>Adding the sass</div><div class="dim"><i class="wait"></i>Plating it up</div></div>
+  <div class="sizzle" style="left:calc(640 * var(--u));top:calc(440 * var(--u))"><i></i></div>
+  <div style="left:calc(640 * var(--u));top:calc(478 * var(--u));font:italic 600 calc(21 * var(--u))/1.3 Poppins;color:#CDEBF7">Asking the Frosty machine for a second opinion…</div>
+  <div class="wendy" style="left:calc(1150 * var(--u));top:calc(180 * var(--u));width:calc(240 * var(--u))"><div class="bub right">Ooh. This one’s<br>gonna be spicy.</div><img src="/assets/cameo.png" style="width:calc(100 * var(--u))"></div>
+  <div class="new" style="right:calc(30 * var(--u));top:calc(-6 * var(--u))">New · developing photo + steps</div>
+</div>
+
+<!-- 6 · Reveal -->
+<div class="box" id="b6">
+  <div class="polaroid" style="left:calc(60 * var(--u));top:calc(46 * var(--u));width:calc(330 * var(--u));rotate:-5deg"><i class="tape"></i><div class="ph"><svg viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="bgP" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE9C9"/><stop offset="1" stop-color="#F4B183"/></linearGradient></defs>
+<rect width="300" height="300" fill="url(#bgP)"/><circle cx="235" cy="60" r="70" fill="#fff" opacity=".35"/>
+<path d="M40 300c6-70 52-104 110-104s104 34 110 104z" fill="#2F4A73"/><path d="M118 200l32 40 32-40" fill="#F6F0E6"/>
+<rect x="128" y="168" width="44" height="40" rx="14" fill="#C98B62"/><ellipse cx="150" cy="128" rx="54" ry="62" fill="#D79B70"/>
+<path d="M94 104c4-40 32-58 62-56 32 2 56 22 56 52-22-12-60-16-118 4z" fill="#CD2028"/><rect x="88" y="98" width="128" height="14" rx="7" fill="#A5171F"/><path d="M200 106l44 6-6 10-40-4z" fill="#A5171F"/>
+<rect x="106" y="122" width="38" height="22" rx="9" fill="#1F1A1A"/><rect x="156" y="122" width="38" height="22" rx="9" fill="#1F1A1A"/><rect x="142" y="128" width="16" height="5" fill="#1F1A1A"/>
+<path d="M128 164q22 16 44 0" stroke="#7A3B22" stroke-width="5" fill="none" stroke-linecap="round"/>
+<g transform="translate(222 176) rotate(14)"><rect x="0" y="22" width="34" height="46" rx="14" fill="#D79B70"/><rect x="2" y="-12" width="11" height="44" rx="5.5" fill="#D79B70"/><rect x="17" y="-16" width="11" height="48" rx="5.5" fill="#D79B70"/></g></svg></div><div class="cap">Dilshan · Wendy Fest</div></div>
+  <div class="titletag" style="left:calc(90 * var(--u));top:calc(446 * var(--u));width:calc(300 * var(--u));rotate:3deg">Main character,<br>side quest energy</div>
+  <img src="/assets/cameo.png" style="left:calc(440 * var(--u));top:calc(20 * var(--u));width:calc(100 * var(--u));filter:drop-shadow(0 calc(8 * var(--u)) calc(12 * var(--u)) rgba(0,40,70,.4))">
+  <div class="roastbub" style="left:calc(470 * var(--u));top:calc(120 * var(--u));width:calc(560 * var(--u))">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:calc(16 * var(--u))"><div class="spice">Spice <svg viewBox="0 0 24 24" class="chili1"><path d="M14 4c1-2 3-2 4-1-1 0-2 1-2 2 3 1 4 4 3 7-2 6-8 9-14 8 5-2 7-5 8-9 0-3 0-6 1-7z"/><path d="M16 5c0-1 1-2 2-2" stroke-width="2" fill="none"/></svg><svg viewBox="0 0 24 24" class="chili1"><path d="M14 4c1-2 3-2 4-1-1 0-2 1-2 2 3 1 4 4 3 7-2 6-8 9-14 8 5-2 7-5 8-9 0-3 0-6 1-7z"/><path d="M16 5c0-1 1-2 2-2" stroke-width="2" fill="none"/></svg><svg viewBox="0 0 24 24" class="chili0"><path d="M14 4c1-2 3-2 4-1-1 0-2 1-2 2 3 1 4 4 3 7-2 6-8 9-14 8 5-2 7-5 8-9 0-3 0-6 1-7z"/><path d="M16 5c0-1 1-2 2-2" stroke-width="2" fill="none"/></svg></div><div class="lang"><span class="on">EN</span><span>සිං</span><span>தமி</span></div></div>
+    <p style="font-size:calc(22 * var(--u))">Dilshan walked in like the <b>main character</b> and the camera agreed. That red cap is working harder than a <b>Baconator</b> on a Friday night, and the peace sign says “I rehearsed this”. Honestly? Colombo’s not ready. Grab a <b>Frosty</b>, superstar. You’ve earned the cool-down.</p></div>
+  <div style="left:calc(556 * var(--u));top:calc(62 * var(--u));font:italic 800 calc(19 * var(--u))/1 Poppins;letter-spacing:.2em;text-transform:uppercase;color:#F6F0E6">Wendy says</div>
+  <div class="card qr" style="left:calc(1080 * var(--u));top:calc(30 * var(--u));width:calc(290 * var(--u))"><div class="code" style="width:calc(190 * var(--u));height:calc(190 * var(--u))"><img src="/api/qr?text=https%3A%2F%2Fwendyfest.lk%2Fregister" alt="" onerror="this.remove()" style="position:absolute;inset:0;width:100%;height:100%;background:#fff;z-index:3"></div><b>Download<br>&amp; share</b></div>
+  <div class="btn" style="left:calc(1080 * var(--u));top:calc(400 * var(--u));width:calc(290 * var(--u));height:calc(84 * var(--u));font-size:calc(26 * var(--u))">Next guest</div>
+  <div class="new" style="right:calc(30 * var(--u));top:calc(500 * var(--u))">New · Wendy’s bubble · spice · title tag · language</div>
+</div>
+
+<!-- 7 · Share card -->
+<div class="box" id="b7">
+  <div class="t3 sm" style="--fs:80;left:calc(98 * var(--u));top:calc(30 * var(--u))">Your roast,<br><span class="r">ready to post.</span></div>
+  <div class="steps" style="left:calc(98 * var(--u));top:calc(220 * var(--u))">
+    <div><i class="tk"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i>Scan the QR</div><div><i class="tk"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i>Save your roast card</div><div><i class="tk"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i>Post &amp; tag @wendys.lk</div></div>
+  <div class="pill" style="left:calc(98 * var(--u));top:calc(430 * var(--u));height:calc(60 * var(--u));font-size:calc(20 * var(--u))">#WendyFest · #RoastedByWendy</div>
+  <div class="phone" style="left:calc(780 * var(--u));top:calc(4 * var(--u));rotate:4deg"><div class="scr">
+    <div style="position:absolute;left:0;right:0;top:0;height:calc(54 * var(--u));background:linear-gradient(90deg,#1BB0E6,#016F9F);display:flex;align-items:center;justify-content:center"><img src="/assets/wendys-horiz-white.svg" style="height:calc(26 * var(--u))"></div>
+    <div style="position:absolute;left:0;right:0;top:calc(54 * var(--u));height:calc(8 * var(--u));background:linear-gradient(180deg,#fff 0 calc(3 * var(--u)),#CD2028 calc(3 * var(--u)) calc(6 * var(--u)),#fff calc(6 * var(--u)))"></div>
+    <div class="polaroid" style="position:absolute;left:calc(46 * var(--u));top:calc(80 * var(--u));width:calc(180 * var(--u));padding:calc(8 * var(--u)) calc(8 * var(--u)) calc(36 * var(--u));rotate:-4deg"><div class="ph"><svg viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="bgP" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE9C9"/><stop offset="1" stop-color="#F4B183"/></linearGradient></defs>
+<rect width="300" height="300" fill="url(#bgP)"/><circle cx="235" cy="60" r="70" fill="#fff" opacity=".35"/>
+<path d="M40 300c6-70 52-104 110-104s104 34 110 104z" fill="#2F4A73"/><path d="M118 200l32 40 32-40" fill="#F6F0E6"/>
+<rect x="128" y="168" width="44" height="40" rx="14" fill="#C98B62"/><ellipse cx="150" cy="128" rx="54" ry="62" fill="#D79B70"/>
+<path d="M94 104c4-40 32-58 62-56 32 2 56 22 56 52-22-12-60-16-118 4z" fill="#CD2028"/><rect x="88" y="98" width="128" height="14" rx="7" fill="#A5171F"/><path d="M200 106l44 6-6 10-40-4z" fill="#A5171F"/>
+<rect x="106" y="122" width="38" height="22" rx="9" fill="#1F1A1A"/><rect x="156" y="122" width="38" height="22" rx="9" fill="#1F1A1A"/><rect x="142" y="128" width="16" height="5" fill="#1F1A1A"/>
+<path d="M128 164q22 16 44 0" stroke="#7A3B22" stroke-width="5" fill="none" stroke-linecap="round"/>
+<g transform="translate(222 176) rotate(14)"><rect x="0" y="22" width="34" height="46" rx="14" fill="#D79B70"/><rect x="2" y="-12" width="11" height="44" rx="5.5" fill="#D79B70"/><rect x="17" y="-16" width="11" height="48" rx="5.5" fill="#D79B70"/></g></svg></div><div class="cap" style="font-size:calc(11 * var(--u));bottom:calc(10 * var(--u))">Dilshan</div></div>
+    <div class="titletag" style="position:absolute;left:calc(30 * var(--u));top:calc(300 * var(--u));width:calc(210 * var(--u));font-size:calc(15 * var(--u));rotate:2deg">Main character, side quest energy</div>
+    <div style="position:absolute;left:calc(24 * var(--u));right:calc(24 * var(--u));top:calc(376 * var(--u));background:#F6F0E6;color:#1F1A1A;border-radius:calc(14 * var(--u));padding:calc(12 * var(--u)) calc(14 * var(--u));font:600 calc(11.5 * var(--u))/1.4 Poppins">“That red cap is working harder than a Baconator on a Friday night…”</div>
+    <div style="position:absolute;left:0;right:0;bottom:calc(16 * var(--u));text-align:center;font:italic 900 calc(12 * var(--u))/1 Poppins;letter-spacing:.18em;text-transform:uppercase;color:#fff">Get roasted at Wendy Fest</div></div></div>
+  <div class="wendy" style="left:calc(1140 * var(--u));top:calc(120 * var(--u));width:calc(220 * var(--u))"><div class="bub right">Tag me.<br>I’ll be checking.</div><img src="/assets/cameo.png" style="width:calc(96 * var(--u))"></div>
+  <div class="new" style="right:calc(30 * var(--u));top:calc(500 * var(--u))">New · Instagram story card</div>
+</div>
+
+</div>
+<footer class="foot"><span class="c"><img src="/assets/cameo.png" alt="">© 2026 Wendy’s Sri Lanka</span><span>Roast Me · Station B</span><span>Terms · Privacy</span></footer>
+</div>
+<script>
+const s = +(new URLSearchParams(location.search).get("s") || 1); document.body.classList.add("s" + s);
+const L = [["1","Register"],["2","Ready?"],["3","Pose"],["4","Snap"],["5","Cooking"],["6","Your roast"],["6","Share"]][s - 1];
+document.getElementById("sn").textContent = L[0]; document.getElementById("sl").textContent = L[1];
+</script></body></html>

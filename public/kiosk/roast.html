@@ -60,9 +60,9 @@
   #s-idle .cta b { font:italic 900 calc(62 * var(--p))/.95 Poppins, sans-serif; text-transform:uppercase; letter-spacing:-.01em; text-align:left; text-shadow:0 calc(3 * var(--p)) 0 rgba(90,8,14,.45); }
   #s-idle .cta svg { width:calc(92 * var(--p)); height:calc(92 * var(--p)); } #s-idle .cta:active { transform:translateY(calc(4 * var(--p))); }
   @keyframes ctaPulse { 50% { box-shadow:0 calc(18 * var(--p)) calc(40 * var(--p)) rgba(60,0,8,.35), 0 0 0 calc(10 * var(--p)) rgba(255,255,255,.18); } }
-  /* Scream & Win halftone dots on the charcoal side, fading in from the left corners */
-  #s-idle .dots { inset:0; clip-path:polygon(0 0, 1088p 0, 698p 1080p, 0 1080p); background:radial-gradient(circle, rgba(255,255,255,.13) calc(3.6 * var(--p)), transparent calc(4.4 * var(--p))) 0 0 / calc(36 * var(--p)) calc(36 * var(--p));
-    -webkit-mask:radial-gradient(circle at 0 100%, #000 0, rgba(0,0,0,.75) 30%, transparent 62%), radial-gradient(circle at 0 0, rgba(0,0,0,.8) 0, rgba(0,0,0,.4) 25%, transparent 50%); mask:radial-gradient(circle at 0 100%, #000 0, rgba(0,0,0,.75) 30%, transparent 62%), radial-gradient(circle at 0 0, rgba(0,0,0,.8) 0, rgba(0,0,0,.4) 25%, transparent 50%); }
+  /* Scream & Win halftone dots: a small, faint patch in the bottom-left corner of the charcoal side */
+  #s-idle .dots { inset:0; clip-path:polygon(0 0, 1088p 0, 698p 1080p, 0 1080p); background:radial-gradient(circle, rgba(255,255,255,.08) calc(3 * var(--p)), transparent calc(3.7 * var(--p))) 0 0 / calc(36 * var(--p)) calc(36 * var(--p));
+    -webkit-mask:radial-gradient(circle at 0 100%, #000 0, rgba(0,0,0,.6) 18%, transparent 38%); mask:radial-gradient(circle at 0 100%, #000 0, rgba(0,0,0,.6) 18%, transparent 38%); }
   .stage:has(#s-idle.on) > .k-logo, .stage:has(#s-idle.on) > .k-cameo, .stage:has(#s-idle.on) > .k-foot { display:none; }
 </style>
 </head>

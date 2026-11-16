@@ -9,8 +9,8 @@ html, body { height:100%; margin:0; overflow:hidden; background:#151313; }
 .s > * { position:absolute; }
 .panel { inset:0; background:linear-gradient(170deg, #D92530 0%, #CD2028 50%, #B81C24 100%); clip-path:polygon(calc(1130 * var(--p)) 0, calc(1920 * var(--p)) 0, calc(1920 * var(--p)) calc(1080 * var(--p)), calc(740 * var(--p)) calc(1080 * var(--p))); }
 .band { inset:0; background:#fff; clip-path:polygon(calc(1088 * var(--p)) 0, calc(1130 * var(--p)) 0, calc(740 * var(--p)) calc(1080 * var(--p)), calc(698 * var(--p)) calc(1080 * var(--p))); }
-.art { inset:0; clip-path:polygon(calc(1088 * var(--p)) 0, calc(1920 * var(--p)) 0, calc(1920 * var(--p)) calc(1080 * var(--p)), calc(698 * var(--p)) calc(1080 * var(--p))); }
-.art img { position:absolute; right:0; top:0; width:calc(1060 * var(--p)); height:calc(1000 * var(--p)); object-fit:cover; object-position:right top; }
+.art { inset:0; background:#FFFFFF; clip-path:polygon(calc(1088 * var(--p)) 0, calc(1920 * var(--p)) 0, calc(1920 * var(--p)) calc(1080 * var(--p)), calc(698 * var(--p)) calc(1080 * var(--p))); }
+.art img { position:absolute; right:0; bottom:0; width:calc(1240 * var(--p)); height:calc(1240 * var(--p)); object-fit:cover; }
 .art .ph { position:absolute; right:calc(60 * var(--p)); top:calc(60 * var(--p)); width:calc(860 * var(--p)); height:calc(700 * var(--p)); border:calc(4 * var(--p)) dashed rgba(255,255,255,.55); border-radius:calc(24 * var(--p)); display:grid; place-items:center; text-align:center; font:700 calc(34 * var(--p))/1.35 'Barlow Condensed', sans-serif; letter-spacing:.06em; text-transform:uppercase; color:rgba(255,255,255,.85); }
 .logo { left:calc(125 * var(--p)); top:calc(62 * var(--p)); display:flex; align-items:center; gap:calc(34 * var(--p)); }
 .logo img { height:calc(78 * var(--p)); } .logo i { width:calc(3 * var(--p)); height:calc(70 * var(--p)); background:rgba(255,255,255,.45); }
@@ -28,7 +28,7 @@ html, body { height:100%; margin:0; overflow:hidden; background:#151313; }
 .cta svg { width:calc(96 * var(--p)); height:calc(96 * var(--p)); }
 </style></head><body><div class="wrap"><div class="s">
   <div class="panel"></div><div class="band"></div>
-  <div class="art"><img src="../assets/roast-wendy.png" alt="" onerror="this.remove()"><div class="ph">Wendy illustration<br>goes here<br><small style="font-size:.7em;opacity:.8">/assets/roast-wendy.png · 2048 × 2048</small></div></div>
+  <div class="art"><img src="../assets/roast-wendy.png" alt="" onload="this.nextElementSibling && this.nextElementSibling.remove()" onerror="this.remove()"><div class="ph">Wendy illustration<br>goes here<br><small style="font-size:.7em;opacity:.8">/assets/roast-wendy.png · 2048 × 2048</small></div></div>
   <div class="logo"><img src="../assets/wendys-horiz-white.svg" alt="Wendy's"><i></i><span class="wf"><b>Wendy</b><i>Fest</i></span></div>
   <div class="title">Roast<br>Me.</div>
   <i class="bar"></i>

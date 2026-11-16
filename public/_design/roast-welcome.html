@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Roast Me · Welcome</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@600;700&family=Barlow+Semi+Condensed:ital,wght@1,900&display=swap" rel="stylesheet">
 <style>
 :root { --p:min(calc(100vw / 1920), calc(100vh / 1080)); --red:#CD2028; --ink:#1E1B1B; --blue:#029CD4; }
 html, body { height:100%; margin:0; overflow:hidden; background:#151313; }
@@ -12,11 +12,13 @@ html, body { height:100%; margin:0; overflow:hidden; background:#151313; }
 .art { inset:0; background:#FFFFFF; clip-path:polygon(calc(1088 * var(--p)) 0, calc(1920 * var(--p)) 0, calc(1920 * var(--p)) calc(1080 * var(--p)), calc(698 * var(--p)) calc(1080 * var(--p))); }
 .art img { position:absolute; right:0; bottom:0; width:calc(1240 * var(--p)); height:calc(1240 * var(--p)); object-fit:cover; }
 .art .ph { position:absolute; right:calc(60 * var(--p)); top:calc(60 * var(--p)); width:calc(860 * var(--p)); height:calc(700 * var(--p)); border:calc(4 * var(--p)) dashed rgba(255,255,255,.55); border-radius:calc(24 * var(--p)); display:grid; place-items:center; text-align:center; font:700 calc(34 * var(--p))/1.35 'Barlow Condensed', sans-serif; letter-spacing:.06em; text-transform:uppercase; color:rgba(255,255,255,.85); }
-.logo { left:calc(125 * var(--p)); top:calc(62 * var(--p)); display:flex; align-items:center; gap:calc(34 * var(--p)); }
+.logo { left:calc(125 * var(--p)); top:calc(50 * var(--p)); display:flex; align-items:center; gap:calc(34 * var(--p)); }
 .logo img { height:calc(78 * var(--p)); } .logo i { width:calc(3 * var(--p)); height:calc(70 * var(--p)); background:rgba(255,255,255,.45); }
-.wf { display:inline-flex; font-family:Anton, Impact, sans-serif; font-size:calc(56 * var(--p)); line-height:1; text-transform:uppercase; }
-.wf b, .wf i { font-weight:400; font-style:normal; padding:calc(10 * var(--p)) calc(18 * var(--p)) calc(6 * var(--p)); display:inline-block; transform:skewX(-12deg); color:#fff; }
-.wf b { background:var(--red); } .wf i { background:var(--blue); margin-left:calc(-3 * var(--p)); }
+.wf { display:inline-flex; align-items:flex-start; filter:drop-shadow(0 calc(6 * var(--p)) calc(8 * var(--p)) rgba(0,0,0,.45)); }
+.wf .w1, .wf .w2 { display:inline-block; font:italic 900 calc(74 * var(--p))/.9 'Barlow Semi Condensed', 'Barlow Condensed', sans-serif; text-transform:uppercase; letter-spacing:.005em; color:#fff; text-shadow:0 calc(2 * var(--p)) 0 rgba(0,0,0,.18); position:relative; }
+.wf .w1 { padding:calc(8 * var(--p)) calc(26 * var(--p)) calc(16 * var(--p)) calc(22 * var(--p)); background:linear-gradient(180deg, #D8262F 0 82%, #951620 82%); transform:rotate(-5deg) skewX(-14deg); z-index:1; }
+.wf .w2 { padding:calc(8 * var(--p)) calc(24 * var(--p)) calc(16 * var(--p)) calc(24 * var(--p)); margin:calc(12 * var(--p)) 0 0 calc(-22 * var(--p)); background:linear-gradient(180deg, #2BA9E1 0 82%, #01679A 82%); transform:rotate(-5deg) skewX(-14deg); z-index:2; }
+.wf .w1 > span, .wf .w2 > span { display:inline-block; }
 .title { left:calc(118 * var(--p)); top:calc(172 * var(--p)); font-family:Anton, Impact, sans-serif; font-size:calc(222 * var(--p)); line-height:.95; text-transform:uppercase; letter-spacing:.005em; }
 .bar { left:calc(125 * var(--p)); top:calc(600 * var(--p)); width:calc(520 * var(--p)); height:calc(16 * var(--p)); background:var(--blue); }
 .sub { left:calc(125 * var(--p)); top:calc(640 * var(--p)); font:700 calc(64 * var(--p))/1.06 'Barlow Condensed', sans-serif; }
@@ -29,7 +31,7 @@ html, body { height:100%; margin:0; overflow:hidden; background:#151313; }
 </style></head><body><div class="wrap"><div class="s">
   <div class="panel"></div><div class="band"></div>
   <div class="art"><img src="/assets/roast-wendy.png" alt="" onload="this.nextElementSibling && this.nextElementSibling.remove()" onerror="this.remove()"><div class="ph">Wendy illustration<br>goes here<br><small style="font-size:.7em;opacity:.8">/assets/roast-wendy.png · 2048 × 2048</small></div></div>
-  <div class="logo"><img src="/assets/wendys-horiz-white.svg" alt="Wendy's"><i></i><span class="wf"><b>Wendy</b><i>Fest</i></span></div>
+  <div class="logo"><img src="/assets/wendys-horiz-white.svg" alt="Wendy's"><i></i><span class="wf"><span class="w1">Wendy</span><span class="w2">Fest</span></span></div>
   <div class="title">Roast<br>Me.</div>
   <i class="bar"></i>
   <div class="sub">Fresh takes.<br>Served by Wendy’s.</div>

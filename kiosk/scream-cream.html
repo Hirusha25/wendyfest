@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Scream & Win · Studio Cream · Wendy Fest</title><link rel="icon" href="../assets/cameo.png">
-<link rel="stylesheet" href="../css/brand.css?v=mwj27k7w">
+<link rel="stylesheet" href="../css/brand.css?v=mwj39js8">
 <style>
 /* ================= RETRO BLUE (formerly Studio Cream) · Scream & Win ================= */
 :root { --u:min(calc(100vw / 1440), calc(100vh / 760)); --v:var(--u); --blue:#029CD4; --red:#CD2028; --red2:#DA2A33; --red-dark:#8E141B; --ink:#1F1A1A; --cream:#F7F2EC; --blush:#F2D4D7; --cyan:#29C9E0; --line:rgba(205,32,40,.18); }
@@ -281,11 +281,21 @@ body { color:#fff; }
 #res-coupon small, #res-detail { color:#fff !important; }
 #s-result .vdiv { background:rgba(246,240,230,.45); }
 .k-input { background:#F6F0E6; }
+
+/* corner texture: big sweeping arcs + bold fading halftone dots (from the guest header), in white on blue */
+.texB { position:absolute; inset:0; z-index:1; pointer-events:none; overflow:hidden; }
+.texB i { position:absolute; width:calc(820 * var(--u)); height:calc(600 * var(--u)); }
+.texB i.tr { right:0; top:calc(125 * var(--u));
+  background:repeating-radial-gradient(circle at 100% 0, transparent 0 calc(86 * var(--u)), rgba(255,255,255,.26) calc(86 * var(--u)) calc(89 * var(--u))), radial-gradient(circle, rgba(255,255,255,.42) calc(3.6 * var(--u)), transparent calc(4.3 * var(--u))) 0 0 / calc(27 * var(--u)) calc(27 * var(--u));
+  -webkit-mask:radial-gradient(circle at 100% 0, #000 0, rgba(0,0,0,.8) 30%, transparent 75%); mask:radial-gradient(circle at 100% 0, #000 0, rgba(0,0,0,.8) 30%, transparent 75%); }
+.texB i.bl { left:0; bottom:calc(44 * var(--u));
+  background:repeating-radial-gradient(circle at 0 100%, transparent 0 calc(86 * var(--u)), rgba(255,255,255,.22) calc(86 * var(--u)) calc(89 * var(--u))), radial-gradient(circle, rgba(255,255,255,.36) calc(3.6 * var(--u)), transparent calc(4.3 * var(--u))) 0 0 / calc(27 * var(--u)) calc(27 * var(--u));
+  -webkit-mask:radial-gradient(circle at 0 100%, #000 0, rgba(0,0,0,.75) 28%, transparent 72%); mask:radial-gradient(circle at 0 100%, #000 0, rgba(0,0,0,.75) 28%, transparent 72%); }
 </style>
 </head>
 <body>
 <div class="stage">
-  <div class="bgfx" id="bgfx"><div class="rays"></div><div class="rings2"></div><div class="pat"></div><img class="cam" src="../assets/cameo.png" alt=""><div class="glow"></div></div><div class="decor"><svg class="wedges" viewBox="0 0 100 100" preserveAspectRatio="none"><defs><linearGradient id="wl" x1="0" x2="1"><stop offset="0" stop-color="#F2D4D7" stop-opacity=".75"/><stop offset="1" stop-color="#F2D4D7" stop-opacity="0"/></linearGradient><linearGradient id="wr" x1="1" x2="0"><stop offset="0" stop-color="#F2D4D7" stop-opacity=".75"/><stop offset="1" stop-color="#F2D4D7" stop-opacity="0"/></linearGradient></defs><polygon points="0,0 5,0 12,100 0,100" fill="url(#wl)"/><polygon points="100,0 95,0 88,100 100,100" fill="url(#wr)"/><g fill="none" vector-effect="non-scaling-stroke"><line x1="5" y1="0" x2="12" y2="100" stroke="#CD2028" stroke-opacity=".28" stroke-width="2" vector-effect="non-scaling-stroke"/><line x1="7.4" y1="0" x2="14.4" y2="100" stroke="#CD2028" stroke-opacity=".12" stroke-width="1" vector-effect="non-scaling-stroke"/><line x1="95" y1="0" x2="88" y2="100" stroke="#CD2028" stroke-opacity=".28" stroke-width="2" vector-effect="non-scaling-stroke"/><line x1="92.6" y1="0" x2="85.6" y2="100" stroke="#CD2028" stroke-opacity=".12" stroke-width="1" vector-effect="non-scaling-stroke"/></g></svg><div class="ht tl"></div><div class="ht br"></div><div class="grain"></div></div><canvas id="field"></canvas><i id="uprobe"></i>
+  <div class="bgfx" id="bgfx"><div class="rays"></div><div class="rings2"></div><div class="pat"></div><img class="cam" src="../assets/cameo.png" alt=""><div class="glow"></div></div><div class="decor"><svg class="wedges" viewBox="0 0 100 100" preserveAspectRatio="none"><defs><linearGradient id="wl" x1="0" x2="1"><stop offset="0" stop-color="#F2D4D7" stop-opacity=".75"/><stop offset="1" stop-color="#F2D4D7" stop-opacity="0"/></linearGradient><linearGradient id="wr" x1="1" x2="0"><stop offset="0" stop-color="#F2D4D7" stop-opacity=".75"/><stop offset="1" stop-color="#F2D4D7" stop-opacity="0"/></linearGradient></defs><polygon points="0,0 5,0 12,100 0,100" fill="url(#wl)"/><polygon points="100,0 95,0 88,100 100,100" fill="url(#wr)"/><g fill="none" vector-effect="non-scaling-stroke"><line x1="5" y1="0" x2="12" y2="100" stroke="#CD2028" stroke-opacity=".28" stroke-width="2" vector-effect="non-scaling-stroke"/><line x1="7.4" y1="0" x2="14.4" y2="100" stroke="#CD2028" stroke-opacity=".12" stroke-width="1" vector-effect="non-scaling-stroke"/><line x1="95" y1="0" x2="88" y2="100" stroke="#CD2028" stroke-opacity=".28" stroke-width="2" vector-effect="non-scaling-stroke"/><line x1="92.6" y1="0" x2="85.6" y2="100" stroke="#CD2028" stroke-opacity=".12" stroke-width="1" vector-effect="non-scaling-stroke"/></g></svg><div class="ht tl"></div><div class="ht br"></div><div class="grain"></div></div><div class="texB"><i class="tr"></i><i class="bl"></i></div><canvas id="field"></canvas><i id="uprobe"></i>
   <div class="flash" id="flash"></div>
   <header class="hdr"><div class="brand"><img src="../assets/wendys-horiz-white.svg" alt="Wendy's"><i></i><b>Wendy Fest</b></div><div class="step"><i id="step-n">1</i><span id="step-l">Register</span></div></header>
   <div class="track6 hide" id="track6"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="stripeB"></div>
@@ -385,7 +395,7 @@ body { color:#fff; }
   </aside>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwj27k7w"></script><script src="../js/kiosk.js?v=mwj27k7w"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwj39js8"></script><script src="../js/kiosk.js?v=mwj39js8"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let CFG = { scream: { threshold: 70, durationMs: 3000, dbFloor: -42, dbCeil: -6, loudWeight: .6, accWeight: .4 } };

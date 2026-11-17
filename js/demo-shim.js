@@ -100,37 +100,55 @@ function csvEscape(v) {
 
 const BANK = [
   {
-    vibe: "Main character energy",
-    title: { en: "Main Character, Side Quest Energy", si: "ප්‍රධාන චරිතය, Side Quest ශක්තිය", ta: "மெயின் கேரக்டர், சைட் க்வெஸ்ட் எனர்ஜி" },
+    vibe: "Camera ready",
+    title: { en: "Ready Before The Camera", si: "කැමරාවට කලින් Ready", ta: "கேமராவுக்கு முன்னாடியே Ready" },
     roast: {
-      en: "{name}, you walked up to this camera like the 138 bus finally stopped for you. The outfit says 'big plans', the face says 'five minutes away' for the last forty. The group chat is still deciding where to eat. You already decided. Respect. Fresh, never frozen, just like your confidence.",
-      si: "{name}, ඔයා මේ කැමරාවට ආවේ 138 බස් එක අන්තිමේදී ඔයාට නැවැත්තුවා වගේ. ඇඳුම කියන්නේ 'ලොකු plans', මූණ කියන්නේ 'five minutes away' කියලා පැය බාගයක්. Group chat එක තාම කන්න තැනක් තෝරනවා. ඔයා දැනටමත් තෝරලා. Respect. Fresh, never frozen, ඔයාගේ confidence එක වගේමයි.",
-      ta: "{name}, 138 பஸ் கடைசியா உங்களுக்காக நின்ன மாதிரி இந்த கேமராவுக்கு வந்தீங்க. உடை சொல்லுது 'பெரிய plans', முகம் சொல்லுது 'five minutes away' கடந்த அரை மணி நேரமா. குரூப் சாட் இன்னும் எங்க சாப்பிடுறதுன்னு முடிவு பண்ணல. நீங்க ஏற்கனவே முடிவு பண்ணிட்டீங்க. Respect. Fresh, never frozen, உங்க confidence மாதிரியே.",
+      en: "{name}, you stood in front of this camera like you practised at home. Maybe you did. We are not judging. That confidence is fresh, never frozen, and we like it. Now go and get a Frosty. You have earned it.",
+      si: "{name}, ඔයා මේ කැමරාව ඉස්සරහට ආවේ ගෙදරදී practice කරලා වගේ. සමහර විට ඇත්තටම කරන්න ඇති. අපි මුකුත් කියන්නේ නැහැ. ඒ confidence එක fresh, never frozen, අපි ඒකට කැමතියි. දැන් ගිහින් Frosty එකක් ගන්න. ඒක ඔයාට හිමියි.",
+      ta: "{name}, வீட்டுல practice பண்ணிட்டு வந்த மாதிரி இந்த கேமரா முன்னாடி நின்னீங்க. ஒருவேளை உண்மையாவே பண்ணியிருக்கலாம். நாங்க ஒண்ணும் சொல்லல. அந்த confidence fresh, never frozen, எங்களுக்கு பிடிச்சிருக்கு. இப்போ போய் ஒரு Frosty வாங்குங்க. அது உங்களுக்கு சேரணும்.",
     },
   },
   {
-    vibe: "Tuk-tuk negotiator",
-    title: { en: "Negotiates Every Bill Like A Tuk Fare", si: "හැම බිලක්ම ත්‍රීවීල් ගානක් වගේ කතා කරනවා", ta: "ஒவ்வொரு பில்லையும் டுக்-டுக் கட்டணம் போல பேரம்" },
+    vibe: "Big smile",
+    title: { en: "Smile On Duty", si: "හිනාව Duty එකේ", ta: "சிரிப்பு Duty-ல" },
     roast: {
-      en: "{name}, that pose has 'I know a shortcut through Nugegoda' written all over it. You've never held a bat but you coach the whole country from the sofa. Your 'quick story' is longer than the Mahavamsa. Honestly? We'd still save you a Frosty. Don't make it weird.",
-      si: "{name}, ඒ pose එකේ 'මම නුගේගොඩ හරහා shortcut එකක් දන්නවා' කියලා ලියලා තියෙනවා. ඔයා කවදාවත් bat එකක් අල්ලලා නැහැ, ඒත් sofa එකෙන් මුළු රටටම coach කරනවා. ඔයාගේ 'quick story' එක මහාවංශයට වඩා දිගයි. ඇත්තටම? අපි තාම ඔයාට Frosty එකක් තියාගන්නවා. Weird කරගන්න එපා.",
-      ta: "{name}, அந்த போஸ்ல 'நுகேகொடை வழியா எனக்கு ஷார்ட்கட் தெரியும்'னு எழுதி இருக்கு. நீங்க வாழ்க்கையில பேட் பிடிச்சதில்ல, ஆனா சோஃபால இருந்து முழு நாட்டுக்கும் கோச். உங்க 'quick story' மகாவம்சத்தை விட நீளம். உண்மையா? இன்னும் உங்களுக்கு ஒரு Frosty வெச்சிருக்கோம். Weird பண்ணாதீங்க.",
+      en: "{name}, that smile is working very hard today. It says 'I am calm', but we know you practised it in the mirror. Good decision. It worked. You look great, and yes, you can tell everyone Wendy said so.",
+      si: "{name}, ඒ හිනාව අද ගොඩක් වැඩ කරනවා. ඒක කියන්නේ 'මම calm' කියලා, ඒත් ඔයා කණ්ණාඩිය ඉස්සරහ practice කළා කියලා අපි දන්නවා. හොඳ තීරණයක්. ඒක වැඩ කළා. ඔයා ලස්සනයි, Wendy එහෙම කිව්වා කියලා හැමෝටම කියන්න.",
+      ta: "{name}, அந்த சிரிப்பு இன்னைக்கு நிறைய வேலை செய்யுது. 'நான் calm'னு சொல்லுது, ஆனா கண்ணாடி முன்னாடி practice பண்ணீங்கன்னு எங்களுக்கு தெரியும். நல்ல முடிவு. அது வேலை செஞ்சது. நீங்க அழகா இருக்கீங்க, Wendy சொன்னாங்கன்னு எல்லார்கிட்டயும் சொல்லுங்க.",
     },
   },
   {
-    vibe: "Papare band captain",
-    title: { en: "Joined The Papare, Forgot The Match", si: "පපරේට එකතු වුණා, match එක අමතක වුණා", ta: "பப்பரேயில் சேர்ந்து மேட்சை மறந்தவர்" },
+    vibe: "One-take photo",
+    title: { en: "Good Photo, First Try", si: "පළවෙනි Photo එකෙන්ම", ta: "முதல் Photo-லயே" },
     roast: {
-      en: "{name}, you look like you arrive at the Big Match for the papare and leave before the first wicket. That smile has survived at least three Colombo rush hours today. The fit is loud, the energy is louder, and somewhere a tuk driver is still waiting for you. Square patty, round applause.",
-      si: "{name}, ඔයා Big Match එකට එන්නේ පපරේට, පළවෙනි wicket එකට කලින් යනවා වගේ. ඒ හිනාව අද කොළඹ rush hour තුනක්වත් survive කරලා. ඇඳුම loud, energy එක ඊටත් loud, කොහේ හරි ත්‍රීවීල් කාරයෙක් තාම ඔයා එනකම් බලන් ඉන්නවා. Square patty, round applause.",
-      ta: "{name}, Big Match-க்கு பப்பரேக்காக வந்து முதல் விக்கெட்டுக்கு முன்னாடியே கிளம்புற ஆள் மாதிரி இருக்கீங்க. அந்த சிரிப்பு இன்னைக்கு குறைந்தது மூணு கொழும்பு ட்ராஃபிக்கை தாங்கி இருக்கு. உடை loud, energy இன்னும் loud, எங்கயோ ஒரு டுக் டிரைவர் இன்னும் உங்களுக்காக காத்திருக்கார். Square patty, round applause.",
+      en: "{name}, most people need ten photos to get a good one. You got it in one. Either you are very lucky or very prepared. We think both. Keep this picture. It is a good one.",
+      si: "{name}, ගොඩක් අයට හොඳ photo එකක් ගන්න දහයක් ගන්න වෙනවා. ඔයා එකෙන්ම ගත්තා. එක්කෝ ඔයා ගොඩක් වාසනාවන්තයි, නැත්නම් ගොඩක් ලෑස්තියි. අපි හිතන්නේ දෙකම. මේ photo එක තියාගන්න. ඒක හොඳ එකක්.",
+      ta: "{name}, நிறைய பேருக்கு ஒரு நல்ல photo வர பத்து எடுக்கணும். உங்களுக்கு ஒண்ணுலயே வந்துடுச்சு. ஒண்ணு நீங்க ரொம்ப அதிர்ஷ்டசாலி, இல்லன்னா ரொம்ப தயாரா வந்திருக்கீங்க. ரெண்டும்னு நாங்க நினைக்கிறோம். இந்த photo-வ வெச்சுக்கோங்க. நல்லா இருக்கு.",
+    },
+  },
+  {
+    vibe: "Dressed for it",
+    title: { en: "Best Dressed At The Booth", si: "මෙතන හොඳටම ඇඳලා", ta: "இங்க Best Dressed" },
+    roast: {
+      en: "{name}, you dressed up for a burger event, and honestly, thank you. Somebody had to. The rest of us will try harder next time. Until then, you are the best dressed person at this booth.",
+      si: "{name}, ඔයා burger event එකකට ලස්සනට ඇඳලා ආවා. ඇත්තටම, ස්තූතියි. කවුරු හරි ඒක කරන්න ඕන. අනිත් අපි ඊළඟ පාර උත්සාහ කරන්නම්. එතකම්, මේ booth එකේ හොඳටම ඇඳලා ඉන්නේ ඔයා.",
+      ta: "{name}, ஒரு burger event-க்கு அழகா உடுத்திட்டு வந்திருக்கீங்க. உண்மையா, நன்றி. யாராவது அத செய்யணும். மத்த நாங்க அடுத்த தடவை முயற்சி பண்றோம். அதுவரைக்கும், இந்த booth-ல best dressed நீங்கதான்.",
+    },
+  },
+  {
+    vibe: "Brave one",
+    title: { en: "Asked For It, Bravely", si: "බය නැති කෙනා", ta: "தைரியசாலி" },
+    roast: {
+      en: "{name}, you asked a burger shop to roast you. That is brave. The truth is, we looked for something to tease and you made it difficult. Well done. You win this round. See you at the counter.",
+      si: "{name}, ඔයා burger කඩේකට කිව්වා 'මාව roast කරන්න' කියලා. ඒකට හයිය ඕන. ඇත්ත කියනවා නම්, අපි විහිළු කරන්න දෙයක් හෙව්වා, ඔයා ඒක අමාරු කළා. නියමයි. මේ round එක ඔයාට. Counter එකේදී හම්බවෙමු.",
+      ta: "{name}, ஒரு burger கடைகிட்ட 'என்ன roast பண்ணுங்க'னு கேட்டீங்க. அதுக்கு தைரியம் வேணும். உண்மைய சொன்னா, கிண்டல் பண்ண ஏதாவது தேடினோம், நீங்க அத கஷ்டமாக்கிட்டீங்க. சூப்பர். இந்த round உங்களுக்குதான். Counter-ல பார்க்கலாம்.",
     },
   },
 ];
 
 function fallbackRoast({ name, reason }) {
   const pick = BANK[Math.floor(Math.random() * BANK.length)];
-  const n = name || "Machan";
+  const n = name || "Friend";
   const fill = (o) => Object.fromEntries(Object.entries(o).map(([k, v]) => [k, v.replaceAll("{name}", n)]));
   return { observations: ["fallback line used: " + reason], vibe: pick.vibe, title: pick.title, roast: fill(pick.roast), model: "fallback-bank", fallback: true };
 }

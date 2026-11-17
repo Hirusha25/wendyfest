@@ -276,6 +276,24 @@
   .cv .wbub small { display:block; margin-bottom:calc(8 * var(--p)); font:italic 800 calc(18 * var(--p))/1 Poppins, sans-serif; letter-spacing:.2em; text-transform:uppercase; color:#029CD4; }
   .cv .wbub .cooking-line { position:static; color:#1E1B1B; font:italic 900 calc(40 * var(--p))/1.15 Poppins, sans-serif; }
   .cv .wbub::after { content:""; position:absolute; right:calc(120 * var(--p)); bottom:calc(-21 * var(--p)); width:calc(30 * var(--p)); height:calc(30 * var(--p)); background:#fff; border-right:calc(6 * var(--p)) solid #029CD4; border-bottom:calc(6 * var(--p)) solid #029CD4; transform:rotate(45deg); }
+  /* reveal, option A + "Wendy says" card; the share card hangs like a badge (tab, punched hole, lanyard) */
+  #s-reveal .rleft { left:calc(95 * var(--p)); top:calc(226 * var(--p)); width:calc(660 * var(--p)); height:calc(770 * var(--p)); padding:0 calc(30 * var(--p)) calc(40 * var(--p)); box-sizing:border-box; gap:calc(22 * var(--p)); }
+  #s-reveal .rbig { font-size:calc(70 * var(--p)); flex:none; }
+  #s-reveal .say { flex:none; background:#fff; color:#1E1B1B; border-radius:calc(10 * var(--p)); box-shadow:0 calc(10 * var(--p)) 0 #01679A, 0 calc(20 * var(--p)) calc(40 * var(--p)) rgba(0,0,0,.4); padding:calc(22 * var(--p)) calc(26 * var(--p)) calc(20 * var(--p)); box-sizing:border-box; margin-bottom:calc(12 * var(--p)); }
+  #s-reveal .say .top { display:flex; align-items:center; justify-content:space-between; margin-bottom:calc(12 * var(--p)); }
+  #s-reveal .say .who { display:flex; align-items:center; gap:calc(12 * var(--p)); font:italic 800 calc(17 * var(--p))/1 Poppins, sans-serif; letter-spacing:.2em; text-transform:uppercase; color:#029CD4; } #s-reveal .say .who img { height:calc(40 * var(--p)); }
+  #s-reveal .rtxt { color:#2B2525; font-weight:500; line-height:1.45; }
+  #s-reveal .rsig { margin-top:calc(12 * var(--p)); color:#8A7F7F; font-size:calc(16 * var(--p)); }
+  #s-reveal .rtabs { background:none; padding:0; gap:calc(6 * var(--p)); border-radius:0; }
+  #s-reveal .rtabs button { height:calc(42 * var(--p)); min-width:calc(58 * var(--p)); padding:0 calc(12 * var(--p)); border-radius:calc(8 * var(--p)); border:calc(3 * var(--p)) solid rgba(30,27,27,.22); background:transparent; color:#1E1B1B; font:italic 800 calc(16 * var(--p))/1 Poppins, 'Noto Sans Sinhala', 'Noto Sans Tamil', sans-serif; box-sizing:border-box; }
+  #s-reveal .rtabs button.on { background:#029CD4; border-color:#029CD4; color:#fff; box-shadow:0 calc(4 * var(--p)) 0 #01476A; }
+  #s-reveal .pcard { width:calc(440 * var(--p)); height:calc(708 * var(--p)); rotate:-2deg; transform-origin:50% 0; z-index:6; }
+  #s-reveal .pcard .poster { position:relative; scale:.88; transform-origin:0 0; }
+  #s-reveal .pcard .strap { position:absolute; left:calc(50% - calc(16 * var(--p))); top:calc(-52 * var(--p)); width:calc(32 * var(--p)); height:calc(44 * var(--p)); background:linear-gradient(90deg, #01679A, #2BB6EA 45%, #0186B8); box-shadow:0 calc(4 * var(--p)) calc(8 * var(--p)) rgba(0,0,0,.35); }
+  #s-reveal .pcard .ptab { position:absolute; left:calc(50% - calc(62 * var(--p))); top:calc(-34 * var(--p)); width:calc(124 * var(--p)); height:calc(60 * var(--p)); background:#fff; border-radius:calc(16 * var(--p)) calc(16 * var(--p)) 0 0; box-shadow:0 calc(-6 * var(--p)) calc(14 * var(--p)) rgba(0,0,0,.25); }
+  #s-reveal .pcard .ptab::before { content:""; position:absolute; left:calc(50% - calc(15 * var(--p))); top:calc(9 * var(--p)); width:calc(30 * var(--p)); height:calc(30 * var(--p)); border-radius:50%; background:#241F1F; box-shadow:inset 0 calc(4 * var(--p)) calc(6 * var(--p)) rgba(0,0,0,.6), 0 0 0 calc(4 * var(--p)) #C9CED3, 0 0 0 calc(5 * var(--p)) #8E959C; }
+  #s-reveal .nextb { display:flex; align-items:center; justify-content:center; gap:calc(20 * var(--p)); border:0; padding:0; border-radius:calc(12 * var(--p)); color:#fff; cursor:pointer; background:linear-gradient(180deg, #403939 0%, #1E1B1B 100%); box-shadow:0 calc(6 * var(--p)) 0 #0A0909, 0 calc(14 * var(--p)) calc(22 * var(--p)) rgba(0,0,0,.35), inset 0 calc(2 * var(--p)) 0 rgba(255,255,255,.16); font:italic 900 calc(36 * var(--p))/1 Poppins, sans-serif; text-transform:uppercase; letter-spacing:-.01em; white-space:nowrap; transition:transform .06s; }
+  #s-reveal .nextb svg { width:calc(48 * var(--p)); height:calc(48 * var(--p)); } #s-reveal .nextb:active { transform:translateY(calc(5 * var(--p))); }
   .stage:has(#s-idle.on) > .k-logo, .stage:has(#s-idle.on) > .k-cameo, .stage:has(#s-idle.on) > .k-foot { display:none; }
 </style>
 </head>
@@ -379,23 +397,25 @@
     <div class="rleft">
       <div class="rtop"><span class="eb" id="r-vibe">Wendy says</span></div>
       <div class="rbig" id="r-title">…</div>
-      <i class="ubar"></i>
-      <div class="rtxt" id="r-body"></div>
-      <div class="rbot"><div class="rsig">— Wendy’s, to <span id="r-who"></span></div><div class="rtabs"><button data-l="en">EN</button><button data-l="si">සිං</button><button data-l="ta">தமி</button></div></div>
+      <div class="say">
+        <div class="top"><span class="who"><img src="/assets/cameo.png" alt="">Wendy says</span><div class="rtabs"><button data-l="en">EN</button><button data-l="si">සිං</button><button data-l="ta">தமி</button></div></div>
+        <div class="rtxt" id="r-body"></div>
+        <div class="rsig">— Wendy’s, to <span id="r-who"></span></div>
+      </div>
     </div>
-    <div class="poster" style="left:calc(765 * var(--p));top:calc(195 * var(--p))">
+    <div class="pcard" style="left:calc(800 * var(--p));top:calc(222 * var(--p))"><i class="strap"></i><i class="ptab"></i>
+    <div class="poster">
       <div class="pr"></div>
       <div class="plk"><img src="/assets/wendys-horiz.svg" alt="Wendy's"><i></i><span class="wf"><span class="w1">Wendy</span><span class="w2">Fest</span></span></div>
       <div class="rst">Roasted.</div>
       <div class="pph"><img id="r-photo" alt=""></div>
       <div class="pband"><div class="pname" id="rp-name"></div><div class="ppunch" id="rp-punch"></div></div>
       <div class="pfoot"><img src="/assets/cameo.png" alt=""><b>#RoastedByWendy</b></div>
-    </div>
-    <div class="rsave" style="left:calc(1400 * var(--p));top:calc(215 * var(--p))">Scan to<br>save</div>
-    <i class="ubar" style="left:calc(1404 * var(--p));top:calc(338 * var(--p))"></i>
-    <div class="qrs" style="left:calc(1400 * var(--p));top:calc(385 * var(--p))"><img id="qr-roast" alt="QR"></div>
-    <div class="qnote" style="left:calc(1400 * var(--p));top:calc(720 * var(--p));width:calc(420 * var(--p))">Download and share. Also sent to your phone by SMS.</div>
-    <button class="cbox out" style="left:calc(1400 * var(--p));top:calc(830 * var(--p));width:calc(430 * var(--p));height:calc(130 * var(--p))" onclick="goIdle()"><b style="font-size:calc(46 * var(--p))">Next guest</b><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg></button>
+    </div></div>
+    <div class="rsave" style="left:calc(1340 * var(--p));top:calc(226 * var(--p))">Scan to<br>save</div>
+    <div class="qrs" style="left:calc(1340 * var(--p));top:calc(376 * var(--p))"><img id="qr-roast" alt="QR"></div>
+    <div class="qnote" style="left:calc(1340 * var(--p));top:calc(706 * var(--p));width:calc(480 * var(--p))">Download and share. Also sent to your phone by SMS.</div>
+    <button class="nextb" style="left:calc(1340 * var(--p));top:calc(838 * var(--p));width:calc(487 * var(--p));height:calc(110 * var(--p))" onclick="goIdle()">Next guest<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg></button>
   </div></section>
 
   <aside class="settings" id="settings">
@@ -531,8 +551,8 @@
   function punchOf(txt) { const s1 = String(txt || "").split(/(?<=[.!?।])\s+/)[0] || ""; return s1.length <= 95 ? s1 : s1.slice(0, 92).replace(/\s+\S*$/, "") + "…"; }
   function fitReveal() {
     const u = Math.min(innerWidth / 1920, innerHeight / 1080);
-    const t = $("r-title"); let fs = 84; t.style.fontSize = fs * u + "px"; while (t.offsetHeight > 330 * u && fs > 40) { fs -= 4; t.style.fontSize = fs * u + "px"; }
-    const col = document.querySelector(".rleft"), b = $("r-body"); let bs = 23; b.style.fontSize = bs * u + "px"; while (col.scrollHeight > col.clientHeight + 1 && bs > 15) { bs -= 1; b.style.fontSize = bs * u + "px"; }
+    const t = $("r-title"); let fs = 70; t.style.fontSize = fs * u + "px"; while (t.offsetHeight > 270 * u && fs > 36) { fs -= 3; t.style.fontSize = fs * u + "px"; }
+    const col = document.querySelector(".rleft"), b = $("r-body"); let bs = 23; b.style.fontSize = bs * u + "px"; while (col.scrollHeight > col.clientHeight + 1 && bs > 13) { bs -= 1; b.style.fontSize = bs * u + "px"; }
     const n = $("rp-name"); let ns = 60; n.style.fontSize = ns * u + "px"; while (n.scrollWidth > n.clientWidth + 1 && ns > 28) { ns -= 3; n.style.fontSize = ns * u + "px"; }
   }
   addEventListener("resize", () => { if (R && $("s-reveal").classList.contains("on")) fitReveal(); });

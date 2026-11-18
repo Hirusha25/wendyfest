@@ -4,9 +4,10 @@ import fs from "node:fs";
 import QRCode from "qrcode";
 import { config } from "./config.js";
 import { db, getSetting, setSetting } from "./db.js";
-import { shortCode, token, normalisePhone, judgeScream, clamp, csvEscape } from "./util.js";
+import { shortCode, token, normalisePhone, judgeScream, rivalCheck, clamp, csvEscape } from "./util.js";
 import { sendSms, templates } from "./sms.js";
 import { generateRoast } from "./roast.js";
+import { screamSass } from "./sass.js";
 
 const app = express();
 app.disable("x-powered-by");
@@ -228,8 +229,13 @@ app.post("/api/kiosk/scream", requirePin("kiosk"), async (req, res) => {
   else if (won && !coupon) sendSms(p.phone, t.win(first, "(pending)", "reward pool exhausted – see staff", profileUrl(p)));
   else sendSms(p.phone, t.lose(first, profileUrl(p)));
 
+  // Shouted another restaurant's name (or anything that was not Wendy's)? Wendy answers back on the result screen.
+  const rival = rivalCheck(transcript);
+  const offScript = !won && transcript && (accuracyOverride === undefined || accuracyOverride === null) && (rival || reason === "unclear");
+  const sass = offScript ? await screamSass({ transcript, name: first, rival }) : null;
+
   res.json({
-    attemptId: info.lastInsertRowid, name: first, score, loudness: loud, accuracy: acc, threshold: s.threshold, minLoud: s.minLoud, minAcc: s.minAcc, reason, won,
+    attemptId: info.lastInsertRowid, name: first, score, loudness: loud, accuracy: acc, threshold: s.threshold, minLoud: s.minLoud, minAcc: s.minAcc, reason, won, sass,
     coupon: coupon ? { code: coupon.code, label } : null, couponPoolEmpty: won && !coupon,
     profileUrl: profileUrl(p), attemptsLeft: Math.max(0, s.attemptsPerPerson - used.length - 1),
   });

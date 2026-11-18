@@ -452,6 +452,7 @@ canvas.wave { width:70vw; height:12vmin; display:block; }
     } else {
       $("res-title").textContent = { no_s: "Don’t forget the S!", quiet: "Louder next time.", close: "So close!" }[r.reason] || (r.loudness < r.accuracy ? "Louder next time." : "We heard… something.");
       $("res-detail").textContent = (r.accuracy < 40 ? "The meter heard you. It just didn’t hear “Wendy’s”. " : "Close one. Colombo traffic is louder. ") + `Loud ${r.loudness} · Clarity ${r.accuracy} · Win line ${r.threshold}.`;
+      if (r.sass) { $("res-title").textContent = r.sass.title; $("res-detail").textContent = r.sass.text + ` Loud ${r.loudness} · Clarity ${r.accuracy} · Win line ${r.threshold}.`; }
       $("qr-label").innerHTML = "Scan for<br>your pass";
     }
     $("qr-profile").src = `/api/qr?text=${encodeURIComponent(r.profileUrl)}`;

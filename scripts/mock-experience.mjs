@@ -21,7 +21,7 @@ const BASE_CSS = `
 const NEW = (label, top = -2) => `<div style="right:24u;top:${top}u;left:auto;background:#FFC72C;color:#1F1A1A;font:italic 900 15u/1 Poppins;letter-spacing:.16em;text-transform:uppercase;padding:8u 14u;border-radius:999px;box-shadow:0 4u 0 #B8860B">New · ${label}</div>`;
 
 // ---------- 1 · Register: how-to-play loop ----------
-await p.goto(base + "/kiosk/scream-cream", { waitUntil: "networkidle" }); await p.waitForTimeout(1200);
+await p.goto(base + "/kiosk/scream", { waitUntil: "networkidle" }); await p.waitForTimeout(1200);
 await p.evaluate(() => { document.querySelector("#s-idle .left").style.opacity = "0"; });
 const step = (n, x, icon, t1, t2) => `<div class="mk-cream" style="left:${x}u;top:150u;width:250u;height:250u;display:grid;justify-items:center;align-content:center;gap:14u;text-align:center">
   <div style="position:absolute;left:18u;top:18u;width:44u;height:44u;border-radius:50%;background:#CD2028;color:#fff;display:grid;place-items:center;font:900 24u/1 Poppins">${n}</div>

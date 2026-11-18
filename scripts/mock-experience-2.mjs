@@ -28,7 +28,7 @@ const PILL = (txt, extra = "") => `<div class="mk-red" style="display:flex;align
 const TICK = '<svg viewBox="0 0 24 24" style="width:20u;height:20u" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
 
 // ---------- 1 · Register: Wendy invites passers-by ----------
-await p.goto(base + "/kiosk/scream-cream", { waitUntil: "networkidle" }); await p.waitForTimeout(1200);
+await p.goto(base + "/kiosk/scream", { waitUntil: "networkidle" }); await p.waitForTimeout(1200);
 await inject("#s-idle .box", `<div class="mk-cream" style="left:690u;top:-42u;width:210u;padding:14u 18u;border-radius:18u;font:700 18u/1.3 Poppins;box-shadow:0 6u 0 #014F72">Psst! Scan me to play →<i style="position:absolute;right:-14u;top:22u;width:0;height:0;border-top:12u solid transparent;border-bottom:12u solid transparent;border-left:16u solid #F6F0E6"></i></div><img src="/assets/cameo.png" style="left:912u;top:-40u;width:86u;filter:drop-shadow(0 8u 12u rgba(0,40,70,.4))">${NEW("Wendy invites", 540)}`, BASE_CSS);
 await snap("n1-register-wendy"); await clear();
 

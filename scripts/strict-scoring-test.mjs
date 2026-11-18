@@ -9,7 +9,7 @@ const p = await c.newPage(); const errs = []; p.on("pageerror", (e) => errs.push
 const on = () => p.evaluate(() => document.querySelector(".screen.on").id);
 async function round(tag, db, said) {
   const code = await reg("Dilshan Perera"); await new Promise((r) => setTimeout(r, 30));
-  await p.goto(base + "/kiosk/scream-cream", { waitUntil: "networkidle" });
+  await p.goto(base + "/kiosk/scream", { waitUntil: "networkidle" });
   await p.click("#start"); await p.fill("#code", code); await p.keyboard.press("Enter"); await p.waitForTimeout(900);
   await p.evaluate(() => { currentDb = () => -60; }); await p.click("#go"); await p.waitForTimeout(3700);
   await p.evaluate((db) => { currentDb = () => db - Math.random() * 1.5; }, db); await p.waitForTimeout(1200);

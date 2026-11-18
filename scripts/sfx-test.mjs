@@ -10,7 +10,7 @@ const p = await c.newPage(); const errs = []; p.on("pageerror", (e) => errs.push
 await p.addInitScript(() => { window.__sfx = []; const O = AudioContext.prototype.createOscillator, B = AudioContext.prototype.createBufferSource;
   AudioContext.prototype.createOscillator = function () { window.__sfx.push(["osc", Math.round(this.currentTime * 100) / 100]); return O.call(this); };
   AudioContext.prototype.createBufferSource = function () { window.__sfx.push(["noise", Math.round(this.currentTime * 100) / 100]); return B.call(this); }; });
-await p.goto(base + "/kiosk/scream-cream", { waitUntil: "networkidle" });
+await p.goto(base + "/kiosk/scream", { waitUntil: "networkidle" });
 const n = () => p.evaluate(() => window.__sfx.length);
 await p.click("#start"); await p.waitForTimeout(300); console.log("after screen change:", await n());
 await p.click("#kbd button"); await p.waitForTimeout(100); console.log("after key press:", await n());

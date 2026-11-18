@@ -24,7 +24,7 @@ await p.click('a[href$="profile"], a[href$="profile.html"]'); await p.waitForLoa
 const data = await p.evaluate(async () => { const c = await renderProfileCard(await (await fetch("/api/me")).json()); return c.toDataURL("image/png"); });
 fs.writeFileSync(`${out}/card-profile.png`, Buffer.from(data.split(",")[1], "base64"));
 await p.setViewportSize({ width: 1280, height: 800 });
-await p.goto(u(isDemo ? "/kiosk/scream-cream.html" : "/kiosk/scream-cream"), { waitUntil: "networkidle" });
+await p.goto(u(isDemo ? "/kiosk/scream.html" : "/kiosk/scream"), { waitUntil: "networkidle" });
 if (await p.isVisible("#pin")) { await p.fill("#pin", "2468"); await p.click("#pin-go"); await p.waitForTimeout(400); }
 await p.click("#start"); await p.fill("#code", code); await p.keyboard.press("Enter"); await p.waitForTimeout(800); if (await p.isVisible("#go")) await p.click("#go"); await p.waitForTimeout(15500);
 if (await p.evaluate(() => document.querySelector(".screen.on").id === "s-judge")) { await p.click("#s-judge .btn.white"); await p.waitForTimeout(800); }

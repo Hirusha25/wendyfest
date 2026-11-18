@@ -9,7 +9,7 @@ const b = await chromium.launch({ args: ["--use-fake-ui-for-media-stream", "--us
 const c = await b.newContext({ viewport: { width: 1920, height: 1080 }, permissions: ["microphone"] }); await c.addCookies([{ name: "wf_kiosk", value: "2468", url: base }]);
 const p = await c.newPage(); const errs = []; p.on("pageerror", (e) => errs.push(e.message));
 const on = () => p.evaluate(() => document.querySelector(".screen.on").id);
-await p.goto(base + "/kiosk/scream-cream", { waitUntil: "networkidle" });
+await p.goto(base + "/kiosk/scream", { waitUntil: "networkidle" });
 await p.evaluate(() => { currentDb = () => -70; });                       // quiet room
 await p.click("#start"); await p.fill("#code", code); await p.keyboard.press("Enter"); await p.waitForTimeout(1500);
 await p.screenshot({ path: `${out}/v1-ready-quiet.png` }); console.log("after 1.5 s quiet:", await on(), "|", await p.textContent("#mic-status"));

@@ -9,7 +9,7 @@ One platform for the Wendy's Sri Lanka launch activation.
 | Roast share page | `/r/<token>` | Guests + whoever they share with |
 | Host console | `/kiosk` (PIN) | Staff |
 | Scream & Win screen | `/kiosk/scream` | LED wall laptop + kiosk(s) |
-| Scream & Win · Studio Cream (light skin, same flow) | `/kiosk/scream-cream` | alternative look |
+| Scream & Win · earlier dark design (same flow) | `/kiosk/scream-dark` | spare, not for the event |
 | Roast Me screen | `/kiosk/roast` | Roast kiosk with webcam |
 | Admin | `/admin` (PIN) | You |
 

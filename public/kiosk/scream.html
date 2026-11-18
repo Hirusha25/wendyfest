@@ -882,7 +882,15 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
       $("qr-label").innerHTML = "Scan for<br>your pass"; SFX.lose();
     }
     $("qr-profile").src = `/api/qr?text=${encodeURIComponent(r.profileUrl)}`;
+    fitResTitle();
     K.resetIdle(30000, goIdle);
+  }
+  // keep the result headline clear of the divider line, whatever it says
+  function fitResTitle() {
+    const t = $("res-title"), div = document.querySelector("#s-result .vdiv"); if (!t || !div) return;
+    const u = Math.min(innerWidth / 1440, innerHeight / 760), limit = div.getBoundingClientRect().left - 22 * u, rg = document.createRange();
+    rg.selectNodeContents(t); let fs = 71; t.style.fontSize = "";
+    while (rg.getBoundingClientRect().right > limit && fs > 40) { fs -= 2; t.style.fontSize = fs * u + "px"; }
   }
 </script>
 </body></html>

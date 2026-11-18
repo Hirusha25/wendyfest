@@ -71,6 +71,35 @@ function wendysCheck(transcript) {
 }
 const wendysAccuracy = (transcript) => wendysCheck(transcript).accuracy;
 
+// ---------- Scream sass: the guest shouted another restaurant's name ----------
+// The lines tease the guest for shouting the wrong name. They never comment on the other brand itself.
+const RIVALS = [
+  ["KFC", /\b(kfc|k f c|kentucky)\b/],
+  ["McDonald's", /\b(mc ?donalds?|mac ?donalds?|mcd|maccas|big mac)\b/],
+  ["Burger King", /\b(burger king|whopper)\b/],
+  ["Pizza Hut", /\bpizza hut\b/],
+  ["Domino's", /\bdominos?\b/],
+  ["Subway", /\bsubway\b/],
+  ["Taco Bell", /\btaco bell\b/],
+  ["Popeyes", /\bpopeyes?\b/],
+];
+function rivalCheck(transcript) {
+  const t = String(transcript || "").toLowerCase().replace(/['’.]/g, "").replace(/[^a-z0-9]+/g, " ").trim();
+  const hit = t && RIVALS.find(([, re]) => re.test(t));
+  return hit ? hit[0] : null;
+}
+const RIVAL_LINES = [
+  "We heard “{rival}”. Wrong restaurant, {name}. This meter only answers to “Wendy’s”.",
+  "“{rival}”? Bold thing to shout at a Wendy’s booth, {name}. We are not angry. Just square.",
+  "You shouted “{rival}” at Wendy’s, {name}. The meter pretended not to hear. Try our name next time.",
+  "Great lungs, {name}. Wrong name. It is W-E-N-D-Y, apostrophe, S.",
+  "“{rival}”, {name}? We will let that one go. Once. Next time, say it with the S: Wendy’s.",
+];
+function rivalLine(rival, name) {
+  const pick = RIVAL_LINES[Math.floor(Math.random() * RIVAL_LINES.length)];
+  return { title: "Wrong restaurant.", text: pick.replaceAll("{rival}", rival).replaceAll("{name}", name || "friend"), rival, ai: false };
+}
+
 function loudnessScore(peakDb, floor, ceil) {
   if (peakDb === null || peakDb === undefined || Number.isNaN(peakDb)) return 0;
   return clamp(Math.round(((peakDb - floor) / (ceil - floor)) * 100), 0, 100);
@@ -258,7 +287,7 @@ async function route(method, url, body) {
       DB.screams.push({ id: DB.screams.length + 1, participant_id: pt.id, peakDb: Number(body.peakDb) || null, loudness: loud, accuracy: acc, score, transcript: body.transcript || null, won: won ? 1 : 0, coupon_code: c ? c.code : null, at: now() }); save();
       const label = coupon().valueLabel, t = templates(pt.lang);
       if (won && c) sendSms(pt.phone, t.win(first(pt), c.code, label, profileUrl(pt))); else sendSms(pt.phone, t.lose(first(pt), profileUrl(pt)));
-      return json({ name: first(pt), score, loudness: loud, accuracy: acc, threshold: s.threshold, minLoud: s.minLoud, minAcc: s.minAcc, reason, won, coupon: c ? { code: c.code, label } : null, couponPoolEmpty: won && !c, profileUrl: profileUrl(pt), attemptsLeft: Math.max(0, s.attemptsPerPerson - used.length - 1) });
+      return json({ name: first(pt), score, loudness: loud, accuracy: acc, threshold: s.threshold, minLoud: s.minLoud, minAcc: s.minAcc, reason, won, sass: !won && rivalCheck(body.transcript) ? rivalLine(rivalCheck(body.transcript), first(pt)) : null, coupon: c ? { code: c.code, label } : null, couponPoolEmpty: won && !c, profileUrl: profileUrl(pt), attemptsLeft: Math.max(0, s.attemptsPerPerson - used.length - 1) });
     }
     if (p.endsWith("roast")) {
       if (!body.consent) return json({ error: "consent required" }, 400);

@@ -2,7 +2,7 @@
 // name, or anything else), Wendy answers with one sassy line on the result screen.
 import Anthropic from "@anthropic-ai/sdk";
 import { config } from "./config.js";
-import { rivalLine } from "./util.js";
+import { rivalLine, heardLine } from "./util.js";
 
 const SYSTEM = `You are the voice of Wendy's Sri Lanka at the "Scream & Win" booth of the Wendy Fest launch event.
 The guest was asked to scream "WENDY'S" into a microphone to win a reward. The microphone heard something else. Reply with ONE sassy comeback line that will be shown on a big screen in front of a crowd.
@@ -29,7 +29,7 @@ function getClient() {
 // Returns { title, text, rival, ai } or null when there is nothing to say.
 export async function screamSass({ transcript, name, rival }) {
   const heard = String(transcript || "").replace(/\s+/g, " ").trim().slice(0, 120);
-  const backup = rival ? rivalLine(rival, name) : null;
+  const backup = rival ? rivalLine(rival, name) : heardLine(heard, name);
   const c = getClient();
   if (!c || !heard) return backup;
   try {

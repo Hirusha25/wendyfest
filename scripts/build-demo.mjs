@@ -100,7 +100,7 @@ async function route(method, url, body) {
       DB.screams.push({ id: DB.screams.length + 1, participant_id: pt.id, peakDb: Number(body.peakDb) || null, loudness: loud, accuracy: acc, score, transcript: body.transcript || null, won: won ? 1 : 0, coupon_code: c ? c.code : null, at: now() }); save();
       const label = coupon().valueLabel, t = templates(pt.lang);
       if (won && c) sendSms(pt.phone, t.win(first(pt), c.code, label, profileUrl(pt))); else sendSms(pt.phone, t.lose(first(pt), profileUrl(pt)));
-      return json({ name: first(pt), score, loudness: loud, accuracy: acc, threshold: s.threshold, minLoud: s.minLoud, minAcc: s.minAcc, reason, won, sass: !won && rivalCheck(body.transcript) ? rivalLine(rivalCheck(body.transcript), first(pt)) : null, coupon: c ? { code: c.code, label } : null, couponPoolEmpty: won && !c, profileUrl: profileUrl(pt), attemptsLeft: Math.max(0, s.attemptsPerPerson - used.length - 1) });
+      return json({ name: first(pt), score, loudness: loud, accuracy: acc, threshold: s.threshold, minLoud: s.minLoud, minAcc: s.minAcc, reason, won, sass: won || !body.transcript || (body.accuracyOverride !== undefined && body.accuracyOverride !== null) ? null : rivalCheck(body.transcript) ? rivalLine(rivalCheck(body.transcript), first(pt)) : reason === "unclear" ? heardLine(body.transcript, first(pt)) : null, coupon: c ? { code: c.code, label } : null, couponPoolEmpty: won && !c, profileUrl: profileUrl(pt), attemptsLeft: Math.max(0, s.attemptsPerPerson - used.length - 1) });
     }
     if (p.endsWith("roast")) {
       if (!body.consent) return json({ error: "consent required" }, 400);

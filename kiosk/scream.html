@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
-<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwlzgaom" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwsajy88" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Scream & Win · Studio Cream · Wendy Fest</title><link rel="icon" href="../assets/cameo.png">
-<link rel="stylesheet" href="../css/brand.css?v=mwlzgaom">
+<link rel="stylesheet" href="../css/brand.css?v=mwsajy88">
 <style>
 /* ================= RETRO BLUE (formerly Studio Cream) · Scream & Win ================= */
 :root { --u:min(calc(100vw / 1440), calc(100vh / 760)); --v:var(--u); --blue:#029CD4; --red:#CD2028; --red2:#DA2A33; --red-dark:#8E141B; --ink:#1F1A1A; --cream:#F7F2EC; --blush:#F2D4D7; --cyan:#29C9E0; --line:rgba(205,32,40,.18); }
@@ -305,6 +305,13 @@ body { color:#fff; }
 #res-detail .wl { font:italic 800 calc(17 * var(--u))/1 Poppins, sans-serif; letter-spacing:.16em; text-transform:uppercase; color:#CDEBF7; display:flex; justify-content:space-between; }
 #res-detail .wl b { color:#fff; }
 #res-detail .wl { font-size:calc(15 * var(--u)); letter-spacing:.12em; white-space:nowrap; }
+/* Wendy answers back: the sassy line IS the headline, full width; score and bars sit smaller below it */
+#s-result.sassy #res-title { top:calc(26 * var(--u)); width:calc(1050 * var(--u)); line-height:1; }
+#s-result.sassy #res-score { top:calc(206 * var(--u)); font-size:calc(184 * var(--u)); }
+#s-result.sassy #res-eyebrow { top:calc(426 * var(--u)); }
+#s-result.sassy .spark { display:none; }
+#s-result.sassy .vdiv { top:calc(214 * var(--u)); height:calc(182 * var(--u)); }
+#s-result.sassy #res-detail { top:calc(214 * var(--u)) !important; } #s-result.sassy #res-detail .quip { display:none; }
 /* long lines (the wrong-restaurant comeback): tighter, so the stats stay clear of the Next player button */
 #res-detail.sassy { top:calc(104 * var(--u)) !important; gap:calc(14 * var(--u)); } #res-detail.sassy .quip { font-size:calc(23 * var(--u)); margin-bottom:0; }
 
@@ -463,7 +470,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   </aside>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwlzgaom"></script><script src="../js/kiosk.js?v=mwlzgaom"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwsajy88"></script><script src="../js/kiosk.js?v=mwsajy88"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let CFG = { scream: { threshold: 70, durationMs: 3000, dbFloor: -42, dbCeil: -6, loudWeight: .6, accWeight: .4 } };
@@ -864,7 +871,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     setTimeout(() => $("res-detail").querySelectorAll("em").forEach((e) => { e.style.width = e.dataset.w + "%"; }), 350);
   }
   function showResult(r) {
-    mode = "result"; K.show("s-result");
+    mode = "result"; K.show("s-result"); $("s-result").classList.toggle("sassy", !!(r.sass && !r.won));
     { const el = $("res-score"), to = +r.score || 0, t0 = performance.now(); el.textContent = "0"; el.classList.remove("pop");
       const step = (now) => { const q = Math.min(1, (now - t0) / 650); el.textContent = Math.round(to * (1 - Math.pow(1 - q, 3))); if (q < 1) requestAnimationFrame(step); else restart(el, "pop"); }; requestAnimationFrame(step); }
     $("res-eyebrow").textContent = "Final score";
@@ -878,19 +885,20 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     } else {
       $("res-title").textContent = { no_s: "Don’t forget the S!", quiet: "Louder next time.", close: "So close!" }[r.reason] || (r.loudness < r.accuracy ? "Louder next time." : "We heard… something.");
       renderDetail({ no_s: "So close. It’s WENDY’S, with the S.", quiet: "Clear as day. Now say it LOUDER!", unclear: "The meter heard you. It just didn’t hear a clear “Wendy’s”.", close: "So close. Just a little more of both." }[r.reason] || (r.loudness < 40 ? "Louder! Colombo traffic is louder than that." : "The meter heard you. It just didn’t hear “Wendy’s”."), r);
-      if (r.sass) { $("res-title").textContent = r.sass.title; renderDetail(r.sass.text, r); }
+      if (r.sass) { $("res-title").textContent = r.sass.text; renderDetail("", r); }
       $("qr-label").innerHTML = "Scan for<br>your pass"; SFX.lose();
     }
     $("qr-profile").src = qrUrl(r.profileUrl);
     fitResTitle();
     K.resetIdle(30000, goIdle);
   }
-  // keep the result headline clear of the divider line, whatever it says
+  // result headline: a sassy line fills the width and shrinks to at most three lines; a normal headline stays clear of the divider
   function fitResTitle() {
     const t = $("res-title"), div = document.querySelector("#s-result .vdiv"); if (!t || !div) return;
-    const u = Math.min(innerWidth / 1440, innerHeight / 760), limit = div.getBoundingClientRect().left - 22 * u, rg = document.createRange();
-    rg.selectNodeContents(t); let fs = 71; t.style.fontSize = "";
-    while (rg.getBoundingClientRect().right > limit && fs > 40) { fs -= 2; t.style.fontSize = fs * u + "px"; }
+    const u = Math.min(innerWidth / 1440, innerHeight / 760); t.style.fontSize = "";
+    if ($("s-result").classList.contains("sassy")) { let fs = 60; t.style.fontSize = fs * u + "px"; while (t.offsetHeight > 166 * u && fs > 30) { fs -= 2; t.style.fontSize = fs * u + "px"; } return; }
+    const limit = div.getBoundingClientRect().left - 22 * u, rg = document.createRange(); rg.selectNodeContents(t);
+    let fs = 71; while (rg.getBoundingClientRect().right > limit && fs > 40) { fs -= 2; t.style.fontSize = fs * u + "px"; }
   }
 </script>
 </body></html>

@@ -100,6 +100,46 @@ function rivalLine(rival, name) {
   return { title: "Wrong restaurant.", text: pick.replaceAll("{rival}", rival).replaceAll("{name}", name || "friend"), rival, ai: false };
 }
 
+// The guest shouted something else entirely: build the comeback around the words the microphone heard.
+// Used when no AI key is set (and in the demo build); with a key, the AI writes the line instead.
+const UNSAFE = /\*|\b(fuck\w*|shit\w*|bitch\w*|ass|asshole|dick|cock|pussy|cunt|bastard|slut|whore|sex\w*|porn\w*|nude|rape\w*|kill\w*|die|dead|bomb\w*|terror\w*|nigg\w*|fag\w*|retard\w*|drunk|beer|vodka|arrack|weed|drugs?)\b/i;
+const HEARD_KINDS = [
+  [/\b(pizza|burgers?|chicken|kottu|rice|biryani|fries|noodles|coffee|tea|cake|ice cream|chocolate|food|hungry|lunch|dinner|roti|hoppers?)\b/, [
+    "“{heard}”? Now you are just ordering, {name}. The password is “Wendy’s”.",
+    "You shouted “{heard}”, {name}. We get it, you are hungry. Shout “Wendy’s” and we will talk.",
+  ]],
+  [/\b(hello|hi|hey|good morning|good evening|ayubowan|vanakkam|how are you)\b/, [
+    "“{heard}” to you too, {name}. Lovely manners. Wrong word. It is “Wendy’s”.",
+    "“{heard}”! Very polite, {name}. The meter does not do small talk. It wants “Wendy’s”.",
+  ]],
+  [/\b(love|i love you|marry me|darling)\b/, [
+    "“{heard}”? We love you too, {name}. Now say “Wendy’s” like you mean it.",
+  ]],
+  [/\b(amma|mummy|mommy|mama|help|aiyo|oh no|oh my god)\b/, [
+    "“{heard}”! Nobody is coming to save you, {name}. Only “Wendy’s” works here.",
+  ]],
+  [/^(a+h*|o+h*|wo+|woo+hoo+|ye+a*h*|ya+y*|ha+|he+y*|e+)( (a+h*|o+h*|wo+|ye+a*h*|ha+))*$/, [
+    "“{heard}”! Great scream, {name}. Now add one word to it: “Wendy’s”.",
+  ]],
+];
+const HEARD_ANY = [
+  "We heard “{heard}”. Interesting choice, {name}. The meter was hoping for “Wendy’s”.",
+  "“{heard}”? Good volume, wrong word, {name}. Try “Wendy’s”.",
+  "You shouted “{heard}”, {name}. The meter wrote it down and is still confused. Try “Wendy’s”.",
+  "“{heard}” is a fine thing to shout, {name}. It is just not our name. Say “Wendy’s”.",
+];
+function heardLine(transcript, name) {
+  const words = String(transcript || "").replace(/\s+/g, " ").trim().split(" ").filter(Boolean);
+  if (!words.length) return null;
+  const n = name || "friend", pick = (a) => a[Math.floor(Math.random() * a.length)];
+  if (UNSAFE.test(words.join(" "))) return { title: "We heard that.", text: `We heard that, ${n}. It is not going on the big screen. The word we want is “Wendy’s”.`, rival: null, ai: false };
+  let heard = words.slice(0, 4).join(" ").replace(/[.,!?]+$/, ""); if (words.length > 4) heard += "…";
+  if (heard.length > 34) heard = heard.slice(0, 32).trim() + "…";
+  const low = words.join(" ").toLowerCase().replace(/[^a-z ]/g, "").trim();
+  const kind = HEARD_KINDS.find(([re]) => re.test(low));
+  return { title: "We heard that.", text: pick(kind ? kind[1] : HEARD_ANY).replaceAll("{heard}", heard).replaceAll("{name}", n), rival: null, ai: false };
+}
+
 function loudnessScore(peakDb, floor, ceil) {
   if (peakDb === null || peakDb === undefined || Number.isNaN(peakDb)) return 0;
   return clamp(Math.round(((peakDb - floor) / (ceil - floor)) * 100), 0, 100);
@@ -287,7 +327,7 @@ async function route(method, url, body) {
       DB.screams.push({ id: DB.screams.length + 1, participant_id: pt.id, peakDb: Number(body.peakDb) || null, loudness: loud, accuracy: acc, score, transcript: body.transcript || null, won: won ? 1 : 0, coupon_code: c ? c.code : null, at: now() }); save();
       const label = coupon().valueLabel, t = templates(pt.lang);
       if (won && c) sendSms(pt.phone, t.win(first(pt), c.code, label, profileUrl(pt))); else sendSms(pt.phone, t.lose(first(pt), profileUrl(pt)));
-      return json({ name: first(pt), score, loudness: loud, accuracy: acc, threshold: s.threshold, minLoud: s.minLoud, minAcc: s.minAcc, reason, won, sass: !won && rivalCheck(body.transcript) ? rivalLine(rivalCheck(body.transcript), first(pt)) : null, coupon: c ? { code: c.code, label } : null, couponPoolEmpty: won && !c, profileUrl: profileUrl(pt), attemptsLeft: Math.max(0, s.attemptsPerPerson - used.length - 1) });
+      return json({ name: first(pt), score, loudness: loud, accuracy: acc, threshold: s.threshold, minLoud: s.minLoud, minAcc: s.minAcc, reason, won, sass: won || !body.transcript || (body.accuracyOverride !== undefined && body.accuracyOverride !== null) ? null : rivalCheck(body.transcript) ? rivalLine(rivalCheck(body.transcript), first(pt)) : reason === "unclear" ? heardLine(body.transcript, first(pt)) : null, coupon: c ? { code: c.code, label } : null, couponPoolEmpty: won && !c, profileUrl: profileUrl(pt), attemptsLeft: Math.max(0, s.attemptsPerPerson - used.length - 1) });
     }
     if (p.endsWith("roast")) {
       if (!body.consent) return json({ error: "consent required" }, 400);

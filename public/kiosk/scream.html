@@ -138,7 +138,7 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
 #trans { display:none; }
 /* result */
 #s-result .box { height:calc(519 * var(--u)); }
-#res-title { left:calc(62 * var(--u)); top:calc(37 * var(--u)); width:calc(560 * var(--u)); font-size:calc(71 * var(--u)); line-height:.95; }
+#res-title { left:calc(62 * var(--u)); top:calc(37 * var(--u)); width:calc(462 * var(--u)); font-size:calc(71 * var(--u)); line-height:.95; }
 #res-score { left:calc(30 * var(--u)); width:calc(460 * var(--u)); top:calc(192 * var(--u)); text-align:center; font:italic 900 calc(266 * var(--u))/1 Poppins, sans-serif; color:var(--red); text-shadow:0 calc(6 * var(--u)) 0 #8E1219; }
 #res-eyebrow { left:calc(30 * var(--u)); width:calc(460 * var(--u)); top:calc(444 * var(--u)); font:italic 800 calc(31 * var(--u))/1 Poppins, sans-serif; letter-spacing:.2em; text-transform:uppercase; color:#1F1A1A; }
 #s-result .spark { left:calc(410 * var(--u)); top:calc(182 * var(--u)); width:calc(75 * var(--u)); height:calc(75 * var(--u)); }
@@ -305,13 +305,6 @@ body { color:#fff; }
 #res-detail .wl { font:italic 800 calc(17 * var(--u))/1 Poppins, sans-serif; letter-spacing:.16em; text-transform:uppercase; color:#CDEBF7; display:flex; justify-content:space-between; }
 #res-detail .wl b { color:#fff; }
 #res-detail .wl { font-size:calc(15 * var(--u)); letter-spacing:.12em; white-space:nowrap; }
-/* Wendy answers back: the sassy line IS the headline, full width; score and bars sit smaller below it */
-#s-result.sassy #res-title { top:calc(26 * var(--u)); width:calc(1050 * var(--u)); line-height:1; }
-#s-result.sassy #res-score { top:calc(206 * var(--u)); font-size:calc(184 * var(--u)); }
-#s-result.sassy #res-eyebrow { top:calc(426 * var(--u)); }
-#s-result.sassy .spark { display:none; }
-#s-result.sassy .vdiv { top:calc(214 * var(--u)); height:calc(182 * var(--u)); }
-#s-result.sassy #res-detail { top:calc(214 * var(--u)) !important; } #s-result.sassy #res-detail .quip { display:none; }
 /* long lines (the wrong-restaurant comeback): tighter, so the stats stay clear of the Next player button */
 #res-detail.sassy { top:calc(104 * var(--u)) !important; gap:calc(14 * var(--u)); } #res-detail.sassy .quip { font-size:calc(23 * var(--u)); margin-bottom:0; }
 
@@ -871,7 +864,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     setTimeout(() => $("res-detail").querySelectorAll("em").forEach((e) => { e.style.width = e.dataset.w + "%"; }), 350);
   }
   function showResult(r) {
-    mode = "result"; K.show("s-result"); $("s-result").classList.toggle("sassy", !!(r.sass && !r.won));
+    mode = "result"; K.show("s-result");
     { const el = $("res-score"), to = +r.score || 0, t0 = performance.now(); el.textContent = "0"; el.classList.remove("pop");
       const step = (now) => { const q = Math.min(1, (now - t0) / 650); el.textContent = Math.round(to * (1 - Math.pow(1 - q, 3))); if (q < 1) requestAnimationFrame(step); else restart(el, "pop"); }; requestAnimationFrame(step); }
     $("res-eyebrow").textContent = "Final score";
@@ -885,20 +878,19 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     } else {
       $("res-title").textContent = { no_s: "Don’t forget the S!", quiet: "Louder next time.", close: "So close!" }[r.reason] || (r.loudness < r.accuracy ? "Louder next time." : "We heard… something.");
       renderDetail({ no_s: "So close. It’s WENDY’S, with the S.", quiet: "Clear as day. Now say it LOUDER!", unclear: "The meter heard you. It just didn’t hear a clear “Wendy’s”.", close: "So close. Just a little more of both." }[r.reason] || (r.loudness < 40 ? "Louder! Colombo traffic is louder than that." : "The meter heard you. It just didn’t hear “Wendy’s”."), r);
-      if (r.sass) { $("res-title").textContent = r.sass.text; renderDetail("", r); }
+      if (r.sass) { $("res-title").textContent = r.sass.title; renderDetail(r.sass.text, r); }
       $("qr-label").innerHTML = "Scan for<br>your pass"; SFX.lose();
     }
     $("qr-profile").src = `/api/qr?text=${encodeURIComponent(r.profileUrl)}`;
     fitResTitle();
     K.resetIdle(30000, goIdle);
   }
-  // result headline: a sassy line fills the width and shrinks to at most three lines; a normal headline stays clear of the divider
+  // result headline: as big as fits its slot (left of the divider line, above the score), whatever it says
   function fitResTitle() {
     const t = $("res-title"), div = document.querySelector("#s-result .vdiv"); if (!t || !div) return;
-    const u = Math.min(innerWidth / 1440, innerHeight / 760); t.style.fontSize = "";
-    if ($("s-result").classList.contains("sassy")) { let fs = 60; t.style.fontSize = fs * u + "px"; while (t.offsetHeight > 166 * u && fs > 30) { fs -= 2; t.style.fontSize = fs * u + "px"; } return; }
-    const limit = div.getBoundingClientRect().left - 22 * u, rg = document.createRange(); rg.selectNodeContents(t);
-    let fs = 71; while (rg.getBoundingClientRect().right > limit && fs > 40) { fs -= 2; t.style.fontSize = fs * u + "px"; }
+    const u = Math.min(innerWidth / 1440, innerHeight / 760), limit = div.getBoundingClientRect().left - 22 * u, rg = document.createRange(); rg.selectNodeContents(t);
+    let fs = 71; t.style.fontSize = "";
+    while ((rg.getBoundingClientRect().right > limit || t.offsetHeight > 150 * u) && fs > 30) { fs -= 2; t.style.fontSize = fs * u + "px"; }
   }
 </script>
 </body></html>

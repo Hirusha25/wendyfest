@@ -1,8 +1,10 @@
 # Handover prompt
 
-Paste everything below the line into a new local Claude Code session, opened in the `wendyfest` folder.
+Paste everything below the line into a new local Claude Code session. Open it in your existing `wendyfest` folder, or in an empty folder if you have no copy yet; the first paragraph handles both.
 
 ---
+
+First, make sure this folder is the Hirusha25/wendyfest repo and is up to date: check that it is a git repo with that remote, switch to the `main` branch, and pull the latest from GitHub. If I have uncommitted local changes, stop and tell me before pulling. If this folder is not the repo, tell me and offer to clone https://github.com/Hirusha25/wendyfest instead.
 
 You are taking over the Wendy Fest project from an earlier cloud session. It is an event platform for the Wendy's Sri Lanka launch: phone registration plus two kiosk games, Roast Me and Scream & Win. I am the project owner and I am not a developer, so explain things in plain language and show me screenshots rather than code.
 

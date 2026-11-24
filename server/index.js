@@ -6,7 +6,7 @@ import { config } from "./config.js";
 import { db, getSetting, setSetting } from "./db.js";
 import { shortCode, token, normalisePhone, judgeScream, rivalCheck, clamp, csvEscape } from "./util.js";
 import { sendSms, templates } from "./sms.js";
-import { generateRoast } from "./roast.js";
+import { generateRoast, generateTeasers } from "./roast.js";
 import { screamSass } from "./sass.js";
 
 const app = express();
@@ -241,6 +241,15 @@ app.post("/api/kiosk/scream", requirePin("kiosk"), async (req, res) => {
     coupon: coupon ? { code: coupon.code, label } : null, couponPoolEmpty: won && !coupon,
     profileUrl: profileUrl(p), attemptsLeft: isDemo(p) ? 1 : Math.max(0, s.attemptsPerPerson - used.length - 1),
   });
+});
+
+// Waiting-screen lines about this guest's photo, asked for alongside the roast. Stores nothing; always answers 200.
+app.post("/api/kiosk/roast-lines", requirePin("kiosk"), async (req, res) => {
+  const { code, image, consent } = req.body || {};
+  const p = participantByCode.get(String(code || "").toUpperCase());
+  const m = String(image || "").match(/^data:(image\/(?:jpeg|png|webp));base64,(.+)$/);
+  if (!p || !consent || !m) return res.json({ lines: [] });
+  res.json({ lines: await generateTeasers({ imageBase64: m[2], mediaType: m[1], name: p.name.split(" ")[0] }) });
 });
 
 app.post("/api/kiosk/roast", requirePin("kiosk"), async (req, res) => {

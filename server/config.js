@@ -30,6 +30,8 @@ export const config = {
   otp: { digits: Number(env("OTP_DIGITS", 4)), ttlSec: Number(env("OTP_TTL_SEC", 120)), resendSec: Number(env("OTP_RESEND_SEC", 30)), maxAttempts: 5 },
   kioskPin: env("KIOSK_PIN", "2468"),
   adminPin: env("ADMIN_PIN", "1357"),
+  // Guest codes that never run out of turns (for demos on a test server). Leave empty at the event.
+  demoCodes: env("DEMO_CODES", "").toUpperCase().split(/[^A-Z0-9]+/).filter(Boolean),
 
   // Scream & Win scoring (editable live from /admin; these are the defaults)
   scream: {

@@ -40,6 +40,7 @@ const screamsFor = db.prepare("SELECT s.*, c.code AS coupon_code, c.label AS cou
 const roastsFor = db.prepare("SELECT * FROM roasts WHERE participant_id = ? ORDER BY id DESC");
 const countRow = db.prepare("SELECT COUNT(*) AS n FROM participants");
 
+const isDemo = (p) => config.demoCodes.includes(p.code);   // demo guests never run out of turns
 function profileUrl(p) { return `${config.baseUrl}/p/${p.token}`; }
 function roastUrl(r) { return `${config.baseUrl}/r/${r.token}`; }
 
@@ -199,9 +200,9 @@ app.post("/api/kiosk/lookup", requirePin("kiosk"), (req, res) => {
   const screams = screamsFor.all(p.id), roasts = roastsFor.all(p.id);
   res.json({
     name: p.name, firstName: p.name.split(" ")[0], lang: p.lang, code: p.code,
-    screamsUsed: screams.length, screamsLeft: Math.max(0, screamSettings().attemptsPerPerson - screams.length),
-    roastsUsed: roasts.length, roastsLeft: Math.max(0, roastSettings().attemptsPerPerson - roasts.length),
-    alreadyWon: screams.some((s) => s.won), profileUrl: profileUrl(p),
+    screamsUsed: isDemo(p) ? 0 : screams.length, screamsLeft: isDemo(p) ? 1 : Math.max(0, screamSettings().attemptsPerPerson - screams.length),
+    roastsUsed: isDemo(p) ? 0 : roasts.length, roastsLeft: isDemo(p) ? 1 : Math.max(0, roastSettings().attemptsPerPerson - roasts.length),
+    alreadyWon: !isDemo(p) && screams.some((s) => s.won), profileUrl: profileUrl(p),
   });
 });
 
@@ -211,7 +212,7 @@ app.post("/api/kiosk/scream", requirePin("kiosk"), async (req, res) => {
   if (!p) return res.status(404).json({ error: "code not found" });
   const s = screamSettings();
   const used = screamsFor.all(p.id);
-  if (used.length >= s.attemptsPerPerson) return res.status(409).json({ error: "No attempts left for this guest", attempts: used.length });
+  if (!isDemo(p) && used.length >= s.attemptsPerPerson) return res.status(409).json({ error: "No attempts left for this guest", attempts: used.length });
 
   const { loud, acc, score, won, reason } = judgeScream({ peakDb, sustainedDb, transcript, accuracyOverride }, s);
 
@@ -233,12 +234,12 @@ app.post("/api/kiosk/scream", requirePin("kiosk"), async (req, res) => {
   // Shouted another restaurant's name (or anything that was not Wendy's)? Wendy answers back on the result screen.
   const rival = rivalCheck(transcript);
   const offScript = !won && transcript && (accuracyOverride === undefined || accuracyOverride === null) && (rival || reason === "unclear");
-  const sass = offScript ? await screamSass({ transcript, name: first, rival }) : null;
+  const sass = offScript ? await screamSass({ transcript, name: first, rival, loud, acc }) : null;
 
   res.json({
     attemptId: info.lastInsertRowid, name: first, score, loudness: loud, accuracy: acc, threshold: s.threshold, minLoud: s.minLoud, minAcc: s.minAcc, reason, won, sass,
     coupon: coupon ? { code: coupon.code, label } : null, couponPoolEmpty: won && !coupon,
-    profileUrl: profileUrl(p), attemptsLeft: Math.max(0, s.attemptsPerPerson - used.length - 1),
+    profileUrl: profileUrl(p), attemptsLeft: isDemo(p) ? 1 : Math.max(0, s.attemptsPerPerson - used.length - 1),
   });
 });
 
@@ -249,7 +250,7 @@ app.post("/api/kiosk/roast", requirePin("kiosk"), async (req, res) => {
   if (!consent) return res.status(400).json({ error: "consent required" });
   const rs = roastSettings();
   const used = roastsFor.all(p.id);
-  if (used.length >= rs.attemptsPerPerson) return res.status(409).json({ error: "This guest has already been roasted" });
+  if (!isDemo(p) && used.length >= rs.attemptsPerPerson) return res.status(409).json({ error: "This guest has already been roasted" });
   const m = String(image || "").match(/^data:(image\/(?:jpeg|png|webp));base64,(.+)$/);
   if (!m) return res.status(400).json({ error: "image must be a data URL (jpeg/png/webp)" });
   const [, mediaType, b64] = m;

@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
-<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwuw0ljk" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwuwm84v" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Roast Me · Wendy Fest</title><link rel="icon" href="../assets/cameo.png">
-<link rel="stylesheet" href="../css/brand.css?v=mwuw0ljk"><link rel="stylesheet" href="../css/kiosk.css?v=mwuw0ljk">
+<link rel="stylesheet" href="../css/brand.css?v=mwuwm84v"><link rel="stylesheet" href="../css/kiosk.css?v=mwuwm84v">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@600;700&family=Barlow+Semi+Condensed:ital,wght@1,900&display=swap" rel="stylesheet">
 <style>
   body.kiosk { background: var(--ink); }
@@ -33,6 +33,9 @@
   #s-idle .band { inset:0; background:#fff; clip-path:polygon(calc(1088 * var(--p)) 0, calc(1130 * var(--p)) 0, calc(740 * var(--p)) calc(1080 * var(--p)), calc(698 * var(--p)) calc(1080 * var(--p))); }
   #s-idle .art { inset:0; background:#fff; clip-path:polygon(calc(1088 * var(--p)) 0, calc(1920 * var(--p)) 0, calc(1920 * var(--p)) calc(1080 * var(--p)), calc(698 * var(--p)) calc(1080 * var(--p))); }
   #s-idle .art img { position:absolute; right:0; bottom:calc(-40 * var(--p)); width:calc(1220 * var(--p)); height:calc(1220 * var(--p)); object-fit:cover; }
+  /* Wendy on the welcome screen: a small happy bounce, then a side-to-side head wobble, then a rest. The white panel is clipped separately, so she never crosses the stripe. */
+  #s-idle.on .art img { transform-origin:50% 78%; animation:wendyNod 4.2s ease-in-out infinite; }
+  @keyframes wendyNod { 0%, 40%, 100% { transform:scale(1.06) rotate(0) translateY(0); } 46% { transform:scale(1.09) rotate(0) translateY(-1.2%); } 52% { transform:scale(1.06) rotate(0) translateY(0); } 60% { transform:scale(1.06) rotate(4deg); } 68% { transform:scale(1.06) rotate(-4deg); } 76% { transform:scale(1.06) rotate(3.2deg); } 84% { transform:scale(1.06) rotate(-3.2deg); } 92% { transform:scale(1.06) rotate(1.5deg); } }
   /* header, stripe and footer: same as Scream & Win */
   #s-idle .hd { left:0; right:0; top:0; height:calc(140 * var(--p)); display:flex; align-items:center; justify-content:space-between; padding:0 calc(93 * var(--p)) 0 calc(120 * var(--p)); background:linear-gradient(90deg, #01679A 0%, #0186B8 38%, #029CD4 72%, #1BB0E6 100%); box-shadow:0 calc(8 * var(--p)) calc(26 * var(--p)) rgba(0,0,0,.35); z-index:5; }
   #s-idle .hd .brand { display:flex; align-items:center; gap:calc(40 * var(--p)); } #s-idle .hd .brand img { height:calc(77 * var(--p)); } #s-idle .hd .brand i { width:calc(2 * var(--p)); height:calc(59 * var(--p)); background:rgba(255,255,255,.6); }
@@ -427,7 +430,7 @@
   </aside>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwuw0ljk"></script><script src="../js/i18n.js?v=mwuw0ljk"></script><script src="../js/kiosk.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwuwm84v"></script><script src="../js/i18n.js?v=mwuwm84v"></script><script src="../js/kiosk.js"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let guest = null, stream = null, glang = "en", R = null, BASE = location.origin;
@@ -513,7 +516,7 @@
     $("count").classList.add("hidden");
     $("flash").classList.remove("go"); void $("flash").offsetWidth; $("flash").classList.add("go");
     const image = capture(); $("snap").disabled = false;
-    $("ck-photo").src = image; paintHeatCap(); setCook(2); K.show("s-cooking"); cookLines();
+    $("ck-photo").src = image; paintHeatCap(); setCook(2); K.show("s-cooking"); cookLines(); personalLines(image);
     try {
       R = await K.api("/api/kiosk/roast", { code: guest.code, image, consent: true, heat });
       setCook(3); await wait(800); setCook(4); await wait(450);
@@ -523,6 +526,16 @@
   const LINES = ["Checking the fit.", "Judging the pose. Respectfully.", "Consulting the group chat.", "Asking Amma for a second opinion.", "Counting the side quests.", "Loading sass… 73%", "Fresh roast, never frozen."];
   let cookTimer = null;
   function cookLines() { let i = 0; clearInterval(cookTimer); $("cook-line").textContent = LINES[0]; cookTimer = setInterval(() => { i = (i + 1) % LINES.length; $("cook-line").textContent = LINES[i]; }, 1800); }
+  // Lines about this guest's own photo: they take over the bubble as soon as they arrive; if they never do, the general lines stay.
+  function personalLines(image) {
+    const who = guest.code;
+    K.api("/api/kiosk/roast-lines", { code: who, image, consent: true }).then((r) => {
+      const mine = (r && Array.isArray(r.lines) ? r.lines : []).filter(Boolean);
+      if (mine.length < 3 || !guest || guest.code !== who || !$("s-cooking").classList.contains("on")) return;
+      let i = 0; clearInterval(cookTimer); $("cook-line").textContent = mine[0];
+      cookTimer = setInterval(() => { i = Math.min(i + 1, mine.length - 1); $("cook-line").textContent = mine[i]; }, 2200);
+    }).catch(() => {});
+  }
   function paintReveal(l) {
     document.querySelectorAll(".rtabs button").forEach((b) => b.classList.toggle("on", b.dataset.l === l));
     $("r-title").textContent = R.title[l] || R.title.en; $("r-body").textContent = R.roast[l] || R.roast.en; $("r-title").lang = l; $("r-body").lang = l;

@@ -20,6 +20,18 @@ OUTPUT: exactly two lines and nothing else.
 Line 1: the punchline headline, at most 6 words. This is the big line, so make it the sassiest part.
 Line 2: the follow-up, at most 18 words, ending by nudging them to shout "Wendy's".`;
 
+// Tidies one line of the model's reply for the big screen: drops markdown marks (**bold**, `code`),
+// a leading "Line 1:" / "Headline:" label, and quote marks only when one pair wraps the whole line.
+// Quotes inside the line (“KFC”? ... shout "Wendy's"!) are left alone so they stay balanced.
+export function cleanSassLine(line) {
+  let s = String(line || "").replace(/\s+/g, " ").trim();
+  s = s.replace(/\*\*|__|`/g, "").replace(/^[*_#>\s]+|[*_\s]+$/g, "");
+  s = s.replace(/^(line ?\d|headline|follow-?up)\s*[:.\-]\s*/i, "").trim();
+  const wrapped = s.match(/^["“](.*)["”]$/);
+  if (wrapped && !/["“”]/.test(wrapped[1])) s = wrapped[1].trim();
+  return s;
+}
+
 let client = null;
 function getClient() {
   if (!config.anthropicApiKey) return null;
@@ -45,7 +57,7 @@ export async function screamSass({ transcript, name, rival }) {
       messages: [{ role: "user", content: `Guest first name: ${name || "friend"}.\nThe microphone heard (untrusted text): <heard>${heard}</heard>\n${rival ? `That is the name of another restaurant brand (${rival}).` : "It was not Wendy's."}\nWrite the two lines.` }],
     });
     if (response.stop_reason === "refusal") return backup;
-    const lines = response.content.filter((b) => b.type === "text").map((b) => b.text).join("\n").split(/\n+/).map((l) => l.replace(/^(line ?\d|headline|follow-?up)\s*[:.\-]\s*/i, "").replace(/^["“]|["”]$/g, "").replace(/\s+/g, " ").trim()).filter(Boolean);
+    const lines = response.content.filter((b) => b.type === "text").map((b) => b.text).join("\n").split(/\n+/).map(cleanSassLine).filter(Boolean);
     if (lines.length < 2 || lines[0].length > 60 || lines.slice(1).join(" ").length > 200) return backup;
     return { title: lines[0], text: lines.slice(1).join(" "), rival: rival || null, ai: true };
   } catch (e) {

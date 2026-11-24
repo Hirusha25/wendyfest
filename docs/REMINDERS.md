@@ -22,3 +22,12 @@
 - [ ] `SMS_PROVIDER` credentials + approved sender ID.
 - [ ] `BASE_URL` = public URL; change kiosk/admin PINs.
 - [ ] Load coupon codes in `/admin`; calibrate scream dB on site.
+
+## Added 24 Nov 2026 (kiosk redesign handover)
+- [ ] **Host the full app** (nothing is deployed; the demo link has no server and no AI). Render one-click is in `render.yaml`.
+- [ ] Test **AI roasts** with real photos (cap, glasses, plain T-shirt, group, empty frame) and **AI Scream comebacks** once `ANTHROPIC_API_KEY` is set. Neither has ever been run.
+- [ ] Price the roast model against expected guest numbers (`ROAST_MODEL`, default `claude-opus-5-5`).
+- [ ] Native review of the new Sinhala/Tamil: three consent-row headings on the Ready? screen (`public/kiosk/roast.html`) and the five offline roasts (`server/roast.js`). The promise line is still English only.
+- [ ] Client OK for showing **competitor names** in Scream & Win comebacks.
+- [ ] Decide: stripe + food-icon design for Scream & Win (options A/B/C in `docs/screens/`), free retry after a wrong-restaurant shout, and whether the comeback is spoken aloud.
+- [ ] Test Scream & Win with a **real microphone** in Chrome (speech recognition) and Roast Me with the **real webcam**.

@@ -43,7 +43,11 @@ Open `http://localhost:3000`. Default PINs: kiosk `2468`, admin `1357` (change i
 
 ## Roast Me engine
 
-`server/roast.js` sends the photo to Claude (`claude-opus-5-5`, adaptive thinking, effort `medium`, server-side refusal fallback on) with a strict JSON schema: observations, vibe, title and roast in `en/si/ta`. The system prompt bans anything about body, skin, age, religion, ethnicity, disability or other unchangeable traits and steers to outfit, accessories, pose, expression and Sri Lankan references. Without an API key, or on any error, a local fallback bank keeps the booth running (flagged in admin).
+`server/roast.js` sends the photo to Claude (`claude-opus-5-5` by default, effort `medium`, server-side refusal fallback on) with a strict JSON schema: observations, vibe, title and roast in `en/si/ta`. The roast picks one or two visible things the guest chose (a cap and its colour, glasses, a shirt), teases that kindly in simple language and turns it into a compliment. The system prompt bans anything about body, skin, age, religion, ethnicity, disability or other unchangeable traits, religious or cultural dress, and references that need explaining (cricket jargon, bus routes, place in-jokes, internet slang). The guest picks a heat (mild, medium, extra spicy) on the camera screen. If there is no API key or the call fails, a pre-written line is used so the booth never stalls.
+
+## Scream & Win comebacks
+
+If a guest shouts something other than "Wendy's", the result screen answers back: a sassy punchline as the big headline and a follow-up line beside it. Other restaurant names get "wrong restaurant" lines; any other words get a line built around what was heard; rude words are never repeated. With an API key the AI writes both lines (`server/sass.js`); otherwise pre-written lines in `server/util.js` are used. Lines tease the guest only and never comment on another brand.
 
 ## Coupons
 
@@ -60,12 +64,15 @@ One container, data on a `/data` volume. One-click: https://render.com/deploy?re
 ## Files
 
 ```
-server/   index.js (routes) · db.js (SQLite) · roast.js · sms.js · util.js · config.js
-public/   guest pages, kiosk/, admin.html, css/brand.css (brand system), js/
-data/     wendyfest.sqlite + photos/  (created at runtime, gitignored)
-docs/     SETUP.md · REMINDERS.md · EMAIL_DRAFTS.md · screens/ (screenshots)
-scripts/  screenshots.mjs (Playwright visual check)
+CLAUDE.md  project guide for Claude Code sessions (commands, rules, workflow)
+server/    index.js (routes) · db.js (SQLite) · roast.js · sass.js · sms.js · util.js · config.js
+public/    guest pages, kiosk/ (roast.html, scream.html, scream-dark.html), admin.html, css/, js/, _design/ (mockups)
+data/      wendyfest.sqlite + photos/  (created at runtime, gitignored)
+docs/      HANDOVER.md · HANDOVER_PROMPT.md · DESIGN_SYSTEM.md · SETUP.md · REMINDERS.md · EMAIL_DRAFTS.md · screens/
+scripts/   build-demo.mjs · publish-demo.sh · kiosk-check.mjs (browser smoke test) · mock-*.mjs (design mockups)
 ```
+
+Current state and open items: `docs/HANDOVER.md`. Kiosk design rules: `docs/DESIGN_SYSTEM.md`.
 
 ## Brand notes
 

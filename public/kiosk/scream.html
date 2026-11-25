@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Scream & Win · Wendy Fest</title><link rel="icon" href="/assets/cameo.png">
+<title>Scream & Win · Wendy Fest</title><link rel="icon" href="/assets/cameo.png"><link rel="manifest" href="/assets/scream.webmanifest"><meta name="theme-color" content="#029CD4"><meta name="mobile-web-app-capable" content="yes">
 <link rel="stylesheet" href="/css/brand.css">
 <style>
 /* ================= RETRO BLUE (formerly Studio Cream) · Scream & Win ================= */
@@ -431,7 +431,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
 
   <!-- HOST JUDGE -->
   <section class="screen" id="s-judge"><div style="display:grid;gap:3vmin;justify-items:center">
-    <div class="eyebrow">Host call · speech recognition unavailable</div>
+    <div class="eyebrow">Host call · the mic did not catch the word</div>
     <div class="display h2">Did they say “Wendy’s”?</div>
     <div class="judge"><button class="btn" onclick="submitScream(100)">Said “Wendy’s”</button><button class="btn ink" onclick="submitScream(40)">Said “Wendy” (no S)</button><button class="btn ghost" onclick="submitScream(10)">Didn’t say it</button></div>
   </div></section>
@@ -456,7 +456,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     <label>Microphone (this screen)</label><select id="mic"></select>
     <label>Live level</label><div class="lvl"><div id="lvl-set"></div></div><div id="db-set" style="margin-top:.6vmin">— dB</div>
     <label>Sound effects</label><select id="sfx-mode"><option value="on">On</option><option value="off">Off</option></select>
-    <label>Clarity scoring</label><select id="judge-mode"><option value="auto">Auto (speech recognition, Chrome + internet)</option><option value="host">Host judges after each scream</option></select>
+    <label>Clarity scoring</label><select id="judge-mode"><option value="auto">Auto (speech recognition, Chrome + internet)</option><option value="host">Host judges after each scream</option></select><div id="sr-status" style="margin-top:.6vmin;opacity:.8">Last speech check: none yet</div>
     <label>Scoring (from admin)</label><div id="thr-info">—</div>
     <p style="opacity:.7;margin-top:2vmin">Calibrate: have a staff member scream at the real distance. Their peak should land near 100. Adjust dB floor/ceiling in Admin if screams never reach it or always do.</p>
     <button class="btn ghost" style="margin-top:2vmin;height:5.6vmin;font-size:1.9vmin" onclick="document.getElementById('settings').classList.remove('open')">Close</button>
@@ -760,7 +760,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   requestAnimationFrame(loop);
 
   // ---------- speech ----------
-  let heardAt = 0;
+  let heardAt = 0, recogErr = "", recogGot = false, recogWant = false;
   const WITH_S_RE = /\b(w|v)h?[aei]nd(ys|ies|is|ees|eez|yz|es)\b|\bwhen ?these\b|\bwendy is\b/i;
   const NO_S_RE = /\b(w|v)h?[aei]nd(y|i|ee|ie)\b/i;
   function showHeard() {
@@ -776,11 +776,19 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   function startRecog() {
     transcript = ""; $("trans").textContent = "…"; heardAt = 0; $("heard").classList.remove("got", "miss"); $("listen-pill").classList.remove("got", "miss"); $("listen-wendy").classList.remove("got"); $("listen-l").textContent = "Listening…"; $("heard-v").textContent = (window.SpeechRecognition || window.webkitSpeechRecognition) && $("judge-mode").value !== "host" ? "…" : "Host will judge";
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition; if (!SR || $("judge-mode").value === "host") return;
-    try { recog = new SR(); recog.lang = "en-US"; recog.interimResults = true; recog.continuous = true; recog.maxAlternatives = 3;
-      recog.onresult = (e) => { let s = ""; for (let i = 0; i < e.results.length; i++) for (let j = 0; j < e.results[i].length; j++) s += " " + e.results[i][j].transcript; transcript = s.trim(); $("trans").textContent = "We heard: " + (transcript || "…"); showHeard(); };
-      recog.onerror = () => {}; recog.start(); } catch { recog = null; }
+    // Chrome on Android ends a recognition session after one phrase (or straight away if it cannot get the mic),
+    // so keep restarting it while the scream window is open, and remember what went wrong for the host.
+    recogErr = ""; recogGot = false; recogWant = true; let base = "";
+    const FATAL = ["not-allowed", "service-not-allowed", "audio-capture", "network", "language-not-supported"];
+    const make = () => { recog = new SR(); recog.lang = "en-US"; recog.interimResults = true; recog.continuous = true; recog.maxAlternatives = 3;
+      recog.onresult = (e) => { recogGot = true; let s = ""; for (let i = 0; i < e.results.length; i++) for (let j = 0; j < e.results[i].length; j++) s += " " + e.results[i][j].transcript; transcript = (base + " " + s).trim(); $("trans").textContent = "We heard: " + (transcript || "…"); showHeard(); };
+      recog.onerror = (e) => { if (e.error && e.error !== "no-speech" && e.error !== "aborted") recogErr = e.error; };
+      recog.onend = () => { base = transcript; if (recogWant && !FATAL.includes(recogErr)) { try { make(); } catch { recogErr = recogErr || "restart-failed"; } } };
+      recog.start(); };
+    try { make(); } catch (e) { recog = null; recogErr = "start-failed"; }
   }
-  function stopRecog() { try { recog && recog.stop(); } catch {} }
+  function stopRecog() { recogWant = false; try { recog && recog.stop(); } catch {} srStatus(); }
+  function srStatus() { const el = $("sr-status"); if (!el) return; el.textContent = "Last speech check: " + (recogErr ? "problem (" + recogErr + ")" : recogGot ? "worked, heard “" + (transcript || "…") + "”" : "heard no words"); }
 
   // ---------- code entry ----------
   const codeEl = $("code");
@@ -841,7 +849,9 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
       if (heardAt && performance.now() - heardAt > 1300 && performance.now() - t0 > 1500) break; const left = dur - (performance.now() - t0); $("tleft").textContent = (left / 1000).toFixed(1); $("tbar").style.transform = `scaleX(${left / dur})`; await wait(50); }
     $("tleft").textContent = "0.0"; $("tbar").style.transform = "scaleX(0)"; windowOpen = false;
     await wait(900); stopRecog(); await wait(400);
-    if ($("judge-mode").value === "host" || !(window.SpeechRecognition || window.webkitSpeechRecognition)) { K.show("s-judge"); return; }
+    // Speech recognition broke, or it heard no words at all although the guest was clearly loud: let the host call it, never fail the guest for the tech.
+    const srDown = !!recogErr && !transcript, deaf = !recogGot && dbToPct(peakDb) >= 45;
+    if ($("judge-mode").value === "host" || !(window.SpeechRecognition || window.webkitSpeechRecognition) || srDown || deaf) { K.show("s-judge"); return; }
     submitScream(null);
   };
   async function submitScream(accuracyOverride) {

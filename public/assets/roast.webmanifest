@@ -1,0 +1,25 @@
+{
+  "id": "wendyfest-roast",
+  "name": "Roast Me \u00b7 Wendy Fest",
+  "short_name": "Roast Me",
+  "start_url": "../kiosk/roast.html",
+  "scope": "../kiosk/",
+  "display": "fullscreen",
+  "background_color": "#CD2028",
+  "theme_color": "#CD2028",
+  "icons": [
+    {
+      "src": "icon-roast-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-roast-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "orientation": "portrait"
+}

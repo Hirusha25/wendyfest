@@ -65,6 +65,12 @@ The event kiosk is a 1080 x 1920 upright touch screen. `public/kiosk/roast.html`
 - `kiosk-check.mjs` only covers the wide layout. For the upright one, walk the flow in a 1080 x 1920 browser window and check English, Sinhala and Tamil.
 - Roasts are two short billboard-style lines (8 to 18 words). The English roast can be voiced with ElevenLabs (`server/voice.js`); it needs `ELEVENLABS_API_KEY` and `ELEVENLABS_VOICE_ID`, and is skipped without them.
 
+## Kiosk install and the speech check
+
+- Each kiosk page has a web app manifest in `public/assets/*.webmanifest` (kept there so the demo build rewrites the path). `public/js/kiosk.js` shows an "Add to home screen" button on the PIN and station-picker screens only, never to guests. If Chrome does not offer it, use Chrome menu > Add to Home screen.
+- Scream & Win has no upright layout yet: on the 1080 x 1920 kiosk the wide canvas sits small in the middle.
+- Scream & Win hears the word through Chrome's speech recognition, which needs internet and is unreliable on Android (sessions end early, and the mic may be busy with the loudness meter). The page restarts it during the scream window, and if it errors or hears no words from a loud guest, the host judges instead. The last result is shown in Station settings.
+
 ## Branches
 
 - `main` — everything approved.

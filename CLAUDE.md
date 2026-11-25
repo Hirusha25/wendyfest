@@ -57,6 +57,14 @@ docs/screens/                   screenshots and mockup images
 - **Shared code:** `server/util.js` is copied into the demo by `scripts/build-demo.mjs` (imports and `export` stripped). Keep it dependency-free. Anything the demo needs must live there, not in a file that imports the Anthropic SDK.
 - **AI calls** use `@anthropic-ai/sdk` with `config.roast.model` (default `claude-opus-5-5`), structured JSON for roasts, server-side refusal fallback on, and a pre-written fallback for every failure. Keep that fallback path working: the booth must never stall.
 
+## Upright kiosk layout (Roast Me)
+
+The event kiosk is a 1080 x 1920 upright touch screen. `public/kiosk/roast.html` keeps the wide 1920 x 1080 layout and adds an upright one in a single `@media (orientation: portrait)` block at the end of its `<style>`.
+
+- That block is generated. Edit the rules in `scripts/roast-portrait-css.py`, then run `python scripts/roast-portrait-css.py public/kiosk/roast.html`. Do not hand-edit the block.
+- `kiosk-check.mjs` only covers the wide layout. For the upright one, walk the flow in a 1080 x 1920 browser window and check English, Sinhala and Tamil.
+- Roasts are two short billboard-style lines (8 to 18 words). The English roast can be voiced with ElevenLabs (`server/voice.js`); it needs `ELEVENLABS_API_KEY` and `ELEVENLABS_VOICE_ID`, and is skipped without them.
+
 ## Branches
 
 - `main` — everything approved.

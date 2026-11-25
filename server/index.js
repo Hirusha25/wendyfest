@@ -8,6 +8,7 @@ import { shortCode, token, normalisePhone, judgeScream, rivalCheck, clamp, csvEs
 import { sendSms, templates } from "./sms.js";
 import { generateRoast, generateTeasers } from "./roast.js";
 import { screamSass } from "./sass.js";
+import { startVoice, voiceEnabled, voiceReady, voiceFile } from "./voice.js";
 
 const app = express();
 app.disable("x-powered-by");
@@ -180,6 +181,12 @@ app.get("/api/roast/:token", (req, res) => {
     photo: r.photo_file ? `/api/roast/${r.token}/photo` : null, url: roastUrl(r),
   });
 });
+// The English voice-over for a roast. Waits a little if it is still being made; 404 when there is none.
+app.get("/api/roast/:token/audio", async (req, res) => {
+  const r = db.prepare("SELECT token FROM roasts WHERE token = ?").get(String(req.params.token || ""));
+  if (!r || !(await voiceReady(r.token))) return res.status(404).json({ error: "no voice-over" });
+  res.set("Cache-Control", "private, no-store").type("audio/mpeg").sendFile(voiceFile(r.token));
+});
 app.get("/api/roast/:token/photo", (req, res) => {
   const r = db.prepare("SELECT photo_file FROM roasts WHERE token = ?").get(req.params.token);
   if (!r?.photo_file) return res.status(404).end();
@@ -275,7 +282,8 @@ app.post("/api/kiosk/roast", requirePin("kiosk"), async (req, res) => {
       JSON.stringify(result.observations || []), result.vibe || null, result.model || null, result.fallback ? 1 : 0, 1, station || null);
   const r = db.prepare("SELECT * FROM roasts WHERE token = ?").get(rtoken);
   sendSms(p.phone, templates(p.lang).roast(p.name.split(" ")[0], roastUrl(r)));
-  res.json({ token: rtoken, url: roastUrl(r), name: p.name.split(" ")[0], lang: p.lang, title: result.title, roast: result.roast, vibe: result.vibe, fallback: !!result.fallback, photo: `/api/roast/${rtoken}/photo` });
+  startVoice(rtoken, result.roast.en);   // English voice-over, made in the background
+  res.json({ token: rtoken, url: roastUrl(r), name: p.name.split(" ")[0], lang: p.lang, title: result.title, roast: result.roast, vibe: result.vibe, fallback: !!result.fallback, photo: `/api/roast/${rtoken}/photo`, audio: voiceEnabled() ? `/api/roast/${rtoken}/audio` : null });
 });
 
 // ---------- admin ----------

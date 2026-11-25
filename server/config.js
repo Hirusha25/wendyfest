@@ -50,6 +50,15 @@ export const config = {
     model: env("ROAST_MODEL", "claude-opus-5-5"),
     effort: env("ROAST_EFFORT", "medium"),
   },
+  // Roast voice-over (ElevenLabs). Needs both the key and a voice; without them the roast is shown with no sound.
+  voice: {
+    apiKey: env("ELEVENLABS_API_KEY", ""),
+    voiceId: env("ELEVENLABS_VOICE_ID", ""),
+    model: env("ELEVENLABS_MODEL", "eleven_multilingual_v2"),
+    stability: Number(env("ELEVENLABS_STABILITY", 0.4)),   // lower = more expressive
+    style: Number(env("ELEVENLABS_STYLE", 0.45)),          // higher = more character
+    baseUrl: env("ELEVENLABS_URL", "https://api.elevenlabs.io").replace(/\/+$/, ""),
+  },
   // Coupon copy shown on screens + SMS. Confirm with the client (Eromika) what the
   // code actually unlocks before launch.
   coupon: {

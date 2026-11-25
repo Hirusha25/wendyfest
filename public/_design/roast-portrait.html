@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Roast Me · portrait kiosk directions (1080 x 1920)</title>
+<!-- Design mockup only. ?v=spot|receipt|board  &s=welcome|reveal. Fixed 1080 x 1920 canvas in px. -->
+<link rel="stylesheet" href="../css/brand.css">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:ital,wght@1,900&display=swap" rel="stylesheet">
+<style>
+  html, body { margin:0; background:#151313; }
+  .s { position:relative; width:1080px; height:1920px; overflow:hidden; color:#fff; font-family:Poppins, sans-serif; }
+  .s > * { position:absolute; box-sizing:border-box; }
+  .wf { display:inline-flex; align-items:flex-start; filter:drop-shadow(0 5px 7px rgba(0,0,0,.35)); }
+  .wf span { display:inline-block; font:italic 900 46px/.9 'Barlow Semi Condensed', sans-serif; text-transform:uppercase; color:#fff; padding:7px 18px 12px; transform:rotate(-5deg) skewX(-14deg); position:relative; }
+  .wf .w1 { background:linear-gradient(180deg, #D8262F 0 82%, #951620 82%); z-index:1; } .wf .w2 { background:linear-gradient(180deg, #2BA9E1 0 82%, #01679A 82%); margin:9px 0 0 -16px; z-index:2; }
+  .top { left:0; right:0; top:0; height:170px; display:flex; align-items:center; justify-content:space-between; padding:0 64px; z-index:6; } .top img { height:78px; }
+  .cta { left:60px; width:960px; height:200px; border:5px solid #fff; border-radius:14px; background:linear-gradient(180deg, #2BB6EA 0%, #0186B8 100%); display:flex; align-items:center; justify-content:space-between; padding:0 70px 0 60px; box-shadow:0 12px 0 #01476A, 0 30px 50px rgba(0,0,0,.45), inset 0 2px 0 rgba(255,255,255,.3); z-index:5; }
+  .cta b { font:italic 900 74px/.95 Poppins; text-transform:uppercase; letter-spacing:-.01em; text-shadow:0 3px 0 rgba(1,71,106,.6); } .cta svg { width:104px; height:104px; }
+  .nextb { display:flex; align-items:center; justify-content:center; gap:22px; border-radius:14px; background:linear-gradient(180deg, #403939 0%, #1E1B1B 100%); box-shadow:0 8px 0 #0A0909, 0 18px 28px rgba(0,0,0,.4), inset 0 2px 0 rgba(255,255,255,.16); font:italic 900 50px/1 Poppins; text-transform:uppercase; z-index:5; } .nextb svg { width:56px; height:56px; }
+  .ph { background:linear-gradient(165deg, #8fa9b8 0%, #4d6676 100%); overflow:hidden; } .ph svg { position:absolute; inset:0; width:100%; height:100%; }
+  .round img, .art img, .card.w img { max-width:none; }
+  .two span { display:block; }
+  .two .l1 { color:#F6F0E6; text-shadow:0 5px 0 #029CD4, 0 10px 0 #01476A, 0 26px 34px rgba(0,0,0,.5); }
+  .two .l2 { color:#CD2028; -webkit-text-stroke:5px #fff; paint-order:stroke fill; text-shadow:0 6px 0 #fff, 0 12px 0 #014F72, 0 28px 34px rgba(0,0,0,.5); margin-top:10px; }
+
+  /* ---------- 1. Spotlight: dark stage, Wendy in a lit roundel ---------- */
+  .spot { background:radial-gradient(circle at 50% 36%, #C21F27 0%, #7E151B 24%, #2A1A1B 52%, #171414 78%); }
+  .spot .rays { inset:0; background:repeating-conic-gradient(from 0deg at 50% 36%, rgba(255,255,255,.045) 0 6deg, transparent 6deg 12deg); -webkit-mask:radial-gradient(circle at 50% 36%, #000 18%, transparent 62%); mask:radial-gradient(circle at 50% 36%, #000 18%, transparent 62%); }
+  .spot .round { left:150px; top:250px; width:780px; height:780px; border-radius:50%; background:#fff; overflow:hidden; box-shadow:0 0 0 14px #F6F0E6, 0 0 0 22px #CD2028, 0 0 0 30px #F6F0E6, 0 40px 90px rgba(0,0,0,.6); z-index:2; }
+  .spot .round img { position:absolute; left:-210px; top:-150px; width:1160px; height:1160px; object-fit:cover; }
+  .spot .title { left:0; right:0; top:1000px; text-align:center; font:italic 900 250px/.8 Poppins; text-transform:uppercase; letter-spacing:-.035em; z-index:3; }
+  .spot .sub { left:0; right:0; top:1432px; text-align:center; font:600 42px/1.2 Poppins; color:#F6F0E6; } .spot .sub b { font-style:italic; font-weight:900; }
+  .spot .reg { left:60px; right:60px; top:1770px; display:flex; align-items:center; justify-content:center; gap:26px; font:600 30px/1.3 Poppins; color:rgba(246,240,230,.9); } .spot .reg .q { width:104px; height:104px; background:#fff; padding:8px; box-sizing:border-box; border-radius:8px; }
+  .spot .frame { left:240px; top:226px; width:600px; height:690px; background:#fff; padding:22px 22px 0; rotate:-2.5deg; box-shadow:0 0 0 1px rgba(0,0,0,.1), 0 40px 80px rgba(0,0,0,.6); z-index:3; } .spot .frame .ph { position:relative; height:520px; }
+  .spot .frame .nm { display:flex; align-items:center; justify-content:space-between; height:148px; color:#1E1B1B; } .spot .frame .nm b { font:italic 900 68px/1 Poppins; text-transform:uppercase; letter-spacing:-.02em; } .spot .frame .nm span { font:italic 900 26px/1 Poppins; color:#CD2028; }
+  .spot .rt { left:60px; right:60px; top:968px; text-align:center; font:italic 900 104px/.92 Poppins; text-transform:uppercase; letter-spacing:-.03em; color:#F6F0E6; text-shadow:0 5px 0 #029CD4, 0 10px 0 #01476A, 0 24px 30px rgba(0,0,0,.5); z-index:3; }
+  .spot .quote { left:60px; width:960px; top:1206px; background:#F6F0E6; color:#1E1B1B; border-radius:18px; padding:40px 48px 36px; box-shadow:0 12px 0 #01679A, 0 34px 60px rgba(0,0,0,.5); font:500 39px/1.42 Poppins; z-index:3; }
+  .quote .who { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; } .quote .who span { display:flex; align-items:center; gap:14px; font:italic 800 26px/1 Poppins; color:#0186B8; } .quote .who img { height:56px; }
+  .tabs { display:flex; gap:8px; } .tabs b { font:800 24px/1 Poppins; padding:15px 20px; border-radius:10px; border:2px solid rgba(30,27,27,.25); color:#1E1B1B; } .tabs b.on { background:#029CD4; border-color:#029CD4; color:#fff; box-shadow:0 5px 0 #01679A; }
+  .spot .save { left:60px; top:1640px; width:420px; height:210px; display:flex; align-items:center; gap:26px; } .spot .save .q { width:210px; height:210px; background:#fff; padding:14px; box-sizing:border-box; border-radius:12px; flex:none; } .spot .save b { font:italic 900 44px/1 Poppins; text-transform:uppercase; } .spot .save small { display:block; margin-top:10px; font:600 22px/1.3 Poppins; color:rgba(246,240,230,.85); }
+
+  /* ---------- 2. Receipt: red poster, the roast printed like an order receipt ---------- */
+  .receipt { background:linear-gradient(172deg, #DC2732 0%, #CD2028 45%, #A9181F 100%); }
+  .receipt .dots { inset:0; background:radial-gradient(circle, rgba(255,255,255,.13) 3px, transparent 3.7px) 0 0 / 36px 36px; -webkit-mask:radial-gradient(circle at 100% 12%, #000 0, rgba(0,0,0,.5) 22%, transparent 46%); mask:radial-gradient(circle at 100% 12%, #000 0, rgba(0,0,0,.5) 22%, transparent 46%); }
+  .receipt .big { left:52px; top:214px; font:italic 900 290px/.78 Poppins; text-transform:uppercase; letter-spacing:-.045em; color:#F6F0E6; text-shadow:0 6px 0 #7E1016, 0 12px 0 #5A0B10, 0 34px 40px rgba(60,0,8,.45); z-index:3; } .receipt .big span { display:block; }
+  .receipt .sub { left:64px; top:716px; font:600 46px/1.2 Poppins; z-index:3; } .receipt .sub b { font-style:italic; font-weight:900; }
+  .receipt .art { inset:0; background:#fff; clip-path:polygon(0 1060px, 1080px 840px, 1080px 1920px, 0 1920px); } .receipt .art img { position:absolute; left:-120px; bottom:-110px; width:1280px; height:1280px; object-fit:cover; }
+  .receipt .edge { inset:0; background:#1E1B1B; clip-path:polygon(0 1030px, 1080px 810px, 1080px 840px, 0 1060px); z-index:2; }
+  .receipt .reg { right:64px; top:590px; width:230px; text-align:center; font:700 22px/1.3 Poppins; z-index:3; } .receipt .reg .q { width:190px; height:190px; margin:0 auto 14px; background:#fff; padding:12px; box-sizing:border-box; border-radius:10px; box-shadow:0 8px 0 #7E1016; }
+  .receipt .paper { left:110px; top:172px; width:860px; height:1508px; background:#FBF7EF; color:#1E1B1B; padding:96px 62px 0; box-shadow:0 40px 80px rgba(60,0,8,.55); z-index:4;
+    -webkit-mask:linear-gradient(#000 0 0) top / 100% calc(100% - 26px) no-repeat, conic-gradient(from -45deg at 50% 100%, #000 90deg, transparent 0) bottom / 52px 26px repeat-x; mask:linear-gradient(#000 0 0) top / 100% calc(100% - 26px) no-repeat, conic-gradient(from 135deg at 50% 0, #000 90deg, transparent 0) bottom / 52px 26px repeat-x; }
+  .paper .lg { display:flex; align-items:center; justify-content:space-between; } .paper .lg img { height:74px; } .paper .lg span { font:700 24px/1.3 Poppins; text-align:right; color:#6B6464; }
+  .paper hr { border:0; border-top:4px dashed #CBC3B6; margin:28px 0; }
+  .paper .row { display:flex; gap:34px; align-items:center; } .paper .row .ph { position:relative; width:290px; height:330px; flex:none; border-radius:6px; }
+  .paper .row b { display:block; font:italic 900 80px/.9 Poppins; text-transform:uppercase; letter-spacing:-.03em; color:#CD2028; } .paper .row small { display:block; margin-top:18px; font:700 26px/1.3 Poppins; color:#6B6464; }
+  .paper p { margin:0; font:500 40px/1.42 Poppins; } .paper .sig { margin-top:18px; font:italic 700 26px/1 Poppins; color:#6B6464; display:flex; justify-content:space-between; align-items:center; }
+  .paper .keep { display:flex; align-items:center; gap:30px; } .paper .keep .q { width:230px; height:230px; flex:none; } .paper .keep b { font:italic 900 52px/.95 Poppins; text-transform:uppercase; letter-spacing:-.02em; } .paper .keep small { display:block; margin-top:12px; font:600 25px/1.3 Poppins; color:#6B6464; }
+  .receipt .slot { left:76px; top:140px; width:928px; height:46px; border-radius:20px; background:#5A0B10; box-shadow:inset 0 10px 14px rgba(0,0,0,.6), 0 3px 0 rgba(255,255,255,.18); z-index:5; }
+
+  /* ---------- 3. Menu board: bright, like the boards above the counter ---------- */
+  .board { background:#F6F0E6; color:#1E1B1B; }
+  .board .head { left:0; right:0; top:0; height:560px; background:linear-gradient(175deg, #DC2732 0%, #C41E26 100%); clip-path:polygon(0 0, 100% 0, 100% 470px, 0 560px); z-index:1; }
+  .board .bline { left:0; right:0; top:0; height:600px; background:#029CD4; clip-path:polygon(0 560px, 100% 470px, 100% 496px, 0 586px); }
+  .board .big { left:60px; top:190px; font:italic 900 172px/.8 Poppins; text-transform:uppercase; letter-spacing:-.04em; color:#fff; text-shadow:0 6px 0 #7E1016, 0 24px 30px rgba(60,0,8,.35); z-index:3; white-space:nowrap; }
+  .board .card { left:60px; width:960px; background:#fff; border-radius:28px; box-shadow:0 2px 0 rgba(30,27,27,.06), 0 30px 60px rgba(30,27,27,.16); z-index:3; overflow:hidden; }
+  .board .card.w { top:520px; height:900px; } .board .card.w img { position:absolute; left:-110px; top:-120px; width:1160px; height:1160px; object-fit:cover; }
+  .board .pill { display:inline-flex; align-items:center; height:76px; padding:0 34px; border-radius:38px; background:#0B5FA8; color:#fff; font:800 32px/1 Poppins; box-shadow:0 6px 0 #063D6E; }
+  .board .card.w .pill { position:absolute; left:40px; bottom:40px; } .board .sub { left:66px; top:356px; font:600 40px/1.2 Poppins; color:#fff; z-index:3; } .board .sub b { font-style:italic; font-weight:900; } .board .cta, .board .nextb { color:#fff; }
+  .board .reg { left:60px; right:60px; top:1716px; display:flex; align-items:center; justify-content:center; gap:26px; font:600 30px/1.3 Poppins; color:#4a4444; } .board .reg .q { width:120px; height:120px; background:#fff; padding:8px; box-sizing:border-box; border-radius:10px; box-shadow:0 6px 16px rgba(30,27,27,.15); }
+  .board .card.r { top:440px; height:1120px; padding:44px 48px; } .board .card.r .row { display:flex; gap:36px; align-items:flex-end; } .board .card.r .ph { position:relative; width:360px; height:400px; flex:none; border-radius:18px; }
+  .board .card.r .nm { font:italic 900 34px/1 Poppins; color:#0B5FA8; } .board .card.r h2 { margin:14px 0 0; font:italic 900 88px/.9 Poppins; text-transform:uppercase; letter-spacing:-.03em; color:#CD2028; }
+  .board .card.r p { margin:44px 0 0; font:500 45px/1.42 Poppins; } .board .card.r .ft { position:absolute; left:48px; right:48px; bottom:40px; display:flex; align-items:center; justify-content:space-between; }
+  .board .save { left:60px; top:1610px; width:440px; display:flex; align-items:center; gap:24px; } .board .save .q { width:220px; height:220px; flex:none; background:#fff; padding:14px; box-sizing:border-box; border-radius:14px; box-shadow:0 10px 24px rgba(30,27,27,.16); } .board .save b { font:italic 900 42px/1 Poppins; text-transform:uppercase; color:#CD2028; } .board .save small { display:block; margin-top:10px; font:600 22px/1.3 Poppins; color:#4a4444; }
+</style></head>
+<body><div class="s" id="s"></div>
+<script>
+  const q = new URLSearchParams(location.search), v = (q.get("v") || "spot").toLowerCase(), scr = q.get("s") || "welcome";
+  const A = "../assets/", arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>';
+  const qr = `<svg viewBox="0 0 21 21" shape-rendering="crispEdges" style="width:100%;height:100%;display:block">${Array.from({ length: 441 }, (_, i) => { const x = i % 21, y = (i / 21) | 0; const f = (x < 7 && y < 7) || (x > 13 && y < 7) || (x < 7 && y > 13); const on = f ? (x % 14 === 0 || x % 14 === 6 || y % 14 === 0 || y % 14 === 6 || (x % 14 > 1 && x % 14 < 5 && y % 14 > 1 && y % 14 < 5)) : ((x * 7 + y * 13 + x * y) % 3 === 0); return on ? `<rect x="${x}" y="${y}" width="1" height="1"/>` : ""; }).join("")}</svg>`;
+  const person = '<svg viewBox="0 0 100 110" preserveAspectRatio="xMidYMax slice"><circle cx="50" cy="44" r="19" fill="rgba(255,255,255,.55)"/><path d="M12 112c0-26 16-40 38-40s38 14 38 40z" fill="rgba(255,255,255,.55)"/></svg>';
+  const lock = '<span class="wf"><span class="w1">Wendy</span><span class="w2">Fest</span></span>';
+  const topBar = (logo) => `<header class="top"><img src="${A}${logo}" alt="Wendy's">${lock}</header>`;
+  const cta = (t) => `<div class="cta" style="top:${t}px"><b>Let’s get<br>roasted</b>${arrow}</div>`;
+  const next = (st) => `<div class="nextb" style="${st}">Next guest ${arrow}</div>`;
+  const tabs = '<span class="tabs"><b class="on">EN</b><b>සිං</b><b>தமி</b></span>';
+  const ROAST = "Nimal, a peace sign and those black glasses. Very cool. Cooler than a chocolate Frosty. Is that peace sign your order? Two Frostys. Good choice.";
+  let h = "";
+  if (v === "spot") {
+    h = '<div class="rays"></div>' + topBar("wendys-horiz-white.svg");
+    h += scr === "welcome"
+      ? `<div class="round"><img src="${A}roast-wendy.png" alt=""></div><div class="title two"><span class="l1">Roast</span><span class="l2">Me.</span></div><div class="sub">Fresh takes. Served by <b>Wendy’s.</b></div>${cta(1530)}<div class="reg"><span class="q">${qr}</span>No code yet? Scan to register.</div>`
+      : `<div class="frame"><div class="ph">${person}</div><div class="nm"><b>Nimal</b><span>#RoastedByWendy</span></div></div><div class="rt">Two Frostys,<br>please</div>
+         <div class="quote"><div class="who"><span><img src="${A}cameo.png" alt="">Wendy says</span>${tabs}</div>${ROAST}</div>
+         <div class="save"><span class="q">${qr}</span><span><b>Scan<br>to save</b><small>Also sent by SMS.</small></span></div>${next("left:540px;top:1672px;width:480px;height:150px")}`;
+  }
+  if (v === "receipt") {
+    h = '<div class="dots"></div>';
+    h += scr === "welcome"
+      ? topBar("wendys-horiz-white.svg") + `<div class="big"><span>Roast</span><span>Me.</span></div><div class="sub">Fresh takes.<br>Served by <b>Wendy’s.</b></div><div class="reg"><div class="q">${qr}</div>No code yet?<br>Scan to register.</div>
+         <div class="art"><img src="${A}roast-wendy.png" alt=""></div><div class="edge"></div>${cta(1640)}`
+      : `<div class="slot"></div><div class="paper"><div class="lg"><img src="${A}wendys-horiz.svg" alt="Wendy's"><span>Wendy Fest<br>Roast no. 0147</span></div><hr>
+         <div class="row"><div class="ph">${person}</div><div><b>Two<br>Frostys,<br>please</b><small>Served to Nimal</small></div></div><hr>
+         <p>${ROAST}</p><div class="sig"><span>Fresh, never frozen.</span>${tabs}</div><hr>
+         <div class="keep"><div class="q">${qr}</div><div><b>Scan to keep<br>your roast</b><small>Also sent to your phone by SMS.</small></div></div></div>${next("left:110px;top:1722px;width:860px;height:140px")}`;
+  }
+  if (v === "board") {
+    h = '<div class="bline"></div><div class="head"></div>' + topBar("wendys-horiz-white.svg");
+    h += scr === "welcome"
+      ? `<div class="big">Roast me.</div><div class="sub">Fresh takes. Served by <b>Wendy’s.</b></div><div class="card w"><img src="${A}roast-wendy.png" alt=""><span class="pill">Takes 30 seconds</span></div>${cta(1470)}<div class="reg"><span class="q">${qr}</span>No code yet? Scan to register.</div>`
+      : `<div class="big" style="font-size:150px;top:212px">Roasted.</div><div class="card r"><div class="row"><div class="ph">${person}</div><div><div class="nm">Served to Nimal</div><h2>Two<br>Frostys,<br>please</h2></div></div>
+         <p>${ROAST}</p><div class="ft"><span class="pill">Wendy says</span>${tabs}</div></div>
+         <div class="save"><span class="q">${qr}</span><span><b>Scan<br>to save</b><small>Also sent by SMS.</small></span></div>${next("left:540px;top:1650px;width:480px;height:150px")}`;
+  }
+  const s = document.getElementById("s"); s.className = "s " + v; s.innerHTML = h;
+</script></body></html>

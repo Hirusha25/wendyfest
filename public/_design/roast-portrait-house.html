@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Roast Me · portrait welcome, house style options (1080 x 1920)</title>
+<!-- Design mockup only. ?v=d|e|f|g. Keeps the approved look: blue header, cream/red stripe, charcoal, white diagonal band, Wendy. -->
+<link rel="stylesheet" href="../css/brand.css">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:ital,wght@1,900&display=swap" rel="stylesheet">
+<style>
+  html, body { margin:0; background:#151313; }
+  .s { position:relative; width:1080px; height:1920px; overflow:hidden; background:#1E1B1B; color:#fff; font-family:Poppins, sans-serif; }
+  .s > * { position:absolute; box-sizing:border-box; } .s img { max-width:none; }
+  .hd { left:0; right:0; top:0; height:150px; display:flex; align-items:center; justify-content:space-between; padding:0 48px 0 54px; background:linear-gradient(90deg, #01679A 0%, #0186B8 38%, #029CD4 72%, #1BB0E6 100%); box-shadow:0 8px 26px rgba(0,0,0,.35); z-index:6; }
+  .hd .brand { display:flex; align-items:center; gap:26px; } .hd .brand img { height:70px; } .hd .brand i { width:2px; height:56px; background:rgba(255,255,255,.6); }
+  .wf { display:inline-flex; align-items:flex-start; filter:drop-shadow(0 5px 7px rgba(0,20,40,.5)); }
+  .wf span { display:inline-block; font:italic 900 44px/.9 'Barlow Semi Condensed', sans-serif; text-transform:uppercase; color:#fff; padding:7px 18px 12px; transform:rotate(-5deg) skewX(-14deg); position:relative; }
+  .wf .w1 { background:linear-gradient(180deg, #D8262F 0 82%, #951620 82%); z-index:1; } .wf .w2 { background:linear-gradient(180deg, #2BA9E1 0 82%, #01679A 82%); margin:9px 0 0 -16px; z-index:2; }
+  .stp { display:flex; align-items:center; gap:18px; font:italic 800 26px/1 Poppins; letter-spacing:.2em; text-transform:uppercase; } .stp i { width:62px; height:62px; border-radius:50%; background:#fff; color:#0186B8; display:grid; place-items:center; font:900 34px/1 Poppins; font-style:normal; letter-spacing:0; }
+  .strp { left:0; right:0; top:150px; height:27px; background:linear-gradient(180deg, #F6F0E6 0 11px, #CD2028 11px 21px, #F6F0E6 21px 27px); z-index:6; box-shadow:0 8px 20px rgba(0,0,0,.25); }
+  .ft { left:0; right:0; bottom:0; height:60px; display:flex; justify-content:space-between; align-items:center; padding:0 48px 0 54px; background:linear-gradient(90deg, #01679A 0%, #0186B8 38%, #029CD4 72%, #1BB0E6 100%); font:700 18px/1 Poppins; letter-spacing:.14em; text-transform:uppercase; z-index:6; } .ft span { display:flex; align-items:center; gap:14px; } .ft img { height:30px; }
+  .art, .band, .panel, .dots { inset:0; } .art { background:#fff; } .band { background:#fff; z-index:2; } .art img { position:absolute; object-fit:cover; }
+  .panel { background:linear-gradient(170deg, #D92530 0%, #CD2028 50%, #B81C24 100%); }
+  .dots { background:radial-gradient(circle, rgba(255,255,255,.09) 3px, transparent 3.7px) 0 0 / 36px 36px; }
+  .title { font:italic 900 215px/.8 Poppins, sans-serif; text-transform:uppercase; letter-spacing:-.035em; z-index:3; white-space:nowrap; } .title span { display:block; }
+  .title .l1 { color:#F6F0E6; text-shadow:0 4px 0 #029CD4, 0 8px 0 #01476A, 0 20px 28px rgba(0,0,0,.5); }
+  .title .l2 { color:#CD2028; -webkit-text-stroke:4px #fff; paint-order:stroke fill; text-shadow:0 5px 0 #fff, 0 10px 0 #014F72, 0 22px 28px rgba(0,0,0,.5); margin-top:8px; }
+  .title.onred .l1, .title.onred .l2 { color:#F6F0E6; -webkit-text-stroke:0; text-shadow:0 5px 0 #7E1016, 0 10px 0 #5A0B10, 0 26px 32px rgba(60,0,8,.45); }
+  .sub { font:600 40px/1.2 Poppins; z-index:3; } .sub b { font-weight:900; font-style:italic; text-shadow:0 3px 0 #CD2028, 0 6px 0 #7A0F16; } .onred + .sub b, .sub.onred b { text-shadow:0 3px 0 #7E1016; }
+  .qr { z-index:3; font:italic 800 21px/1.3 Poppins; letter-spacing:.1em; text-transform:uppercase; color:#F6F0E6; } .qr .q { background:#fff; padding:10px; box-sizing:border-box; margin-bottom:12px; }
+  .qr.row { display:flex; align-items:center; gap:22px; } .qr.row .q { margin:0; flex:none; }
+  .cta { height:190px; border:4px solid #fff; border-radius:12px; background:linear-gradient(180deg, #2BB6EA 0%, #0186B8 100%); display:flex; align-items:center; justify-content:space-between; padding:0 56px 0 50px; box-shadow:0 10px 0 #01476A, 0 24px 40px rgba(0,0,0,.4), inset 0 2px 0 rgba(255,255,255,.3), 0 0 0 12px rgba(255,255,255,.3); z-index:5; }
+  .cta b { font:italic 900 66px/.95 Poppins; text-transform:uppercase; letter-spacing:-.01em; text-shadow:0 3px 0 rgba(1,71,106,.6); } .cta svg { width:96px; height:96px; flex:none; }
+
+  /* clean-zone options (h, i, j): every part sits in its own space, nothing overlaps */
+  .s.clean { background:linear-gradient(168deg, #2E2828 0%, #1E1B1B 42%, #141111 100%); }
+  .round { border-radius:50%; background:#fff; overflow:hidden; box-shadow:0 0 0 14px #F6F0E6, 0 0 0 24px #CD2028, 0 0 0 34px #F6F0E6, 0 30px 70px rgba(0,0,0,.55); z-index:2; } .round img { position:absolute; object-fit:cover; }
+  .eb { font:italic 800 26px/1 Poppins; letter-spacing:.24em; text-transform:uppercase; color:#029CD4; display:flex; align-items:center; gap:22px; z-index:3; } .eb::after { content:""; width:60px; height:3px; background:currentColor; }
+  .rbig { font:italic 900 96px/.92 Poppins; text-transform:uppercase; letter-spacing:-.03em; color:#F6F0E6; text-shadow:0 4px 0 #029CD4, 0 8px 0 #01476A, 0 18px 26px rgba(0,0,0,.5); z-index:3; }
+  .say { background:#fff; color:#1E1B1B; border-radius:10px; box-shadow:0 10px 0 #01679A, 0 24px 40px rgba(0,0,0,.4); padding:30px 36px 28px; z-index:3; }
+  .say .top { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; } .say .who { display:flex; align-items:center; gap:14px; font:italic 800 22px/1 Poppins; letter-spacing:.2em; text-transform:uppercase; color:#029CD4; } .say .who img { height:52px; }
+  .say .tabs { display:flex; gap:8px; } .say .tabs b { font:800 22px/1 Poppins; padding:14px 18px; border-radius:8px; border:2px solid #C9CED3; } .say .tabs b.on { background:#029CD4; border-color:#029CD4; color:#fff; box-shadow:0 5px 0 #01679A; }
+  .say p { margin:0; font:500 36px/1.42 Poppins; } .say small { display:block; margin-top:14px; font:italic 700 22px/1 Poppins; color:#8E8787; }
+  .pcard { background:#fff; box-shadow:0 20px 44px rgba(0,0,0,.5); rotate:-2deg; z-index:4; }
+  .pcard::before { content:""; position:absolute; left:calc(50% - 56px); top:-30px; width:112px; height:54px; background:#fff; border-radius:14px 14px 0 0; }
+  .pcard::after { content:""; position:absolute; left:calc(50% - 13px); top:-20px; width:26px; height:26px; border-radius:50%; background:#241F1F; box-shadow:0 0 0 4px #C9CED3; }
+  .pcard .lg { position:absolute; left:6%; top:3.5%; } .pcard .rst { position:absolute; left:5%; top:12%; font:italic 900 1px/1 Poppins; text-transform:uppercase; color:#CD2028; letter-spacing:-.03em; }
+  .pcard .ph { position:absolute; left:6%; right:6%; top:25%; height:46%; background:linear-gradient(160deg, #8fa9b8, #4d6676); border:8px solid #fff; box-shadow:0 8px 18px rgba(0,0,0,.3); overflow:hidden; } .pcard .ph svg { position:absolute; inset:0; width:100%; height:100%; }
+  .pcard .pb { position:absolute; left:0; right:0; top:73%; bottom:11%; background:#1E1B1B; padding:4% 6%; } .pcard .pb b { display:block; font:italic 900 1px/1 Poppins; text-transform:uppercase; }
+  .pcard .pf { position:absolute; left:0; right:0; bottom:0; height:11%; background:#CD2028; display:flex; align-items:center; justify-content:space-between; padding:0 5%; } .pcard .pf img { height:76%; } .pcard .pf b { font:italic 900 1px/1 Poppins; }
+  .scan { z-index:3; } .scan h3 { margin:0 0 18px; font:italic 900 58px/.9 Poppins; text-transform:uppercase; text-shadow:0 4px 0 rgba(0,0,0,.35); } .scan .q { background:#fff; padding:14px; box-shadow:0 8px 0 rgba(0,0,0,.35); } .scan p { margin:16px 0 0; font:700 22px/1.3 Poppins; }
+  .nextb { display:flex; align-items:center; justify-content:center; gap:20px; border-radius:12px; background:linear-gradient(180deg, #403939 0%, #1E1B1B 100%); box-shadow:0 6px 0 #0A0909, 0 14px 22px rgba(0,0,0,.35), inset 0 2px 0 rgba(255,255,255,.16), 0 0 0 3px rgba(255,255,255,.85); font:italic 900 46px/1 Poppins; text-transform:uppercase; z-index:4; } .nextb svg { width:52px; height:52px; }
+</style></head>
+<body><div class="s" id="s"></div>
+<script>
+  const v = (new URLSearchParams(location.search).get("v") || "d").toLowerCase();
+  const A = "../assets/", arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>';
+  const qrSvg = `<svg viewBox="0 0 21 21" shape-rendering="crispEdges" style="width:100%;height:100%;display:block">${Array.from({ length: 441 }, (_, i) => { const x = i % 21, y = (i / 21) | 0; const f = (x < 7 && y < 7) || (x > 13 && y < 7) || (x < 7 && y > 13); const on = f ? (x % 14 === 0 || x % 14 === 6 || y % 14 === 0 || y % 14 === 6 || (x % 14 > 1 && x % 14 < 5 && y % 14 > 1 && y % 14 < 5)) : ((x * 7 + y * 13 + x * y) % 3 === 0); return on ? `<rect x="${x}" y="${y}" width="1" height="1"/>` : ""; }).join("")}</svg>`;
+  const poly = (...p) => `clip-path:polygon(${p.map(([x, y]) => `${x}px ${y}px`).join(",")})`;
+  const chrome = `<header class="hd"><div class="brand"><img src="${A}wendys-horiz-white.svg" alt=""><i></i><span class="wf"><span class="w1">Wendy</span><span class="w2">Fest</span></span></div><div class="stp"><i>1</i>Welcome</div></header><div class="strp"></div>
+    <footer class="ft"><span><img src="${A}cameo.png" alt="">© 2026 Wendy’s Sri Lanka</span><span>Roast Me · Station B</span></footer>`;
+  const title = (st, cls = "") => `<div class="title ${cls}" style="${st}"><span class="l1">Roast</span><span class="l2">Me.</span></div>`;
+  const sub = (st, br = true) => `<div class="sub" style="${st}">Fresh takes.${br ? "<br>" : " "}Served by <b>Wendy’s.</b></div>`;
+  const qr = (st, size, row, text = "Scan to register<br>&amp; get roasted") => `<div class="qr ${row ? "row" : ""}" style="${st}"><div class="q" style="width:${size}px;height:${size}px">${qrSvg}</div><span>${text}</span></div>`;
+  const cta = (st) => `<div class="cta" style="${st}"><b>Let’s get<br>roasted</b>${arrow}</div>`;
+  const wendy = (st) => `<img src="${A}roast-wendy.png" alt="" style="${st}">`;
+  let h = chrome;
+  // D: the landscape look turned upright: steep stripe, charcoal on the left, Wendy on the right
+  if (v === "d") h += `<div class="dots" style="${poly([0, 1100], [470, 1100], [240, 1860], [0, 1860])};opacity:.9"></div>
+    <div class="art" style="${poly([800, 177], [1080, 177], [1080, 1860], [280, 1860])}">${wendy("left:150px;top:560px;width:1340px;height:1340px")}</div><div class="band" style="${poly([760, 177], [800, 177], [280, 1860], [240, 1860])}"></div>
+    ${title("left:54px;top:250px;font-size:176px")}${sub("left:62px;top:612px;font-size:38px")}${qr("left:62px;top:800px", 170, false)}${cta("left:400px;top:1630px;width:620px")}`;
+  // E: Wendy in a slanted window between two stripes, words above, button below
+  if (v === "e") h += `<div class="art" style="${poly([0, 830], [1080, 650], [1080, 1330], [0, 1510])}">${wendy("left:-20px;top:500px;width:1120px;height:1120px")}</div>
+    <div class="band" style="${poly([0, 790], [1080, 610], [1080, 650], [0, 830])};background:#F6F0E6"></div><div class="band" style="${poly([0, 1510], [1080, 1330], [1080, 1370], [0, 1550])};background:#CD2028"></div>
+    ${title("left:54px;top:238px")}${sub("left:500px;top:462px;font-size:34px")}${qr("left:60px;top:1596px;font-size:17px", 170, false, "Scan to register")}${cta("left:290px;top:1600px;width:730px")}`;
+  // F: red on top, Wendy below
+  if (v === "f") h += `<div class="panel" style="${poly([0, 177], [1080, 177], [1080, 800], [0, 980])}"></div><div class="dots" style="${poly([0, 177], [1080, 177], [1080, 800], [0, 980])};-webkit-mask:radial-gradient(circle at 100% 15%, #000 0, transparent 45%);mask:radial-gradient(circle at 100% 15%, #000 0, transparent 45%)"></div>
+    <div class="art" style="${poly([0, 1020], [1080, 840], [1080, 1860], [0, 1860])}">${wendy("left:-110px;top:760px;width:1290px;height:1290px")}</div><div class="band" style="${poly([0, 980], [1080, 800], [1080, 840], [0, 1020])};background:#1E1B1B"></div>
+    ${title("left:54px;top:240px;font-size:240px", "onred")}${sub("left:62px;top:700px", false).replace('class="sub"', 'class="sub onred"')}${qr("left:820px;top:452px;font-size:17px;text-align:center;width:200px", 200, false, "Scan to register")}${cta("left:60px;top:1630px;width:960px")}`;
+  // G: Wendy on top at eye level, one-line title and the button below
+  if (v === "g") h += `<div class="art" style="${poly([0, 177], [1080, 177], [1080, 930], [0, 1110])}">${wendy("left:-130px;top:60px;width:1340px;height:1340px")}</div><div class="band" style="${poly([0, 1110], [1080, 930], [1080, 970], [0, 1150])}"></div>
+    <div class="dots" style="${poly([0, 1500], [400, 1500], [400, 1860], [0, 1860])};-webkit-mask:radial-gradient(circle at 0 100%, #000 0, transparent 60%);mask:radial-gradient(circle at 0 100%, #000 0, transparent 60%)"></div>
+    <div class="title" style="left:54px;top:1178px;font-size:162px"><span class="l1" style="display:inline">Roast</span> <span class="l2" style="display:inline">Me.</span></div>
+    ${sub("left:62px;top:1366px;font-size:38px", false)}${cta("left:60px;top:1470px;width:960px")}${qr("left:60px;right:60px;top:1722px;justify-content:center;font-size:20px", 110, true, "No code yet? Scan to register.")}`;
+
+  const scr = new URLSearchParams(location.search).get("s") || "welcome";
+  const person = '<svg viewBox="0 0 100 80" preserveAspectRatio="xMidYMax slice"><circle cx="50" cy="34" r="15" fill="rgba(255,255,255,.55)"/><path d="M20 82c0-20 12-30 30-30s30 10 30 30z" fill="rgba(255,255,255,.55)"/></svg>';
+  const dotsTop = `<div class="dots" style="-webkit-mask:radial-gradient(circle at 100% 12%, #000 0, rgba(0,0,0,.5) 24%, transparent 56%);mask:radial-gradient(circle at 100% 12%, #000 0, rgba(0,0,0,.5) 24%, transparent 56%)"></div>`;
+  const chromeN = (n, l) => chrome.replace("<i>1</i>Welcome", `<i>${n}</i>${l}`);
+  const pcard = (l, t, w) => { const f = w / 440, hgt = Math.round(w * 1.56); return `<div class="pcard" style="left:${l}px;top:${t}px;width:${w}px;height:${hgt}px"><img class="lg" src="${A}wendys-horiz.svg" alt="" style="height:${46 * f}px"><div class="rst" style="font-size:${78 * f}px">Roasted.</div><div class="ph">${person}</div><div class="pb"><b style="font-size:${56 * f}px">Nimal</b></div><div class="pf"><img src="${A}cameo.png" alt=""><b style="font-size:${24 * f}px">#RoastedByWendy</b></div></div>`; };
+  const say = (st, fs) => `<div class="say" style="${st}"><div class="top"><span class="who"><img src="${A}cameo.png" alt="">Wendy says</span><span class="tabs"><b class="on">EN</b><b>සිං</b><b>தமி</b></span></div><p style="font-size:${fs}px">Nimal, a peace sign and those black glasses. Very cool. Cooler than a chocolate Frosty. Is that peace sign your order? Two Frostys. Good choice.</p><small>— Wendy’s, to Nimal</small></div>`;
+  const scan = (st, size) => `<div class="scan" style="${st}"><h3>Scan to<br>save</h3><div class="q" style="width:${size}px;height:${size}px">${qrSvg}</div><p>Also sent to your<br>phone by SMS.</p></div>`;
+  const next = (st) => `<div class="nextb" style="${st}">Next guest ${arrow}</div>`;
+  const CREAM = "background:linear-gradient(90deg,#fff,#F6F0E6)";
+  if ("hij".includes(v)) { document.getElementById("s").classList.add("clean"); h = (scr === "welcome" ? chrome : chromeN(6, "Your roast")) + dotsTop; }
+  if (v === "h" && scr === "welcome") h += `<div class="art" style="${poly([0, 840], [1080, 660], [1080, 1310], [0, 1490])}">${wendy("left:-40px;top:500px;width:1160px;height:1160px")}</div>
+    <div class="band" style="${poly([0, 800], [1080, 620], [1080, 660], [0, 840])};${CREAM}"></div><div class="band" style="${poly([0, 1490], [1080, 1310], [1080, 1350], [0, 1530])};background:#CD2028"></div>
+    ${title("left:54px;top:240px")}${sub("left:500px;top:466px;font-size:34px")}${qr("left:60px;top:1590px;font-size:17px", 170, false, "Scan to register")}${cta("left:290px;top:1596px;width:730px")}`;
+  if (v === "i" && scr === "welcome") h += `${title("left:54px;top:236px;font-size:200px")}${sub("left:600px;top:446px;font-size:34px")}
+    <div class="round" style="left:190px;top:690px;width:700px;height:700px">${wendy("left:-210px;top:-150px;width:1060px;height:1060px")}</div>
+    ${qr("left:60px;right:60px;top:1466px;justify-content:center;font-size:20px", 100, true, "No code yet? Scan to register.")}${cta("left:60px;top:1596px;width:960px")}`;
+  if (v === "j" && scr === "welcome") h += `<div class="art" style="${poly([0, 800], [1080, 620], [1080, 1250], [0, 1430])}">${wendy("left:-40px;top:450px;width:1160px;height:1160px")}</div>
+    <div class="band" style="${poly([0, 760], [1080, 580], [1080, 620], [0, 800])};${CREAM}"></div><div class="band" style="${poly([0, 1430], [1080, 1250], [1080, 1290], [0, 1470])};background:#1E1B1B"></div>
+    <div class="panel" style="${poly([0, 1470], [1080, 1290], [1080, 1920], [0, 1920])}"></div>
+    <div class="title" style="left:54px;top:236px;font-size:158px"><span class="l1" style="display:inline">Roast</span> <span class="l2" style="display:inline">Me.</span></div>${sub("left:62px;top:420px;font-size:38px", false)}
+    ${qr("left:60px;top:1596px;font-size:17px", 170, false, "Scan to register")}${cta("left:290px;top:1600px;width:730px")}`;
+  if (v === "h" && scr === "reveal") h += `<div class="eb" style="left:60px;top:226px">Peace sign glasses</div><div class="rbig" style="left:56px;top:274px;width:970px;font-size:88px">Two Frostys, please</div>${say("left:60px;top:392px;width:960px", 34)}
+    <div class="band" style="${poly([0, 890], [1080, 760], [1080, 800], [0, 930])};${CREAM}"></div><div class="panel" style="${poly([0, 930], [1080, 800], [1080, 1500], [0, 1630])}"></div><div class="band" style="${poly([0, 1630], [1080, 1500], [1080, 1540], [0, 1670])};${CREAM}"></div>
+    ${pcard(110, 1000, 340)}${scan("left:600px;top:900px", 270)}${next("left:60px;top:1712px;width:960px;height:116px")}`;
+  if (v === "i" && scr === "reveal") h += `<div class="panel" style="${poly([0, 177], [1080, 177], [1080, 880], [0, 1010])}"></div><div class="band" style="${poly([0, 1010], [1080, 880], [1080, 920], [0, 1050])};${CREAM}"></div>
+    ${pcard(110, 262, 370)}${scan("left:620px;top:236px", 300)}
+    <div class="eb" style="left:60px;top:1090px">Peace sign glasses</div><div class="rbig" style="left:56px;top:1136px;width:970px;font-size:84px">Two Frostys, please</div>${say("left:60px;top:1250px;width:960px", 33)}
+    ${next("left:60px;top:1722px;width:960px;height:110px")}`;
+  if (v === "j" && scr === "reveal") h += `<div class="eb" style="left:60px;top:226px">Peace sign glasses</div><div class="rbig" style="left:56px;top:274px;width:970px;font-size:88px">Two Frostys, please</div>${say("left:60px;top:392px;width:960px", 34)}
+    <div class="band" style="${poly([0, 900], [1080, 770], [1080, 810], [0, 940])};${CREAM}"></div><div class="panel" style="${poly([0, 940], [1080, 810], [1080, 1920], [0, 1920])}"></div>
+    ${pcard(100, 1010, 380)}${scan("left:610px;top:930px", 300)}${next("left:560px;top:1660px;width:460px;height:130px")}`;
+  document.getElementById("s").innerHTML = h;
+</script></body></html>

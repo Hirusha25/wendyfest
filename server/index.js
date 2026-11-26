@@ -184,8 +184,18 @@ app.get("/api/roast/:token", (req, res) => {
   res.json({
     token: r.token, name: r.name, lang: r.lang, vibe: r.vibe, at: r.created_at, fallback: !!r.fallback,
     title: { en: r.title_en, si: r.title_si, ta: r.title_ta }, roast: { en: r.roast_en, si: r.roast_si, ta: r.roast_ta },
-    photo: r.photo_file ? `/api/roast/${r.token}/photo` : null, url: roastUrl(r),
+    photo: r.photo_file ? `/api/roast/${r.token}/photo` : null, url: roastUrl(r), theme: CARD_THEMES.includes(r.card_theme) ? r.card_theme : "dark", keys: roastKeys(r.observations),
   });
+});
+// Things Wendy noticed in the photo (short phrases), used to bold keywords in the roast text.
+function roastKeys(obs) { let a = obs; if (typeof a === "string") { try { a = JSON.parse(a); } catch { a = []; } } return (Array.isArray(a) ? a : []).map((x) => String(x || "").trim()).filter((x) => x && x.length <= 40 && !/^fallback line/i.test(x)).slice(0, 8); }
+// The guest picks the card colour on the roast screen; the phone page then draws the same one.
+const CARD_THEMES = ["paper", "blue", "dark", "red"];
+app.post("/api/roast/:token/theme", (req, res) => {
+  const theme = String(req.body?.theme || "");
+  if (!CARD_THEMES.includes(theme)) return res.status(400).json({ error: "unknown colour" });
+  const done = db.prepare("UPDATE roasts SET card_theme = ? WHERE token = ?").run(theme, String(req.params.token || ""));
+  res.status(done.changes ? 200 : 404).json({ ok: !!done.changes });
 });
 // The English voice-over for a roast. Waits a little if it is still being made; 404 when there is none.
 app.get("/api/roast/:token/audio", async (req, res) => {
@@ -253,7 +263,7 @@ app.post("/api/kiosk/scream", requirePin("kiosk"), async (req, res) => {
   const t = templates(p.lang);
   const label = coupon?.label || couponSettings().valueLabel;
   if (won && coupon) sendSms(p.phone, t.win(first, coupon.code, label, profileUrl(p)));
-  else if (won && !coupon) sendSms(p.phone, t.win(first, "(pending)", "reward pool exhausted – see staff", profileUrl(p)));
+  else if (won && !coupon) sendSms(p.phone, t.win(first, "(pending)", "please see a host", profileUrl(p)));
   else sendSms(p.phone, t.lose(first, profileUrl(p)));
 
   // Shouted another restaurant's name (or anything that was not Wendy's)? Wendy answers back on the result screen.
@@ -323,7 +333,7 @@ app.post("/api/kiosk/roast", requirePin("kiosk"), async (req, res) => {
   const r = db.prepare("SELECT * FROM roasts WHERE token = ?").get(rtoken);
   sendSms(p.phone, templates(p.lang).roast(p.name.split(" ")[0], roastUrl(r)));
   startVoice(rtoken, result.roast.en, result.voice);   // English voice-over, made in the background
-  res.json({ token: rtoken, url: roastUrl(r), name: p.name.split(" ")[0], lang: p.lang, title: result.title, roast: result.roast, vibe: result.vibe, fallback: !!result.fallback, photo: `/api/roast/${rtoken}/photo`, audio: voiceEnabled() ? `/api/roast/${rtoken}/audio` : null });
+  res.json({ token: rtoken, url: roastUrl(r), name: p.name.split(" ")[0], lang: p.lang, title: result.title, roast: result.roast, vibe: result.vibe, fallback: !!result.fallback, keys: roastKeys(result.observations), photo: `/api/roast/${rtoken}/photo`, audio: voiceEnabled() ? `/api/roast/${rtoken}/audio` : null });
 });
 
 // ---------- admin ----------

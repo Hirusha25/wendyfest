@@ -47,7 +47,7 @@ try {
       const r = await K.api("/api/kiosk/scream", { code: "WENDYS", peakDb: -8, sustainedDb: -8, transcript: t }); guest = { code: "WENDYS" }; showResult(r);
       await new Promise((r) => setTimeout(r, 700));
       const u = Math.min(innerWidth / 1440, innerHeight / 760), el = document.getElementById("res-title"), rg = document.createRange(); rg.selectNodeContents(el);
-      return { won: r.won, sass: r.sass, title: el.textContent, gapToLine: (document.querySelector("#s-result .vdiv").getBoundingClientRect().left - rg.getBoundingClientRect().right) / u, titleHeight: el.offsetHeight / u };
+      return { won: r.won, sass: r.sass, newWin: !!document.querySelector("#win-new").offsetParent, title: el.textContent, gapToLine: (document.querySelector("#s-result .vdiv").getBoundingClientRect().left - rg.getBoundingClientRect().right) / u, titleHeight: el.offsetHeight / u };
     }, t);
     for (const t of ["KFC", "McDonald's", "Burger King", "pizza", "hello", "banana", "I want a burger please now"]) {
       const r = await scream(t);
@@ -57,7 +57,7 @@ try {
     const rude = await scream("this is shit");
     check(rude.sass && !/shit/i.test(rude.sass.title + rude.sass.text), "rude words are not repeated on screen");
     const noS = await scream("Wendy"); check(!noS.won && !noS.sass && noS.gapToLine > 10, '"Wendy" without the S loses with the normal message');
-    const win = await scream("Wendy's"); check(win.won && !win.sass && win.gapToLine > 10, 'a correct "Wendy\'s" wins');
+    const win = await scream("Wendy's"); check(win.won && !win.sass && (win.newWin || win.gapToLine > 10), 'a correct "Wendy\'s" wins');
     check(errors.length === 0, "no page errors" + (errors.length ? ": " + errors.join(" | ") : ""));
     await p.close();
   }

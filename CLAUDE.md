@@ -92,3 +92,15 @@ The event kiosk is a 1080 x 1920 upright touch screen. `public/kiosk/roast.html`
 - `main` — everything approved.
 - `gh-pages` — built demo only (output of `scripts/build-demo.mjs`); never edit by hand.
 - Feature work: branch from `main`, merge back when the owner approves.
+
+## Winner's screen, sounds and the Nov 2026 look
+
+- Scream & Win winner's screen (`#win-new` in `scream.html`): shown only when a coupon was won. Sassy one-line title, score seal on the medallion, the meal picture (`public/assets/spicy-meal.webp`), the prize on a ribbon that bobs and shakes, and one beige coupon with the code and the QR. The prize text is read from the coupon's label by `prizeText()` ("FREE ..." or "50% OFF ..."). Upright positions are the base CSS; the landscape (LED) layout is the `WIN-WIDE` block, which zooms the same pieces. `node scripts/win-screen-shots.mjs <dir> [wide]` screenshots both.
+- No host screen (owner): when the word cannot be heard for a technical reason the guest is sent back to the mic check once ("We couldn't hear you") without using their attempt; a second miss is scored as it stands. Never show guests buttons that award a win.
+- While the guest shouts, the Listening pill cheers them on by first name (on screen only; nothing is spoken while the mic is scoring).
+- Upright countdown: small white "Get ready to" over a big "Scream."; no "On zero, shout" card. Upright live screen: beige step chips, the sound wave on both sides of the meter (`drawLiveA`), three slanted ribbons at the bottom (owner picked "option J").
+- Sounds say what the button or moment is (owner: "relevant sounds, not the common ones"): big action buttons power up, Next player drops a coin, colour circles spray, language tabs flick, a ding when the code is complete, pop / stamp / party / ticket on a win, rise and aww on a loss. All made by `scripts/make-sounds.mjs` with ElevenLabs only. No sound may play while the mic is scoring.
+- Roast Me: the "Wendy says" card takes the card colour the guest picked (never dark on dark) and keywords are bold and coloured, not underlined. The finished card is drawn while Wendy announces the roast (`prepCard`), so the old poster and the raw photo are never shown first. The cooking screen's photo hangs from the header line on the card's lanyard, and Wendy there is the layered, moving Wendy from the welcome screen.
+- The guest's phone roast page (`public/roast.html`) wears the kiosk look: blue header, red stage, white wave, dark lower half, card on a lanyard, colour circles, Download and Share.
+- SMS: provider `textware` (TextWare EMG API, form POST, sender `WENDYS`); set `SMS_PROVIDER=textware`, `TEXTWARE_USER`, `TEXTWARE_PASS`. With a real provider the on-screen test code disappears. Drafts of every message are in `docs/SMS_DRAFTS.md`; draft legal text in `docs/PRIVACY_DRAFT.md` and `docs/TERMS_DRAFT.md` (not reviewed by a lawyer).
+- Do not commit screenshots or recordings that show a guest's photo (the repo is public).

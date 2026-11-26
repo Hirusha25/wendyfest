@@ -70,6 +70,8 @@ CREATE TABLE IF NOT EXISTS settings (
 
 // Added later: what the kiosk's speech check reported for this scream (JSON), so a "no words heard" can be explained afterwards.
 if (!db.prepare("PRAGMA table_info(scream_attempts)").all().some((c) => c.name === "speech")) db.exec("ALTER TABLE scream_attempts ADD COLUMN speech TEXT");
+// the card colour the guest picked on the roast screen (paper = beige, blue, dark = black, red)
+if (!db.prepare("PRAGMA table_info(roasts)").all().some((c) => c.name === "card_theme")) db.exec("ALTER TABLE roasts ADD COLUMN card_theme TEXT");
 
 export function getSetting(key, fallback) {
   const row = db.prepare("SELECT value FROM settings WHERE key = ?").get(key);

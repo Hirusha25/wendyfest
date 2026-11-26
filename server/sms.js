@@ -1,5 +1,5 @@
 // SMS provider abstraction for Sri Lanka.
-// provider = console (prints to terminal, default) | notifylk | shoutout | dialog | http
+// provider = console (prints to terminal, default) | textware | notifylk | shoutout | dialog | http
 import { config } from "./config.js";
 import { db } from "./db.js";
 
@@ -12,6 +12,15 @@ export async function sendSms(phone, body) {
     if (p === "console") {
       console.log(`\n📱 SMS → +${phone} (sender ${config.sms.senderId})\n${body}\n`);
       detail = "console";
+    } else if (p === "textware") {
+      // TextWare EMG single-message API (v2.21): form POST, so the login never sits in a URL. Success answers "Operation success: <message id>".
+      if (!config.sms.textwareUser || !config.sms.textwarePass) throw new Error("TEXTWARE_USER / TEXTWARE_PASS not set");
+      const r = await fetch(config.sms.textwareUrl, {
+        method: "POST", signal: AbortSignal.timeout(15000),
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({ username: config.sms.textwareUser, password: config.sms.textwarePass, src: config.sms.senderId, dst: phone, msg: body }),
+      });
+      detail = (await r.text()).trim(); if (!r.ok || !/operation success/i.test(detail)) status = "failed";
     } else if (p === "notifylk") {
       const u = new URL("https://app.notify.lk/api/v1/send");
       u.searchParams.set("user_id", config.sms.notifyUserId);

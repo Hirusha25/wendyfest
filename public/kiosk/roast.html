@@ -34,15 +34,15 @@
   #s-idle .art { inset:0; background:#fff; clip-path:polygon(calc(1088 * var(--p)) 0, calc(1920 * var(--p)) 0, calc(1920 * var(--p)) calc(1080 * var(--p)), calc(698 * var(--p)) calc(1080 * var(--p))); }
   /* Wendy on the welcome screen is one picture shown in two layers (head, pigtail) with two eyelids on top, so she can
      blink, sway a little, nod, and flick her pigtail. The white panel is clipped separately, so she never crosses the stripe. */
-  #s-idle .art .wd { position:absolute; right:0; bottom:calc(-40 * var(--p)); width:calc(1220 * var(--p)); height:calc(1220 * var(--p)); transform-origin:50% 78%; transform:scale(1.06); }
-  #s-idle .art .wd img { position:absolute; left:0; top:0; width:100%; height:100%; max-width:none; object-fit:cover; }
-  #s-idle .art .wd .hd0 { clip-path:polygon(33% 0, 100% 0, 100% 100%, 0 100%, 0 84%, 28% 89%, 43% 89%, 45% 74%, 40% 63%, 33% 54%, 0 54%, 0 0); }
-  #s-idle .art .wd .pt { clip-path:polygon(0 54%, 32% 54%, 33.5% 57%, 38% 58%, 42.5% 62.5%, 47.5% 74%, 45.5% 89%, 28% 89%, 0 84%); transform-origin:40% 66%; }
-  #s-idle .art .wd .lid { position:absolute; height:9.6%; background:#FDFDFD; border-bottom:calc(11 * var(--p)) solid #C2161F; border-radius:0 0 50% 50%; box-sizing:border-box; transform:scaleY(0); transform-origin:50% 0; }
-  #s-idle .art .wd .lid.l { left:53.2%; top:43.6%; width:14.4%; } #s-idle .art .wd .lid.r { left:77%; top:43.2%; width:14.8%; }
-  #s-idle.on .art .wd { animation:wendyLive 8s ease-in-out infinite; }
-  #s-idle.on .art .wd .pt { animation:wendyTail 8s ease-in-out infinite; }
-  #s-idle.on .art .wd .lid { animation:wendyBlink 4.6s linear infinite; }
+  :is(#s-idle, #s-cooking) .art .wd { position:absolute; right:0; bottom:calc(-40 * var(--p)); width:calc(1220 * var(--p)); height:calc(1220 * var(--p)); transform-origin:50% 78%; transform:scale(1.06); }
+  :is(#s-idle, #s-cooking) .art .wd img { position:absolute; left:0; top:0; width:100%; height:100%; max-width:none; object-fit:cover; }
+  :is(#s-idle, #s-cooking) .art .wd .hd0 { clip-path:polygon(33% 0, 100% 0, 100% 100%, 0 100%, 0 84%, 28% 89%, 43% 89%, 45% 74%, 40% 63%, 33% 54%, 0 54%, 0 0); }
+  :is(#s-idle, #s-cooking) .art .wd .pt { clip-path:polygon(0 54%, 32% 54%, 33.5% 57%, 38% 58%, 42.5% 62.5%, 47.5% 74%, 45.5% 89%, 28% 89%, 0 84%); transform-origin:40% 66%; }
+  :is(#s-idle, #s-cooking) .art .wd .lid { position:absolute; height:9.6%; background:#FDFDFD; border-bottom:calc(11 * var(--p)) solid #C2161F; border-radius:0 0 50% 50%; box-sizing:border-box; transform:scaleY(0); transform-origin:50% 0; }
+  :is(#s-idle, #s-cooking) .art .wd .lid.l { left:53.2%; top:43.6%; width:14.4%; } :is(#s-idle, #s-cooking) .art .wd .lid.r { left:77%; top:43.2%; width:14.8%; }
+  :is(#s-idle, #s-cooking).on .art .wd { animation:wendyLive 8s ease-in-out infinite; }
+  :is(#s-idle, #s-cooking).on .art .wd .pt { animation:wendyTail 8s ease-in-out infinite; }
+  :is(#s-idle, #s-cooking).on .art .wd .lid { animation:wendyBlink 4.6s linear infinite; }
   @keyframes wendyLive { 0%, 100% { transform:scale(1.06) rotate(0) translateY(0); } 22% { transform:scale(1.06) rotate(-1.1deg) translateY(-.5%); } 46% { transform:scale(1.06) rotate(.7deg) translateY(.2%); } 60% { transform:scale(1.06) rotate(0) translateY(0); } 65% { transform:scale(1.085) rotate(0) translateY(-1.1%); } 70% { transform:scale(1.06) rotate(3.4deg) translateY(0); } 76% { transform:scale(1.06) rotate(-3deg); } 82% { transform:scale(1.06) rotate(2.2deg); } 88% { transform:scale(1.06) rotate(-1.2deg); } 94% { transform:scale(1.06) rotate(.4deg); } }
   @keyframes wendyTail { 0%, 100% { transform:rotate(0); } 22% { transform:rotate(2.2deg); } 46% { transform:rotate(-1.6deg); } 60% { transform:rotate(0); } 66% { transform:rotate(3deg); } 71% { transform:rotate(-6deg); } 77% { transform:rotate(5.5deg); } 83% { transform:rotate(-4deg); } 89% { transform:rotate(2.2deg); } 95% { transform:rotate(-1deg); } }
   @keyframes wendyBlink { 0%, 91% { transform:scaleY(0); } 93.5%, 96% { transform:scaleY(1); } 98.5%, 100% { transform:scaleY(0); } }
@@ -287,6 +287,7 @@
   .cv .chk .st.on i { background:#fff; border:calc(8 * var(--p)) solid #029CD4; box-shadow:0 0 0 calc(10 * var(--p)) rgba(2,156,212,.25); animation:stepP 1.2s ease-in-out infinite; }
   .cv .chk .st.done i { background:#029CD4 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/56% no-repeat; }
   .cv .cpol { width:calc(300 * var(--p)); background:#fff; padding:calc(18 * var(--p)) calc(18 * var(--p)) 0; border-radius:calc(6 * var(--p)); box-sizing:border-box; box-shadow:0 calc(22 * var(--p)) calc(50 * var(--p)) rgba(0,0,0,.5); rotate:6deg; z-index:6; }
+  .cv .cpol .lany { display:none; }   /* upright layout only */
   .cv .cpol img { display:block; width:100%; aspect-ratio:4/3; object-fit:cover; background:#2A2626; }
   .cv .cpol .cap { height:calc(60 * var(--p)); display:flex; align-items:center; justify-content:space-between; color:#1E1B1B; font:italic 900 calc(21 * var(--p))/1 Poppins, sans-serif; text-transform:uppercase; letter-spacing:-.01em; }
   .cv .cpol .cap span { display:flex; gap:calc(2 * var(--p)); } .cv .cpol .cap svg { width:calc(24 * var(--p)); height:calc(24 * var(--p)); fill:#CD2028; }
@@ -297,18 +298,52 @@
   /* reveal, option A + "Wendy says" card; the share card hangs like a badge (tab, punched hole, lanyard) */
   #s-reveal .rleft { left:calc(95 * var(--p)); top:calc(226 * var(--p)); width:calc(660 * var(--p)); height:calc(770 * var(--p)); padding:0 calc(30 * var(--p)) calc(40 * var(--p)); box-sizing:border-box; gap:calc(22 * var(--p)); }
   #s-reveal .rbig { font-size:calc(70 * var(--p)); flex:none; }
-  #s-reveal .say { flex:none; background:#fff; color:#1E1B1B; border-radius:calc(10 * var(--p)); box-shadow:0 calc(10 * var(--p)) 0 #01679A, 0 calc(20 * var(--p)) calc(40 * var(--p)) rgba(0,0,0,.4); padding:calc(22 * var(--p)) calc(26 * var(--p)) calc(20 * var(--p)); box-sizing:border-box; margin-bottom:calc(12 * var(--p)); }
+  /* "Wendy says" card: dark, a white line on all four sides, red dots fading in from the bottom-right corner (owner's pick) */
+  #s-reveal .say::before { content:""; position:absolute; inset:0; pointer-events:none; background:radial-gradient(circle, var(--sd, rgba(255,255,255,.55)) calc(4 * var(--p)), transparent calc(4.7 * var(--p))) 0 0 / calc(22 * var(--p)) calc(22 * var(--p)); -webkit-mask:radial-gradient(ellipse 55% 85% at 100% 100%, #000 0, rgba(0,0,0,.5) 45%, transparent 100%); mask:radial-gradient(ellipse 55% 85% at 100% 100%, #000 0, rgba(0,0,0,.5) 45%, transparent 100%); }
+  #s-reveal .say > * { position:relative; z-index:1; }
+  #s-reveal .say { position:relative; overflow:hidden; flex:none; background:var(--sb, linear-gradient(160deg, #E5303A, #A9161F)); color:var(--st, #fff); border:calc(3 * var(--p)) solid rgba(255,255,255,.92); border-radius:calc(10 * var(--p)); box-shadow:0 calc(20 * var(--p)) calc(40 * var(--p)) rgba(0,0,0,.4); padding:calc(22 * var(--p)) calc(26 * var(--p)) calc(20 * var(--p)); box-sizing:border-box; margin-bottom:calc(12 * var(--p)); }
   #s-reveal .say .top { display:flex; align-items:center; justify-content:space-between; margin-bottom:calc(12 * var(--p)); }
-  #s-reveal .say .who { display:flex; align-items:center; gap:calc(12 * var(--p)); font:italic 800 calc(17 * var(--p))/1 Poppins, sans-serif; letter-spacing:.2em; text-transform:uppercase; color:#029CD4; } #s-reveal .say .who img { height:calc(40 * var(--p)); }
-  #s-reveal .rtxt { color:#2B2525; font-weight:500; line-height:1.45; }
-  #s-reveal .rsig { margin-top:calc(12 * var(--p)); color:#8A7F7F; font-size:calc(16 * var(--p)); }
+  #s-reveal .say .who { display:flex; align-items:center; gap:calc(12 * var(--p)); font:italic 800 calc(17 * var(--p))/1 Poppins, sans-serif; letter-spacing:.2em; text-transform:uppercase; color:var(--sh, #fff); } #s-reveal .say .who img { height:calc(40 * var(--p)); }
+  #s-reveal .rtxt { color:var(--st, #fff); font-weight:500; line-height:1.45; }
+  /* the "Wendy says" card takes the card colour the guest picked, so it never sits dark on dark; keywords are bold and coloured, no underline (owner) */
+  #s-reveal .rtxt b { font-weight:800; color:var(--kw, #FFE08A); background:var(--kb, transparent); padding:0 .2em; margin:0 -.06em; border-radius:.22em; -webkit-box-decoration-break:clone; box-decoration-break:clone; }
+  body[data-card="dark"] { --sb:linear-gradient(160deg, #E5303A, #A9161F); --st:#fff; --sh:#fff; --sm:rgba(255,255,255,.82); --sd:rgba(255,255,255,.55); --kw:#fff; --kb:#1A1616; --tb:rgba(255,255,255,.55); --ta:#1A1616; --tas:#000; }
+  body[data-card="red"] { --sb:linear-gradient(160deg, #E5303A, #A9161F); --st:#fff; --sh:#fff; --sm:rgba(255,255,255,.82); --sd:rgba(255,255,255,.55); --kw:#FFE08A; --kb:transparent; --tb:rgba(255,255,255,.55); --ta:#029CD4; --tas:#01476A; }
+  body[data-card="blue"] { --sb:linear-gradient(160deg, #23B4F0, #0A7FBC); --st:#fff; --sh:#fff; --sm:rgba(255,255,255,.85); --sd:rgba(255,255,255,.6); --kw:#FFE08A; --kb:transparent; --tb:rgba(255,255,255,.6); --ta:#D8232D; --tas:#7E0F16; }
+  body[data-card="paper"] { --sb:linear-gradient(160deg, #FBF5EA, #E8DCC8); --st:#1F1A1A; --sh:#0A6FA6; --sm:#6B6060; --sd:rgba(227,32,43,.85); --kw:#D8232D; --kb:transparent; --tb:rgba(30,27,27,.3); --ta:#029CD4; --tas:#01476A; }
+  #s-reveal .rsig { margin-top:calc(12 * var(--p)); color:var(--sm, #B9B0B0); font-size:calc(16 * var(--p)); }
   #s-reveal .rtabs { background:none; padding:0; gap:calc(6 * var(--p)); border-radius:0; }
-  #s-reveal .rtabs button { height:calc(42 * var(--p)); min-width:calc(58 * var(--p)); padding:0 calc(12 * var(--p)); border-radius:calc(8 * var(--p)); border:calc(3 * var(--p)) solid rgba(30,27,27,.22); background:transparent; color:#1E1B1B; font:italic 800 calc(16 * var(--p))/1 Poppins, 'Noto Sans Sinhala', 'Noto Sans Tamil', sans-serif; box-sizing:border-box; }
-  #s-reveal .rtabs button.on { background:#029CD4; border-color:#029CD4; color:#fff; box-shadow:0 calc(4 * var(--p)) 0 #01476A; }
+  #s-reveal .rtabs button { height:calc(42 * var(--p)); min-width:calc(58 * var(--p)); padding:0 calc(12 * var(--p)); border-radius:calc(8 * var(--p)); border:calc(3 * var(--p)) solid var(--tb, rgba(255,255,255,.45)); background:transparent; color:var(--st, #fff); font:italic 800 calc(16 * var(--p))/1 Poppins, 'Noto Sans Sinhala', 'Noto Sans Tamil', sans-serif; box-sizing:border-box; }
+  #s-reveal .rtabs button.on { background:var(--ta, #029CD4); border-color:var(--ta, #029CD4); color:#fff; box-shadow:0 calc(4 * var(--p)) 0 var(--tas, #01476A); }
   #s-reveal .pcard { width:calc(440 * var(--p)); height:calc(708 * var(--p)); rotate:-2deg; transform-origin:50% 0; z-index:6; }
   #s-reveal .pcard .poster { position:relative; scale:.88; transform-origin:0 0; }
   #s-reveal .pcard .rcard { display:none; position:absolute; left:50%; top:0; height:100%; aspect-ratio:9 / 16; translate:-50% 0; border-radius:calc(14 * var(--p)); box-shadow:0 calc(18 * var(--p)) calc(40 * var(--p)) rgba(0,0,0,.45); }
-  #s-reveal .pcard.has-card .rcard { display:block; } #s-reveal .pcard.has-card .poster { visibility:hidden; }
+  #s-reveal .pcard.has-card .rcard { display:block; } #s-reveal .pcard:not(.no-card) .poster { visibility:hidden; }
+  /* while the card is being drawn: a dark card in its place (never the old poster, never the raw photo) */
+  #s-reveal .pcard:not(.has-card):not(.no-card)::before { content:"Plating your card…"; position:absolute; left:50%; top:0; height:100%; aspect-ratio:9 / 16; translate:-50% 0; border-radius:calc(14 * var(--p)); display:grid; place-items:center; background:linear-gradient(160deg, #2A2525, #141111); color:#fff; font:italic 800 calc(20 * var(--p))/1 Poppins, sans-serif; letter-spacing:.14em; text-transform:uppercase; box-shadow:calc(5 * var(--p)) calc(6 * var(--p)) 0 #5E564D, 0 calc(18 * var(--p)) calc(40 * var(--p)) rgba(0,0,0,.45); }
+  /* card colour: four circles the guest can tap (beige, blue, black, red) */
+  .cv .swatch { display:flex; align-items:center; gap:calc(14 * var(--p)); z-index:4; }
+  .cv .swatch span { margin-right:calc(6 * var(--p)); font:italic 800 calc(20 * var(--p))/1 Poppins, sans-serif; letter-spacing:.1em; text-transform:uppercase; color:#fff; }
+  .cv .swatch button { width:calc(52 * var(--p)); height:calc(52 * var(--p)); border-radius:50%; padding:0; border:calc(4 * var(--p)) solid #fff; cursor:pointer; box-shadow:0 calc(5 * var(--p)) 0 rgba(0,0,0,.35), 0 calc(10 * var(--p)) calc(16 * var(--p)) rgba(0,0,0,.3); transition:transform .12s; }
+  .cv .swatch button[data-c="paper"] { background:linear-gradient(160deg, #F8F1E4, #E3D5BE); } .cv .swatch button[data-c="blue"] { background:linear-gradient(160deg, #27B1F0, #0A7FBC); }
+  .cv .swatch button[data-c="dark"] { background:linear-gradient(160deg, #3A3434, #0D0B0B); } .cv .swatch button[data-c="red"] { background:linear-gradient(160deg, #EA3640, #B01A22); }
+  .cv .swatch button.on { transform:scale(1.18); box-shadow:0 0 0 calc(4 * var(--p)) #1E1B1B, 0 0 0 calc(8 * var(--p)) #fff, 0 calc(10 * var(--p)) calc(16 * var(--p)) rgba(0,0,0,.35); }
+  .cv .swatch button:active { transform:scale(.94); }
+  /* the card swings in on its lanyard when the roast appears, settles, then keeps swaying gently. It turns about the top of the strap. */
+  #s-reveal .pcard { transform-origin:50% -14%; }
+  #s-reveal.on .pcard { animation:cardIn 2.8s cubic-bezier(.3, .6, .35, 1) both, cardSway 5.6s ease-in-out 2.8s infinite alternate, cardTurn 7.4s ease-in-out infinite alternate; }
+  /* depth: the card turns a little in space as it hangs, has a visible edge like a thick plastic pass, and a sheen that slides across it */
+  @keyframes cardTurn { from { transform:perspective(calc(1500 * var(--p))) rotateY(-11deg) rotateX(3deg); } to { transform:perspective(calc(1500 * var(--p))) rotateY(11deg) rotateX(-2deg); } }
+  #s-reveal .pcard img.rcard { box-shadow:calc(1 * var(--p)) calc(1 * var(--p)) 0 #EDE6DB, calc(2 * var(--p)) calc(2 * var(--p)) 0 #D9D1C5, calc(3 * var(--p)) calc(3 * var(--p)) 0 #C4BBAE, calc(4 * var(--p)) calc(4 * var(--p)) 0 #A99F92, calc(5 * var(--p)) calc(5 * var(--p)) 0 #8E8478, calc(6 * var(--p)) calc(7 * var(--p)) 0 #5E564D, calc(18 * var(--p)) calc(30 * var(--p)) calc(46 * var(--p)) rgba(0,0,0,.5), calc(4 * var(--p)) calc(8 * var(--p)) calc(12 * var(--p)) rgba(0,0,0,.35); }
+  #s-reveal .pcard.has-card::after { content:""; position:absolute; left:50%; top:0; height:100%; aspect-ratio:9 / 16; translate:-50% 0; border-radius:calc(14 * var(--p)); pointer-events:none; z-index:2; mix-blend-mode:screen;
+    background:linear-gradient(112deg, transparent 38%, rgba(255,255,255,.07) 44%, rgba(255,255,255,.3) 50%, rgba(255,255,255,.07) 56%, transparent 62%) 0 0 / 280% 100% no-repeat; animation:cardSheen 7.4s ease-in-out infinite alternate; }
+  @keyframes cardSheen { from { background-position:110% 0; } to { background-position:-10% 0; } }
+  @keyframes cardIn { 0% { rotate:-13deg; } 22% { rotate:7deg; } 42% { rotate:-6deg; } 60% { rotate:2.5deg; } 78% { rotate:-3.6deg; } 100% { rotate:-2deg; } }
+  @keyframes cardSway { from { rotate:-2deg; } to { rotate:.8deg; } }
+  /* the card hangs from a woven lanyard with a metal ring and clip (replaces the older plain strap and tab) */
+  #s-reveal .pcard .lany { position:absolute; left:50%; top:calc(-54 * var(--p)); width:calc(51 * var(--p)); height:calc(60 * var(--p)); translate:-50% 0; z-index:3; filter:drop-shadow(0 calc(5 * var(--p)) calc(7 * var(--p)) rgba(0,0,0,.4)); overflow:visible; }
+  #s-reveal .pcard .strap, #s-reveal .pcard .ptab { display:none; }
+  #s-reveal .pcard img.rcard { padding:0; background:none; }   /* the picture is the card: no white frame round it */
   #s-reveal .pcard .strap { position:absolute; left:calc(50% - calc(16 * var(--p))); top:calc(-52 * var(--p)); width:calc(32 * var(--p)); height:calc(44 * var(--p)); background:linear-gradient(90deg, #01679A, #2BB6EA 45%, #0186B8); box-shadow:0 calc(4 * var(--p)) calc(8 * var(--p)) rgba(0,0,0,.35); }
   #s-reveal .pcard .ptab { position:absolute; left:calc(50% - calc(62 * var(--p))); top:calc(-34 * var(--p)); width:calc(124 * var(--p)); height:calc(60 * var(--p)); background:#fff; border-radius:calc(16 * var(--p)) calc(16 * var(--p)) 0 0; box-shadow:0 calc(-6 * var(--p)) calc(14 * var(--p)) rgba(0,0,0,.25); }
   #s-reveal .pcard .ptab::before { content:""; position:absolute; left:calc(50% - calc(15 * var(--p))); top:calc(9 * var(--p)); width:calc(30 * var(--p)); height:calc(30 * var(--p)); border-radius:50%; background:#241F1F; box-shadow:inset 0 calc(4 * var(--p)) calc(6 * var(--p)) rgba(0,0,0,.6), 0 0 0 calc(4 * var(--p)) #C9CED3, 0 0 0 calc(5 * var(--p)) #8E959C; }
@@ -416,12 +451,12 @@
     .chrome[data-scr="s-cam"] .band { clip-path:none !important; -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1080 1920' preserveAspectRatio='none'%3E%3Cpath d='M0 1220C380 1220 700 1129 1080 1090L1080 1130C700 1169 380 1260 0 1260Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat !important; mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1080 1920' preserveAspectRatio='none'%3E%3Cpath d='M0 1220C380 1220 700 1129 1080 1090L1080 1130C700 1169 380 1260 0 1260Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat !important; }
     .chrome[data-scr="s-cam"] .panel { clip-path:none !important; -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1080 1920' preserveAspectRatio='none'%3E%3Cpath d='M0 1260C380 1260 700 1169 1080 1130L1080 1920C700 1920 380 1920 0 1920Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat !important; mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1080 1920' preserveAspectRatio='none'%3E%3Cpath d='M0 1260C380 1260 700 1169 1080 1130L1080 1920C700 1920 380 1920 0 1920Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat !important; }
     #s-cam .cam { left:calc(60 * var(--p)) !important; top:calc(205 * var(--p)) !important; width:calc(960 * var(--p)) !important; height:calc(820 * var(--p)) !important; box-shadow:0 calc(10 * var(--p)) 0 #050505, 0 calc(30 * var(--p)) calc(60 * var(--p)) rgba(0,0,0,.6) !important; }
-    #s-cam .cam .live { left:auto !important; right:calc(36 * var(--p)) !important; }
+    #s-cam .cam .live { left:auto !important; right:calc(44 * var(--p)) !important; top:calc(124 * var(--p)) !important; }
     #s-cam .cam .count { font-size:calc(210 * var(--p)) !important; text-shadow:0 calc(6 * var(--p)) 0 rgba(0,0,0,.35) !important; }
     #s-cam .cam .count::before { content:"" !important; position:absolute !important; left:50% !important; top:50% !important; translate:-50% -50% !important; width:calc(330 * var(--p)) !important; height:calc(330 * var(--p)) !important; border:calc(12 * var(--p)) solid rgba(255,255,255,.92) !important; border-radius:50% !important; background:rgba(0,0,0,.2) !important; z-index:-1 !important; }
     #s-cam .snapb { left:calc(445 * var(--p)) !important; top:calc(930 * var(--p)) !important; width:calc(190 * var(--p)) !important; height:calc(190 * var(--p)) !important; border-radius:50% !important; padding:0 !important; gap:0 !important; font-size:0 !important; background:radial-gradient(circle at 40% 30%, #FF6B73 0%, #E3252F 38%, #B01A22 100%) !important; border:calc(10 * var(--p)) solid #fff !important; box-shadow:0 0 0 calc(10 * var(--p)) rgba(227,32,43,.4), 0 calc(12 * var(--p)) 0 calc(4 * var(--p)) #7E1016, 0 calc(30 * var(--p)) calc(44 * var(--p)) rgba(0,0,0,.55), inset 0 calc(6 * var(--p)) calc(10 * var(--p)) rgba(255,255,255,.35), inset 0 calc(-10 * var(--p)) calc(16 * var(--p)) rgba(90,8,14,.5) !important; animation:shutterGlow 2.2s ease-in-out infinite !important; z-index:7 !important; }
     #s-cam .snapb svg { width:calc(92 * var(--p)) !important; height:calc(92 * var(--p)) !important; filter:drop-shadow(0 calc(4 * var(--p)) 0 rgba(90,8,14,.6)) !important; }
-    #s-cam .ghostb { left:calc(92 * var(--p)) !important; top:calc(236 * var(--p)) !important; width:calc(190 * var(--p)) !important; height:calc(60 * var(--p)) !important; padding:0 !important; font-size:calc(19 * var(--p)) !important; background:rgba(0,0,0,.55) !important; border-color:rgba(255,255,255,.85) !important; z-index:7 !important; }
+    #s-cam .ghostb { left:calc(104 * var(--p)) !important; top:calc(326 * var(--p)) !important; width:calc(190 * var(--p)) !important; height:calc(60 * var(--p)) !important; padding:0 !important; font-size:calc(19 * var(--p)) !important; background:rgba(0,0,0,.55) !important; border-color:rgba(255,255,255,.85) !important; z-index:7 !important; }
     #s-cam .eb.w { left:calc(60 * var(--p)) !important; top:calc(1296 * var(--p)) !important; }
     #s-cam .t3 { left:calc(54 * var(--p)) !important; top:calc(1334 * var(--p)) !important; font-size:calc(74 * var(--p)) !important; }
     #s-cam .t3 span { display:inline !important; margin-top:0 !important; }
@@ -439,13 +474,17 @@
     .chrome[data-scr="s-cooking"] .band { clip-path:none !important; -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1080 1920' preserveAspectRatio='none'%3E%3Cpath d='M0 1040C380 1040 700 914 1080 860L1080 900C700 954 380 1080 0 1080Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat !important; mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1080 1920' preserveAspectRatio='none'%3E%3Cpath d='M0 1040C380 1040 700 914 1080 860L1080 900C700 954 380 1080 0 1080Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat !important; }
     .chrome[data-scr="s-cooking"] .panel { clip-path:none !important; -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1080 1920' preserveAspectRatio='none'%3E%3Cpath d='M0 1080C380 1080 700 954 1080 900L1080 1920C700 1920 380 1920 0 1920Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat !important; mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1080 1920' preserveAspectRatio='none'%3E%3Cpath d='M0 1080C380 1080 700 954 1080 900L1080 1920C700 1920 380 1920 0 1920Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat !important; }
     #s-cooking .art { clip-path:none !important; -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1080 1920' preserveAspectRatio='none'%3E%3Cpath d='M0 1080C380 1080 700 954 1080 900L1080 1860C700 1860 380 1860 0 1860Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat !important; mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1080 1920' preserveAspectRatio='none'%3E%3Cpath d='M0 1080C380 1080 700 954 1080 900L1080 1860C700 1860 380 1860 0 1860Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat !important; }
-    #s-cooking .art img { left:calc(-10 * var(--p)) !important; top:calc(800 * var(--p)) !important; width:calc(1100 * var(--p)) !important; height:calc(1100 * var(--p)) !important; }
+    #s-cooking .art .wd { left:calc(-10 * var(--p)) !important; right:auto !important; top:calc(800 * var(--p)) !important; bottom:auto !important; width:calc(1100 * var(--p)) !important; height:calc(1100 * var(--p)) !important; filter:drop-shadow(calc(7 * var(--p)) 0 0 #fff) drop-shadow(calc(-7 * var(--p)) 0 0 #fff) drop-shadow(0 calc(7 * var(--p)) 0 #fff) drop-shadow(0 calc(-7 * var(--p)) 0 #fff) !important; }
+    #s-cooking .art .wd img { left:0 !important; top:0 !important; right:auto !important; bottom:auto !important; width:100% !important; height:100% !important; }
     #s-cooking .eb { left:calc(60 * var(--p)) !important; top:calc(226 * var(--p)) !important; }
-    #s-cooking .t3 { left:calc(54 * var(--p)) !important; top:calc(270 * var(--p)) !important; font-size:calc(118 * var(--p)) !important; }
-    #s-cooking .chk { left:calc(60 * var(--p)) !important; top:calc(548 * var(--p)) !important; gap:calc(26 * var(--p)) !important; }
+    #s-cooking .t3 { left:calc(54 * var(--p)) !important; top:calc(268 * var(--p)) !important; font-size:calc(82 * var(--p)) !important; }
+    #s-cooking .chk { left:calc(60 * var(--p)) !important; top:calc(520 * var(--p)) !important; gap:calc(26 * var(--p)) !important; }
     #s-cooking .chk .st i { width:calc(70 * var(--p)) !important; height:calc(70 * var(--p)) !important; }
     #s-cooking .chk .st b { font-size:calc(38 * var(--p)) !important; }
-    #s-cooking .cpol { left:calc(670 * var(--p)) !important; top:calc(500 * var(--p)) !important; width:calc(340 * var(--p)) !important; }
+    #s-cooking .cpol { left:calc(668 * var(--p)) !important; top:calc(330 * var(--p)) !important; width:calc(350 * var(--p)) !important; rotate:-2deg !important; transform-origin:50% -34% !important; box-shadow:calc(1 * var(--p)) calc(1 * var(--p)) 0 #EDE6DB, calc(2 * var(--p)) calc(2 * var(--p)) 0 #D9D1C5, calc(3 * var(--p)) calc(3 * var(--p)) 0 #C4BBAE, calc(4 * var(--p)) calc(4 * var(--p)) 0 #A99F92, calc(5 * var(--p)) calc(6 * var(--p)) 0 #5E564D, calc(16 * var(--p)) calc(28 * var(--p)) calc(40 * var(--p)) rgba(0,0,0,.5) !important; }
+    #s-cooking.on .cpol { animation:cardIn 2.8s cubic-bezier(.3, .6, .35, 1) both, cardSway 5.6s ease-in-out 2.8s infinite alternate, cardTurn 7.4s ease-in-out infinite alternate !important; }
+    #s-cooking .cpol .lany { display:block !important; position:absolute !important; left:50% !important; top:calc(-128 * var(--p)) !important; width:calc(104 * var(--p)) !important; height:calc(122 * var(--p)) !important; translate:-50% 0 !important; overflow:visible !important; z-index:3 !important; filter:drop-shadow(0 calc(5 * var(--p)) calc(7 * var(--p)) rgba(0,0,0,.4)) !important; }
+    #s-cooking .cpol::after { content:'' !important; position:absolute !important; inset:0 !important; border-radius:calc(6 * var(--p)) !important; pointer-events:none !important; mix-blend-mode:screen !important; background:linear-gradient(112deg, transparent 38%, rgba(255,255,255,.07) 44%, rgba(255,255,255,.3) 50%, rgba(255,255,255,.07) 56%, transparent 62%) 0 0 / 280% 100% no-repeat !important; animation:cardSheen 7.4s ease-in-out infinite alternate !important; }
     #s-cooking .wbub { left:calc(60 * var(--p)) !important; top:calc(1640 * var(--p)) !important; width:calc(960 * var(--p)) !important; min-height:calc(170 * var(--p)) !important; }
     #s-cooking .wbub small { font-size:calc(22 * var(--p)) !important; }
     #s-cooking .wbub .cooking-line { font-size:calc(48 * var(--p)) !important; }
@@ -455,8 +494,12 @@
     .chrome[data-scr="s-reveal"] .panel { clip-path:none !important; -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1080 1920' preserveAspectRatio='none'%3E%3Cpath d='M0 177C380 177 700 177 1080 177L1080 950C700 992 380 1090 0 1090Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat !important; mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1080 1920' preserveAspectRatio='none'%3E%3Cpath d='M0 177C380 177 700 177 1080 177L1080 950C700 992 380 1090 0 1090Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat !important; }
     #s-reveal .pcard { left:calc(90 * var(--p)) !important; top:calc(285 * var(--p)) !important; width:calc(420 * var(--p)) !important; height:calc(676 * var(--p)) !important; }
     #s-reveal .pcard .poster { scale:.84 !important; }
+    #s-reveal .pcard .lany { top:calc(-110 * var(--p)) !important; width:calc(100 * var(--p)) !important; height:calc(117 * var(--p)) !important; }
     #s-reveal .rsave { left:calc(620 * var(--p)) !important; top:calc(236 * var(--p)) !important; font-size:calc(64 * var(--p)) !important; }
     #s-reveal .qrs { left:calc(620 * var(--p)) !important; top:calc(386 * var(--p)) !important; width:calc(340 * var(--p)) !important; }
+    #s-reveal .swatch { left:calc(620 * var(--p)) !important; top:calc(862 * var(--p)) !important; gap:calc(16 * var(--p)) !important; }
+    #s-reveal .swatch span { display:none !important; }
+    #s-reveal .swatch button { width:calc(64 * var(--p)) !important; height:calc(64 * var(--p)) !important; }
     #s-reveal .qnote { left:calc(620 * var(--p)) !important; top:calc(746 * var(--p)) !important; width:calc(400 * var(--p)) !important; font-size:calc(23 * var(--p)) !important; }
     #s-reveal .rleft { left:calc(60 * var(--p)) !important; top:calc(1150 * var(--p)) !important; width:calc(960 * var(--p)) !important; height:calc(545 * var(--p)) !important; padding:0 !important; gap:calc(18 * var(--p)) !important; }
     #s-reveal .say { padding:calc(28 * var(--p)) calc(34 * var(--p)) calc(24 * var(--p)) !important; margin-bottom:0 !important; }
@@ -490,7 +533,7 @@
     .cv .slots b { border-radius:calc(14 * var(--p)) !important; }
     .cv .consent-box { border-radius:0 calc(18 * var(--p)) calc(18 * var(--p)) calc(18 * var(--p)) !important; box-shadow:0 calc(10 * var(--p)) 0 rgba(0,0,0,.35), 0 calc(24 * var(--p)) calc(44 * var(--p)) rgba(0,0,0,.45) !important; }
     .cv .lang-pick button { border-radius:calc(14 * var(--p)) calc(14 * var(--p)) 0 0 !important; }
-    #s-reveal .say { border-radius:calc(18 * var(--p)) !important; box-shadow:0 calc(8 * var(--p)) 0 rgba(0,0,0,.4), 0 calc(22 * var(--p)) calc(40 * var(--p)) rgba(0,0,0,.45) !important; }
+    #s-reveal .say { border-radius:calc(18 * var(--p)) !important; box-shadow:0 calc(22 * var(--p)) calc(40 * var(--p)) rgba(0,0,0,.45) !important; }
     #s-cam .cam { border-radius:calc(28 * var(--p)) !important; border-width:calc(5 * var(--p)) !important; border-color:rgba(255,255,255,.92) !important; }
     #s-cooking .wbub { border-radius:calc(26 * var(--p)) !important; }
     #s-reveal .qrs { border-radius:calc(16 * var(--p)) !important; }
@@ -591,13 +634,13 @@
   </div></section>
 
   <section class="screen cv" id="s-cooking"><div class="s">
-    <div class="art"><img src="/assets/roast-wendy.png" alt="" onerror="this.remove()"></div>
+    <div class="art"><div class="wd"><img class="hd0" src="/assets/roast-wendy.png" alt="" onerror="this.parentNode.remove()"><img class="pt" src="/assets/roast-wendy.png" alt=""><i class="lid l"></i><i class="lid r"></i></div></div>
     <div class="eb" style="left:calc(125 * var(--p));top:calc(230 * var(--p))">Hang tight</div>
     <div class="t3" style="left:calc(112 * var(--p));top:calc(280 * var(--p));font-size:calc(104 * var(--p))"><span class="l1">Cooking</span><span class="l2">your roast…</span></div>
     <div class="chk" id="steps3" style="left:calc(125 * var(--p));top:calc(560 * var(--p))">
       <div class="st"><i></i><b>Photo captured</b></div><div class="st"><i></i><b>Adding the sass</b></div><div class="st"><i></i><b>Plating up</b></div>
     </div>
-    <div class="cpol" style="left:calc(600 * var(--p));top:calc(600 * var(--p))"><img id="ck-photo" alt=""><div class="cap"><b id="ck-heat">Medium</b><span id="ck-chili"></span></div></div>
+    <div class="cpol" style="left:calc(600 * var(--p));top:calc(600 * var(--p))"><svg class="lany" viewBox="0 0 120 140" aria-hidden="true"><defs><linearGradient id="lyS" x1="0" x2="1"><stop offset="0" stop-color="#1668AE"/><stop offset=".18" stop-color="#2F93DE"/><stop offset=".5" stop-color="#46A8EE"/><stop offset=".82" stop-color="#2F93DE"/><stop offset="1" stop-color="#1668AE"/></linearGradient><pattern id="lyW" width="4" height="4" patternUnits="userSpaceOnUse"><path d="M0 4L4 0M-1 1L1 -1M3 5L5 3" stroke="#0E4F8A" stroke-width=".9" opacity=".5"/><path d="M0 0L4 4" stroke="#8FD0FF" stroke-width=".5" opacity=".35"/></pattern><linearGradient id="lyM" x1="0" x2="1"><stop offset="0" stop-color="#8B949C"/><stop offset=".22" stop-color="#F7F9FA"/><stop offset=".5" stop-color="#B9C1C8"/><stop offset=".78" stop-color="#F2F5F7"/><stop offset="1" stop-color="#7C858D"/></linearGradient><linearGradient id="lyB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FDFEFE"/><stop offset=".45" stop-color="#C3CAD0"/><stop offset="1" stop-color="#8A939B"/></linearGradient></defs><rect x="24" y="110" width="72" height="30" rx="9" fill="#F6F0E6" stroke="rgba(0,0,0,.2)" stroke-width="1"/><rect x="39" y="119" width="42" height="13" rx="6" fill="#211C1C"/><rect x="26" y="0" width="68" height="42" fill="url(#lyS)"/><rect x="26" y="0" width="68" height="42" fill="url(#lyW)"/><rect x="26" y="26" width="68" height="16" fill="#0E4F8A" opacity=".28"/><path d="M30 28H90M30 39H90" stroke="#BFE3FF" stroke-width="1.2" stroke-dasharray="3 2.4" opacity=".85"/><path d="M28 42H92A27 27 0 0 1 65 70H55A27 27 0 0 1 28 42Z" fill="none" stroke="#3E464D" stroke-width="11" stroke-linejoin="round" opacity=".3" transform="translate(0 3)"/><path d="M28 42H92A27 27 0 0 1 65 70H55A27 27 0 0 1 28 42Z" fill="none" stroke="url(#lyM)" stroke-width="9" stroke-linejoin="round"/><rect x="26" y="33" width="68" height="13" fill="url(#lyS)"/><rect x="26" y="33" width="68" height="13" fill="url(#lyW)"/><rect x="49" y="70" width="22" height="12" rx="4" fill="url(#lyM)" stroke="#6F7880" stroke-width=".8"/><ellipse cx="60" cy="72" rx="9" ry="3" fill="#EEF1F3" opacity=".9"/><path d="M41 84Q41 80 45 80H75Q79 80 79 84V120Q79 128 71 128H49Q41 128 41 120Z" fill="url(#lyB)" stroke="#6F7880" stroke-width="1"/><path d="M46 85H60V123H50Q46 123 46 119Z" fill="#fff" opacity=".45"/><rect x="50" y="113" width="20" height="5" rx="2.5" fill="#7C858D" opacity=".55"/></svg><img id="ck-photo" alt=""><div class="cap"><b id="ck-heat">Medium</b><span id="ck-chili"></span></div></div>
     <div class="wbub" style="left:calc(1130 * var(--p));top:calc(206 * var(--p))"><small>Wendy says</small><div class="cooking-line" id="cook-line">Checking the fit.</div></div>
   </div></section>
 
@@ -611,7 +654,7 @@
         <div class="rsig">— Wendy’s, to <span id="r-who"></span></div>
       </div>
     </div>
-    <div class="pcard" style="left:calc(800 * var(--p));top:calc(222 * var(--p))"><i class="strap"></i><i class="ptab"></i>
+    <div class="pcard" style="left:calc(800 * var(--p));top:calc(222 * var(--p))"><i class="strap"></i><i class="ptab"></i><svg class="lany" viewBox="0 0 120 140" aria-hidden="true"><defs><linearGradient id="lyS" x1="0" x2="1"><stop offset="0" stop-color="#1668AE"/><stop offset=".18" stop-color="#2F93DE"/><stop offset=".5" stop-color="#46A8EE"/><stop offset=".82" stop-color="#2F93DE"/><stop offset="1" stop-color="#1668AE"/></linearGradient><pattern id="lyW" width="4" height="4" patternUnits="userSpaceOnUse"><path d="M0 4L4 0M-1 1L1 -1M3 5L5 3" stroke="#0E4F8A" stroke-width=".9" opacity=".5"/><path d="M0 0L4 4" stroke="#8FD0FF" stroke-width=".5" opacity=".35"/></pattern><linearGradient id="lyM" x1="0" x2="1"><stop offset="0" stop-color="#8B949C"/><stop offset=".22" stop-color="#F7F9FA"/><stop offset=".5" stop-color="#B9C1C8"/><stop offset=".78" stop-color="#F2F5F7"/><stop offset="1" stop-color="#7C858D"/></linearGradient><linearGradient id="lyB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FDFEFE"/><stop offset=".45" stop-color="#C3CAD0"/><stop offset="1" stop-color="#8A939B"/></linearGradient></defs><rect x="24" y="110" width="72" height="30" rx="9" fill="#F6F0E6" stroke="rgba(0,0,0,.2)" stroke-width="1"/><rect x="39" y="119" width="42" height="13" rx="6" fill="#211C1C"/><rect x="26" y="0" width="68" height="42" fill="url(#lyS)"/><rect x="26" y="0" width="68" height="42" fill="url(#lyW)"/><rect x="26" y="26" width="68" height="16" fill="#0E4F8A" opacity=".28"/><path d="M30 28H90M30 39H90" stroke="#BFE3FF" stroke-width="1.2" stroke-dasharray="3 2.4" opacity=".85"/><path d="M28 42H92A27 27 0 0 1 65 70H55A27 27 0 0 1 28 42Z" fill="none" stroke="#3E464D" stroke-width="11" stroke-linejoin="round" opacity=".3" transform="translate(0 3)"/><path d="M28 42H92A27 27 0 0 1 65 70H55A27 27 0 0 1 28 42Z" fill="none" stroke="url(#lyM)" stroke-width="9" stroke-linejoin="round"/><rect x="26" y="33" width="68" height="13" fill="url(#lyS)"/><rect x="26" y="33" width="68" height="13" fill="url(#lyW)"/><rect x="49" y="70" width="22" height="12" rx="4" fill="url(#lyM)" stroke="#6F7880" stroke-width=".8"/><ellipse cx="60" cy="72" rx="9" ry="3" fill="#EEF1F3" opacity=".9"/><path d="M41 84Q41 80 45 80H75Q79 80 79 84V120Q79 128 71 128H49Q41 128 41 120Z" fill="url(#lyB)" stroke="#6F7880" stroke-width="1"/><path d="M46 85H60V123H50Q46 123 46 119Z" fill="#fff" opacity=".45"/><rect x="50" y="113" width="20" height="5" rx="2.5" fill="#7C858D" opacity=".55"/></svg>
     <div class="poster">
       <div class="pr"></div>
       <div class="plk"><img src="/assets/wendys-horiz.svg" alt="Wendy's"><i></i><img class="wfl" src="/assets/wendyfest-logo.svg" alt="Wendy Fest"></div>
@@ -622,6 +665,7 @@
     </div><img id="r-card" class="rcard" alt=""></div>
     <div class="rsave" style="left:calc(1340 * var(--p));top:calc(226 * var(--p))">Scan to<br>save</div>
     <div class="qrs" style="left:calc(1340 * var(--p));top:calc(376 * var(--p))"><img id="qr-roast" alt="QR"></div>
+    <div class="swatch" id="swatch" style="left:calc(1340 * var(--p));top:calc(772 * var(--p))"><span>Card colour</span><button data-c="paper" aria-label="Beige"></button><button data-c="blue" aria-label="Blue"></button><button data-c="dark" aria-label="Black"></button><button data-c="red" aria-label="Red"></button></div>
     <div class="qnote" style="left:calc(1340 * var(--p));top:calc(706 * var(--p));width:calc(480 * var(--p))">Download and share. Also sent to your phone by SMS.</div>
     <button class="nextb" style="left:calc(1340 * var(--p));top:calc(838 * var(--p));width:calc(487 * var(--p));height:calc(110 * var(--p))" onclick="goIdle()">Next guest<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg></button>
   </div></section>
@@ -636,7 +680,7 @@
 </div>
 
 <!-- sounds: effects and Wendy's pre-recorded waiting lines (made with ElevenLabs, in Wendy's voice) -->
-<audio id="sfx-tap" src="/assets/sfx/tap.mp3" preload="auto"></audio><audio id="sfx-key" src="/assets/sfx/key.mp3" preload="auto"></audio><audio id="sfx-delete" src="/assets/sfx/delete.mp3" preload="auto"></audio><audio id="sfx-go" src="/assets/sfx/go.mp3" preload="auto"></audio><audio id="sfx-error" src="/assets/sfx/error.mp3" preload="auto"></audio><audio id="sfx-whoosh" src="/assets/sfx/whoosh.mp3" preload="auto"></audio><audio id="sfx-beep" src="/assets/sfx/beep.mp3" preload="auto"></audio><audio id="sfx-shutter" src="/assets/sfx/shutter.mp3" preload="auto"></audio><audio id="sfx-sizzle" src="/assets/sfx/sizzle.mp3" preload="auto"></audio><audio id="sfx-reveal" src="/assets/sfx/reveal.mp3" preload="auto"></audio>
+<audio id="sfx-start" src="/assets/sfx/start.mp3" preload="auto"></audio><audio id="sfx-coin" src="/assets/sfx/coin.mp3" preload="auto"></audio><audio id="sfx-spray" src="/assets/sfx/spray.mp3" preload="auto"></audio><audio id="sfx-switch" src="/assets/sfx/switch.mp3" preload="auto"></audio><audio id="sfx-card" src="/assets/sfx/card.mp3" preload="auto"></audio><audio id="sfx-pop" src="/assets/sfx/pop.mp3" preload="auto"></audio><audio id="sfx-ding" src="/assets/sfx/ding.mp3" preload="auto"></audio><audio id="sfx-tap" src="/assets/sfx/tap.mp3" preload="auto"></audio><audio id="sfx-key" src="/assets/sfx/key.mp3" preload="auto"></audio><audio id="sfx-delete" src="/assets/sfx/delete.mp3" preload="auto"></audio><audio id="sfx-go" src="/assets/sfx/go.mp3" preload="auto"></audio><audio id="sfx-error" src="/assets/sfx/error.mp3" preload="auto"></audio><audio id="sfx-whoosh" src="/assets/sfx/whoosh.mp3" preload="auto"></audio><audio id="sfx-beep" src="/assets/sfx/beep.mp3" preload="auto"></audio><audio id="sfx-shutter" src="/assets/sfx/shutter.mp3" preload="auto"></audio><audio id="sfx-sizzle" src="/assets/sfx/sizzle.mp3" preload="auto"></audio><audio id="sfx-reveal" src="/assets/sfx/reveal.mp3" preload="auto"></audio>
 <audio id="vo-wait-1" src="/assets/voice/wait-1.mp3" preload="auto"></audio><audio id="vo-wait-2" src="/assets/voice/wait-2.mp3" preload="auto"></audio><audio id="vo-wait-3" src="/assets/voice/wait-3.mp3" preload="auto"></audio><audio id="vo-wait-4" src="/assets/voice/wait-4.mp3" preload="auto"></audio><audio id="vo-wait-5" src="/assets/voice/wait-5.mp3" preload="auto"></audio><audio id="vo-wait-6" src="/assets/voice/wait-6.mp3" preload="auto"></audio><audio id="vo-wait-7" src="/assets/voice/wait-7.mp3" preload="auto"></audio><audio id="vo-wait-8" src="/assets/voice/wait-8.mp3" preload="auto"></audio><audio id="vo-here" src="/assets/voice/here-it-comes.mp3" preload="auto"></audio>
 <script src="/js/i18n.js"></script><script src="/js/kiosk.js"></script><script src="/js/roast-card.js"></script>
 <script>
@@ -687,12 +731,22 @@
     R.voiced = true; stopVoice(); const a = voice = new Audio(R.audio);   // starts after the fanfare
     setTimeout(() => { if (voice === a) a.play().catch(() => {}); }, Math.max(0, (R.voiceAt || 0) - Date.now()));
   }
-  function goIdle() { stopVoice(); stopTalk(); sizzleOn(false); K.resetIdle(0); setHeat("medium"); guest = null; R = null; $("code").value = ""; paintCode(); $("code-msg").textContent = ""; K.show("s-idle"); }
+  // card colour picked with the circles; saved with the roast so the phone download matches
+  let cardTheme = "dark";
+  function setCardTheme(c, save) {
+    cardTheme = c; document.body.dataset.card = c; document.querySelectorAll("#swatch button").forEach((b) => b.classList.toggle("on", b.dataset.c === c));
+    if (!save || !R) return;
+    const on = document.querySelector(".rtabs button.on"); paintReveal(on ? on.dataset.l : glang); K.resetIdle(75000, goIdle);
+    fetch(`/api/roast/${R.token}/theme`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ theme: c }) }).catch(() => {});
+  }
+  document.querySelectorAll("#swatch button").forEach((b) => b.onclick = () => setCardTheme(b.dataset.c, true)); setCardTheme("dark");
+  function goIdle() { setCardTheme("dark"); stopVoice(); stopTalk(); sizzleOn(false); K.resetIdle(0); setHeat("medium"); guest = null; R = null; $("code").value = ""; paintCode(); $("code-msg").textContent = ""; K.show("s-idle"); }
   document.addEventListener("kiosk-home", goIdle);
   $("start").onclick = () => { K.show("s-code"); $("code").focus(); startCam(); };
   // code screen: slots mirror the (visually hidden) input; keys, Delete and Go drive it
   const CODE_KEYS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   function paintCode() {
+    { const full = $("code").value.length === 6; if (full && !paintCode.full) sfx("ding", .55); paintCode.full = full; }   // a ding when the last box is filled
     const v = $("code").value = [...$("code").value.toUpperCase()].filter((c) => CODE_KEYS.includes(c)).slice(0, 6).join("");
     $("slots").innerHTML = [0, 1, 2, 3, 4, 5].map((i) => v[i] ? `<b>${v[i]}</b>` : `<b class="e${i === v.length ? " a" : ""}"></b>`).join("");
     const left = 6 - v.length; $("code-n").textContent = left ? `${v.length} of 6` : "6 of 6 ✓";
@@ -737,7 +791,7 @@
     const image = capture(); $("snap").disabled = false;
     $("ck-photo").src = image; paintHeatCap(); setCook(2); K.show("s-cooking"); cookLines(); personalLines(image);
     try {
-      R = await K.api("/api/kiosk/roast", { code: guest.code, image, consent: true, heat });
+      R = await K.api("/api/kiosk/roast", { code: guest.code, image, consent: true, heat }); prepCard();
       setCook(3); await talkDone(1300); setCook(4);            // let Wendy finish the sentence she is on
       await hereItComes();             // "Here comes the roast", then a drum roll, so heads turn before it appears
       reveal();
@@ -746,7 +800,10 @@
   // ---------- sound ----------
   // Short effects on taps, keys, screen changes, the countdown and the photo. Each one is a small sound file.
   function sfx(name, vol = .5) { const a = $("sfx-" + name); if (!a) return; try { const c = a.cloneNode(); c.volume = vol; c.play().catch(() => {}); } catch {} }
-  document.addEventListener("pointerdown", (e) => { const b = e.target.closest && e.target.closest("button"); if (!b || b.disabled) return; sfx(b.closest("#kb") ? "key" : b.id === "code-del" ? "delete" : "tap", b.closest("#kb") ? .45 : .55); }, true);
+  document.addEventListener("pointerdown", (e) => { const b = e.target.closest && e.target.closest("button"); if (!b || b.disabled) return; 
+    // each kind of button has its own sound: keypad keys click, colour circles spray, language and heat choices flick, Back and No thanks blip down, Next guest drops a coin, the big action buttons power up
+    const kind = b.closest("#kb") ? "key" : b.id === "code-del" ? "delete" : b.closest("#swatch") ? "spray" : (b.closest(".rtabs, .lang-pick") || b.dataset.h) ? "switch" : b.classList.contains("nextb") ? "coin" : b.matches(".nope, .ghostb") ? "delete" : b.matches(".cta, .yes, .go, .snapb, .cbox") ? "start" : "tap";
+    sfx(kind, kind === "key" ? .45 : kind === "spray" ? .5 : .6); }, true);
   document.addEventListener("screen", (e) => { if (e.detail !== "s-pin" && e.detail !== "s-reveal") sfx("whoosh", .3); });
   const sizzle = $("sfx-sizzle"); sizzle.loop = true;
   function sizzleOn(on) { try { if (on) { sizzle.volume = .1; sizzle.currentTime = 0; sizzle.play().catch(() => {}); } else sizzle.pause(); } catch {} }
@@ -779,7 +836,7 @@
   async function hereItComes() {
     stopTalk(); sizzleOn(false);
     await new Promise((r) => { const a = $("vo-here"); $("cook-line").textContent = "Okay. Here comes the roast!"; const t = setTimeout(r, 3500); say(a, () => { clearTimeout(t); r(); }); });
-    sfx("reveal", .8); await wait(1050);
+    sfx("reveal", .8); await wait(1050); setTimeout(() => sfx("card", .6), 250);   // the card swings in on its lanyard
   }
   // Lines about this guest's own photo: they take over the bubble as soon as they arrive; if they never do, the general lines stay.
   function personalLines(image) {
@@ -792,7 +849,7 @@
   }
   function paintReveal(l) {
     document.querySelectorAll(".rtabs button").forEach((b) => b.classList.toggle("on", b.dataset.l === l));
-    $("r-title").textContent = R.title[l] || R.title.en; $("r-body").textContent = R.roast[l] || R.roast.en; $("r-title").lang = l; $("r-body").lang = l;
+    $("r-title").textContent = R.title[l] || R.title.en; $("r-body").innerHTML = boldKeywords(R.roast[l] || R.roast.en, roastKeys(R)); $("r-title").lang = l; $("r-body").lang = l;
     $("rp-punch").textContent = punchOf(R.roast[l] || R.roast.en); $("rp-punch").lang = l; fitReveal(); paintCard(l);
     if (l === "en") playVoice(); else if (voice) voice.pause();
   }
@@ -800,12 +857,18 @@
   // The share card, drawn with the guest cut out of their photo. Until it is ready (or if it fails) the simpler poster stays.
   let cardJob = 0;
   document.addEventListener("screen", (e) => { if (e.detail === "s-cam" && window.roastCard) roastCard.warm(); });   // get the cut-out engine ready while the guest poses
+  // The card is started as soon as the roast arrives (while Wendy announces it), so it is ready when the screen appears.
+  // Until it is ready a dark card waits in its place; the old poster only shows if the card cannot be drawn at all.
+  let cardPre = null;
+  function prepCard() { cardPre = null; if (!window.roastCard || !R) return; const who = R, lang = glang, theme = cardTheme; cardPre = { who, lang, theme, url: roastCard(who, lang, theme).then((c) => c.toDataURL("image/jpeg", .9)) }; cardPre.url.catch(() => {}); }
   function paintCard(l) {
-    const job = ++cardJob, who = R; if (!window.roastCard) return;
-    roastCard(R, l).then((c) => { if (job !== cardJob || who !== R) return; $("r-card").src = c.toDataURL("image/jpeg", .9); document.querySelector("#s-reveal .pcard").classList.add("has-card"); }).catch((e) => console.warn("roast card", e));
+    const job = ++cardJob, who = R, pc = document.querySelector("#s-reveal .pcard"); if (!window.roastCard) { pc.classList.add("no-card"); return; }
+    const pre = cardPre && cardPre.who === R && cardPre.lang === l && cardPre.theme === cardTheme ? cardPre.url : null;
+    (pre || roastCard(R, l, cardTheme).then((c) => c.toDataURL("image/jpeg", .9))).then((url) => { if (job !== cardJob || who !== R) return; $("r-card").src = url; pc.classList.remove("no-card"); pc.classList.add("has-card"); })
+      .catch((e) => { console.warn("roast card", e); if (job === cardJob && who === R && !pc.classList.contains("has-card")) pc.classList.add("no-card"); });
   }
   function reveal() {
-    stopTalk(); sizzleOn(false); R.voiceAt = Date.now() + 1500; document.querySelector("#s-reveal .pcard").classList.remove("has-card");
+    stopTalk(); sizzleOn(false); R.voiceAt = Date.now() + 1500; document.querySelector("#s-reveal .pcard").classList.remove("has-card", "no-card");
     K.show("s-reveal");
     $("r-photo").src = R.photo; $("rp-name").textContent = String(R.name || "").split(" ")[0].toUpperCase(); $("r-vibe").textContent = R.vibe || "Roasted";
     $("r-who").textContent = R.name; paintReveal(glang);
@@ -821,7 +884,7 @@
   function setHeat(h) { heat = h; document.querySelectorAll("#heat button").forEach((b) => b.classList.toggle("on", b.dataset.h === h)); }
   document.querySelectorAll("#heat button").forEach((b) => b.onclick = () => { setHeat(b.dataset.h); K.resetIdle(120000, goIdle); });
   // cooking tracker: n = step in progress (4 = all done)
-  function setCook(n) { const el = $("steps3"); el.dataset.n = n; [...el.querySelectorAll(".st")].forEach((st, i) => { st.classList.toggle("done", i + 1 < n); st.classList.toggle("on", i + 1 === n); }); }
+  function setCook(n) { const el = $("steps3"); if (n > 1 && +el.dataset.n !== n) sfx("ding", .4);   /* each step ticked gets a soft ding */ el.dataset.n = n; [...el.querySelectorAll(".st")].forEach((st, i) => { st.classList.toggle("done", i + 1 < n); st.classList.toggle("on", i + 1 === n); }); }
   // first sentence of the roast, for the poster
   function punchOf(txt) { const s1 = String(txt || "").split(/(?<=[.!?।])\s+/)[0] || ""; return s1.length <= 95 ? s1 : s1.slice(0, 92).replace(/\s+\S*$/, "") + "…"; }
   function fitReveal() {

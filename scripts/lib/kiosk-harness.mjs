@@ -18,7 +18,7 @@ export async function loadChromium() {
 
 export function buildDemo() { execFileSync("node", ["scripts/build-demo.mjs"], { cwd: ROOT, stdio: "ignore" }); }
 
-const TYPES = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".svg": "image/svg+xml", ".png": "image/png", ".txt": "text/plain", ".json": "application/json" };
+const TYPES = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".svg": "image/svg+xml", ".png": "image/png", ".webp": "image/webp", ".mp3": "audio/mpeg", ".txt": "text/plain", ".json": "application/json" };
 // Serves demo/ under /wendyfest/, the same path GitHub Pages uses.
 export function serveDemo() {
   return new Promise((resolve) => {

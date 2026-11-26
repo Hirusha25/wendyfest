@@ -17,6 +17,20 @@ const SFX = {
   win: ["short triumphant winning fanfare, bright brass with sparkling chimes, game show jackpot", 2.5],
   lose: ["playful sad trombone, three descending wah notes, short and comedic", 1.8],
   reveal: ["short snare drum roll building for one second, then a bright ta-da brass fanfare hit with a cymbal crash, game show reveal", 3],
+  // sounds that say what the button or the moment is (owner: "relevant sounds, not the common ones")
+  start: ["arcade game start button, punchy power-up with a quick rising zap and a bright ping", 1],       // the big Start / Let's go / Yes buttons
+  coin: ["single arcade coin dropping into a slot with a bright ding, next player", 0.8],                  // Next player / Next guest
+  pop: ["single cartoon bubble pop, bright and round", 0.5],                                               // things popping onto the screen
+  stamp: ["heavy rubber stamp slamming onto a desk, one deep punchy thud with a short paper slap", 0.7],   // the prize ribbon slamming in
+  party: ["party popper bang with confetti burst, followed by a small crowd cheering and whistling briefly", 2.2],   // confetti burst on a win
+  ticket: ["ticket machine printing and feeding out a paper ticket, short mechanical whirr then a paper tear", 1.2], // the coupon sliding in
+  spray: ["short spray paint can burst, one quick psst", 0.5],                                              // picking a card colour
+  switch: ["small plastic toggle switch flicked once, soft click", 0.5],                                    // language and option tabs
+  ding: ["single bright bell ding, clean and short, correct answer", 0.6],                                   // the code is complete; a cooking step is ticked
+  mic: ["finger tapping a live microphone twice, soft thump thump through a speaker", 0.7],              // the mic check hears the guest
+  rise: ["quick rising slide whistle sweep, playful cartoon, going up", 0.9],                             // the score bars fill up
+  aww: ["small friendly crowd saying aww in sympathy, short, warm, not mocking", 1.6],                    // a near miss
+  card: ["plastic ID card on a lanyard swinging in, quick flap of plastic and a small metal clip clink", 0.9],       // the roast card swinging in
 };
 const WAIT = [
   ["[amused] Okay. Let me have a good look at you.", "Okay. Let me have a good look at you."],

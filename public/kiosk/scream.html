@@ -147,7 +147,95 @@ br.up, .up-only, .up-in { display:none; }
 #live-burst { left:calc(818 * var(--u)); top:calc(236 * var(--u)); width:calc(66 * var(--u)); height:calc(66 * var(--u)); transform-origin:0 100%; transition:scale .18s cubic-bezier(.3,1.6,.6,1), opacity .18s; }
 #live-burst.off { scale:.4; opacity:0; }
 #trans { display:none; }
+/* countdown title: a small white "Get ready to" over a big "Scream." in the cover-page lettering (owner) */
+#go-count .t .gr { font-size:.42em; color:#fff; letter-spacing:.01em; text-shadow:0 calc(3 * var(--u)) 0 rgba(0,50,90,.45); }
 /* result */
+/* upright winner's screen (owner's pick, Nov 2026): sassy one-line title, score badge, the meal in a medallion, the prize on a
+   ribbon, and one beige coupon with the code and the QR. Shown only when the guest wins a coupon; sizes are upright-canvas units. */
+#win-new { position:absolute; inset:0; font-family:Poppins, sans-serif; }
+#win-new > * { position:absolute; box-sizing:border-box; }
+#win-new .row { left:0; width:calc(1080 * var(--u)); display:flex; justify-content:center; }
+#wn-title { display:inline-block; white-space:nowrap; font:italic 900 calc(56 * var(--u))/1 Poppins, sans-serif; text-transform:uppercase; color:#F6F0E6; text-shadow:calc(1 * var(--u)) calc(1 * var(--u)) 0 #B01820, calc(2 * var(--u)) calc(2 * var(--u)) 0 #B01820, calc(3 * var(--u)) calc(3 * var(--u)) 0 #B01820, calc(4 * var(--u)) calc(4 * var(--u)) 0 #B01820, calc(5 * var(--u)) calc(5 * var(--u)) 0 #B01820, calc(6 * var(--u)) calc(6 * var(--u)) 0 #B01820, calc(10 * var(--u)) calc(16 * var(--u)) calc(20 * var(--u)) rgba(0,30,60,.4); }
+#wn-title b { color:#FFE08A; font-weight:900; }
+#win-new .sc { left:calc(748 * var(--u)); top:calc(132 * var(--u)); width:calc(230 * var(--u)); height:calc(230 * var(--u)); z-index:3; border-radius:50%; rotate:8deg; background:radial-gradient(circle at 40% 30%, #FFFDF8, #EFE4D0); border:calc(7 * var(--u)) solid #D8232D; display:grid; align-content:center; justify-items:center; gap:calc(4 * var(--u)); box-shadow:0 0 0 calc(8 * var(--u)) #F6F0E6, 0 calc(10 * var(--u)) 0 calc(8 * var(--u)) #8E1219, 0 calc(26 * var(--u)) calc(30 * var(--u)) rgba(0,30,60,.4); }
+#win-new .sc small { font:italic 800 calc(21 * var(--u))/1 Poppins, sans-serif; letter-spacing:.16em; text-transform:uppercase; color:#0A6FA6; }
+#win-new .sc b { font:italic 900 calc(92 * var(--u))/1 Poppins, sans-serif; letter-spacing:0; color:#D8232D; text-shadow:0 calc(5 * var(--u)) 0 #8E1219; }
+#win-new .glow { left:calc(90 * var(--u)); top:calc(70 * var(--u)); width:calc(900 * var(--u)); height:calc(900 * var(--u)); border-radius:50%; background:radial-gradient(circle, rgba(255,255,255,.5), rgba(255,255,255,.12) 45%, transparent 68%); }
+#win-new .md { left:calc(190 * var(--u)); top:calc(156 * var(--u)); width:calc(700 * var(--u)); height:calc(700 * var(--u)); border-radius:50%; background:radial-gradient(circle at 50% 38%, #12507A, #072A44 70%); border:calc(9 * var(--u)) solid #F6F0E6; box-shadow:0 0 0 calc(16 * var(--u)) #D8232D, 0 0 0 calc(22 * var(--u)) #F6F0E6, 0 calc(34 * var(--u)) calc(50 * var(--u)) rgba(0,20,40,.5); }
+#win-new .md i { position:absolute; inset:calc(24 * var(--u)); border-radius:50%; border:calc(4 * var(--u)) dotted rgba(246,240,230,.6); }
+#win-new .meal { left:calc(130 * var(--u)); top:calc(224 * var(--u)); width:calc(820 * var(--u)); }
+#win-new .meal img { display:block; width:100%; filter:drop-shadow(0 calc(30 * var(--u)) calc(24 * var(--u)) rgba(0,20,40,.45)); }
+#win-new .rbw { top:calc(742 * var(--u)); perspective:calc(1400 * var(--u)); }
+#wn-big { position:relative; overflow:hidden; height:calc(150 * var(--u)); padding:0 calc(64 * var(--u)); display:grid; place-items:center; white-space:nowrap; background:linear-gradient(180deg, #EA3640, #B01A22); border:calc(5 * var(--u)) solid #F6F0E6; border-radius:calc(26 * var(--u)); box-shadow:0 calc(10 * var(--u)) 0 #7E0F16, 0 calc(24 * var(--u)) calc(30 * var(--u)) rgba(0,20,40,.4); font:italic 900 calc(104 * var(--u))/1 Poppins, sans-serif; color:#F6F0E6; text-shadow:0 calc(5 * var(--u)) 0 #7E0F16; }
+#wn-big::after { content:""; position:absolute; top:0; bottom:0; left:-40%; width:34%; background:linear-gradient(100deg, transparent, rgba(255,255,255,.5), transparent); }
+#wn-line { top:calc(982 * var(--u)); left:0; width:calc(1080 * var(--u)); text-align:center; font:italic 800 calc(40 * var(--u))/1 Poppins, sans-serif; letter-spacing:.04em; text-transform:uppercase; color:#fff; }
+/* the coupon: a beige ticket with blue and white cup stripes down the left edge, a red stub with the QR, and a thick edge for depth */
+#win-new .cpp { left:calc(70 * var(--u)); top:calc(1072 * var(--u)); width:calc(940 * var(--u)); height:calc(392 * var(--u)); perspective:calc(1600 * var(--u)); }
+#win-new .cpw { position:absolute; inset:0; filter:drop-shadow(0 calc(4 * var(--u)) 0 #D9CDB6) drop-shadow(0 calc(8 * var(--u)) 0 #B5A88F) drop-shadow(0 calc(26 * var(--u)) calc(22 * var(--u)) rgba(0,20,40,.45)); }
+#win-new .cp { position:absolute; inset:0; overflow:hidden; border-radius:calc(36 * var(--u)); display:grid; grid-template-columns:calc(46 * var(--u)) 1fr calc(300 * var(--u)); align-items:center; background:linear-gradient(170deg, #FBF5EA, #EADFCB); color:#1F1A1A; -webkit-mask:radial-gradient(circle calc(26 * var(--u)) at calc(100% - calc(300 * var(--u))) 0, #0000 97%, #000) top / 100% 51% no-repeat, radial-gradient(circle calc(26 * var(--u)) at calc(100% - calc(300 * var(--u))) 100%, #0000 97%, #000) bottom / 100% 51% no-repeat; mask:radial-gradient(circle calc(26 * var(--u)) at calc(100% - calc(300 * var(--u))) 0, #0000 97%, #000) top / 100% 51% no-repeat, radial-gradient(circle calc(26 * var(--u)) at calc(100% - calc(300 * var(--u))) 100%, #0000 97%, #000) bottom / 100% 51% no-repeat; }
+#win-new .cp .st { height:100%; background:repeating-linear-gradient(180deg, #1E9BE0 0 calc(22 * var(--u)), #fff calc(22 * var(--u)) calc(44 * var(--u))); }
+#win-new .cp .l { position:relative; height:100%; min-width:0; padding:calc(18 * var(--u)) calc(26 * var(--u)) calc(18 * var(--u)) calc(28 * var(--u)); display:grid; grid-template-rows:auto auto 1fr auto; justify-items:stretch; }
+#win-new .cp .l::before { content:""; position:absolute; inset:0; background:radial-gradient(circle, rgba(30,155,224,.55) calc(3.6 * var(--u)), transparent calc(4.2 * var(--u))) 0 0 / calc(22 * var(--u)) calc(22 * var(--u)); -webkit-mask:radial-gradient(ellipse 46% 70% at 100% 0, #000 0, rgba(0,0,0,.4) 50%, transparent 100%); mask:radial-gradient(ellipse 46% 70% at 100% 0, #000 0, rgba(0,0,0,.4) 50%, transparent 100%); }
+#win-new .cp .l > * { position:relative; }
+#win-new .cp .hd { display:flex; align-items:center; gap:calc(14 * var(--u)); font:italic 800 calc(23 * var(--u))/1 Poppins, sans-serif; letter-spacing:.2em; text-transform:uppercase; color:#0A6FA6; }
+#win-new .cp .hd img { width:calc(42 * var(--u)); height:calc(42 * var(--u)); border-radius:50%; background:#fff; box-shadow:0 0 0 calc(4 * var(--u)) #D8232D; }
+#win-new .cp .pz { margin-top:calc(10 * var(--u)); display:grid; justify-items:center; gap:calc(18 * var(--u)); text-align:center; font:italic 800 calc(25 * var(--u))/1 Poppins, sans-serif; letter-spacing:.06em; text-transform:uppercase; color:#0A6FA6; }
+#wn-line2 { display:inline-block; white-space:nowrap; }
+#wn-chip { padding:calc(10 * var(--u)) calc(30 * var(--u)); border-radius:999px; background:linear-gradient(180deg, #1E9BE0, #0A6FA6); color:#fff; font:italic 900 calc(34 * var(--u))/1 Poppins, sans-serif; letter-spacing:.02em; white-space:nowrap; box-shadow:0 calc(5 * var(--u)) 0 #064A70; }
+#win-new .cp .cdw { align-self:center; width:100%; height:calc(116 * var(--u)); display:grid; align-content:center; justify-items:center; gap:calc(8 * var(--u)); border-radius:calc(20 * var(--u)); background:linear-gradient(180deg, #EA3640, #B01A22); box-shadow:0 calc(6 * var(--u)) 0 #7E0F16, inset 0 0 0 calc(3 * var(--u)) rgba(246,240,230,.9); }
+#win-new .cp .cdw small { font:italic 800 calc(19 * var(--u))/1 Poppins, sans-serif; letter-spacing:.24em; text-transform:uppercase; color:#FFE08A; }
+#wn-code { display:inline-block; white-space:nowrap; font:italic 900 calc(64 * var(--u))/1 Poppins, sans-serif; color:#fff; text-shadow:0 calc(4 * var(--u)) 0 #7E0F16; }
+#win-new .cp .sm { margin-top:calc(14 * var(--u)); display:flex; align-items:center; gap:calc(12 * var(--u)); font:500 calc(22 * var(--u))/1 Poppins, sans-serif; color:#6B6060; }
+#win-new .cp .sm::before { content:""; width:calc(14 * var(--u)); height:calc(14 * var(--u)); border-radius:50%; background:#1E9BE0; }
+#win-new .cp .r { height:100%; display:grid; align-content:center; justify-items:center; gap:calc(16 * var(--u)); background:linear-gradient(170deg, #E5303A, #A9161F); border-left:calc(4 * var(--u)) dashed rgba(246,240,230,.75); }
+#win-new .cp .r img { width:calc(206 * var(--u)); height:calc(206 * var(--u)); border-radius:calc(18 * var(--u)); background:#fff; padding:calc(12 * var(--u)); box-sizing:border-box; }
+#win-new .cp .r em { font:italic 800 calc(22 * var(--u))/1 Poppins, sans-serif; letter-spacing:.12em; text-transform:uppercase; color:#F6F0E6; }
+#win-new .cp::after { content:""; position:absolute; top:0; bottom:0; left:-30%; width:22%; background:linear-gradient(100deg, transparent, rgba(255,255,255,.55), transparent); }
+/* WIN-WIDE-START */
+/* Landscape (the LED screen run from a laptop): the same winner's screen, laid out wide. The meal and prize sit on the left, the coupon on
+   the right. The pieces keep their upright sizes and the whole group is zoomed down to fit the 1440 x 760 canvas. */
+@media (orientation: landscape) {
+  #s-result .box.wonc > #res-title, #s-result .box.wonc > #res-score, #s-result .box.wonc > #res-eyebrow, #s-result .box.wonc > .spark, #s-result .box.wonc > .vdiv, #s-result .box.wonc > #res-coupon, #s-result .box.wonc > #res-detail, #s-result .box.wonc > .qrcard { display:none !important; }
+  #s-result .box.wonc #win-new { display:block !important; zoom:0.56; right:auto !important; bottom:auto !important; width:calc(2571 * var(--u)); height:calc(927 * var(--u)); }
+  #win-new .row { left:calc(1090 * var(--u)) !important; width:calc(1316 * var(--u)) !important; top:calc(36 * var(--u)) !important; justify-content:flex-start !important; }   /* the title starts where the coupon starts */
+  #wn-title { font-size:calc(84 * var(--u)); }
+  #win-new .glow { left:calc(40 * var(--u)) !important; top:calc(60 * var(--u)) !important; }
+  #win-new .md { left:calc(150 * var(--u)) !important; top:calc(150 * var(--u)) !important; width:calc(640 * var(--u)) !important; height:calc(640 * var(--u)) !important; }
+  #win-new .meal { left:calc(95 * var(--u)) !important; top:calc(214 * var(--u)) !important; width:calc(750 * var(--u)) !important; }
+  #win-new .sc { left:calc(650 * var(--u)) !important; top:calc(128 * var(--u)) !important; }
+  #win-new .rbw { left:0 !important; width:calc(940 * var(--u)) !important; top:calc(650 * var(--u)) !important; justify-content:center !important; }
+  #wn-line { left:0 !important; width:calc(940 * var(--u)) !important; top:calc(874 * var(--u)) !important; }
+  #win-new .cpp { left:calc(1090 * var(--u)) !important; top:calc(172 * var(--u)) !important; width:calc(1316 * var(--u)) !important; height:calc(549 * var(--u)) !important; }
+  #win-new .cpw { zoom:1.4; }
+  #s-result .box.wonc .btn { left:calc(610 * var(--u)) !important; top:calc(436 * var(--u)) !important; width:calc(737 * var(--u)) !important; height:calc(84 * var(--u)) !important; }   /* under the coupon, same width */
+}
+/* WIN-WIDE-END */
+/* motion: everything pops in, then keeps moving a little (transform and opacity only, so the Android box keeps up) */
+#win-new.go #wn-title { animation:wnDrop .5s .05s cubic-bezier(.3,1.5,.6,1) both; }
+#win-new.go .sc { animation:wnPop .5s .25s cubic-bezier(.3,1.7,.6,1) both, wnBeat 1.6s 1s ease-in-out infinite; }
+#win-new.go .glow { animation:wnGlow 2.6s ease-in-out infinite alternate; }
+#win-new.go .md { animation:wnPop .6s .35s cubic-bezier(.3,1.5,.6,1) both; }
+#win-new.go .md i { animation:wnSpin 26s linear infinite; }
+#win-new.go .meal { animation:wnMealIn .7s .55s cubic-bezier(.3,1.5,.6,1) both, wnFloat 3.2s 1.3s ease-in-out infinite alternate; }
+#win-new.go #wn-big { animation:wnSlam .55s 1s cubic-bezier(.3,1.6,.6,1) both, wnBob 2.6s 1.6s ease-in-out infinite; }
+#win-new.go #wn-big::after { animation:wnSheen 3.2s 1.8s ease-in-out infinite; }
+#win-new.go #wn-line { animation:wnRise .45s 1.25s ease-out both; }
+#win-new.go .cpp { animation:wnRise .6s 1.4s cubic-bezier(.3,1.3,.6,1) both; }
+#win-new.go .cpw { animation:wnTilt 5.2s 2s ease-in-out infinite alternate; }
+#win-new.go .cp::after { animation:wnSheen 4.4s 2.6s ease-in-out infinite; }
+@keyframes wnDrop { from { opacity:0; translate:0 calc(-60 * var(--u)); } to { opacity:1; translate:0 0; } }
+@keyframes wnPop { from { opacity:0; scale:.4; } to { opacity:1; scale:1; } }
+@keyframes wnBeat { 0%, 100% { scale:1; } 50% { scale:1.06; } }
+@keyframes wnGlow { from { opacity:.55; scale:.94; } to { opacity:1; scale:1.05; } }
+@keyframes wnSpin { to { rotate:360deg; } }
+@keyframes wnMealIn { from { opacity:0; translate:0 calc(-120 * var(--u)); scale:.7; } to { opacity:1; translate:0 0; scale:1; } }
+@keyframes wnFloat { from { translate:0 calc(-10 * var(--u)); rotate:-1.2deg; } to { translate:0 calc(12 * var(--u)); rotate:1.2deg; } }
+@keyframes wnSlam { from { opacity:0; scale:2.4; rotate:-14deg; } to { opacity:1; scale:1; rotate:-3deg; } }
+@keyframes wnBob { 0%, 100% { transform:translateY(0) rotateX(0) rotateY(0) rotate(-3deg) scale(1); } 22% { transform:translateY(calc(-10 * var(--u))) rotateX(10deg) rotateY(-9deg) rotate(-3deg) scale(1.03); } 46% { transform:translateY(calc(6 * var(--u))) rotateX(-8deg) rotateY(9deg) rotate(-3deg) scale(1); } 58% { transform:rotate(-3deg) scale(1.08); } 63% { transform:translateX(calc(-14 * var(--u))) rotate(-9deg) scale(1.08); } 68% { transform:translateX(calc(14 * var(--u))) rotate(3deg) scale(1.08); } 73% { transform:translateX(calc(-12 * var(--u))) rotate(-8deg) scale(1.08); } 78% { transform:translateX(calc(12 * var(--u))) rotate(2deg) scale(1.08); } 83% { transform:translateX(calc(-7 * var(--u))) rotate(-6deg) scale(1.05); } 88% { transform:translateX(calc(5 * var(--u))) rotate(-1deg) scale(1.03); } 93% { transform:rotate(-3deg) scale(1); } }
+@keyframes wnSheen { 0% { translate:0 0; } 45%, 100% { translate:700% 0; } }
+@keyframes wnRise { from { opacity:0; translate:0 calc(90 * var(--u)); } to { opacity:1; translate:0 0; } }
+@keyframes wnTilt { from { transform:rotateY(-7deg) rotateX(4deg); } to { transform:rotateY(7deg) rotateX(-2deg); } }
+@media (prefers-reduced-motion: reduce) { #win-new.go * { animation:none !important; } #wn-big { rotate:-3deg; } }
 #s-result .box { height:calc(519 * var(--u)); }
 #res-title { left:calc(62 * var(--u)); top:calc(37 * var(--u)); width:calc(462 * var(--u)); font-size:calc(71 * var(--u)); line-height:.95; }
 #res-score { left:calc(30 * var(--u)); width:calc(460 * var(--u)); top:calc(192 * var(--u)); text-align:center; font:italic 900 calc(266 * var(--u))/1 Poppins, sans-serif; color:var(--red); text-shadow:0 calc(6 * var(--u)) 0 #8E1219; }
@@ -306,16 +394,19 @@ body { color:#fff; }
 /* result breakdown: punchy line + loudness / clarity meters */
 #res-detail { top:calc(120 * var(--u)) !important; width:calc(520 * var(--u)) !important; display:grid; gap:calc(34 * var(--u)); }
 #res-detail .quip { font:italic 800 calc(28 * var(--u))/1.3 Poppins, sans-serif; color:#fff; text-transform:none; text-shadow:none; margin-bottom:calc(14 * var(--u)); }
-#res-detail .stats { display:grid; gap:calc(14 * var(--u)); padding:calc(20 * var(--u)) calc(24 * var(--u)); border-radius:calc(18 * var(--u)); background:rgba(0,50,85,.28); box-shadow:inset 0 0 0 calc(2 * var(--u)) rgba(255,255,255,.12); }
+#res-detail .stats { display:grid; gap:calc(14 * var(--u)); padding:calc(20 * var(--u)) calc(24 * var(--u)); border-radius:calc(18 * var(--u)); background:linear-gradient(160deg, rgba(255,255,255,.24), rgba(255,255,255,.08)); box-shadow:inset 0 0 0 calc(2.5 * var(--u)) rgba(255,255,255,.7), 0 calc(14 * var(--u)) calc(26 * var(--u)) rgba(0,30,60,.22); }   /* see-through glass with colour: red for loudness, yellow for clarity (owner) */
 #res-detail .st { display:grid; grid-template-columns:calc(150 * var(--u)) 1fr calc(64 * var(--u)); align-items:center; gap:calc(16 * var(--u)); }
-#res-detail .st small { font:italic 800 calc(18 * var(--u))/1 Poppins, sans-serif; letter-spacing:.18em; text-transform:uppercase; color:#CDEBF7; }
+#res-detail .st small { font:italic 800 calc(18 * var(--u))/1 Poppins, sans-serif; letter-spacing:.18em; text-transform:uppercase; color:#fff; }
 #res-detail .st i { position:relative; height:calc(14 * var(--u)); border-radius:999px; background:rgba(0,40,70,.45); overflow:hidden; }
-#res-detail .st i em { position:absolute; left:0; top:0; bottom:0; border-radius:999px; background:linear-gradient(90deg, #F6F0E6, #fff); transition:width .9s cubic-bezier(.2,.9,.3,1); }
+#res-detail .st i em { position:absolute; left:0; top:0; bottom:0; border-radius:999px; background:linear-gradient(90deg, #FF6A72, #D8232D); transition:width .9s cubic-bezier(.2,.9,.3,1); }
+#res-detail .st + .st i em { background:linear-gradient(90deg, #FFE9A8, #F6B93B); }
+#res-detail .st i { box-shadow:inset 0 0 0 calc(1.5 * var(--u)) rgba(255,255,255,.35); }
 #res-detail .st.low i em { background:linear-gradient(90deg, #E0303A, #FF5A62); }
 #res-detail .st b { font:italic 900 calc(34 * var(--u))/1 Poppins, sans-serif; color:#F6F0E6; text-align:right; text-shadow:0 calc(3 * var(--u)) 0 #A5171F; }
 #res-detail .wl { font:italic 800 calc(17 * var(--u))/1 Poppins, sans-serif; letter-spacing:.16em; text-transform:uppercase; color:#CDEBF7; display:flex; justify-content:space-between; }
 #res-detail .wl b { color:#fff; }
-#res-detail .wl { font-size:calc(15 * var(--u)); letter-spacing:.12em; white-space:nowrap; }
+#res-detail .wl { font-size:calc(15 * var(--u)); letter-spacing:.12em; white-space:nowrap; justify-content:center; padding:calc(9 * var(--u)) calc(14 * var(--u)); border-radius:999px; background:#F6F0E6; color:#0A6FA6; }
+#res-detail .wl b { color:#D8232D; }
 /* long lines (the wrong-restaurant comeback): tighter, so the stats stay clear of the Next player button */
 #res-detail.sassy { top:calc(104 * var(--u)) !important; gap:calc(14 * var(--u)); } #res-detail.sassy .quip { font-size:calc(23 * var(--u)); margin-bottom:0; }
 
@@ -434,48 +525,56 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   .up-in { display:inline !important; }
   .wide-in { display:none !important; }
   #go-count { height:calc(1660 * var(--u)) !important; }
-  #go-count .t { left:0 !important; top:calc(30 * var(--u)) !important; width:calc(1080 * var(--u)) !important; text-align:center !important; line-height:.92 !important; }
+  #go-count .t { left:0 !important; top:calc(40 * var(--u)) !important; width:calc(1080 * var(--u)) !important; text-align:center !important; line-height:.86 !important; }
   #go-count .rule { display:none !important; }
-  .dots { left:0 !important; width:calc(1080 * var(--u)) !important; text-align:center !important; top:calc(548 * var(--u)) !important; font-size:calc(54 * var(--u)) !important; }
-  #ring-count { left:calc(90 * var(--u)) !important; top:calc(570 * var(--u)) !important; width:calc(900 * var(--u)) !important; height:calc(900 * var(--u)) !important; }
-  #cnt { left:0 !important; width:calc(1080 * var(--u)) !important; top:calc(770 * var(--u)) !important; font-size:calc(480 * var(--u)) !important; }
-  #cd-burst { left:calc(800 * var(--u)) !important; top:calc(760 * var(--u)) !important; width:calc(120 * var(--u)) !important; height:calc(120 * var(--u)) !important; }
-  #cd-ribbon { left:calc(110 * var(--u)) !important; top:calc(404 * var(--u)) !important; width:calc(860 * var(--u)) !important; height:calc(108 * var(--u)) !important; line-height:calc(102 * var(--u)) !important; font-size:calc(50 * var(--u)) !important; }
-  #cd-shout { left:calc(50 * var(--u)) !important; top:calc(1456 * var(--u)) !important; width:calc(980 * var(--u)) !important; height:calc(200 * var(--u)) !important; padding:calc(26 * var(--u)) 0 0 !important; border-radius:calc(28 * var(--u)) !important; }
+  .dots { left:0 !important; width:calc(1080 * var(--u)) !important; text-align:center !important; top:calc(612 * var(--u)) !important; font-size:calc(54 * var(--u)) !important; }
+  #ring-count { left:calc(90 * var(--u)) !important; top:calc(676 * var(--u)) !important; width:calc(900 * var(--u)) !important; height:calc(900 * var(--u)) !important; }
+  #cnt { left:0 !important; width:calc(1080 * var(--u)) !important; top:calc(876 * var(--u)) !important; font-size:calc(480 * var(--u)) !important; }
+  #cd-burst { left:calc(800 * var(--u)) !important; top:calc(866 * var(--u)) !important; width:calc(120 * var(--u)) !important; height:calc(120 * var(--u)) !important; }
+  #cd-ribbon { left:calc(110 * var(--u)) !important; top:calc(468 * var(--u)) !important; width:calc(860 * var(--u)) !important; height:calc(108 * var(--u)) !important; line-height:calc(102 * var(--u)) !important; font-size:calc(50 * var(--u)) !important; background:linear-gradient(180deg, #F0434C 0%, #D8232D 50%, #A9161F 100%) !important; box-shadow:0 calc(10 * var(--u)) 0 #7E0F16, 0 calc(22 * var(--u)) calc(30 * var(--u)) rgba(0,30,60,.3) !important; }
+  #cd-shout { display:none !important; }
   #cd-shout small { font-size:calc(28 * var(--u)) !important; }
   #cd-shout b { display:block !important; margin-top:calc(18 * var(--u)) !important; font-size:calc(98 * var(--u)) !important; }
   #go-meter { height:calc(1660 * var(--u)) !important; }
   #live-cv { width:calc(1080 * var(--u)) !important; height:calc(1660 * var(--u)) !important; }
-  #go-meter .crow { top:calc(98 * var(--u)) !important; line-height:.9 !important; }
-  #listen-wendy { left:calc(40 * var(--u)) !important; top:calc(256 * var(--u)) !important; width:calc(112 * var(--u)) !important; }
-  #go-meter .pillx#listen-pill { left:calc(168 * var(--u)) !important; top:calc(276 * var(--u)) !important; height:calc(72 * var(--u)) !important; padding:0 calc(30 * var(--u)) !important; font-size:calc(27 * var(--u)) !important; }
-  #target { left:calc(800 * var(--u)) !important; top:calc(276 * var(--u)) !important; height:calc(72 * var(--u)) !important; padding:0 calc(28 * var(--u)) !important; font-size:calc(27 * var(--u)) !important; }
+  #go-meter .crow { top:calc(128 * var(--u)) !important; line-height:.9 !important; }
+  #listen-wendy { left:calc(40 * var(--u)) !important; top:calc(266 * var(--u)) !important; width:calc(96 * var(--u)) !important; }
+  #go-meter .pillx#listen-pill { left:calc(150 * var(--u)) !important; top:calc(278 * var(--u)) !important; height:calc(62 * var(--u)) !important; padding:0 calc(28 * var(--u)) !important; font-size:calc(24 * var(--u)) !important; }
+  #target { left:calc(812 * var(--u)) !important; top:calc(278 * var(--u)) !important; height:calc(62 * var(--u)) !important; padding:0 calc(26 * var(--u)) !important; font-size:calc(25 * var(--u)) !important; }
   #target b { font-size:calc(40 * var(--u)) !important; }
   #gauge-num { left:calc(290 * var(--u)) !important; width:calc(500 * var(--u)) !important; top:calc(582 * var(--u)) !important; font-size:calc(230 * var(--u)) !important; }
   #go-meter .lbl { left:calc(340 * var(--u)) !important; width:calc(400 * var(--u)) !important; top:calc(826 * var(--u)) !important; font-size:calc(27 * var(--u)) !important; }
   #live-burst { left:calc(735 * var(--u)) !important; top:calc(548 * var(--u)) !important; width:calc(90 * var(--u)) !important; height:calc(90 * var(--u)) !important; }
-  #go-meter .heard { left:calc(40 * var(--u)) !important; top:calc(1404 * var(--u)) !important; width:calc(490 * var(--u)) !important; height:calc(176 * var(--u)) !important; box-sizing:border-box !important; padding:calc(30 * var(--u)) calc(32 * var(--u)) 0 !important; background:rgba(0,50,80,.3) !important; border:calc(2 * var(--u)) solid rgba(255,255,255,.16) !important; border-radius:calc(26 * var(--u)) !important; }
-  #go-meter .heard small { font-size:calc(25 * var(--u)) !important; }
-  #go-meter .heard b { font-size:calc(50 * var(--u)) !important; max-width:calc(430 * var(--u)) !important; }
-  #go-meter .tleft { left:calc(550 * var(--u)) !important; top:calc(1404 * var(--u)) !important; width:calc(490 * var(--u)) !important; height:calc(176 * var(--u)) !important; box-sizing:border-box !important; padding:calc(26 * var(--u)) calc(32 * var(--u)) 0 !important; gap:calc(16 * var(--u)) !important; background:rgba(0,50,80,.3) !important; border:calc(2 * var(--u)) solid rgba(255,255,255,.16) !important; border-radius:calc(26 * var(--u)) !important; align-items:stretch !important; }
-  #go-meter .tleft .v b { font-size:calc(76 * var(--u)) !important; }
-  #go-meter .tleft .v small { font-size:calc(26 * var(--u)) !important; }
-  #go-meter .tbar { width:auto !important; height:calc(14 * var(--u)) !important; }
-  #beats { left:0 !important; top:0 !important; width:calc(1080 * var(--u)) !important; gap:calc(18 * var(--u)) !important; }
+  #go-meter .heard { left:calc(40 * var(--u)) !important; top:calc(1388 * var(--u)) !important; width:calc(560 * var(--u)) !important; height:calc(130 * var(--u)) !important; box-sizing:border-box !important; padding:0 calc(40 * var(--u)) 0 calc(60 * var(--u)) !important; display:flex !important; align-items:center !important; gap:calc(24 * var(--u)) !important; border:0 !important; border-radius:0 !important; background:linear-gradient(180deg, #23B4F0 0%, #0A7FBC 86%, #064A70 86%) !important; clip-path:polygon(4% 0, 100% 0, 96% 100%, 0 100%) !important; }
+  #go-meter .heard small { font-size:calc(24 * var(--u)) !important; color:#FFE08A !important; white-space:nowrap !important; }
+  #go-meter .heard b { font-size:calc(44 * var(--u)) !important; max-width:calc(330 * var(--u)) !important; color:#fff !important; }
+  #go-meter .tleft { left:calc(580 * var(--u)) !important; top:calc(1388 * var(--u)) !important; width:calc(460 * var(--u)) !important; height:calc(130 * var(--u)) !important; box-sizing:border-box !important; padding:calc(14 * var(--u)) calc(50 * var(--u)) 0 calc(60 * var(--u)) !important; gap:calc(8 * var(--u)) !important; border:0 !important; border-radius:0 !important; background:linear-gradient(180deg, #F0434C 0%, #B81B24 86%, #7E0F16 86%) !important; clip-path:polygon(5% 0, 100% 0, 95% 100%, 0 100%) !important; align-items:stretch !important; }
+  #go-meter .tleft .v b { font-size:calc(66 * var(--u)) !important; color:#F6F0E6 !important; text-shadow:0 calc(4 * var(--u)) 0 #7E0F16 !important; }
+  #go-meter .tleft .v small { font-size:calc(24 * var(--u)) !important; color:#FFE08A !important; }
+  #go-meter .tbar { width:auto !important; height:calc(12 * var(--u)) !important; background:rgba(0,0,0,.28) !important; }
+  #go-meter .tbar i { background:linear-gradient(90deg, #FFE9A8, #F6B93B) !important; }
+  #beats { left:0 !important; top:calc(26 * var(--u)) !important; width:calc(1080 * var(--u)) !important; gap:calc(18 * var(--u)) !important; }
+  #beats span { background:#F6F0E6 !important; color:#1F1A1A !important; border-color:#F6F0E6 !important; }
+  #beats span i { background:#1F1A1A !important; color:#F6F0E6 !important; }
+  #beats span.on { background:#F6F0E6 !important; color:#D8232D !important; border-color:#D8232D !important; box-shadow:0 0 0 calc(5 * var(--u)) rgba(216,35,45,.35), 0 calc(6 * var(--u)) 0 #8E1219 !important; }
+  #beats span.on i { background:#D8232D !important; color:#fff !important; }
+  #beats span.done { background:#D8232D !important; color:#fff !important; border-color:#F6F0E6 !important; }
+  #beats span.done i { background:#F6F0E6 !important; color:#D8232D !important; }
   #beats span { height:calc(70 * var(--u)) !important; padding:0 calc(30 * var(--u)) 0 calc(12 * var(--u)) !important; gap:calc(14 * var(--u)) !important; font-size:calc(27 * var(--u)) !important; }
   #beats span i { width:calc(46 * var(--u)) !important; height:calc(46 * var(--u)) !important; font-size:calc(24 * var(--u)) !important; }
   #hold-word { left:0 !important; top:calc(1052 * var(--u)) !important; width:calc(1080 * var(--u)) !important; font-size:calc(88 * var(--u)) !important; }
-  .holdcard { left:calc(40 * var(--u)) !important; top:calc(1186 * var(--u)) !important; width:calc(1000 * var(--u)) !important; height:calc(200 * var(--u)) !important; padding:calc(26 * var(--u)) calc(34 * var(--u)) 0 !important; border-radius:calc(26 * var(--u)) !important; }
-  .holdcard .top b { font-size:calc(32 * var(--u)) !important; }
-  .holdcard .top > span { font-size:calc(60 * var(--u)) !important; }
-  .holdcard .hbar { height:calc(38 * var(--u)) !important; margin-top:calc(14 * var(--u)) !important; }
-  .holdcard .bot { margin-top:calc(16 * var(--u)) !important; }
+  .holdcard { left:calc(40 * var(--u)) !important; top:calc(1198 * var(--u)) !important; width:calc(1000 * var(--u)) !important; height:calc(166 * var(--u)) !important; padding:calc(20 * var(--u)) calc(70 * var(--u)) 0 calc(80 * var(--u)) !important; border:0 !important; border-radius:0 !important; background:linear-gradient(180deg, #FFFBF3 0%, #EADFCB 86%, #B5A88F 86%) !important; clip-path:polygon(2.4% 0, 100% 0, 97.6% 100%, 0 100%) !important; box-shadow:none !important; }
+  .holdcard .top b { font-size:calc(34 * var(--u)) !important; color:#0A6FA6 !important; }
+  .holdcard .top > span { font-size:calc(66 * var(--u)) !important; color:#D8232D !important; text-shadow:0 calc(4 * var(--u)) 0 rgba(126,15,22,.3) !important; }
+  .holdcard .hbar { height:calc(30 * var(--u)) !important; margin-top:calc(6 * var(--u)) !important; background:#D9CDB6 !important; box-shadow:inset 0 0 0 calc(2 * var(--u)) rgba(30,27,27,.18) !important; }
+  .holdcard .hbar i { background:linear-gradient(90deg, #FF6A72, #D8232D) !important; }
+  .holdcard .bot { display:none !important; }
   .holdcard .bot small { font-size:calc(23 * var(--u)) !important; }
   #s-judge .display { font-size:11.5vmin !important; line-height:1 !important; }
   .judge { display:grid !important; gap:4.2vmin !important; justify-items:center !important; margin-top:3vmin !important; }
   .judge .btn { width:86vmin !important; height:15vmin !important; font-size:5vmin !important; justify-content:center !important; }
   #s-result .box { height:calc(1700 * var(--u)) !important; }
-  #res-title { left:calc(40 * var(--u)) !important; top:calc(30 * var(--u)) !important; width:calc(1000 * var(--u)) !important; text-align:center !important; font-size:calc(124 * var(--u)) !important; }
+  #res-title { left:calc(40 * var(--u)) !important; top:calc(74 * var(--u)) !important; width:calc(1000 * var(--u)) !important; text-align:center !important; font-size:calc(124 * var(--u)) !important; }
   #res-score { left:0 !important; width:calc(1080 * var(--u)) !important; top:calc(306 * var(--u)) !important; font-size:calc(410 * var(--u)) !important; transform:perspective(calc(1500 * var(--u))) rotateY(-16deg) rotateX(8deg) !important; text-shadow:calc(1.1 * var(--u)) calc(1.1 * var(--u)) 0 #B01820, calc(2.2 * var(--u)) calc(2.2 * var(--u)) 0 #B01820, calc(3.3 * var(--u)) calc(3.3 * var(--u)) 0 #B01820, calc(4.4 * var(--u)) calc(4.4 * var(--u)) 0 #B01820, calc(5.5 * var(--u)) calc(5.5 * var(--u)) 0 #B01820, calc(6.6 * var(--u)) calc(6.6 * var(--u)) 0 #B01820, calc(7.7 * var(--u)) calc(7.7 * var(--u)) 0 #B01820, calc(8.8 * var(--u)) calc(8.8 * var(--u)) 0 #B01820, calc(9.9 * var(--u)) calc(9.9 * var(--u)) 0 #B01820, calc(11.0 * var(--u)) calc(11.0 * var(--u)) 0 #B01820, calc(12.1 * var(--u)) calc(12.1 * var(--u)) 0 #B01820, calc(13.2 * var(--u)) calc(13.2 * var(--u)) 0 #B01820, calc(14.3 * var(--u)) calc(14.3 * var(--u)) 0 #B01820, calc(15.4 * var(--u)) calc(15.4 * var(--u)) 0 #B01820, calc(16.5 * var(--u)) calc(16.5 * var(--u)) 0 #B01820, calc(17.6 * var(--u)) calc(17.6 * var(--u)) 0 #B01820, calc(18.7 * var(--u)) calc(18.7 * var(--u)) 0 #B01820, calc(19.8 * var(--u)) calc(19.8 * var(--u)) 0 #B01820, calc(20.9 * var(--u)) calc(20.9 * var(--u)) 0 #B01820, calc(22.0 * var(--u)) calc(22.0 * var(--u)) 0 #B01820, calc(23.1 * var(--u)) calc(23.1 * var(--u)) 0 #B01820, calc(24.2 * var(--u)) calc(24.2 * var(--u)) 0 #B01820, calc(25.3 * var(--u)) calc(25.3 * var(--u)) 0 #B01820, calc(26.4 * var(--u)) calc(26.4 * var(--u)) 0 #B01820, calc(27.5 * var(--u)) calc(27.5 * var(--u)) 0 #B01820, calc(28.6 * var(--u)) calc(28.6 * var(--u)) 0 #B01820, calc(46 * var(--u)) calc(60 * var(--u)) calc(50 * var(--u)) rgba(0,25,50,.5) !important; }
   #s-result .spark { left:calc(830 * var(--u)) !important; top:calc(330 * var(--u)) !important; width:calc(120 * var(--u)) !important; height:calc(120 * var(--u)) !important; }
   #res-eyebrow { left:0 !important; width:calc(1080 * var(--u)) !important; top:calc(744 * var(--u)) !important; font-size:calc(42 * var(--u)) !important; }
@@ -499,7 +598,10 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   #qr-profile { width:calc(178 * var(--u)) !important; height:calc(178 * var(--u)) !important; }
   #qr-label { font-size:calc(46 * var(--u)) !important; text-align:left !important; line-height:1.08 !important; letter-spacing:.04em !important; }
   #qr-label::after { content:'Point your phone camera here' !important; width:auto !important; height:auto !important; background:none !important; margin:calc(10 * var(--u)) 0 0 !important; font:600 calc(27 * var(--u))/1.2 Poppins, sans-serif !important; letter-spacing:0 !important; text-transform:none !important; color:#B01820 !important; }
-  #s-result .btn { left:calc(70 * var(--u)) !important; top:calc(1558 * var(--u)) !important; width:calc(940 * var(--u)) !important; height:calc(138 * var(--u)) !important; }
+  #s-result .btn { left:calc(70 * var(--u)) !important; top:calc(1552 * var(--u)) !important; width:calc(940 * var(--u)) !important; height:calc(124 * var(--u)) !important; }
+  #s-result .box:not(.wonc) #win-new { display:none !important; }
+  #s-result .box.wonc > #res-title, #s-result .box.wonc > #res-score, #s-result .box.wonc > #res-eyebrow, #s-result .box.wonc > .spark, #s-result .box.wonc > .vdiv, #s-result .box.wonc > #res-coupon, #s-result .box.wonc > #res-detail, #s-result .box.wonc > .qrcard { display:none !important; }
+  #s-result .box.wonc .btn { top:calc(1508 * var(--u)) !important; height:calc(128 * var(--u)) !important; }
 }
 /* SCREAM-PORTRAIT:END */
 </style>
@@ -553,7 +655,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   <section class="screen bx" id="s-go">
     <div class="box" id="go-count">
       <canvas class="abs" id="ring-count"></canvas>
-      <div class="abs t" data-fit="383" data-fs="75" data-pfit="1000" data-pfs="176">Get ready<br>to scream.</div>
+      <div class="abs t" data-fit="383" data-fs="75" data-pfit="1000" data-pfs="236"><span class="gr">Get ready to</span><br>scream.</div>
       <i class="abs rule"></i>
       <div class="dots" id="dots"><span class="on">3</span><em>•</em><span>2</span><em>•</em><span>1</span></div>
       <div class="abs" id="cnt">3</div>
@@ -593,6 +695,18 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     <i class="abs vdiv"></i>
     <div class="abs" id="res-coupon"><div class="lbl">Your reward code</div><div class="tkt"><div id="res-code">WENDY10-AAA111</div></div><small id="res-label"></small><small>Sent by SMS · saved on your Wendy Fest pass</small></div>
     <div class="abs" id="res-detail"></div>
+    <div class="up-only" id="win-new">
+      <div class="row" style="top:calc(46 * var(--u))"><span id="wn-title">You brought <b>the loud,</b> legend.</span></div>
+      <i class="glow"></i><div class="md"><i></i></div>
+      <div class="sc"><small>Final score</small><b id="wn-score">0</b></div>
+      <div class="meal"><img src="/assets/spicy-meal.webp" alt=""></div>
+      <div class="row rbw"><div id="wn-big">FREE MEAL</div></div>
+      <div id="wn-line">Spicy Chicken Burger Meal</div>
+      <div class="cpp"><div class="cpw"><div class="cp"><i class="st"></i>
+        <div class="l"><div class="hd"><img src="/assets/cameo.png" alt="">Wendy Fest reward</div><div class="pz"><span id="wn-chip">FREE MEAL</span><span id="wn-line2">Spicy Chicken Burger Meal</span></div><div class="cdw"><small>Your coupon code</small><b id="wn-code">WENDY10-AAA111</b></div><div class="sm">Sent to your phone by SMS</div></div>
+        <div class="r"><img id="wn-qr" alt="QR"><em>Scan to save</em></div>
+      </div></div></div>
+    </div>
     <div class="card qrcard"><img id="qr-profile" alt="QR"><b id="qr-label">Save your<br>reward</b></div>
     <button class="btn" onclick="goIdle()">Next player</button>
   </div></section>
@@ -603,7 +717,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     <label>Microphone (this screen)</label><select id="mic"></select>
     <label>Live level</label><div class="lvl"><div id="lvl-set"></div></div><div id="db-set" style="margin-top:.6vmin">— dB</div>
     <label>Sound effects</label><select id="sfx-mode"><option value="on">On</option><option value="off">Off</option></select>
-    <label>Clarity scoring</label><select id="judge-mode"><option value="auto">Auto (speech recognition, needs internet)</option><option value="host">Host judges after each scream</option></select><div id="sr-status" style="margin-top:.6vmin;opacity:.8">Last speech check: none yet</div>
+    <label>Clarity scoring</label><select id="judge-mode"><option value="auto">Auto (speech recognition, needs internet)</option></select><div id="sr-status" style="margin-top:.6vmin;opacity:.8">Last speech check: none yet</div>
     <label>Scoring (from admin)</label><div id="thr-info">—</div>
     <p style="opacity:.7;margin-top:2vmin">Calibrate: have a staff member scream at the real distance. Their peak should land near 100. Adjust dB floor/ceiling in Admin if screams never reach it or always do.</p>
     <button class="btn ghost" style="margin-top:2vmin;height:5.6vmin;font-size:1.9vmin" onclick="document.getElementById('settings').classList.remove('open')">Close</button>
@@ -611,7 +725,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
 </div>
 
 <!-- sounds (made with ElevenLabs; the same set as Roast Me) -->
-<audio id="sfx-tap" src="/assets/sfx/tap.mp3" preload="auto"></audio><audio id="sfx-key" src="/assets/sfx/key.mp3" preload="auto"></audio><audio id="sfx-delete" src="/assets/sfx/delete.mp3" preload="auto"></audio><audio id="sfx-go" src="/assets/sfx/go.mp3" preload="auto"></audio><audio id="sfx-error" src="/assets/sfx/error.mp3" preload="auto"></audio><audio id="sfx-whoosh" src="/assets/sfx/whoosh.mp3" preload="auto"></audio><audio id="sfx-beep" src="/assets/sfx/beep.mp3" preload="auto"></audio><audio id="sfx-win" src="/assets/sfx/win.mp3" preload="auto"></audio><audio id="sfx-lose" src="/assets/sfx/lose.mp3" preload="auto"></audio>
+<audio id="sfx-start" src="/assets/sfx/start.mp3" preload="auto"></audio><audio id="sfx-pop" src="/assets/sfx/pop.mp3" preload="auto"></audio><audio id="sfx-stamp" src="/assets/sfx/stamp.mp3" preload="auto"></audio><audio id="sfx-party" src="/assets/sfx/party.mp3" preload="auto"></audio><audio id="sfx-ticket" src="/assets/sfx/ticket.mp3" preload="auto"></audio><audio id="sfx-coin" src="/assets/sfx/coin.mp3" preload="auto"></audio><audio id="sfx-switch" src="/assets/sfx/switch.mp3" preload="auto"></audio><audio id="sfx-ding" src="/assets/sfx/ding.mp3" preload="auto"></audio><audio id="sfx-mic" src="/assets/sfx/mic.mp3" preload="auto"></audio><audio id="sfx-rise" src="/assets/sfx/rise.mp3" preload="auto"></audio><audio id="sfx-aww" src="/assets/sfx/aww.mp3" preload="auto"></audio><audio id="sfx-tap" src="/assets/sfx/tap.mp3" preload="auto"></audio><audio id="sfx-key" src="/assets/sfx/key.mp3" preload="auto"></audio><audio id="sfx-delete" src="/assets/sfx/delete.mp3" preload="auto"></audio><audio id="sfx-go" src="/assets/sfx/go.mp3" preload="auto"></audio><audio id="sfx-error" src="/assets/sfx/error.mp3" preload="auto"></audio><audio id="sfx-whoosh" src="/assets/sfx/whoosh.mp3" preload="auto"></audio><audio id="sfx-beep" src="/assets/sfx/beep.mp3" preload="auto"></audio><audio id="sfx-win" src="/assets/sfx/win.mp3" preload="auto"></audio><audio id="sfx-lose" src="/assets/sfx/lose.mp3" preload="auto"></audio>
 <!-- Wendy's recorded result lines: six each for a win, the right word said too quietly, and "Wendy" without the S -->
 <audio id="vo-nos-1" src="/assets/voice/nos-1.mp3" preload="auto"></audio><audio id="vo-nos-2" src="/assets/voice/nos-2.mp3" preload="auto"></audio><audio id="vo-nos-3" src="/assets/voice/nos-3.mp3" preload="auto"></audio><audio id="vo-nos-4" src="/assets/voice/nos-4.mp3" preload="auto"></audio><audio id="vo-nos-5" src="/assets/voice/nos-5.mp3" preload="auto"></audio><audio id="vo-nos-6" src="/assets/voice/nos-6.mp3" preload="auto"></audio>
 <audio id="vo-win-1" src="/assets/voice/win-1.mp3" preload="auto"></audio><audio id="vo-win-2" src="/assets/voice/win-2.mp3" preload="auto"></audio><audio id="vo-win-3" src="/assets/voice/win-3.mp3" preload="auto"></audio><audio id="vo-win-4" src="/assets/voice/win-4.mp3" preload="auto"></audio><audio id="vo-win-5" src="/assets/voice/win-5.mp3" preload="auto"></audio><audio id="vo-win-6" src="/assets/voice/win-6.mp3" preload="auto"></audio>
@@ -773,7 +887,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     const cx = (UP ? 540 : 720) * U, cy = (UP ? 700 : 348) * U, R = (UP ? 290 : 172) * U, len = (UP ? 42 : 24) * U, a0 = Math.PI * .75, span = Math.PI * 1.5, thr = (CFG.scream.threshold || 70) / 100;
     const g = ctx.createRadialGradient(cx, cy, R * .1, cx, cy, R * 1.55); g.addColorStop(0, `rgba(255,255,255,${(.14 + .3 * level).toFixed(2)})`); g.addColorStop(1, "rgba(255,255,255,0)");
     ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, R * 1.55, 0, 7); ctx.fill();
-    const wave = (x0, x1, innerRight, wy = cy, amp = 100) => { const n = 34, gap = (x1 - x0) / n, w = gap * .45;
+    const wave = (x0, x1, innerRight, wy = cy, amp = 100, n = 34) => { const gap = (x1 - x0) / n, w = gap * .45;
       for (let i = 0; i < n; i++) { const u = (i + .5) / n, inner = innerRight ? u : 1 - u;
         const spec = fbuf ? fbuf[Math.floor((1 - inner) * fbuf.length * .3)] / 255 : 0;
         const wob = .6 + .4 * Math.abs(Math.sin(i * 2.3 - t * .009) * Math.sin(i * .7 + t * .004));
@@ -781,7 +895,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
         const a = .18 + .82 * inner, gr = ctx.createLinearGradient(0, wy - h, 0, wy + h);
         gr.addColorStop(0, `rgba(250,244,235,${(a * .35).toFixed(2)})`); gr.addColorStop(.5, `rgba(250,244,235,${a.toFixed(2)})`); gr.addColorStop(1, `rgba(250,244,235,${(a * .35).toFixed(2)})`);
         ctx.fillStyle = i % 6 === 3 ? `rgba(205,32,40,${a.toFixed(2)})` : gr; ctx.beginPath(); ctx.roundRect(x0 + i * gap + (gap - w) / 2, wy - h, w, h * 2, w / 2); ctx.fill(); } };
-    if (UP) { wave(40 * U, cx, true, 1612 * U, 40); wave(cx, 1040 * U, false, 1612 * U, 40); } else { wave(40 * U, cx - R * 1.38, true); wave(cx + R * 1.38, 1400 * U, false); }
+    if (UP) { wave(12 * U, 152 * U, true, cy, 160, 10); wave(928 * U, 1068 * U, false, cy, 160, 10); }   /* upright: the sound wave stands on both sides of the meter (owner); the old strip along the bottom is gone */ else { wave(40 * U, cx - R * 1.38, true); wave(cx + R * 1.38, 1400 * U, false); }
     ctx.lineCap = "round";
     for (let r = 0; r < 3; r++) { const rr = R * (1.12 + r * .08); for (let d = 0; d <= 1; d += 1 / 160) { const th = a0 + d * span; ctx.fillStyle = `rgba(205,32,40,${(.95 - r * .25).toFixed(3)})`; ctx.beginPath(); ctx.arc(cx + Math.cos(th) * rr, cy + Math.sin(th) * rr, 2.6 * fd, 0, 7); ctx.fill(); } }
     ctx.strokeStyle = "rgba(250,244,235,.35)"; ctx.lineWidth = 2 * fd; ctx.beginPath(); ctx.arc(cx, cy, R - len * 1.5, a0, a0 + span); ctx.stroke();
@@ -804,6 +918,8 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
       whoosh: () => fire("whoosh", .3), click: () => fire("key", .45), bksp: () => fire("delete", .5), tap: () => fire("tap", .55),
       tick: () => fire("beep", .6), last: () => fire("beep", .65, 1.25), go: () => fire("beep", .7, 1.7),
       voice: () => fire("go", .45), win: () => fire("win", .8), lose: () => fire("lose", .6), error: () => fire("error", .5),
+      ding: () => fire("ding", .55), mic: () => fire("mic", .6), rise: () => fire("rise", .45), aww: () => fire("aww", .5),
+      start: () => fire("start", .6), coin: () => fire("coin", .6), flick: () => fire("switch", .55), pop: () => fire("pop", .6), stamp: () => fire("stamp", .85), party: () => fire("party", .7), ticket: () => fire("ticket", .55),
       hush: () => { live.forEach((c) => { try { c.pause(); } catch {} }); live.clear(); },   // nothing may still be sounding when the mic starts scoring
       unlock: () => {},
     };
@@ -816,7 +932,9 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   const lastPreset = {};
   function sayPreset(kind, delay) { let i; do { i = 1 + Math.floor(Math.random() * 6); } while (i === lastPreset[kind]); lastPreset[kind] = i; saySass($(`vo-${kind}-${i}`), delay); }
   // a tap sound on every button outside the keypad (keypad keys have their own)
-  document.addEventListener("pointerdown", (e) => { const b = e.target.closest && e.target.closest("button"); if (b && !b.disabled && !b.closest("#kbd")) SFX.tap(); }, true);
+  // each kind of button has its own sound: Next player drops a coin, the big action buttons power up, small option buttons flick, the rest tap
+  document.addEventListener("pointerdown", (e) => { const b = e.target.closest && e.target.closest("button"); if (!b || b.disabled || b.closest("#kbd")) return;
+    if (b.closest("#s-result")) SFX.coin(); else if (b.classList.contains("btn")) SFX.start(); else if (b.closest(".rtabs, .seg, .pillx, select")) SFX.flick(); else SFX.tap(); }, true);
   $("sfx-mode").value = localStorage.getItem("wf_sfx") || "on"; $("sfx-mode").onchange = () => { localStorage.setItem("wf_sfx", $("sfx-mode").value); SFX.click(); };
   addEventListener("pointerdown", SFX.unlock, { once: true }); addEventListener("keydown", SFX.unlock, { once: true });
   // ---------- mic check: listen for a voice (e.g. "Hello"), then start automatically ----------
@@ -1001,7 +1119,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   const numKey = key(r4, "123", () => { numMode = !numMode; numKey.textContent = numMode ? "ABC" : "123"; const set = numMode ? "1234567890" : "QWERTYUIOP"; r1keys.forEach((b, i) => { b.textContent = set[i]; }); }, "num");
   key(r4, "SPACE", () => {}, "space");
   let lastLen = 0;
-  function paintBoxes() { const v = codeEl.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6); if (codeEl.value !== v) codeEl.value = v; [...$("boxes").children].forEach((b, i) => { b.textContent = v[i] || ""; b.classList.toggle("cur", i === v.length); b.classList.remove("err"); if (i === v.length - 1 && v.length > lastLen) { b.classList.remove("pop"); void b.offsetWidth; b.classList.add("pop"); } }); lastLen = v.length; }
+  function paintBoxes() { const v = codeEl.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6); if (v.length === 6 && paintBoxes.n !== 6) SFX.ding(); paintBoxes.n = v.length;   /* a ding when the last box is filled */ if (codeEl.value !== v) codeEl.value = v; [...$("boxes").children].forEach((b, i) => { b.textContent = v[i] || ""; b.classList.toggle("cur", i === v.length); b.classList.remove("err"); if (i === v.length - 1 && v.length > lastLen) { b.classList.remove("pop"); void b.offsetWidth; b.classList.add("pop"); } }); lastLen = v.length; }
   codeEl.addEventListener("input", paintBoxes); codeEl.addEventListener("keydown", (e) => e.key === "Enter" && lookup(codeEl.value));
   $("code-go").onclick = () => lookup(codeEl.value);
   async function lookup(code) {
@@ -1009,13 +1127,13 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     try {
       guest = await K.api("/api/kiosk/lookup", { code });
       if (guest.screamsLeft <= 0) { $("code-msg").textContent = `${guest.firstName} has already used their attempt${guest.alreadyWon ? " (and won!)" : ""}.`; shakeBoxes(); return; }
-      $("r-name").textContent = guest.firstName; mode = "ready"; $("mic-pill").classList.remove("heard-ok"); K.show("s-ready"); if (await startAudio()) $("mic-status").textContent = "Mic connected · say “Hello”"; resetVoiceCheck(); K.resetIdle(90000, goIdle);
+      $("r-name").textContent = guest.firstName; mode = "ready"; $("mic-pill").classList.remove("heard-ok"); K.show("s-ready"); if (await startAudio()) { $("mic-status").textContent = "Mic connected · say “Hello”"; SFX.mic(); } resetVoiceCheck(); K.resetIdle(90000, goIdle);
     } catch (e) { $("code-msg").textContent = e.message; shakeBoxes(); }
   }
   function shakeBoxes() { SFX.error(); [...$("boxes").children].forEach((b) => { b.classList.add("err"); setTimeout(() => b.classList.remove("err"), 500); }); }
 
   // ---------- flow ----------
-  function goIdle() { stopSass(); K.resetIdle(0); stopRecog(); windowOpen = false; guest = null; codeEl.value = ""; paintBoxes(); $("code-msg").textContent = ""; mode = "idle"; document.querySelectorAll(".confetti").forEach((c) => c.remove()); K.show("s-idle"); }
+  function goIdle() { missRetries = 0; winTimers.forEach(clearTimeout); stopSass(); K.resetIdle(0); stopRecog(); windowOpen = false; guest = null; codeEl.value = ""; paintBoxes(); $("code-msg").textContent = ""; mode = "idle"; document.querySelectorAll(".confetti").forEach((c) => c.remove()); K.show("s-idle"); }
   document.addEventListener("kiosk-home", goIdle);
   $("start").onclick = () => { K.show("s-code"); codeEl.focus({ preventScroll: true }); startAudio(); K.resetIdle(60000, goIdle); };
   document.querySelector(".brand").onclick = () => { if (!$("s-pin").classList.contains("on")) goIdle(); };
@@ -1036,11 +1154,18 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
       const t0 = performance.now(); while (performance.now() - t0 < 1000) { countPct = ((4 - n) - 1 + (performance.now() - t0) / 1000) / 3 * 100; await wait(16); }
     }
     $("go-count").style.display = "none"; $("go-meter").style.display = "block"; setStep("5", "Live"); fitText(); enter($("go-meter"));
+    // Shout / Hold it / Finish arrive first, then everything else follows in (owner)
+    [...$("go-meter").children].forEach((el) => el.style.setProperty("--i", el.id === "beats" ? 0 : 9 + (+el.style.getPropertyValue("--i") || 0) * 1.5));
     SFX.go(); await wait(320);
     peakDb = -100; SUS = []; susDb = -100; gaugeShown = 0; resetHold(); SD.frames = 0; SD.clip = 0; SFX.hush(); stopSass(); windowOpen = true; mode = "scream";
     const dur = CFG.scream.durationMs || 5000, t0 = performance.now();   // ends early once the word is heard and the guest has stopped holding the note
     $("tdur").textContent = Math.round(dur / 1000);
-    while (performance.now() - t0 < dur) {
+    // Wendy cheers the guest on by name in the Listening pill while they shout (on screen only: nothing is spoken while the mic is scoring)
+    const nm = String((guest && guest.firstName) || "").trim().slice(0, 12), who = nm ? ", " + nm : "", goal = CFG.scream.threshold || 70; let cheerAt = 0, cheerN = 0;
+    const cheer = () => { const el = performance.now() - t0; if (heardAt || el - cheerAt < 1300 && cheerN) return; cheerAt = el;
+      const L = el > dur - 2500 ? [`Finish strong${who}!`] : gaugeShown < goal ? [`Come on${who}!`, "Louder!", `Stronger${who}!`, "Faster! Louder!", `Is that all${who}?`] : [`Yes${who}!`, "Hold it!", `Keep going${who}!`, "Don’t stop!"];
+      $("listen-l").textContent = L[cheerN++ % L.length]; };
+    while (performance.now() - t0 < dur) { cheer();
       if (heardAt || performance.now() - t0 > 1500) setBeat(2);
       if (heardAt && performance.now() - heardAt > 1300 && performance.now() - t0 > 1500 && holdGap > .7) break; const left = dur - (performance.now() - t0); $("tleft").textContent = (left / 1000).toFixed(1); $("tbar").style.transform = `scaleX(${left / dur})`; await wait(50); }
     $("tleft").textContent = "0.0"; $("tbar").style.transform = "scaleX(0)"; windowOpen = false; setBeat(3); holdRun = holdBest; paintHold(); if (holdBest > holdDay()) { try { localStorage.setItem(holdKey(), holdBest.toFixed(1)); } catch {} }
@@ -1049,15 +1174,40 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     // Speech recognition broke, or it heard no words at all although the guest was clearly loud: let the host call it, never fail the guest for the tech.
     const srOK = !!(window.SpeechRecognition || window.webkitSpeechRecognition), sttOn = STT.used;
     const srDown = !transcript && (sttOn ? !!STT.err && (!srOK || !!recogErr) : !!recogErr), deaf = !recogGot && !STT.text && dbToPct(peakDb) >= 45;
-    judgeRoute = $("judge-mode").value === "host" ? "host-mode" : !srOK && !sttOn ? "host-no-speech-support" : srDown ? "host-speech-error" : deaf ? "host-no-words" : "auto"; submitting = false;
-    if (judgeRoute !== "auto") { K.show("s-judge"); return; }
-    submitScream(null);
+    judgeRoute = !srOK && !sttOn ? "host-no-speech-support" : srDown ? "host-speech-error" : deaf ? "host-no-words" : "auto"; submitting = false;
+    // No host screen (owner, Nov 2026): the kiosk runs unattended, so a guest must never see buttons that hand out a win.
+    // When the word could not be heard for a technical reason the guest gets one more go, which does not use their attempt;
+    // if it happens again the scream is scored as it stands.
+    if (judgeRoute !== "auto" && missRetries < 1) {
+      missRetries++; mode = "ready"; K.show("s-ready"); $("mic-pill").classList.remove("heard-ok"); $("mic-status").textContent = "We couldn’t hear you. Tap Let’s go and try again."; resetVoiceCheck(); SFX.error(); K.resetIdle(90000, goIdle); return;
+    }
+    missRetries = 0; submitScream(null);
   };
+  let missRetries = 0;      // goes when the word could not be heard and the guest was sent back to try again
   let submitting = false;   // a double tap on a host button must not save the scream twice
   async function submitScream(accuracyOverride) {
     if (submitting || !guest) return; submitting = true;
     try { const r = await K.api("/api/kiosk/scream", { code: guest.code, peakDb, sustainedDb: susDb, transcript, accuracyOverride, speech: speechDiag() }); showResult(r); }
     catch (e) { alert("Could not submit: " + e.message); goIdle(); }
+  }
+  // Confetti that bursts out of a point on the screen (by default the middle), flies outward, then falls and fades.
+  function confettiBurst(n = 130, x = innerWidth / 2, y = innerHeight * .44) {
+    const box = document.createElement("div"); box.className = "confetti"; box.style.zIndex = 40;   /* in front of the result, so the burst is seen coming out of the middle */ document.querySelector(".stage").appendChild(box);
+    const colors = ["#D8232D", "#FFFFFF", "#F6F0E6", "#1E9BE0", "#FFE08A"], R = Math.max(innerWidth, innerHeight);
+    for (let i = 0; i < n; i++) {
+      const el = document.createElement("i"), a = Math.random() * Math.PI * 2, d = R * (.18 + Math.random() * .5), dx = Math.cos(a) * d, dy = Math.sin(a) * d - R * .12, spin = (Math.random() - .5) * 1400;
+      el.style.cssText = `left:${x}px;top:${y}px;background:${colors[i % colors.length]};animation:none;${i % 3 ? "" : "border-radius:50%;width:1.6vmin;height:1.6vmin;"}`; box.appendChild(el);
+      el.animate([{ transform: "translate(-50%,-50%) scale(.3)", opacity: 1 }, { transform: `translate(${dx}px,${dy}px) rotate(${spin * .5}deg) scale(1)`, opacity: 1, offset: .32, easing: "ease-in" }, { transform: `translate(${dx * 1.18}px,${dy + R * .5}px) rotate(${spin}deg) scale(1)`, opacity: 0 }],
+        { duration: 2300 + Math.random() * 1300, easing: "cubic-bezier(.12,.8,.3,1)", fill: "forwards" });
+    }
+    setTimeout(() => box.remove(), 3900);
+  }
+  // The winner's moment, in step with the screen: pop as the medallion lands, stamp and confetti as the prize slams in, a ticket sound as the coupon slides up.
+  let winTimers = [];
+  function winShow(newLook) {
+    winTimers.forEach(clearTimeout); const at = (ms, fn) => winTimers.push(setTimeout(() => { if (mode === "result") fn(); }, ms));
+    if (!newLook) { at(250, () => { confettiBurst(); SFX.party(); }); return; }
+    at(350, SFX.pop); at(1000, () => { SFX.stamp(); confettiBurst(); }); at(1150, SFX.party); at(1450, SFX.ticket); at(2700, () => confettiBurst(60));
   }
   function confetti(n = 90) {
     const box = document.createElement("div"); box.className = "confetti"; document.querySelector(".stage").appendChild(box);
@@ -1080,12 +1230,14 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
       const step = (now) => { const q = Math.min(1, (now - t0) / 650); el.textContent = Math.round(to * (1 - Math.pow(1 - q, 3))); if (q < 1) requestAnimationFrame(step); else restart(el, "pop"); }; requestAnimationFrame(step); }
     $("res-eyebrow").textContent = "Final score";
     $("res-coupon").style.display = r.coupon ? "grid" : "none"; $("res-detail").style.display = r.coupon ? "none" : "block"; $("res-conf").style.display = r.won ? "block" : "none";
+    const wn = !!(r.won && r.coupon); document.querySelector("#s-result .box").classList.toggle("wonc", wn);
+    if (wn) { const pz = prizeText(r.coupon.label); $("wn-big").textContent = $("wn-chip").textContent = pz.big; $("wn-line").textContent = $("wn-line2").textContent = pz.line; $("wn-code").textContent = r.coupon.code; $("wn-score").textContent = Math.round(+r.score || 0); $("wn-qr").src = `/api/qr?text=${encodeURIComponent(r.profileUrl)}`; restart($("win-new"), "go"); fitWin(); }
     if (r.won) {
       $("res-title").textContent = r.couponPoolEmpty ? "You beat the meter!" : "You brought the loud.";
       renderDetail(r.couponPoolEmpty ? "You won! The reward pool is empty, so please see a host." : "Fresh, never frozen. Just like that scream.", r);
       if (r.coupon) { $("res-code").textContent = r.coupon.code; $("res-label").textContent = r.coupon.label; }
       $("qr-label").innerHTML = "Save your<br>reward";
-      $("flash").classList.remove("go"); void $("flash").offsetWidth; $("flash").classList.add("go"); confetti(); SFX.win(); sayPreset("win", 2300);
+      $("flash").classList.remove("go"); void $("flash").offsetWidth; $("flash").classList.add("go"); winShow(wn); SFX.win(); sayPreset("win", wn ? 3200 : 2300);
     } else {
       $("res-title").textContent = { no_s: "Don’t forget the S!", quiet: "Louder next time.", close: "So close!" }[r.reason] || (r.loudness < r.accuracy ? "Louder next time." : "We heard… something.");
       renderDetail({ no_s: "So close. It’s WENDY’S, with the S.", quiet: "Clear as day. Now say it LOUDER!", unclear: "The meter heard you. It just didn’t hear a clear “Wendy’s”.", close: "So close. Just a little more of both." }[r.reason] || (r.loudness < 40 ? "Louder! Colombo traffic is louder than that." : "The meter heard you. It just didn’t hear “Wendy’s”."), r);
@@ -1093,12 +1245,23 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
       else if (r.reason === "quiet") sayPreset("quiet", 1700);
       else if (r.reason === "no_s") sayPreset("nos", 1700);
       $("qr-label").innerHTML = "Scan for<br>your pass"; SFX.lose();
+      winTimers.forEach(clearTimeout); winTimers = [setTimeout(() => { if (mode === "result") SFX.rise(); }, 380), setTimeout(() => { if (mode === "result" && !r.sass) SFX.aww(); }, 1500)];   // the bars fill with a rising sweep; a near miss gets a soft "aww" (not over Wendy's comeback)
     }
     $("qr-profile").src = `/api/qr?text=${encodeURIComponent(r.profileUrl)}`;
     fitResTitle();
     K.resetIdle(30000, goIdle);
   }
   // result headline: as big as fits its slot (left of the divider line, above the score), whatever it says
+  // Winner's screen: what the prize is, read from the coupon's label ("FREE ...", "50% OFF ..."); anything else shows as it is.
+  function prizeText(label) {
+    const l = String(label || ""), m = l.match(/(\d+)\s*%/);
+    return { big: /free/i.test(l) ? "FREE MEAL" : m ? m[1] + "% OFF" : "YOU WON", line: /spicy/i.test(l) ? "Spicy Chicken Burger Meal" : l.replace(/^\s*(free|\d+\s*%\s*off)\s*/i, "").replace(/^(on|your|a)\s+/i, "") || "Wendy’s reward" };
+  }
+  // Shrinks the title, the prize and the code until each fits its space (long codes, long prize names).
+  function fitWin() {
+    for (const [id, part] of [["wn-title", .94], ["wn-big", .86], ["wn-code", .93], ["wn-line2", .98]]) { const el = $(id), box = el.parentElement; el.style.fontSize = ""; let fs = parseFloat(getComputedStyle(el).fontSize);
+      while (el.offsetWidth > box.clientWidth * part && fs > 9) { fs -= 1; el.style.fontSize = fs + "px"; } }
+  }
   function fitResTitle() {
     const t = $("res-title"), div = document.querySelector("#s-result .vdiv"); if (!t || !div) return;
     const up = innerHeight > innerWidth, u = up ? Math.min(innerWidth / 1080, innerHeight / 1920) : Math.min(innerWidth / 1440, innerHeight / 760), rg = document.createRange(); rg.selectNodeContents(t);

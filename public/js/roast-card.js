@@ -48,7 +48,28 @@
     return out;
   }
 
-  async function roastCard(r, lang) {
+  // Keywords in a roast, shown in bold: the guest's name, Wendy's menu items, and the things Wendy noticed in the photo.
+  const MENU = ["Classic Chicken Burger", "Spicy Chicken Burger", "Grilled Chicken Burger", "Chicken Tenders Burger", "Lankan Fire Burger", "Molten Cheese Lava", "Paneer Double Decker", "Skin-On Shaker Fries", "Shaker Fries", "Chicken Tenders", "Chicken Bites", "Chickenator", "Frostyccino", "Frosty", "Garden Salad", "Wendy's", "Wendy’s"];
+  window.roastKeys = (r) => [String((r && r.name) || "").trim().split(/\s+/)[0], ...MENU, r && r.vibe, ...((r && r.keys) || [])].map((k) => String(k || "").trim()).filter((k) => k.length > 2 && k.split(/\s+/).length <= 4);
+  // Text made safe for the page, with each keyword wrapped in <b>. Longer keywords win over shorter ones inside them.
+  window.boldKeywords = (text, keys) => {
+    const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    const ks = [...new Set((keys || []).map((k) => k.toLowerCase()))].sort((a, b) => b.length - a.length).map((k) => k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\s+/g, "\\s+"));
+    if (!ks.length) return esc(text);
+    const re = new RegExp("(^|[^A-Za-z0-9])((?:" + ks.join("|") + ")(?:e?s)?)(?![A-Za-z0-9])", "gi"); let out = "", last = 0, m;
+    const src = String(text || "");
+    while ((m = re.exec(src))) { const at = m.index + m[1].length; out += esc(src.slice(last, at)) + "<b>" + esc(m[2]) + "</b>"; last = at + m[2].length; }
+    return out + esc(src.slice(last));
+  };
+  // The top of the card (behind the logos and ROASTED.) can be drawn in different colours. "paper" is the original white.
+  const THEMES = {
+    paper: { top: ["#F8F1E4", "#E8DCC8"], dots: ["#C9BBA4", .75, .55], word: [22, 19, 19], rule: "rgba(22,19,19,.55)", head: ["#F5414B", "#D31F28", "#B01A22"], deep: ["#4E0A0E", "#8E1219"], edge: "rgba(255,255,255,.55)" },
+    dark: { top: ["#221E1E", "#0D0B0B"], dots: ["#E3202B", .85, .6], word: [255, 255, 255], rule: "rgba(255,255,255,.5)", head: ["#FF4B55", "#E3202B", "#BE1C25"], deep: ["#3A0609", "#7E1016"], edge: "rgba(255,255,255,.7)" },
+    blue: { top: ["#27B1F0", "#0A7FBC"], dots: ["#FFFFFF", .32, .25], word: [255, 255, 255], rule: "rgba(255,255,255,.6)", head: ["#FFFFFF", "#FFFFFF", "#F1E9DD"], deep: ["#7E1016", "#C41E26"], edge: "rgba(255,255,255,0)" },
+    red: { top: ["#EA3640", "#B01A22"], dots: ["#FFFFFF", .26, .2], word: [255, 255, 255], rule: "rgba(255,255,255,.6)", head: ["#FFFFFF", "#FFFFFF", "#F1E9DD"], deep: ["#4E0A0E", "#7E1016"], edge: "rgba(255,255,255,0)" },
+  };
+  async function roastCard(r, lang, theme) {
+    const T = THEMES[theme] || THEMES[roastCard.theme] || THEMES.dark;   // dark is the card's colour; the others are kept as alternatives
     const name = String(r.name || "").trim().split(/\s+/)[0].toUpperCase();
     const text = String((r.roast && (r.roast[lang] || r.roast.en)) || "").trim();
     const [, [logo, wendy, fest], img] = await Promise.all([fonts(), art(), r.photo ? load(r.photo).catch(() => null) : null]);
@@ -62,18 +83,18 @@
     const lockup = (x, y, sc) => { const one = (txt, xx, yy, c1, c2) => { o.save(); o.translate(xx, yy); o.transform(1, -.09, -.25, 1, 0, 0); o.font = `italic 900 ${62 * sc}px 'Barlow Semi Condensed', sans-serif`; const w = o.measureText(txt).width + 44 * sc; const g = o.createLinearGradient(0, 0, 0, 78 * sc); g.addColorStop(0, c1); g.addColorStop(.82, c1); g.addColorStop(.82, c2); g.addColorStop(1, c2); o.fillStyle = g; o.fillRect(0, 0, w, 78 * sc); o.fillStyle = "#fff"; o.textBaseline = "middle"; o.fillText(txt, 22 * sc, 36 * sc); o.restore(); o.textBaseline = "alphabetic"; return w; }; const w1 = one("WENDY", x, y, "#D8262F", "#951620"); one("FEST", x + w1 - 14 * sc, y + 16 * sc, "#2BA9E1", "#01679A"); };
 
     // paper, with the black Wendy's wordmark (the cameo keeps its colours) and the Wendy Fest lockup
-    const pg = o.createLinearGradient(0, 0, 0, 1100); pg.addColorStop(0, "#FFFFFF"); pg.addColorStop(1, "#F6F0E6"); o.fillStyle = pg; o.fillRect(0, 0, W, H); dots(1040, 250, 420, "#CFC6BD", .7); dots(40, 760, 300, "#CFC6BD", .5);
+    const pg = o.createLinearGradient(0, 0, 0, 1100); pg.addColorStop(0, T.top[0]); pg.addColorStop(1, T.top[1]); o.fillStyle = pg; o.fillRect(0, 0, W, H); dots(1040, 250, 420, T.dots[0], T.dots[1]); dots(40, 760, 300, T.dots[0], T.dots[2]);
     const lh = 104, lw = Math.round(lh * logo.naturalWidth / logo.naturalHeight), lc = document.createElement("canvas"); lc.width = lw * 2; lc.height = lh * 2; const lx = lc.getContext("2d"); lx.drawImage(logo, 0, 0, lw * 2, lh * 2);
-    try { const ld = lx.getImageData(0, 0, lc.width, lc.height), c0 = Math.round(lc.width * .665); for (let y = 0; y < lc.height; y++) for (let x = 0; x < c0; x++) { const i = (y * lc.width + x) * 4; ld.data[i] = 22; ld.data[i + 1] = 19; ld.data[i + 2] = 19; } lx.putImageData(ld, 0, 0); } catch {}
-    const fh = 156, fw = Math.round(fh * fest.naturalWidth / fest.naturalHeight), hx = Math.round((W - (lw + 72 + fw)) / 2); o.drawImage(lc, hx, 50, lw, lh); o.fillStyle = "rgba(22,19,19,.55)"; o.fillRect(hx + lw + 34, 58, 4, 90); o.drawImage(fest, hx + lw + 72, Math.round(50 + lh / 2 - fh / 2), fw, fh);   // the final Wendy Fest logo
+    try { const ld = lx.getImageData(0, 0, lc.width, lc.height), c0 = Math.round(lc.width * .665); for (let y = 0; y < lc.height; y++) for (let x = 0; x < c0; x++) { const i = (y * lc.width + x) * 4; ld.data[i] = T.word[0]; ld.data[i + 1] = T.word[1]; ld.data[i + 2] = T.word[2]; } lx.putImageData(ld, 0, 0); } catch {}
+    const fh = 156, fw = Math.round(fh * fest.naturalWidth / fest.naturalHeight), hx = Math.round((W - (lw + 72 + fw)) / 2); o.drawImage(lc, hx, 50, lw, lh); o.fillStyle = T.rule; o.fillRect(hx + lw + 34, 58, 4, 90); o.drawImage(fest, hx + lw + 72, Math.round(50 + lh / 2 - fh / 2), fw, fh);   // the final Wendy Fest logo
     // ROASTED. headline: straight, soft 3D
     const tall = 350, depth = 13, baseY = 232 + tall;
     o.save(); o.translate(W / 2 - 6, baseY); o.textAlign = "center";
     const fs = fitFont("ROASTED.", "900 SIZEpx 'Barlow Condensed', sans-serif", 700, W - 60); o.font = `900 ${fs}px 'Barlow Condensed', sans-serif`; const SY = tall / (fs * .7); o.scale(1, SY);
-    for (let dd = depth; dd >= 1; dd--) { o.fillStyle = dd > depth * .6 ? "#4E0A0E" : "#8E1219"; o.fillText("ROASTED.", dd * .45, dd / SY); }
-    const rg = o.createLinearGradient(0, -fs * .72, 0, 0); rg.addColorStop(0, "#F5414B"); rg.addColorStop(.5, "#D31F28"); rg.addColorStop(1, "#B01A22"); o.fillStyle = rg;
+    for (let dd = depth; dd >= 1; dd--) { o.fillStyle = dd > depth * .6 ? T.deep[0] : T.deep[1]; o.fillText("ROASTED.", dd * .45, dd / SY); }
+    const rg = o.createLinearGradient(0, -fs * .72, 0, 0); rg.addColorStop(0, T.head[0]); rg.addColorStop(.5, T.head[1]); rg.addColorStop(1, T.head[2]); o.fillStyle = rg;
     o.shadowColor = "rgba(60,0,8,.3)"; o.shadowBlur = 26; o.shadowOffsetY = 26; o.fillText("ROASTED.", 0, 0); o.shadowColor = "transparent";
-    o.lineWidth = 3; o.strokeStyle = "rgba(255,255,255,.55)"; o.strokeText("ROASTED.", -2, -3 / SY); o.restore();
+    o.lineWidth = 3; o.strokeStyle = T.edge; o.strokeText("ROASTED.", -2, -3 / SY); o.restore();
     // plain red diagonal with a blue and a cream edge
     const g = o.createLinearGradient(0, 760, 500, 1800); g.addColorStop(0, "#E3252F"); g.addColorStop(1, "#A9181F"); poly([[0, 1090], [W, 790], [W, H], [0, H]], g);
     poly([[0, 1062], [W, 762], [W, 776], [0, 1076]], BLUE); poly([[0, 1076], [W, 776], [W, 790], [0, 1090]], CREAM);

@@ -67,8 +67,11 @@ export const config = {
     terms: env("COUPON_TERMS", "Valid at Wendy's Sri Lanka outlets during the launch period. One use per code."),
   },
   sms: {
-    provider: env("SMS_PROVIDER", "console"),  // console | notifylk | shoutout | dialog | http
-    senderId: env("SMS_SENDER_ID", "Wendys"), // needs TRAI/operator approval in SL
+    provider: env("SMS_PROVIDER", "console"),  // console | textware | notifylk | shoutout | dialog | http
+    senderId: env("SMS_SENDER_ID", "WENDYS"), // the sender name registered with the SMS provider
+    textwareUser: env("TEXTWARE_USER", ""),
+    textwarePass: env("TEXTWARE_PASS", ""),
+    textwareUrl: env("TEXTWARE_URL", "https://msg.text-ware.com/send_sms.php"),
     notifyUserId: env("NOTIFYLK_USER_ID", ""),
     notifyApiKey: env("NOTIFYLK_API_KEY", ""),
     shoutoutApiKey: env("SHOUTOUT_API_KEY", ""),

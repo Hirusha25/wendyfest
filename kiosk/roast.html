@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
-<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwxswwlb" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwxtkdwx" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Roast Me · Wendy Fest</title><link rel="icon" href="../assets/cameo.png"><link rel="manifest" href="../assets/roast.webmanifest"><meta name="theme-color" content="#1593D6"><meta name="mobile-web-app-capable" content="yes">
-<link rel="stylesheet" href="../css/brand.css?v=mwxswwlb"><link rel="stylesheet" href="../css/kiosk.css?v=mwxswwlb">
+<link rel="stylesheet" href="../css/brand.css?v=mwxtkdwx"><link rel="stylesheet" href="../css/kiosk.css?v=mwxtkdwx">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@600;700&family=Barlow+Semi+Condensed:ital,wght@1,900&display=swap" rel="stylesheet">
 <style>
   body.kiosk { background: var(--ink); }
@@ -54,7 +54,10 @@
   #s-idle .strp { left:0; right:0; top:calc(140 * var(--p)); height:calc(27 * var(--p)); background:linear-gradient(180deg, #F6F0E6 0 calc(11 * var(--p)), #CD2028 calc(11 * var(--p)) calc(21 * var(--p)), #F6F0E6 calc(21 * var(--p)) calc(27 * var(--p))); z-index:5; box-shadow:0 calc(8 * var(--p)) calc(20 * var(--p)) rgba(0,0,0,.25); }
   #s-idle .ft { left:0; right:0; bottom:0; height:calc(59 * var(--p)); display:flex; justify-content:space-between; align-items:center; padding:0 calc(93 * var(--p)) 0 calc(120 * var(--p)); background:linear-gradient(90deg, #01679A 0%, #0186B8 38%, #029CD4 72%, #1BB0E6 100%); color:#fff; font:700 calc(20 * var(--p))/1 Poppins; letter-spacing:.14em; text-transform:uppercase; z-index:5; }
   #s-idle .ft .c { display:flex; align-items:center; gap:calc(16 * var(--p)); } #s-idle .ft .c img { height:calc(32 * var(--p)); } #s-idle .ft .lk { display:flex; gap:calc(30 * var(--p)); } #s-idle .ft a { color:#fff; border-bottom:1px solid rgba(255,255,255,.5); }
-  /* WENDY FEST lockup (approved) */
+  /* Wendy Fest logo (the client's final artwork) */
+  #s-idle .hd .brand img.wfl, .chrome .hd .brand img.wfl { height:calc(122 * var(--p)); }
+  .cv .poster .plk img.wfl { height:calc(62 * var(--p)); }
+  /* older text lockup, no longer used */
     #s-idle .wf { display:inline-flex; align-items:flex-start; filter:drop-shadow(0 calc(5 * var(--p)) calc(7 * var(--p)) rgba(0,20,40,.5)); margin-top:calc(-4 * var(--p)); }
   #s-idle .wf .w1, #s-idle .wf .w2 { display:inline-block; font:italic 900 calc(50 * var(--p))/.9 'Barlow Semi Condensed', 'Barlow Condensed', sans-serif; text-transform:uppercase; letter-spacing:.005em; color:#fff; text-shadow:0 calc(2 * var(--p)) 0 rgba(0,0,0,.18); position:relative; }
   #s-idle .wf .w1 { padding:calc(7 * var(--p)) calc(21 * var(--p)) calc(13 * var(--p)) calc(18 * var(--p)); background:linear-gradient(180deg, #D8262F 0 82%, #951620 82%); transform:rotate(-5deg) skewX(-14deg); z-index:1; }
@@ -326,7 +329,7 @@
     :is(#s-idle, .chrome) .hd .brand { gap:calc(26 * var(--p)) !important; }
     :is(#s-idle, .chrome) .hd .brand img { height:calc(70 * var(--p)) !important; }
     :is(#s-idle, .chrome) .hd .brand i { height:calc(56 * var(--p)) !important; }
-    :is(#s-idle, .chrome) .hd .wf .w1, :is(#s-idle, .chrome) .hd .wf .w2 { font-size:calc(44 * var(--p)) !important; }
+    :is(#s-idle, .chrome) .hd .brand img.wfl { height:calc(132 * var(--p)) !important; }
     :is(#s-idle, .chrome) .hd .stp { gap:calc(18 * var(--p)) !important; font-size:calc(26 * var(--p)) !important; }
     :is(#s-idle, .chrome) .hd .stp i { width:calc(62 * var(--p)) !important; height:calc(62 * var(--p)) !important; font-size:calc(34 * var(--p)) !important; }
     :is(#s-idle, .chrome) .strp { top:calc(150 * var(--p)) !important; }
@@ -506,7 +509,7 @@
 <div class="stage">
   <div class="chrome"><div class="s">
     <div class="dots"></div><div class="panel"></div><div class="band"></div><div class="band2"></div>
-    <header class="hd"><div class="brand"><img src="../assets/wendys-horiz-white.svg" alt="Wendy's"><i></i><span class="wf"><span class="w1">Wendy</span><span class="w2">Fest</span></span></div><div class="stp" id="stp"><i id="stp-n">1</i><span id="stp-l">Welcome</span></div></header>
+    <header class="hd"><div class="brand"><img src="../assets/wendys-horiz-white.svg" alt="Wendy's"><i></i><img class="wfl" src="../assets/wendyfest-logo.svg" alt="Wendy Fest"></div><div class="stp" id="stp"><i id="stp-n">1</i><span id="stp-l">Welcome</span></div></header>
     <div class="strp"></div>
     <footer class="ft"><span class="c"><img src="../assets/cameo.png" alt="">© 2026 Wendy’s Sri Lanka</span><span><span id="corner-l">Station A</span> · Roast Me</span><span class="lk"><a>Terms</a><a>Privacy</a></span></footer>
   </div></div>
@@ -523,7 +526,7 @@
     <div class="s">
       <div class="dots"></div><div class="panel"></div><div class="band"></div><div class="band2"></div>
       <div class="art"><div class="wd"><img class="hd0" src="../assets/roast-wendy.png" alt="" onerror="this.parentNode.remove()"><img class="pt" src="../assets/roast-wendy.png" alt=""><i class="lid l"></i><i class="lid r"></i></div></div>
-      <header class="hd"><div class="brand"><img src="../assets/wendys-horiz-white.svg" alt="Wendy's"><i></i><span class="wf"><span class="w1">Wendy</span><span class="w2">Fest</span></span></div><div class="stp"><i>1</i><span>Welcome</span></div></header>
+      <header class="hd"><div class="brand"><img src="../assets/wendys-horiz-white.svg" alt="Wendy's"><i></i><img class="wfl" src="../assets/wendyfest-logo.svg" alt="Wendy Fest"></div><div class="stp"><i>1</i><span>Welcome</span></div></header>
       <div class="strp"></div>
       <div class="title"><span class="l1">Roast</span><span class="l2">Me.</span></div>
       <div class="sub">Fresh takes.<br>Served by <b>Wendy’s.</b></div>
@@ -611,7 +614,7 @@
     <div class="pcard" style="left:calc(800 * var(--p));top:calc(222 * var(--p))"><i class="strap"></i><i class="ptab"></i>
     <div class="poster">
       <div class="pr"></div>
-      <div class="plk"><img src="../assets/wendys-horiz.svg" alt="Wendy's"><i></i><span class="wf"><span class="w1">Wendy</span><span class="w2">Fest</span></span></div>
+      <div class="plk"><img src="../assets/wendys-horiz.svg" alt="Wendy's"><i></i><img class="wfl" src="../assets/wendyfest-logo.svg" alt="Wendy Fest"></div>
       <div class="rst">Roasted.</div>
       <div class="pph"><img id="r-photo" alt=""></div>
       <div class="pband"><div class="pname" id="rp-name"></div><div class="ppunch" id="rp-punch"></div></div>
@@ -635,7 +638,7 @@
 <!-- sounds: effects and Wendy's pre-recorded waiting lines (made with ElevenLabs, in Wendy's voice) -->
 <audio id="sfx-tap" src="../assets/sfx/tap.mp3" preload="auto"></audio><audio id="sfx-key" src="../assets/sfx/key.mp3" preload="auto"></audio><audio id="sfx-delete" src="../assets/sfx/delete.mp3" preload="auto"></audio><audio id="sfx-go" src="../assets/sfx/go.mp3" preload="auto"></audio><audio id="sfx-error" src="../assets/sfx/error.mp3" preload="auto"></audio><audio id="sfx-whoosh" src="../assets/sfx/whoosh.mp3" preload="auto"></audio><audio id="sfx-beep" src="../assets/sfx/beep.mp3" preload="auto"></audio><audio id="sfx-shutter" src="../assets/sfx/shutter.mp3" preload="auto"></audio><audio id="sfx-sizzle" src="../assets/sfx/sizzle.mp3" preload="auto"></audio><audio id="sfx-reveal" src="../assets/sfx/reveal.mp3" preload="auto"></audio>
 <audio id="vo-wait-1" src="../assets/voice/wait-1.mp3" preload="auto"></audio><audio id="vo-wait-2" src="../assets/voice/wait-2.mp3" preload="auto"></audio><audio id="vo-wait-3" src="../assets/voice/wait-3.mp3" preload="auto"></audio><audio id="vo-wait-4" src="../assets/voice/wait-4.mp3" preload="auto"></audio><audio id="vo-wait-5" src="../assets/voice/wait-5.mp3" preload="auto"></audio><audio id="vo-wait-6" src="../assets/voice/wait-6.mp3" preload="auto"></audio><audio id="vo-wait-7" src="../assets/voice/wait-7.mp3" preload="auto"></audio><audio id="vo-wait-8" src="../assets/voice/wait-8.mp3" preload="auto"></audio><audio id="vo-here" src="../assets/voice/here-it-comes.mp3" preload="auto"></audio>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwxswwlb"></script><script src="../js/i18n.js?v=mwxswwlb"></script><script src="../js/kiosk.js"></script><script src="../js/roast-card.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwxtkdwx"></script><script src="../js/i18n.js?v=mwxtkdwx"></script><script src="../js/kiosk.js"></script><script src="../js/roast-card.js"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let guest = null, stream = null, glang = "en", R = null, BASE = location.origin;

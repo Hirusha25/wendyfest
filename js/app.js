@@ -105,16 +105,10 @@ window.renderRoastCard = async (r, lang) => {
   const redG = () => { const g = ctx.createLinearGradient(0, 900, 300, 1920); g.addColorStop(0, "#D92530"); g.addColorStop(1, "#B81C24"); return g; };
   ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, W, H);
   poly([[0, 1120], [W, 860], [W, H], [0, H]], redG());
-  // top lockup: Wendy's logo | WENDY FEST slabs
+  // top lockup: Wendy's logo | Wendy Fest logo
   try { const logo = await loadImg(location.href.replace(/[#?].*$/, "").replace(/\/(kiosk\/)?[^/]*$/, "") + "/assets/wendys-horiz.svg"); ctx.drawImage(logo, 70, 72, 300, 300 * (logo.height / logo.width)); } catch {}
   ctx.fillStyle = "rgba(0,0,0,.18)"; ctx.fillRect(404, 70, 4, 88);
-  const slab = (txt, x, y, top, bot) => {
-    ctx.save(); ctx.translate(x, y); ctx.rotate(-5 * Math.PI / 180); ctx.transform(1, 0, -0.25, 1, 0, 0);
-    ctx.font = "italic 900 58px 'Barlow Semi Condensed', 'Barlow Condensed', Poppins, sans-serif"; const w = ctx.measureText(txt).width + 44;
-    ctx.fillStyle = bot; ctx.fillRect(0, 0, w, 82); ctx.fillStyle = top; ctx.fillRect(0, 0, w, 68);
-    ctx.fillStyle = "#fff"; ctx.textBaseline = "middle"; ctx.fillText(txt, 22, 36); ctx.restore(); return w;
-  };
-  const w1 = slab("WENDY", 446, 82, "#D8262F", "#951620"); slab("FEST", 446 + w1 - 30, 100, "#2BA9E1", "#01679A");
+  try { const fest = await loadImg(location.href.replace(/[#?].*$/, "").replace(/\/(kiosk\/)?[^/]*$/, "") + "/assets/wendyfest-logo.png"); const fh = 150; ctx.drawImage(fest, 440, 116 - fh / 2, fh * fest.width / fest.height, fh); } catch {}   // the final Wendy Fest logo
   // ROASTED.
   let rs = 250; ctx.font = DISPLAY(rs); while (ctx.measureText("ROASTED.").width > 960 && rs > 120) { rs -= 6; ctx.font = DISPLAY(rs); }
   ctx.textAlign = "center"; ctx.fillStyle = "#7E1016"; ctx.fillText("ROASTED.", W / 2, 440 + 9); ctx.fillStyle = C.red; ctx.fillText("ROASTED.", W / 2, 440); ctx.textAlign = "left";

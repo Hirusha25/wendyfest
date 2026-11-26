@@ -28,6 +28,25 @@ window.K = {
     return kb;
   },
 };
+// Install to the kiosk's home screen: Chrome offers it once per page (beforeinstallprompt). Staff only: the button shows
+// on the PIN and station-picker screens, never to guests. If Chrome does not offer it, use Chrome menu > Add to Home screen.
+{
+  let offer = null, btn = null;
+  const staffScreen = () => !!document.querySelector("#s-pin.on, #s-pick.on");
+  const paint = () => { if (btn) btn.style.display = offer && staffScreen() ? "block" : "none"; };
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault(); offer = e;
+    if (!btn) {
+      btn = document.createElement("button"); btn.id = "k-install"; btn.type = "button"; btn.textContent = "Add to home screen";
+      btn.style.cssText = "position:fixed;right:3vmin;bottom:9vmin;z-index:200;display:none;padding:2vmin 3.4vmin;border-radius:10vmin;border:.4vmin solid #fff;background:#1F1A1A;color:#fff;font:800 2.6vmin Poppins,system-ui,sans-serif;box-shadow:0 1vmin 0 #000,0 2vmin 3vmin rgba(0,0,0,.35)";
+      btn.onclick = async () => { if (!offer) return; offer.prompt(); try { await offer.userChoice; } catch {} offer = null; paint(); };
+      document.body.appendChild(btn);
+    }
+    paint();
+  });
+  window.addEventListener("appinstalled", () => { offer = null; paint(); });
+  document.addEventListener("screen", paint);
+}
 // Global keyboard: Enter submits visible code inputs; Esc goes home; F = fullscreen; S = settings
 document.addEventListener("keydown", (e) => {
   if (e.key === "f" && !e.target.matches("input,select,textarea")) { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => {}); }

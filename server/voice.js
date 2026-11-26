@@ -26,9 +26,27 @@ async function speak(token, text) {
   return true;
 }
 
-// Starts making the voice-over. Returns straight away.
-export function startVoice(token, text) {
-  const say = String(text || "").replace(/\s+/g, " ").trim().slice(0, 700);
+// Delivery directions the voice model may be given. Anything else in square brackets is dropped.
+const DIRECTIONS = ["playfully sarcastic", "teasing", "smug", "deadpan", "mock impressed", "amused", "cheerfully", "warmly", "chuckles", "short pause"];
+const lettersOnly = (s) => String(s || "").toLowerCase().replace(/\[[^\]]*\]/g, " ").replace(/[^a-z0-9]+/g, " ").trim();
+const takesDirections = () => /^eleven_v[3-9]/.test(config.voice.model);
+
+// What Wendy actually says. The roast writer supplies a script with directions like [teasing]; it is used only if,
+// with the directions removed, it is word for word the roast on the screen. Otherwise a simple standard delivery is used.
+export function speakable(text, script) {
+  const plain = String(text || "").replace(/\s+/g, " ").trim().slice(0, 700);
+  if (!plain || !takesDirections()) return plain;
+  const cleaned = String(script || "").replace(/\[([^\]]*)\]/g, (m, d) => DIRECTIONS.includes(d.trim().toLowerCase()) ? `[${d.trim().toLowerCase()}]` : " ").replace(/\s+/g, " ").trim();
+  if (cleaned.includes("[") && lettersOnly(cleaned) === lettersOnly(plain)) return cleaned.slice(0, 900);
+  // standard delivery: tease through the roast, warm on the last sentence
+  const parts = plain.match(/[^.!?]+[.!?]+["”']?\s*|[^.!?]+$/g) || [plain];
+  if (parts.length < 2) return `[playfully sarcastic] ${plain}`;
+  return `[playfully sarcastic] ${parts.slice(0, -1).join("").trim()} [warmly] ${parts[parts.length - 1].trim()}`;
+}
+
+// Starts making the voice-over. Returns straight away. `script` is the roast writer's version with delivery directions.
+export function startVoice(token, text, script) {
+  const say = speakable(text, script);
   if (!voiceEnabled() || !say) return;
   const job = speak(token, say).catch((e) => { console.error("Roast voice-over failed:", e?.message || e); return false; }).finally(() => pending.delete(token));
   pending.set(token, job);

@@ -54,8 +54,8 @@ export const config = {
   voice: {
     apiKey: env("ELEVENLABS_API_KEY", ""),
     voiceId: env("ELEVENLABS_VOICE_ID", ""),
-    model: env("ELEVENLABS_MODEL", "eleven_multilingual_v2"),
-    stability: Number(env("ELEVENLABS_STABILITY", 0.4)),   // lower = more expressive
+    model: env("ELEVENLABS_MODEL", "eleven_v4"),             // v3 and v4 follow delivery directions like [teasing]
+    stability: Number(env("ELEVENLABS_STABILITY", 0.5)),   // lower = more expressive
     style: Number(env("ELEVENLABS_STYLE", 0.45)),          // higher = more character
     sttModel: env("ELEVENLABS_STT_MODEL", "scribe_v1"),    // Scream & Win: hears the word on the server; "off" turns it off
     baseUrl: env("ELEVENLABS_URL", "https://api.elevenlabs.io").replace(/\/+$/, ""),

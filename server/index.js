@@ -300,7 +300,7 @@ app.post("/api/kiosk/roast", requirePin("kiosk"), async (req, res) => {
       JSON.stringify(result.observations || []), result.vibe || null, result.model || null, result.fallback ? 1 : 0, 1, station || null);
   const r = db.prepare("SELECT * FROM roasts WHERE token = ?").get(rtoken);
   sendSms(p.phone, templates(p.lang).roast(p.name.split(" ")[0], roastUrl(r)));
-  startVoice(rtoken, result.roast.en);   // English voice-over, made in the background
+  startVoice(rtoken, result.roast.en, result.voice);   // English voice-over, made in the background
   res.json({ token: rtoken, url: roastUrl(r), name: p.name.split(" ")[0], lang: p.lang, title: result.title, roast: result.roast, vibe: result.vibe, fallback: !!result.fallback, photo: `/api/roast/${rtoken}/photo`, audio: voiceEnabled() ? `/api/roast/${rtoken}/audio` : null });
 });
 

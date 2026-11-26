@@ -63,7 +63,7 @@ The event kiosk is a 1080 x 1920 upright touch screen. `public/kiosk/roast.html`
 
 - That block is generated. Edit the rules in `scripts/roast-portrait-css.py`, then run `python scripts/roast-portrait-css.py public/kiosk/roast.html`. Do not hand-edit the block.
 - `kiosk-check.mjs` only covers the wide layout. For the upright one, walk the flow in a 1080 x 1920 browser window and check English, Sinhala and Tamil.
-- Roasts are two short billboard-style lines (8 to 18 words). The English roast can be voiced with ElevenLabs (`server/voice.js`); it needs `ELEVENLABS_API_KEY` and `ELEVENLABS_VOICE_ID`, and is skipped without them.
+- Roasts are two short billboard-style lines (8 to 18 words). The English roast can be voiced with ElevenLabs (`server/voice.js`); it needs `ELEVENLABS_API_KEY` and `ELEVENLABS_VOICE_ID`, and is skipped without them. The voice model is `eleven_v4`, which follows delivery directions in square brackets; the roast writer returns a `voice` script with them, and `speakable()` in `server/voice.js` only uses it when its words match the roast on screen (allowed directions are listed there).
 
 ## Kiosk install and the speech check
 

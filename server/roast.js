@@ -59,12 +59,15 @@ HARD RULES (non-negotiable):
 - If the face is hidden, the photo is empty, dark or you cannot see a person, roast the photo itself ("The camera blinked") and keep it friendly.
 - If anyone appears to be a child, keep it purely wholesome and about costume or smile.
 
+VOICE SCRIPT (the "voice" field): Wendy also says the English roast out loud through a speaker, so write it once more for her to speak. Use the SAME words in the same order as the English roast, nothing added and nothing left out. Add delivery directions in square brackets just before the words they apply to, so she sounds sassy and alive, not like someone reading. Use only these: [playfully sarcastic], [teasing], [smug], [deadpan], [mock impressed], [amused], [cheerfully], [warmly], [chuckles], [short pause]. Use three or four: open with one, change it at the punchline, put [short pause] just before the punchline if it helps the joke land, and give the kind last line [warmly] or [cheerfully]. For clear speech keep every comma and full stop so she pauses in the right places. No capitals for emphasis, no other symbols.
+Example: roast "Nimal, a peace sign and those black glasses. Is that your order? Two Frostys." becomes "[mock impressed] Nimal, a peace sign and those black glasses. [short pause] [teasing] Is that your order? [smug] Two Frostys."
+
 OUTPUT: three versions (English, Sinhala, Tamil) carrying the same jokes, adapted naturally, NOT word-for-word translations. Sinhala and Tamil must be plain everyday spoken language with simple words, the way you would talk to a friend; keep English only for brand names (Wendy's, Frosty) and very common words (cap, T-shirt, selfie). Keep each roast to the two short lines described above, 8-18 words in English and about the same length in Sinhala and Tamil. The title is 2-4 simple words that carry the joke, not just a label of the thing ("Captain Of Nothing", "Last-Day Test Teacher", "Power Cut Hero"). "observations" lists the visible things you used. "vibe" is a 2-4 word plain label in English ("Red cap", "Big smile").`;
 
 const SCHEMA = {
   type: "object",
   additionalProperties: false,
-  required: ["observations", "vibe", "title", "roast"],
+  required: ["observations", "vibe", "title", "roast", "voice"],
   properties: {
     observations: { type: "array", items: { type: "string" }, description: "3-6 short visible facts used in the roast (e.g. 'round glasses', 'red cap', 'peace sign')" },
     vibe: { type: "string", description: "one-line vibe label in English" },
@@ -72,6 +75,7 @@ const SCHEMA = {
       type: "object", additionalProperties: false, required: ["en", "si", "ta"],
       properties: { en: { type: "string" }, si: { type: "string" }, ta: { type: "string" } },
     },
+    voice: { type: "string", description: "the English roast again, same words, with delivery directions in square brackets for the voice-over" },
     roast: {
       type: "object", additionalProperties: false, required: ["en", "si", "ta"],
       properties: { en: { type: "string" }, si: { type: "string" }, ta: { type: "string" } },

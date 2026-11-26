@@ -14,6 +14,8 @@ const SFX = {
   beep: ["single short game show countdown beep, clear mid tone", 0.5],
   shutter: ["camera shutter click with a quick flash pop", 0.8],
   sizzle: ["burger patty sizzling steadily on a hot flat grill, close up, constant, no music, no voices", 6],
+  win: ["short triumphant winning fanfare, bright brass with sparkling chimes, game show jackpot", 2.5],
+  lose: ["playful sad trombone, three descending wah notes, short and comedic", 1.8],
   reveal: ["short snare drum roll building for one second, then a bright ta-da brass fanfare hit with a cymbal crash, game show reveal", 3],
 };
 const WAIT = [

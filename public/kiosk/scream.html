@@ -609,6 +609,8 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   </aside>
 </div>
 
+<!-- sounds (made with ElevenLabs; the same set as Roast Me) -->
+<audio id="sfx-tap" src="/assets/sfx/tap.mp3" preload="auto"></audio><audio id="sfx-key" src="/assets/sfx/key.mp3" preload="auto"></audio><audio id="sfx-delete" src="/assets/sfx/delete.mp3" preload="auto"></audio><audio id="sfx-go" src="/assets/sfx/go.mp3" preload="auto"></audio><audio id="sfx-error" src="/assets/sfx/error.mp3" preload="auto"></audio><audio id="sfx-whoosh" src="/assets/sfx/whoosh.mp3" preload="auto"></audio><audio id="sfx-beep" src="/assets/sfx/beep.mp3" preload="auto"></audio><audio id="sfx-win" src="/assets/sfx/win.mp3" preload="auto"></audio><audio id="sfx-lose" src="/assets/sfx/lose.mp3" preload="auto"></audio>
 <script src="/js/kiosk.js"></script>
 <script>
   const $ = (id) => document.getElementById(id);
@@ -788,31 +790,21 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     ctx.lineWidth = 2.5 * fd; ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(px - 34 * U, py); ctx.lineTo(tip.x, tip.y); ctx.stroke();
     ctx.fillStyle = "#CD2028"; ctx.beginPath(); ctx.arc(tip.x, tip.y, 6 * fd, 0, 7); ctx.fill();
   }
-  // ---------- sound effects (Web Audio, synthesized; silent while the mic is scoring) ----------
+  // ---------- sound effects (short sound files made with ElevenLabs, the same set as Roast Me; silent while the mic is scoring) ----------
   const SFX = (() => {
-    let ac = null, master = null; const on = () => (localStorage.getItem("wf_sfx") || "on") === "on";
-    const ctx = () => { if (!ac) { ac = new (window.AudioContext || window.webkitAudioContext)(); master = ac.createGain(); master.gain.value = .5; master.connect(ac.destination); } if (ac.state === "suspended") ac.resume(); return ac; };
-    const tone = (f, t0, d, { type = "sine", vol = .5, to = null, attack = .005 } = {}) => { const a = ctx(), o = a.createOscillator(), g = a.createGain(), t = a.currentTime + t0;
-      o.type = type; o.frequency.setValueAtTime(f, t); if (to) o.frequency.exponentialRampToValueAtTime(to, t + d);
-      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + attack); g.gain.exponentialRampToValueAtTime(.0001, t + d); o.connect(g).connect(master); o.start(t); o.stop(t + d + .05); };
-    const noise = (t0, d, { vol = .3, from = 800, to = 3000, q = .8 } = {}) => { const a = ctx(), n = a.sampleRate * d, b = a.createBuffer(1, n, a.sampleRate), x = b.getChannelData(0); for (let i = 0; i < n; i++) x[i] = Math.random() * 2 - 1;
-      const src = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain(), t = a.currentTime + t0; src.buffer = b; f.type = "bandpass"; f.Q.value = q;
-      f.frequency.setValueAtTime(from, t); f.frequency.exponentialRampToValueAtTime(to, t + d); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + d * .3); g.gain.exponentialRampToValueAtTime(.0001, t + d);
-      src.connect(f).connect(g).connect(master); src.start(t); src.stop(t + d + .05); };
-    const play = (fn) => { if (!on() || windowOpen) return; try { fn(); } catch {} };
+    const on = () => (localStorage.getItem("wf_sfx") || "on") === "on", live = new Set();
+    const fire = (name, vol = .5, rate = 1) => { if (!on() || windowOpen) return; const a = $("sfx-" + name); if (!a) return;
+      try { const c = a.cloneNode(); c.volume = vol; c.preservesPitch = false; c.playbackRate = rate; live.add(c); c.onended = () => live.delete(c); c.play().catch(() => live.delete(c)); } catch {} };
     return {
-      whoosh: () => play(() => noise(0, .32, { vol: .22, from: 500, to: 3200 })),
-      click: () => play(() => tone(1500, 0, .045, { type: "triangle", vol: .22 })),
-      tick: () => play(() => { tone(660, 0, .22, { type: "square", vol: .16 }); tone(1320, 0, .12, { vol: .1 }); }),
-      last: () => play(() => { tone(990, 0, .3, { type: "square", vol: .18 }); tone(1980, 0, .16, { vol: .1 }); }),
-      go: () => play(() => { [523, 659, 784].forEach((f) => tone(f, 0, .55, { type: "sawtooth", vol: .1, attack: .02 })); tone(1046, .05, .5, { type: "square", vol: .08 }); noise(0, .4, { vol: .12, from: 2000, to: 6000 }); }),
-      voice: () => play(() => { tone(880, 0, .12, { vol: .2 }); tone(1320, .1, .18, { vol: .2 }); }),
-      win: () => play(() => { [[523, 0], [659, .12], [784, .24], [1046, .36]].forEach(([f, t]) => tone(f, t, .35, { type: "square", vol: .12 })); [523, 659, 784, 1046].forEach((f) => tone(f, .5, 1.1, { type: "sawtooth", vol: .06, attack: .03 })); noise(.48, .9, { vol: .1, from: 3000, to: 8000, q: .5 }); }),
-      lose: () => play(() => { tone(392, 0, .35, { type: "triangle", vol: .22, to: 370 }); tone(330, .32, .6, { type: "triangle", vol: .22, to: 262 }); }),
-      error: () => play(() => { tone(220, 0, .14, { type: "square", vol: .14 }); tone(185, .14, .2, { type: "square", vol: .14 }); }),
-      unlock: () => { try { ctx(); } catch {} },
+      whoosh: () => fire("whoosh", .3), click: () => fire("key", .45), bksp: () => fire("delete", .5), tap: () => fire("tap", .55),
+      tick: () => fire("beep", .6), last: () => fire("beep", .65, 1.25), go: () => fire("beep", .7, 1.7),
+      voice: () => fire("go", .45), win: () => fire("win", .8), lose: () => fire("lose", .6), error: () => fire("error", .5),
+      hush: () => { live.forEach((c) => { try { c.pause(); } catch {} }); live.clear(); },   // nothing may still be sounding when the mic starts scoring
+      unlock: () => {},
     };
   })();
+  // a tap sound on every button outside the keypad (keypad keys have their own)
+  document.addEventListener("pointerdown", (e) => { const b = e.target.closest && e.target.closest("button"); if (b && !b.disabled && !b.closest("#kbd")) SFX.tap(); }, true);
   $("sfx-mode").value = localStorage.getItem("wf_sfx") || "on"; $("sfx-mode").onchange = () => { localStorage.setItem("wf_sfx", $("sfx-mode").value); SFX.click(); };
   addEventListener("pointerdown", SFX.unlock, { once: true }); addEventListener("keydown", SFX.unlock, { once: true });
   // ---------- mic check: listen for a voice (e.g. "Hello"), then start automatically ----------
@@ -986,7 +978,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   const SVG_BKSP = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M21 5H9l-6.5 7L9 19h12z"/><path d="M12.5 9.5l5 5M17.5 9.5l-5 5"/></svg>';
   const typeKey = (k) => { if (codeEl.value.length < 6) { codeEl.value += k; paintBoxes(); } K.resetIdle(60000, goIdle); };
   const krow = (cls) => { const r = document.createElement("div"); r.className = "krow " + cls; $("kbd").appendChild(r); return r; };
-  const key = (r, label, fn, cls = "") => { const b = document.createElement("button"); b.className = cls; b.innerHTML = label; b.onclick = (e) => { SFX.click(); fn(e); }; r.appendChild(b); return b; };
+  const key = (r, label, fn, cls = "") => { const b = document.createElement("button"); b.className = cls; b.innerHTML = label; b.onclick = (e) => { cls === "bksp" ? SFX.bksp() : SFX.click(); fn(e); }; r.appendChild(b); return b; };
   const r1 = krow("r1"), r2 = krow("r2"), r3 = krow("r3"), r4 = krow("r4");
   const r1keys = [..."QWERTYUIOP"].map((k) => key(r1, k, (e) => typeKey(e.currentTarget.textContent)));
   [..."ASDFGHJKL"].forEach((k) => key(r2, k, () => typeKey(k)));
@@ -1033,7 +1025,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     }
     $("go-count").style.display = "none"; $("go-meter").style.display = "block"; setStep("5", "Live"); fitText(); enter($("go-meter"));
     SFX.go(); await wait(320);
-    peakDb = -100; SUS = []; susDb = -100; gaugeShown = 0; resetHold(); SD.frames = 0; SD.clip = 0; windowOpen = true; mode = "scream";
+    peakDb = -100; SUS = []; susDb = -100; gaugeShown = 0; resetHold(); SD.frames = 0; SD.clip = 0; SFX.hush(); windowOpen = true; mode = "scream";
     const dur = CFG.scream.durationMs || 5000, t0 = performance.now();   // ends early once the word is heard and the guest has stopped holding the note
     $("tdur").textContent = Math.round(dur / 1000);
     while (performance.now() - t0 < dur) {

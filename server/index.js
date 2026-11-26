@@ -8,6 +8,7 @@ import { shortCode, token, normalisePhone, judgeScream, rivalCheck, clamp, csvEs
 import { sendSms, templates } from "./sms.js";
 import { generateRoast, generateTeasers } from "./roast.js";
 import { screamSass } from "./sass.js";
+import { hear, hearEnabled } from "./hear.js";
 import { startVoice, voiceEnabled, voiceReady, voiceFile } from "./voice.js";
 
 const app = express();
@@ -90,7 +91,7 @@ app.get("/admin", (req, res) => res.sendFile(page("admin.html")));
 
 // ---------- config for the front end ----------
 app.get("/api/config", (req, res) => {
-  res.json({ baseUrl: config.baseUrl, coupon: couponSettings(), scream: screamSettings(), roast: { attemptsPerPerson: roastSettings().attemptsPerPerson } });
+  res.json({ baseUrl: config.baseUrl, coupon: couponSettings(), scream: { ...screamSettings(), stt: hearEnabled() }, roast: { attemptsPerPerson: roastSettings().attemptsPerPerson } });
 });
 
 // QR as SVG
@@ -216,6 +217,17 @@ app.post("/api/kiosk/lookup", requirePin("kiosk"), (req, res) => {
     roastsUsed: isDemo(p) ? 0 : roasts.length, roastsLeft: isDemo(p) ? 1 : Math.max(0, roastSettings().attemptsPerPerson - roasts.length),
     alreadyWon: !isDemo(p) && screams.some((s) => s.won), profileUrl: profileUrl(p),
   });
+});
+
+// The kiosk sends the recorded scream; we answer with the words heard. Never fails the round: no words just means "ask Chrome or the host".
+app.post("/api/kiosk/hear", requirePin("kiosk"), async (req, res) => {
+  if (!hearEnabled()) return res.json({ text: "", error: "off" });
+  const t0 = Date.now();
+  try {
+    const audio = Buffer.from(String(req.body?.audio || ""), "base64");
+    if (audio.length < 800 || audio.length > 4_000_000) return res.json({ text: "", error: "bad-audio" });
+    res.json({ text: await hear(audio, req.body?.mime), ms: Date.now() - t0 });
+  } catch (e) { console.error("Scream speech-to-text failed:", e?.message || e); res.json({ text: "", error: String(e?.name === "TimeoutError" ? "timeout" : "failed"), ms: Date.now() - t0 }); }
 });
 
 app.post("/api/kiosk/scream", requirePin("kiosk"), async (req, res) => {

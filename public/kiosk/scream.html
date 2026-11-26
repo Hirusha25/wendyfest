@@ -380,6 +380,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   .foot { height:calc(60 * var(--u)) !important; padding:0 calc(56 * var(--u)) !important; font-size:calc(18 * var(--u)) !important; }
   .foot .c img { height:calc(32 * var(--u)) !important; }
   .screen { bottom:calc(60 * var(--u)) !important; }
+  .screen.on::before { content:'' !important; position:absolute !important; inset:0 !important; pointer-events:none !important; z-index:0 !important; background:repeating-conic-gradient(from 0deg at 50% 46%, rgba(255,255,255,.055) 0 6deg, transparent 6deg 12deg) !important; -webkit-mask:radial-gradient(circle at 50% 46%, transparent 0 calc(260 * var(--u)), #000 calc(520 * var(--u)), transparent calc(1150 * var(--u))) !important; mask:radial-gradient(circle at 50% 46%, transparent 0 calc(260 * var(--u)), #000 calc(520 * var(--u)), transparent calc(1150 * var(--u))) !important; }
   .idle.on { top:calc(105 * var(--v)) !important; bottom:calc(60 * var(--u)) !important; }
   .texB i.tr { top:calc(105 * var(--v) + calc(20 * var(--u))) !important; }
   .texB i.bl { bottom:calc(60 * var(--u)) !important; }
@@ -599,7 +600,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     <label>Microphone (this screen)</label><select id="mic"></select>
     <label>Live level</label><div class="lvl"><div id="lvl-set"></div></div><div id="db-set" style="margin-top:.6vmin">— dB</div>
     <label>Sound effects</label><select id="sfx-mode"><option value="on">On</option><option value="off">Off</option></select>
-    <label>Clarity scoring</label><select id="judge-mode"><option value="auto">Auto (speech recognition, Chrome + internet)</option><option value="host">Host judges after each scream</option></select><div id="sr-status" style="margin-top:.6vmin;opacity:.8">Last speech check: none yet</div>
+    <label>Clarity scoring</label><select id="judge-mode"><option value="auto">Auto (speech recognition, needs internet)</option><option value="host">Host judges after each scream</option></select><div id="sr-status" style="margin-top:.6vmin;opacity:.8">Last speech check: none yet</div>
     <label>Scoring (from admin)</label><div id="thr-info">—</div>
     <p style="opacity:.7;margin-top:2vmin">Calibrate: have a staff member scream at the real distance. Their peak should land near 100. Adjust dB floor/ceiling in Admin if screams never reach it or always do.</p>
     <button class="btn ghost" style="margin-top:2vmin;height:5.6vmin;font-size:1.9vmin" onclick="document.getElementById('settings').classList.remove('open')">Close</button>
@@ -922,7 +923,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   function speechDiag() {
     let mic = "", micDefault = null; try { const tr = stream && stream.getAudioTracks()[0]; if (tr) { mic = (tr.label || "").slice(0, 60); const id = (tr.getSettings() || {}).deviceId; micDefault = id === "default" || /^default/i.test(tr.label || "") || !localStorage.getItem("wf_mic_" + K.station); } } catch {}
     const ua = navigator.userAgent, os = /Android/.test(ua) ? "Android" : /Windows/.test(ua) ? "Windows" : /Mac/.test(ua) ? "Mac" : /Linux/.test(ua) ? "Linux" : "other", ch = (ua.match(/Chrome\/(\d+)/) || [])[1] || "";
-    return { route: judgeRoute, sr: !!(window.SpeechRecognition || window.webkitSpeechRecognition), got: recogGot, err: recogErr, errs: SD.errs.slice(0, 6), starts: SD.starts, ends: SD.ends, results: SD.results, firstMs: SD.firstMs, clipPct: clipPct(), mic, micDefault, os, chrome: ch, online: navigator.onLine };
+    return { route: judgeRoute, sr: !!(window.SpeechRecognition || window.webkitSpeechRecognition), got: recogGot, err: recogErr, errs: SD.errs.slice(0, 6), starts: SD.starts, ends: SD.ends, results: SD.results, firstMs: SD.firstMs, clipPct: clipPct(), mic, micDefault, os, chrome: ch, online: navigator.onLine, stt: STT.used || STT.err ? { ms: STT.ms, err: STT.err, text: STT.text.slice(0, 60), chrome: STT.chrome.slice(0, 60), kb: Math.round(STT.bytes / 1024) } : null };
   }
   const WITH_S_RE = /\b(w|v)h?[aei]nd(ys|ies|is|ees|eez|yz|es)\b|\bwhen ?these\b|\bwendy is\b/i;
   const NO_S_RE = /\b(w|v)h?[aei]nd(y|i|ee|ie)\b/i;
@@ -935,6 +936,30 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     const firstIsS = w >= 0 && (n < 0 || w <= n);                   // only the first attempt at the word counts
     if (firstIsS) { heardAt = performance.now(); $("heard").classList.add("got"); $("listen-pill").classList.add("got"); $("listen-wendy").classList.add("got"); $("listen-l").textContent = "Heard it!"; }
     else if (n >= 0) { heardAt = performance.now(); $("heard").classList.add("miss"); $("listen-pill").classList.add("miss"); $("listen-l").textContent = "Missed the S!"; }
+  }
+  // ---------- server hearing ----------
+  // Chrome's speech recognition hears nothing on the Android kiosk (it cannot share the mic with the meter), so the scream is also
+  // recorded here and sent to our server to be turned into words. Used only when the server says it can (CFG.scream.stt).
+  let rec = null, recChunks = [], STT = { used: false, ms: null, err: "", text: "", chrome: "", bytes: 0 };
+  function startRec() {
+    rec = null; recChunks = []; STT = { used: false, ms: null, err: "", text: "", chrome: "", bytes: 0 };
+    if (!CFG.scream.stt || $("judge-mode").value === "host" || !stream || !window.MediaRecorder) return;
+    try { const type = ["audio/webm;codecs=opus", "audio/webm", "audio/mp4"].find((t) => MediaRecorder.isTypeSupported(t)); rec = new MediaRecorder(stream, type ? { mimeType: type, audioBitsPerSecond: 48000 } : undefined); rec.ondataavailable = (e) => { if (e.data && e.data.size) recChunks.push(e.data); }; rec.start(); }
+    catch (e) { rec = null; STT.err = "record-failed"; }
+  }
+  async function hearOnServer() {
+    if (!rec) return; STT.used = true; STT.chrome = transcript; const t0 = performance.now();
+    try {
+      await new Promise((res) => { rec.onstop = res; try { rec.stop(); } catch { res(); } setTimeout(res, 1200); });
+      const blob = new Blob(recChunks, { type: rec.mimeType || "audio/webm" }); STT.bytes = blob.size; if (blob.size < 800) throw new Error("empty");
+      const b64 = await new Promise((res, rej) => { const fr = new FileReader(); fr.onload = () => res(String(fr.result).split(",")[1] || ""); fr.onerror = rej; fr.readAsDataURL(blob); });
+      const r = await Promise.race([K.api("/api/kiosk/hear", { audio: b64, mime: blob.type }), new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), 9000))]);
+      STT.text = (r && r.text) || ""; STT.err = (r && r.error) || "";
+    } catch (e) { STT.err = STT.err || String(e.message || "failed").slice(0, 40); }
+    STT.ms = Math.round(performance.now() - t0); rec = null;
+    // Keep whichever heard the word: a clear "Wendy's" from either wins, then a "Wendy", then whatever the server heard.
+    const rank = (t) => { const c = (t || "").toLowerCase().replace(/'/g, ""); return WITH_S_RE.test(c) ? 3 : NO_S_RE.test(c) ? 2 : c.trim() ? 1 : 0; };
+    if (STT.text && rank(STT.text) >= rank(transcript)) { transcript = STT.text; $("trans").textContent = "We heard: " + transcript; showHeard(); }
   }
   function startRecog() {
     transcript = ""; $("trans").textContent = "…"; heardAt = 0; recogErr = ""; recogGot = false; Object.assign(SD, { starts: 0, ends: 0, results: 0, firstMs: null, errs: [], t0: performance.now() }); $("heard").classList.remove("got", "miss"); $("listen-pill").classList.remove("got", "miss"); $("listen-wendy").classList.remove("got"); $("listen-l").textContent = "Listening…"; $("heard-v").textContent = (window.SpeechRecognition || window.webkitSpeechRecognition) && $("judge-mode").value !== "host" ? "…" : "Host will judge";
@@ -951,7 +976,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     try { make(); } catch (e) { recog = null; recogErr = "start-failed"; }
   }
   function stopRecog() { recogWant = false; try { recog && recog.stop(); } catch {} srStatus(); }
-  function srStatus() { const el = $("sr-status"); if (!el) return; el.textContent = "Last speech check: " + (recogErr ? "problem (" + recogErr + ")" : recogGot ? "worked, heard “" + (transcript || "…") + "”" : "heard no words") + (clipPct() >= 15 ? " · mic too loud, the sound was distorting (" + clipPct() + "% of the scream). Turn the mic input down or hold it further away." : ""); }
+  function srStatus() { const el = $("sr-status"); if (!el) return; el.textContent = "Last speech check: " + (recogErr ? "problem (" + recogErr + ")" : recogGot || STT.text ? "worked, heard “" + (transcript || "…") + "”" : "heard no words") + (STT.used ? " · server check: " + (STT.err ? "problem (" + STT.err + ")" : STT.text ? "heard “" + STT.text + "”" : "no words") : "") + (clipPct() >= 15 ? " · mic too loud, the sound was distorting (" + clipPct() + "% of the scream). Turn the mic input down or hold it further away." : ""); }
 
   // ---------- code entry ----------
   const codeEl = $("code");
@@ -1001,7 +1026,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     const dots = [...$("dots").querySelectorAll("span")];
     for (let n = 3; n >= 1; n--) {
       $("cnt").textContent = n; restart($("cnt"), "pop"); n > 1 ? SFX.tick() : SFX.last(); dots.forEach((d, i) => d.classList.toggle("on", i <= 3 - n));
-      if (n === 2) startRecog();
+      if (n === 2) { startRecog(); startRec(); }
       const t0 = performance.now(); while (performance.now() - t0 < 1000) { countPct = ((4 - n) - 1 + (performance.now() - t0) / 1000) / 3 * 100; await wait(16); }
     }
     $("go-count").style.display = "none"; $("go-meter").style.display = "block"; setStep("5", "Live"); fitText(); enter($("go-meter"));
@@ -1014,9 +1039,11 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
       if (heardAt && performance.now() - heardAt > 1300 && performance.now() - t0 > 1500 && holdGap > .7) break; const left = dur - (performance.now() - t0); $("tleft").textContent = (left / 1000).toFixed(1); $("tbar").style.transform = `scaleX(${left / dur})`; await wait(50); }
     $("tleft").textContent = "0.0"; $("tbar").style.transform = "scaleX(0)"; windowOpen = false; setBeat(3); holdRun = holdBest; paintHold(); if (holdBest > holdDay()) { try { localStorage.setItem(holdKey(), holdBest.toFixed(1)); } catch {} }
     await wait(900); stopRecog(); await wait(400);
+    if (rec) { $("listen-l").textContent = "Checking the word…"; await hearOnServer(); srStatus(); }
     // Speech recognition broke, or it heard no words at all although the guest was clearly loud: let the host call it, never fail the guest for the tech.
-    const srDown = !!recogErr && !transcript, deaf = !recogGot && dbToPct(peakDb) >= 45;
-    judgeRoute = $("judge-mode").value === "host" ? "host-mode" : !(window.SpeechRecognition || window.webkitSpeechRecognition) ? "host-no-speech-support" : srDown ? "host-speech-error" : deaf ? "host-no-words" : "auto"; submitting = false;
+    const srOK = !!(window.SpeechRecognition || window.webkitSpeechRecognition), sttOn = STT.used;
+    const srDown = !transcript && (sttOn ? !!STT.err && (!srOK || !!recogErr) : !!recogErr), deaf = !recogGot && !STT.text && dbToPct(peakDb) >= 45;
+    judgeRoute = $("judge-mode").value === "host" ? "host-mode" : !srOK && !sttOn ? "host-no-speech-support" : srDown ? "host-speech-error" : deaf ? "host-no-words" : "auto"; submitting = false;
     if (judgeRoute !== "auto") { K.show("s-judge"); return; }
     submitScream(null);
   };

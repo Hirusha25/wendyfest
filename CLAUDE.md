@@ -73,6 +73,10 @@ The event kiosk is a 1080 x 1920 upright touch screen. `public/kiosk/roast.html`
 
 - Upright Scream & Win only (`.up-only` elements, hidden on the wide layout): count ribbon and "On zero, shout" card on the countdown; on the live screen the Shout / Hold it / Finish chips, the stretched WENDYYYY'S word, the Hold it bar and the two info cards. Hold time is how long the voice stays above `HOLD_LINE` in one go; it is shown, with today's longest kept in this kiosk's localStorage, and does NOT change the score. The round is up to 10 s (`SCREAM_DURATION_MS`, also editable in /admin) and ends early once the word is heard and the guest stops.
 
+- Server hearing: when `ELEVENLABS_API_KEY` is set, the kiosk also records the scream and `POST /api/kiosk/hear` (`server/hear.js`, ElevenLabs speech-to-text) returns the words; the page keeps whichever of Chrome or the server heard the word. This exists because Chrome's speech recognition hears nothing on the Android kiosk. No key, an error or a slow answer falls back to Chrome, then the host. `ELEVENLABS_STT_MODEL=off` turns it off.
+- Every scream saves a `speech` JSON (route to the host, Chrome errors, clipping, mic, device, server hearing result) in `scream_attempts`; read it before guessing why a word was missed.
+- Upright Scream & Win has soft rays behind every screen (`.screen.on::before` in the generator; owner's pick). The wide layout has none.
+
 ## Roast card and guest sign-in
 
 - The share card is drawn by `public/js/roast-card.js` (`roastCard(r, lang)`, 1080 x 1920): the guest is cut out of the photo with MediaPipe in the browser (needs internet the first time; a framed photo is used if it fails). The kiosk reveal screen shows it over the older CSS poster, and the guest page uses it for Download and Share. The owner approved: slanted poster, name on a red tape, roast on cream strips with the last line on blue, no dots on the red.

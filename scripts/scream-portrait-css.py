@@ -22,6 +22,8 @@ rule(".stripeB, .track6", "top:calc(105 * var(--v))")
 rule(".foot", "height:60u; padding:0 56u; font-size:18u")
 rule(".foot .c img", "height:32u")
 rule(".screen", "bottom:60u")
+# soft rays behind every upright screen (owner picked "S2 soft rays", Nov 2026): very light, fades out at the centre and the edges
+rule(".screen.on::before", "content:''; position:absolute; inset:0; pointer-events:none; z-index:0; background:repeating-conic-gradient(from 0deg at 50% 46%, rgba(255,255,255,.055) 0 6deg, transparent 6deg 12deg); -webkit-mask:radial-gradient(circle at 50% 46%, transparent 0 260u, #000 520u, transparent 1150u); mask:radial-gradient(circle at 50% 46%, transparent 0 260u, #000 520u, transparent 1150u)")
 rule(".idle.on", "top:calc(105 * var(--v)); bottom:60u")
 rule(".texB i.tr", "top:calc(105 * var(--v) + 20u)")
 rule(".texB i.bl", "bottom:60u")

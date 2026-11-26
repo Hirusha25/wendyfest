@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
-<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwwvuluo" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwx1n1ov" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Scream & Win · Wendy Fest</title><link rel="icon" href="../assets/cameo.png"><link rel="manifest" href="../assets/scream.webmanifest"><meta name="theme-color" content="#029CD4"><meta name="mobile-web-app-capable" content="yes">
-<link rel="stylesheet" href="../css/brand.css?v=mwwvuluo">
+<link rel="stylesheet" href="../css/brand.css?v=mwx1n1ov">
 <style>
 /* ================= RETRO BLUE (formerly Studio Cream) · Scream & Win ================= */
 :root { --u:min(calc(100vw / 1440), calc(100vh / 760)); --v:var(--u); --blue:#029CD4; --red:#CD2028; --red2:#DA2A33; --red-dark:#8E141B; --ink:#1F1A1A; --cream:#F7F2EC; --blush:#F2D4D7; --cyan:#29C9E0; --line:rgba(205,32,40,.18); }
@@ -104,6 +104,16 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
 #s-ready .box { height:calc(490 * var(--u)); }
 #s-ready .sub2 { top:calc(137 * var(--u)); font:600 calc(34 * var(--u))/1 Poppins, sans-serif; color:#1F1A1A; }
 #s-ready .sub2 b { color:var(--red); font-style:italic; font-weight:900; }
+br.up, .up-only, .up-in { display:none; }
+.ribbon { position:absolute; text-align:center; white-space:nowrap; font:italic 900 calc(30 * var(--u))/1 Poppins, sans-serif; text-transform:uppercase; color:#F6F0E6; background:linear-gradient(180deg, #E0303A, #B51F28); border-top:calc(3 * var(--u)) solid rgba(255,255,255,.55); box-shadow:0 calc(8 * var(--u)) 0 #7A0F16, 0 calc(20 * var(--u)) calc(30 * var(--u)) rgba(0,40,70,.35); transform:skewX(-9deg) rotate(-1.2deg); }
+.shoutcard, .holdcard { position:absolute; box-sizing:border-box; background:rgba(0,50,80,.3); border:calc(2 * var(--u)) solid rgba(255,255,255,.16); }
+.shoutcard { text-align:center; } .shoutcard small { display:block; font:italic 800 calc(20 * var(--u))/1 Poppins, sans-serif; letter-spacing:.22em; text-transform:uppercase; color:#F6F0E6; }
+.shoutcard b, .holdword { font:italic 900 calc(60 * var(--u))/1 Poppins, sans-serif; color:#F6F0E6; text-shadow:0 calc(3 * var(--u)) 0 #A5171F, 0 calc(6 * var(--u)) 0 #7A0F16, 0 calc(14 * var(--u)) calc(22 * var(--u)) rgba(0,40,70,.4); white-space:nowrap; }
+.holdword { position:absolute; text-align:center; } .holdword i { font-style:inherit; transition:color .15s; } .holdword i.f { color:#FF4650; text-shadow:0 calc(3 * var(--u)) 0 #F6F0E6, 0 calc(6 * var(--u)) 0 #7A0F16; }
+.beats { position:absolute; justify-content:center; } .beats span { display:flex; align-items:center; font:italic 900 calc(18 * var(--u))/1 Poppins, sans-serif; letter-spacing:.08em; text-transform:uppercase; color:rgba(246,240,230,.75); background:rgba(0,50,80,.4); border:calc(2 * var(--u)) solid rgba(255,255,255,.2); border-radius:999px; } .beats span i { display:grid; place-items:center; border-radius:50%; font-style:normal; background:rgba(255,255,255,.2); color:#F6F0E6; }
+.beats span.on { background:#F6F0E6; color:#CD2028; border-color:#fff; } .beats span.on i { background:#CD2028; color:#fff; } .beats span.done { background:#CD2028; color:#fff; border-color:rgba(255,255,255,.6); } .beats span.done i { background:#fff; color:#CD2028; }
+.holdcard .top, .holdcard .bot { display:flex; justify-content:space-between; align-items:baseline; } .holdcard .top b { font:italic 900 calc(22 * var(--u))/1 Poppins, sans-serif; letter-spacing:.14em; text-transform:uppercase; color:#F6F0E6; } .holdcard .top > span { font:italic 900 calc(40 * var(--u))/1 Poppins, sans-serif; color:#F6F0E6; text-shadow:0 calc(3 * var(--u)) 0 #A5171F, 0 calc(6 * var(--u)) 0 #7A0F16; }
+.holdcard .hbar { border-radius:999px; background:rgba(0,40,70,.6); border:calc(2 * var(--u)) solid rgba(255,255,255,.7); overflow:hidden; } .holdcard .hbar i { display:block; height:100%; width:0; border-radius:999px; background:repeating-linear-gradient(115deg, #E8323C 0 calc(16 * var(--u)), #C01C26 calc(16 * var(--u)) calc(32 * var(--u))); transition:width .12s linear; } .holdcard .bot small { font:600 calc(16 * var(--u))/1 Poppins, sans-serif; color:rgba(246,240,230,.9); }
 #wave-ready { left:calc(238 * var(--u)); top:calc(177 * var(--u)); width:calc(955 * var(--u)); height:calc(95 * var(--u)); }
 #mic-pill { left:calc(543 * var(--u)); top:calc(301 * var(--u)); width:calc(354 * var(--u)); height:calc(53 * var(--u)); border:calc(2 * var(--u)) solid rgba(205,32,40,.28); }
 #mic-pill .dot { background:var(--cyan); } #mic-pill:not(.ok) .dot { background:var(--red); animation:blink 1s steps(2) infinite; }
@@ -377,94 +387,115 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   .bx .btn { font-size:calc(52 * var(--u)) !important; }
   .bx .btn::after { width:calc(70 * var(--u)) !important; height:calc(70 * var(--u)) !important; right:calc(36 * var(--u)) !important; }
   .bx .pillx { font-size:calc(28 * var(--u)) !important; }
-  .idle .box { height:calc(1560 * var(--u)) !important; }
-  .idle .left { left:0 !important; top:calc(70 * var(--u)) !important; width:calc(1080 * var(--u)) !important; justify-items:center !important; text-align:center !important; }
-  .idle .eyebrow { font-size:calc(26 * var(--u)) !important; margin-left:0 !important; justify-content:center !important; }
-  .idle .h1 { font-size:calc(214 * var(--u)) !important; margin-top:calc(26 * var(--u)) !important; }
-  .idle .sub { font-size:calc(54 * var(--u)) !important; margin-top:calc(36 * var(--u)) !important; }
-  .idle .qrcard { left:calc(315 * var(--u)) !important; top:calc(640 * var(--u)) !important; width:calc(450 * var(--u)) !important; height:calc(486 * var(--u)) !important; padding:calc(26 * var(--u)) calc(26 * var(--u)) calc(20 * var(--u)) !important; border-radius:calc(30 * var(--u)) !important; }
-  .idle .qrcard img { width:calc(370 * var(--u)) !important; height:calc(370 * var(--u)) !important; }
-  .idle .qrcard b { font-size:calc(28 * var(--u)) !important; }
-  .idle .cta-wrap { left:calc(110 * var(--u)) !important; top:calc(1190 * var(--u)) !important; }
-  .idle .btn { width:calc(860 * var(--u)) !important; height:calc(130 * var(--u)) !important; font-size:calc(52 * var(--u)) !important; }
-  .idle .btn::after { width:calc(70 * var(--u)) !important; height:calc(70 * var(--u)) !important; }
-  .idle canvas.wave { left:0 !important; width:calc(1080 * var(--u)) !important; height:calc(230 * var(--u)) !important; }
-  #s-code .box { height:calc(1500 * var(--u)) !important; }
-  #s-code .box > .abs:first-child { left:0 !important; top:calc(30 * var(--u)) !important; width:calc(1080 * var(--u)) !important; text-align:center !important; }
-  #s-code .sub2 { left:0 !important; width:calc(1080 * var(--u)) !important; top:calc(200 * var(--u)) !important; font-size:calc(36 * var(--u)) !important; }
-  .boxes { left:calc(80 * var(--u)) !important; top:calc(340 * var(--u)) !important; gap:calc(16 * var(--u)) !important; }
-  .boxes i { width:calc(140 * var(--u)) !important; height:calc(176 * var(--u)) !important; font-size:calc(104 * var(--u)) !important; border-radius:calc(16 * var(--u)) !important; border-width:calc(4 * var(--u)) !important; }
-  .boxes i.cur:empty::after { height:calc(88 * var(--u)) !important; width:calc(5 * var(--u)) !important; }
-  #s-code .msg { left:0 !important; width:calc(1080 * var(--u)) !important; top:calc(540 * var(--u)) !important; font-size:calc(28 * var(--u)) !important; }
-  .kbd { left:calc(40 * var(--u)) !important; top:calc(620 * var(--u)) !important; width:calc(1000 * var(--u)) !important; gap:calc(16 * var(--u)) !important; }
-  .kbd .krow { height:calc(104 * var(--u)) !important; gap:calc(8 * var(--u)) !important; }
-  .kbd .krow.r2 { padding:0 calc(50 * var(--u)) !important; }
-  .kbd button { font-size:calc(44 * var(--u)) !important; border-radius:calc(14 * var(--u)) !important; }
-  .kbd button svg { width:calc(50 * var(--u)) !important; height:calc(50 * var(--u)) !important; }
-  .kbd .shift { flex:0 0 calc(136 * var(--u)) !important; }
-  .kbd .bksp { flex:0 0 calc(136 * var(--u)) !important; }
-  .kbd .num { flex:0 0 calc(200 * var(--u)) !important; font-size:calc(36 * var(--u)) !important; }
-  .kbd .space { font-size:calc(36 * var(--u)) !important; }
-  #code-go { left:calc(110 * var(--u)) !important; top:calc(1150 * var(--u)) !important; width:calc(860 * var(--u)) !important; height:calc(130 * var(--u)) !important; }
-  #s-code .ask { left:0 !important; width:calc(1080 * var(--u)) !important; top:calc(1350 * var(--u)) !important; font-size:calc(32 * var(--u)) !important; }
-  #s-ready .box { height:calc(1200 * var(--u)) !important; }
-  #s-ready .crow:first-child { top:calc(40 * var(--u)) !important; }
-  #s-ready .sub2 { top:calc(250 * var(--u)) !important; font-size:calc(56 * var(--u)) !important; line-height:1.25 !important; }
-  #s-ready .sub2 span { max-width:calc(900 * var(--u)) !important; white-space:normal !important; }
-  #wave-ready { left:calc(60 * var(--u)) !important; top:calc(480 * var(--u)) !important; width:calc(960 * var(--u)) !important; height:calc(230 * var(--u)) !important; }
-  #mic-pill { top:calc(790 * var(--u)) !important; height:calc(78 * var(--u)) !important; padding:0 calc(40 * var(--u)) !important; font-size:calc(28 * var(--u)) !important; white-space:nowrap !important; }
-  #go { left:calc(110 * var(--u)) !important; top:calc(960 * var(--u)) !important; width:calc(860 * var(--u)) !important; height:calc(130 * var(--u)) !important; }
-  #go-count { height:calc(1460 * var(--u)) !important; }
+  .idle .box { height:calc(1700 * var(--u)) !important; }
+  .idle .left { left:0 !important; top:calc(40 * var(--u)) !important; width:calc(1080 * var(--u)) !important; justify-items:center !important; text-align:center !important; }
+  .idle .eyebrow { font-size:calc(30 * var(--u)) !important; margin-left:0 !important; justify-content:center !important; }
+  .idle .h1 { font-size:calc(236 * var(--u)) !important; margin-top:calc(26 * var(--u)) !important; }
+  .idle .sub { font-size:calc(60 * var(--u)) !important; margin-top:calc(40 * var(--u)) !important; }
+  .idle .qrcard { left:calc(262 * var(--u)) !important; top:calc(668 * var(--u)) !important; width:calc(556 * var(--u)) !important; height:calc(600 * var(--u)) !important; padding:calc(30 * var(--u)) calc(30 * var(--u)) calc(22 * var(--u)) !important; border-radius:calc(36 * var(--u)) !important; }
+  .idle .qrcard img { width:calc(470 * var(--u)) !important; height:calc(470 * var(--u)) !important; }
+  .idle .qrcard b { font-size:calc(34 * var(--u)) !important; }
+  .idle .cta-wrap { left:calc(90 * var(--u)) !important; top:calc(1326 * var(--u)) !important; z-index:3 !important; }
+  .idle .btn { width:calc(900 * var(--u)) !important; height:calc(156 * var(--u)) !important; font-size:calc(62 * var(--u)) !important; }
+  .idle .btn::after { width:calc(84 * var(--u)) !important; height:calc(84 * var(--u)) !important; }
+  .idle canvas.wave { left:0 !important; width:calc(1080 * var(--u)) !important; height:calc(250 * var(--u)) !important; pointer-events:none !important; z-index:0 !important; }
+  #s-code .box { height:calc(1640 * var(--u)) !important; }
+  #s-code .box > .abs:first-child { left:0 !important; top:calc(40 * var(--u)) !important; width:calc(1080 * var(--u)) !important; text-align:center !important; }
+  #s-code .sub2 { left:0 !important; width:calc(1080 * var(--u)) !important; top:calc(236 * var(--u)) !important; font-size:calc(44 * var(--u)) !important; }
+  .boxes { left:calc(32 * var(--u)) !important; top:calc(410 * var(--u)) !important; gap:calc(16 * var(--u)) !important; }
+  .boxes i { width:calc(156 * var(--u)) !important; height:calc(200 * var(--u)) !important; font-size:calc(120 * var(--u)) !important; border-radius:calc(18 * var(--u)) !important; border-width:calc(4 * var(--u)) !important; }
+  .boxes i.cur:empty::after { height:calc(100 * var(--u)) !important; width:calc(6 * var(--u)) !important; }
+  #s-code .msg { left:0 !important; width:calc(1080 * var(--u)) !important; top:calc(634 * var(--u)) !important; font-size:calc(32 * var(--u)) !important; }
+  .kbd { left:calc(30 * var(--u)) !important; top:calc(700 * var(--u)) !important; width:calc(1020 * var(--u)) !important; gap:calc(18 * var(--u)) !important; }
+  .kbd .krow { height:calc(128 * var(--u)) !important; gap:calc(9 * var(--u)) !important; }
+  .kbd .krow.r2 { padding:0 calc(52 * var(--u)) !important; }
+  .kbd button { font-size:calc(54 * var(--u)) !important; border-radius:calc(16 * var(--u)) !important; }
+  .kbd button svg { width:calc(60 * var(--u)) !important; height:calc(60 * var(--u)) !important; }
+  .kbd .shift { flex:0 0 calc(146 * var(--u)) !important; }
+  .kbd .bksp { flex:0 0 calc(146 * var(--u)) !important; }
+  .kbd .num { flex:0 0 calc(220 * var(--u)) !important; font-size:calc(42 * var(--u)) !important; }
+  .kbd .space { font-size:calc(42 * var(--u)) !important; }
+  #code-go { left:calc(90 * var(--u)) !important; top:calc(1334 * var(--u)) !important; width:calc(900 * var(--u)) !important; height:calc(156 * var(--u)) !important; }
+  #s-code .ask { left:0 !important; width:calc(1080 * var(--u)) !important; top:calc(1556 * var(--u)) !important; font-size:calc(38 * var(--u)) !important; }
+  #s-ready .box { height:calc(1560 * var(--u)) !important; }
+  #s-ready .crow:first-child { top:calc(40 * var(--u)) !important; line-height:.9 !important; text-align:center !important; }
+  #s-ready .rn { color:#E8323C !important; text-shadow:0 calc(3 * var(--u)) 0 #F6F0E6, 0 calc(7 * var(--u)) 0 #7A0F16, 0 calc(16 * var(--u)) calc(26 * var(--u)) rgba(0,40,70,.4) !important; }
+  #s-ready .crow:first-child .t { display:inline-block !important; text-align:center !important; }
+  #s-ready .sub2 { top:calc(470 * var(--u)) !important; font-size:calc(64 * var(--u)) !important; line-height:1.25 !important; }
+  #s-ready .sub2 span { max-width:calc(980 * var(--u)) !important; white-space:normal !important; }
+  #wave-ready { left:calc(40 * var(--u)) !important; top:calc(700 * var(--u)) !important; width:calc(1000 * var(--u)) !important; height:calc(380 * var(--u)) !important; }
+  #mic-pill { top:calc(1150 * var(--u)) !important; height:calc(96 * var(--u)) !important; padding:0 calc(48 * var(--u)) !important; font-size:calc(34 * var(--u)) !important; white-space:nowrap !important; }
+  #go { left:calc(90 * var(--u)) !important; top:calc(1320 * var(--u)) !important; width:calc(900 * var(--u)) !important; height:calc(156 * var(--u)) !important; }
+  br.up { display:inline !important; }
+  .up-only { display:block !important; }
+  .beats { display:flex !important; }
+  .up-in { display:inline !important; }
+  .wide-in { display:none !important; }
+  #go-count { height:calc(1660 * var(--u)) !important; }
   #go-count .t { left:0 !important; top:calc(30 * var(--u)) !important; width:calc(1080 * var(--u)) !important; text-align:center !important; line-height:.92 !important; }
-  #go-count .rule { left:calc(490 * var(--u)) !important; top:calc(300 * var(--u)) !important; }
-  .dots { left:0 !important; width:calc(1080 * var(--u)) !important; text-align:center !important; top:calc(340 * var(--u)) !important; font-size:calc(54 * var(--u)) !important; }
-  #ring-count { left:calc(40 * var(--u)) !important; top:calc(430 * var(--u)) !important; width:calc(1000 * var(--u)) !important; height:calc(1000 * var(--u)) !important; }
-  #cnt { left:0 !important; width:calc(1080 * var(--u)) !important; top:calc(720 * var(--u)) !important; font-size:calc(420 * var(--u)) !important; }
-  #cd-burst { left:calc(800 * var(--u)) !important; top:calc(560 * var(--u)) !important; width:calc(110 * var(--u)) !important; height:calc(110 * var(--u)) !important; }
-  #go-meter { height:calc(1480 * var(--u)) !important; }
-  #live-cv { width:calc(1080 * var(--u)) !important; height:calc(1480 * var(--u)) !important; }
-  #go-meter .crow { top:calc(20 * var(--u)) !important; }
-  #listen-wendy { left:calc(56 * var(--u)) !important; top:calc(190 * var(--u)) !important; width:calc(120 * var(--u)) !important; }
-  #go-meter .pillx#listen-pill { left:calc(196 * var(--u)) !important; top:calc(212 * var(--u)) !important; height:calc(72 * var(--u)) !important; padding:0 calc(32 * var(--u)) !important; font-size:calc(28 * var(--u)) !important; }
-  #target { left:calc(790 * var(--u)) !important; top:calc(212 * var(--u)) !important; height:calc(72 * var(--u)) !important; padding:0 calc(30 * var(--u)) !important; font-size:calc(28 * var(--u)) !important; }
+  #go-count .rule { display:none !important; }
+  .dots { left:0 !important; width:calc(1080 * var(--u)) !important; text-align:center !important; top:calc(548 * var(--u)) !important; font-size:calc(54 * var(--u)) !important; }
+  #ring-count { left:calc(90 * var(--u)) !important; top:calc(570 * var(--u)) !important; width:calc(900 * var(--u)) !important; height:calc(900 * var(--u)) !important; }
+  #cnt { left:0 !important; width:calc(1080 * var(--u)) !important; top:calc(770 * var(--u)) !important; font-size:calc(480 * var(--u)) !important; }
+  #cd-burst { left:calc(800 * var(--u)) !important; top:calc(760 * var(--u)) !important; width:calc(120 * var(--u)) !important; height:calc(120 * var(--u)) !important; }
+  #cd-ribbon { left:calc(110 * var(--u)) !important; top:calc(404 * var(--u)) !important; width:calc(860 * var(--u)) !important; height:calc(108 * var(--u)) !important; line-height:calc(102 * var(--u)) !important; font-size:calc(50 * var(--u)) !important; }
+  #cd-shout { left:calc(50 * var(--u)) !important; top:calc(1456 * var(--u)) !important; width:calc(980 * var(--u)) !important; height:calc(200 * var(--u)) !important; padding:calc(26 * var(--u)) 0 0 !important; border-radius:calc(28 * var(--u)) !important; }
+  #cd-shout small { font-size:calc(28 * var(--u)) !important; }
+  #cd-shout b { display:block !important; margin-top:calc(18 * var(--u)) !important; font-size:calc(98 * var(--u)) !important; }
+  #go-meter { height:calc(1660 * var(--u)) !important; }
+  #live-cv { width:calc(1080 * var(--u)) !important; height:calc(1660 * var(--u)) !important; }
+  #go-meter .crow { top:calc(98 * var(--u)) !important; line-height:.9 !important; }
+  #listen-wendy { left:calc(40 * var(--u)) !important; top:calc(256 * var(--u)) !important; width:calc(112 * var(--u)) !important; }
+  #go-meter .pillx#listen-pill { left:calc(168 * var(--u)) !important; top:calc(276 * var(--u)) !important; height:calc(72 * var(--u)) !important; padding:0 calc(30 * var(--u)) !important; font-size:calc(27 * var(--u)) !important; }
+  #target { left:calc(800 * var(--u)) !important; top:calc(276 * var(--u)) !important; height:calc(72 * var(--u)) !important; padding:0 calc(28 * var(--u)) !important; font-size:calc(27 * var(--u)) !important; }
   #target b { font-size:calc(40 * var(--u)) !important; }
-  #gauge-num { left:calc(290 * var(--u)) !important; width:calc(500 * var(--u)) !important; top:calc(545 * var(--u)) !important; font-size:calc(230 * var(--u)) !important; }
-  #go-meter .lbl { left:calc(340 * var(--u)) !important; width:calc(400 * var(--u)) !important; top:calc(790 * var(--u)) !important; font-size:calc(28 * var(--u)) !important; }
-  #live-burst { left:calc(730 * var(--u)) !important; top:calc(500 * var(--u)) !important; width:calc(90 * var(--u)) !important; height:calc(90 * var(--u)) !important; }
-  #go-meter .heard { left:calc(60 * var(--u)) !important; top:calc(1270 * var(--u)) !important; width:calc(580 * var(--u)) !important; }
-  #go-meter .heard small { font-size:calc(26 * var(--u)) !important; }
-  #go-meter .heard b { font-size:calc(46 * var(--u)) !important; max-width:calc(580 * var(--u)) !important; }
-  #go-meter .tleft { left:calc(720 * var(--u)) !important; top:calc(1270 * var(--u)) !important; gap:calc(14 * var(--u)) !important; }
-  #go-meter .tleft .v b { font-size:calc(88 * var(--u)) !important; }
-  #go-meter .tleft .v small { font-size:calc(30 * var(--u)) !important; }
-  #go-meter .tbar { width:calc(300 * var(--u)) !important; height:calc(14 * var(--u)) !important; }
-  #s-judge .display { font-size:9vmin !important; line-height:1 !important; }
-  .judge { display:grid !important; gap:3.4vmin !important; justify-items:center !important; }
-  .judge .btn { width:78vmin !important; height:12vmin !important; font-size:4vmin !important; justify-content:center !important; }
-  #s-result .box { height:calc(1580 * var(--u)) !important; }
-  #res-title { left:calc(60 * var(--u)) !important; top:calc(30 * var(--u)) !important; width:calc(960 * var(--u)) !important; text-align:center !important; font-size:calc(96 * var(--u)) !important; }
-  #res-score { left:0 !important; width:calc(1080 * var(--u)) !important; top:calc(260 * var(--u)) !important; font-size:calc(380 * var(--u)) !important; }
-  #s-result .spark { left:calc(800 * var(--u)) !important; top:calc(270 * var(--u)) !important; width:calc(104 * var(--u)) !important; height:calc(104 * var(--u)) !important; }
-  #res-eyebrow { left:0 !important; width:calc(1080 * var(--u)) !important; top:calc(660 * var(--u)) !important; font-size:calc(36 * var(--u)) !important; }
-  #s-result .vdiv { left:calc(140 * var(--u)) !important; top:calc(750 * var(--u)) !important; width:calc(800 * var(--u)) !important; height:calc(3 * var(--u)) !important; }
-  #res-coupon { left:calc(110 * var(--u)) !important; top:calc(800 * var(--u)) !important; width:calc(860 * var(--u)) !important; justify-items:center !important; }
-  #res-coupon .lbl { margin-left:0 !important; font-size:calc(36 * var(--u)) !important; }
-  #s-result #res-code { width:calc(860 * var(--u)) !important; height:calc(132 * var(--u)) !important; font-size:calc(62 * var(--u)) !important; padding-left:calc(90 * var(--u)) !important; }
-  #res-coupon small { width:calc(860 * var(--u)) !important; font-size:calc(28 * var(--u)) !important; }
-  #s-result #res-detail { left:calc(90 * var(--u)) !important; top:calc(790 * var(--u)) !important; width:calc(900 * var(--u)) !important; gap:calc(30 * var(--u)) !important; }
-  #s-result #res-detail.sassy { top:calc(780 * var(--u)) !important; gap:calc(22 * var(--u)) !important; }
-  #res-detail .quip { font-size:calc(40 * var(--u)) !important; text-align:center !important; }
-  #res-detail.sassy .quip { font-size:calc(34 * var(--u)) !important; }
-  #res-detail .stats { padding:calc(28 * var(--u)) calc(32 * var(--u)) !important; gap:calc(20 * var(--u)) !important; border-radius:calc(24 * var(--u)) !important; }
-  #res-detail .st { grid-template-columns:calc(220 * var(--u)) 1fr calc(92 * var(--u)) !important; gap:calc(22 * var(--u)) !important; }
-  #res-detail .st small { font-size:calc(26 * var(--u)) !important; }
-  #res-detail .st i { height:calc(20 * var(--u)) !important; }
-  #res-detail .st b { font-size:calc(46 * var(--u)) !important; }
-  #res-detail .wl { font-size:calc(21 * var(--u)) !important; }
-  #s-result .qrcard { left:calc(90 * var(--u)) !important; top:calc(1250 * var(--u)) !important; width:calc(260 * var(--u)) !important; height:calc(322 * var(--u)) !important; padding:calc(22 * var(--u)) 0 0 !important; }
-  #qr-profile { width:calc(200 * var(--u)) !important; height:calc(200 * var(--u)) !important; }
-  #qr-label { font-size:calc(26 * var(--u)) !important; }
-  #s-result .btn { left:calc(390 * var(--u)) !important; top:calc(1345 * var(--u)) !important; width:calc(600 * var(--u)) !important; height:calc(130 * var(--u)) !important; }
+  #gauge-num { left:calc(290 * var(--u)) !important; width:calc(500 * var(--u)) !important; top:calc(582 * var(--u)) !important; font-size:calc(230 * var(--u)) !important; }
+  #go-meter .lbl { left:calc(340 * var(--u)) !important; width:calc(400 * var(--u)) !important; top:calc(826 * var(--u)) !important; font-size:calc(27 * var(--u)) !important; }
+  #live-burst { left:calc(735 * var(--u)) !important; top:calc(548 * var(--u)) !important; width:calc(90 * var(--u)) !important; height:calc(90 * var(--u)) !important; }
+  #go-meter .heard { left:calc(40 * var(--u)) !important; top:calc(1404 * var(--u)) !important; width:calc(490 * var(--u)) !important; height:calc(176 * var(--u)) !important; box-sizing:border-box !important; padding:calc(30 * var(--u)) calc(32 * var(--u)) 0 !important; background:rgba(0,50,80,.3) !important; border:calc(2 * var(--u)) solid rgba(255,255,255,.16) !important; border-radius:calc(26 * var(--u)) !important; }
+  #go-meter .heard small { font-size:calc(25 * var(--u)) !important; }
+  #go-meter .heard b { font-size:calc(50 * var(--u)) !important; max-width:calc(430 * var(--u)) !important; }
+  #go-meter .tleft { left:calc(550 * var(--u)) !important; top:calc(1404 * var(--u)) !important; width:calc(490 * var(--u)) !important; height:calc(176 * var(--u)) !important; box-sizing:border-box !important; padding:calc(26 * var(--u)) calc(32 * var(--u)) 0 !important; gap:calc(16 * var(--u)) !important; background:rgba(0,50,80,.3) !important; border:calc(2 * var(--u)) solid rgba(255,255,255,.16) !important; border-radius:calc(26 * var(--u)) !important; align-items:stretch !important; }
+  #go-meter .tleft .v b { font-size:calc(76 * var(--u)) !important; }
+  #go-meter .tleft .v small { font-size:calc(26 * var(--u)) !important; }
+  #go-meter .tbar { width:auto !important; height:calc(14 * var(--u)) !important; }
+  #beats { left:0 !important; top:0 !important; width:calc(1080 * var(--u)) !important; gap:calc(18 * var(--u)) !important; }
+  #beats span { height:calc(70 * var(--u)) !important; padding:0 calc(30 * var(--u)) 0 calc(12 * var(--u)) !important; gap:calc(14 * var(--u)) !important; font-size:calc(27 * var(--u)) !important; }
+  #beats span i { width:calc(46 * var(--u)) !important; height:calc(46 * var(--u)) !important; font-size:calc(24 * var(--u)) !important; }
+  #hold-word { left:0 !important; top:calc(1052 * var(--u)) !important; width:calc(1080 * var(--u)) !important; font-size:calc(88 * var(--u)) !important; }
+  .holdcard { left:calc(40 * var(--u)) !important; top:calc(1186 * var(--u)) !important; width:calc(1000 * var(--u)) !important; height:calc(200 * var(--u)) !important; padding:calc(26 * var(--u)) calc(34 * var(--u)) 0 !important; border-radius:calc(26 * var(--u)) !important; }
+  .holdcard .top b { font-size:calc(32 * var(--u)) !important; }
+  .holdcard .top > span { font-size:calc(60 * var(--u)) !important; }
+  .holdcard .hbar { height:calc(38 * var(--u)) !important; margin-top:calc(14 * var(--u)) !important; }
+  .holdcard .bot { margin-top:calc(16 * var(--u)) !important; }
+  .holdcard .bot small { font-size:calc(23 * var(--u)) !important; }
+  #s-judge .display { font-size:11.5vmin !important; line-height:1 !important; }
+  .judge { display:grid !important; gap:4.2vmin !important; justify-items:center !important; margin-top:3vmin !important; }
+  .judge .btn { width:86vmin !important; height:15vmin !important; font-size:5vmin !important; justify-content:center !important; }
+  #s-result .box { height:calc(1700 * var(--u)) !important; }
+  #res-title { left:calc(40 * var(--u)) !important; top:calc(30 * var(--u)) !important; width:calc(1000 * var(--u)) !important; text-align:center !important; font-size:calc(124 * var(--u)) !important; }
+  #res-score { left:0 !important; width:calc(1080 * var(--u)) !important; top:calc(310 * var(--u)) !important; font-size:calc(450 * var(--u)) !important; }
+  #s-result .spark { left:calc(830 * var(--u)) !important; top:calc(330 * var(--u)) !important; width:calc(120 * var(--u)) !important; height:calc(120 * var(--u)) !important; }
+  #res-eyebrow { left:0 !important; width:calc(1080 * var(--u)) !important; top:calc(790 * var(--u)) !important; font-size:calc(42 * var(--u)) !important; }
+  #s-result .vdiv { left:calc(110 * var(--u)) !important; top:calc(890 * var(--u)) !important; width:calc(860 * var(--u)) !important; height:calc(3 * var(--u)) !important; }
+  #res-coupon { left:calc(90 * var(--u)) !important; top:calc(940 * var(--u)) !important; width:calc(900 * var(--u)) !important; justify-items:center !important; }
+  #res-coupon .lbl { margin-left:0 !important; font-size:calc(42 * var(--u)) !important; }
+  #s-result #res-code { width:calc(900 * var(--u)) !important; height:calc(160 * var(--u)) !important; font-size:calc(76 * var(--u)) !important; padding-left:calc(96 * var(--u)) !important; }
+  #res-coupon small { width:calc(900 * var(--u)) !important; font-size:calc(33 * var(--u)) !important; }
+  #s-result #res-detail { left:calc(70 * var(--u)) !important; top:calc(930 * var(--u)) !important; width:calc(940 * var(--u)) !important; gap:calc(32 * var(--u)) !important; }
+  #s-result #res-detail.sassy { top:calc(905 * var(--u)) !important; gap:calc(18 * var(--u)) !important; }
+  #res-detail .quip { font-size:calc(46 * var(--u)) !important; text-align:center !important; }
+  #res-detail.sassy .quip { font-size:calc(37 * var(--u)) !important; }
+  #res-detail .stats { padding:calc(34 * var(--u)) calc(38 * var(--u)) !important; gap:calc(26 * var(--u)) !important; border-radius:calc(28 * var(--u)) !important; }
+  #res-detail .st { grid-template-columns:calc(250 * var(--u)) 1fr calc(110 * var(--u)) !important; gap:calc(24 * var(--u)) !important; }
+  #res-detail .st small { font-size:calc(30 * var(--u)) !important; }
+  #res-detail .st i { height:calc(26 * var(--u)) !important; }
+  #res-detail .st b { font-size:calc(56 * var(--u)) !important; }
+  #res-detail .wl { font-size:calc(24 * var(--u)) !important; }
+  #s-result .qrcard { left:calc(70 * var(--u)) !important; top:calc(1330 * var(--u)) !important; width:calc(300 * var(--u)) !important; height:calc(370 * var(--u)) !important; padding:calc(24 * var(--u)) 0 0 !important; }
+  #qr-profile { width:calc(236 * var(--u)) !important; height:calc(236 * var(--u)) !important; }
+  #qr-label { font-size:calc(29 * var(--u)) !important; }
+  #s-result .btn { left:calc(410 * var(--u)) !important; top:calc(1436 * var(--u)) !important; width:calc(600 * var(--u)) !important; height:calc(156 * var(--u)) !important; }
 }
 /* SCREAM-PORTRAIT:END */
 </style>
@@ -495,7 +526,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
 
   <!-- CODE -->
   <section class="screen bx" id="s-code"><div class="box">
-    <div class="abs" style="left:calc(57 * var(--u));top:calc(57 * var(--u))"><span class="t" data-fit="662" data-fs="94" data-pfit="960" data-pfs="124">Let’s hear you.</span></div>
+    <div class="abs" style="left:calc(57 * var(--u));top:calc(57 * var(--u))"><span class="t" data-fit="662" data-fs="94" data-pfit="1010" data-pfs="150">Let’s hear you.</span></div>
     <div class="abs sub2">Enter your 6-character guest code<br>to start the experience.</div>
     <input id="code" autocomplete="off" aria-label="Guest code">
     <div class="boxes" id="boxes"><i class="cur"></i><i></i><i></i><i></i><i></i><i></i></div>
@@ -507,8 +538,8 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
 
   <!-- READY -->
   <section class="screen bx" id="s-ready"><div class="box">
-    <div class="crow" style="top:calc(31 * var(--u))"><span class="t" data-fit="859" data-fs="104" data-pfit="960" data-pfs="132">Ready, <span id="r-name">Hirusha</span>?</span></div>
-    <div class="crow sub2"><span style="display:inline-block" data-fit="900" data-fs="34" data-pfit="900" data-pfs="56">When the count hits zero, scream <b>“WENDY’S!”</b></span></div>
+    <div class="crow" style="top:calc(31 * var(--u))"><span class="t" data-fit="859" data-fs="104" data-pfit="1000" data-pfs="190">Ready, <br class="up"><span class="rn"><span id="r-name">Hirusha</span>?</span></span></div>
+    <div class="crow sub2"><span style="display:inline-block" data-fit="900" data-fs="34" data-pfit="980" data-pfs="64"><span class="wide-in">When the count hits zero, scream <b>“WENDY’S!”</b></span><span class="up-in">Shout <b>WENDY’S</b>, then hold the note.</span></span></div>
     <canvas class="abs" id="wave-ready"></canvas>
     <div class="pillx ok" id="mic-pill"><span class="dot"></span><span id="mic-status">Checking microphone…</span></div>
     <button class="btn" id="go">Let’s go</button>
@@ -518,21 +549,26 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   <section class="screen bx" id="s-go">
     <div class="box" id="go-count">
       <canvas class="abs" id="ring-count"></canvas>
-      <div class="abs t" data-fit="383" data-fs="75" data-pfit="900" data-pfs="124">Get ready<br>to scream.</div>
+      <div class="abs t" data-fit="383" data-fs="75" data-pfit="1000" data-pfs="176">Get ready<br>to scream.</div>
       <i class="abs rule"></i>
       <div class="dots" id="dots"><span class="on">3</span><em>•</em><span>2</span><em>•</em><span>1</span></div>
       <div class="abs" id="cnt">3</div>
+      <div class="up-only ribbon" id="cd-ribbon">Everyone count with us!</div>
+      <div class="up-only shoutcard" id="cd-shout"><small>On zero, shout</small><b>WENDYYYYYYY’S!</b></div>
     </div>
     <div class="box" id="go-meter" style="display:none">
       <canvas class="abs" id="live-cv"></canvas>
-      <div class="crow"><span class="t" data-fit="1100" data-fs="80" data-pfit="900" data-pfs="112">Scream <span class="red pop-w" id="pop-w">Wendy’s!</span></span></div>
+      <div class="crow"><span class="t" data-fit="1100" data-fs="80" data-pfit="1000" data-pfs="124">Scream <span class="red pop-w" id="pop-w">Wendy’s!</span></span></div>
       <img class="abs" id="listen-wendy" src="../assets/cameo.png" alt=""><span class="pillx" id="listen-pill"><span class="dot"></span><span id="listen-l">Listening…</span></span>
       <span id="target">Target <b id="thr">70</b></span>
       <div class="abs" id="gauge-num">0</div>
       <div class="abs lbl">Loudness<br>score</div>
       <div class="abs heard" id="heard"><small>We heard</small><b id="heard-v">…</b></div>
-      <div class="tleft"><div class="v"><b><span id="tleft">10.0</span>s</b><small>Left</small></div><div class="tbar"><i id="tbar"></i></div></div>
+      <div class="tleft"><div class="v"><b><span id="tleft">10.0</span>s</b><small>Left<span class="up-in"> of <span id="tdur">10</span></span></small></div><div class="tbar"><i id="tbar"></i></div></div>
       <div id="trans">…</div>
+      <div class="up-only beats" id="beats"><span data-b="1"><i>1</i>Shout</span><span data-b="2"><i>2</i>Hold it</span><span data-b="3"><i>3</i>Finish</span></div>
+      <div class="up-only holdword" id="hold-word">WEND<span id="hw-y"></span>’S!</div>
+      <div class="up-only holdcard"><div class="top"><b>Hold it</b><span><span id="hold-s">0.0</span>s</span></div><div class="hbar"><i id="hold-bar"></i></div><div class="bot"><small>Keep your voice above the line</small><small>Today’s longest: <span id="hold-best">0.0</span>s</small></div></div>
     </div>
   </section>
 
@@ -570,7 +606,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   </aside>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwwvuluo"></script><script src="../js/kiosk.js?v=mwwvuluo"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwx1n1ov"></script><script src="../js/kiosk.js?v=mwx1n1ov"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let CFG = { scream: { threshold: 70, durationMs: 3000, dbFloor: -42, dbCeil: -6, loudWeight: .6, accWeight: .4 } };
@@ -638,7 +674,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
       return true;
     } catch (e) { $("mic-status").textContent = "Microphone blocked: " + e.message; $("mic-pill").classList.remove("ok"); return false; }
   }
-  function currentDb() { if (!analyser) return -100; analyser.getFloatTimeDomainData(buf); let s = 0; for (let i = 0; i < buf.length; i++) s += buf[i] * buf[i]; const rms = Math.sqrt(s / buf.length); return rms > 0 ? Math.max(-100, 20 * Math.log10(rms)) : -100; }
+  function currentDb() { if (!analyser) return -100; analyser.getFloatTimeDomainData(buf); let s = 0, c = 0; for (let i = 0; i < buf.length; i++) { s += buf[i] * buf[i]; if (buf[i] > .985 || buf[i] < -.985) c++; } clipNow = c / buf.length; const rms = Math.sqrt(s / buf.length); return rms > 0 ? Math.max(-100, 20 * Math.log10(rms)) : -100; }
   const dbToPct = (db) => Math.max(0, Math.min(100, ((db - CFG.scream.dbFloor) / (CFG.scream.dbCeil - CFG.scream.dbFloor)) * 100));
 
   // ---------- waveform ----------
@@ -724,7 +760,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     if (!c._sized) sizeCanvas(c);
     const ctx = c.getContext("2d"), W = c.width, H = c.height, UP = innerHeight > innerWidth, U = W / (UP ? 1080 : 1440), cr = c.getBoundingClientRect(), k = W / (cr.width || 1); ctx.clearRect(0, 0, W, H);
     if (analyser && fbuf) analyser.getByteFrequencyData(fbuf);
-    const cx = (UP ? 540 : 720) * U, cy = (UP ? 665 : 348) * U, R = (UP ? 300 : 172) * U, len = (UP ? 40 : 24) * U, a0 = Math.PI * .75, span = Math.PI * 1.5, thr = (CFG.scream.threshold || 70) / 100;
+    const cx = (UP ? 540 : 720) * U, cy = (UP ? 700 : 348) * U, R = (UP ? 290 : 172) * U, len = (UP ? 42 : 24) * U, a0 = Math.PI * .75, span = Math.PI * 1.5, thr = (CFG.scream.threshold || 70) / 100;
     const g = ctx.createRadialGradient(cx, cy, R * .1, cx, cy, R * 1.55); g.addColorStop(0, `rgba(255,255,255,${(.14 + .3 * level).toFixed(2)})`); g.addColorStop(1, "rgba(255,255,255,0)");
     ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, R * 1.55, 0, 7); ctx.fill();
     const wave = (x0, x1, innerRight, wy = cy, amp = 100) => { const n = 34, gap = (x1 - x0) / n, w = gap * .45;
@@ -735,7 +771,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
         const a = .18 + .82 * inner, gr = ctx.createLinearGradient(0, wy - h, 0, wy + h);
         gr.addColorStop(0, `rgba(250,244,235,${(a * .35).toFixed(2)})`); gr.addColorStop(.5, `rgba(250,244,235,${a.toFixed(2)})`); gr.addColorStop(1, `rgba(250,244,235,${(a * .35).toFixed(2)})`);
         ctx.fillStyle = i % 6 === 3 ? `rgba(205,32,40,${a.toFixed(2)})` : gr; ctx.beginPath(); ctx.roundRect(x0 + i * gap + (gap - w) / 2, wy - h, w, h * 2, w / 2); ctx.fill(); } };
-    if (UP) { wave(50 * U, cx, true, 1120 * U, 105); wave(cx, 1030 * U, false, 1120 * U, 105); } else { wave(40 * U, cx - R * 1.38, true); wave(cx + R * 1.38, 1400 * U, false); }
+    if (UP) { wave(40 * U, cx, true, 1612 * U, 40); wave(cx, 1040 * U, false, 1612 * U, 40); } else { wave(40 * U, cx - R * 1.38, true); wave(cx + R * 1.38, 1400 * U, false); }
     ctx.lineCap = "round";
     for (let r = 0; r < 3; r++) { const rr = R * (1.12 + r * .08); for (let d = 0; d <= 1; d += 1 / 160) { const th = a0 + d * span; ctx.fillStyle = `rgba(205,32,40,${(.95 - r * .25).toFixed(3)})`; ctx.beginPath(); ctx.arc(cx + Math.cos(th) * rr, cy + Math.sin(th) * rr, 2.6 * fd, 0, 7); ctx.fill(); } }
     ctx.strokeStyle = "rgba(250,244,235,.35)"; ctx.lineWidth = 2 * fd; ctx.beginPath(); ctx.arc(cx, cy, R - len * 1.5, a0, a0 + span); ctx.stroke();
@@ -793,7 +829,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   // ---------- cream LED countdown ring ----------
   function drawCountRing(c, pct) {
     if (!c._sized) sizeCanvas(c);
-    const ctx = c.getContext("2d"), W = c.width, cx = W / 2, cy = c.height / 2, R = W * .28; ctx.clearRect(0, 0, W, c.height);
+    const ctx = c.getContext("2d"), W = c.width, cx = W / 2, cy = c.height / 2, R = W * (innerHeight > innerWidth ? .4 : .28); ctx.clearRect(0, 0, W, c.height);
     const glow = ctx.createRadialGradient(cx, cy, R * .2, cx, cy, R * 1.05); glow.addColorStop(0, "rgba(255,255,255,.22)"); glow.addColorStop(1, "rgba(255,255,255,0)");
     ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(cx, cy, R * 1.05, 0, 7); ctx.fill();
     for (let k = 0; k < 2; k++) {                                   // red dotted outer rings, strongest at the sides
@@ -848,6 +884,16 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
 
   // ---------- main loop ----------
   let countPct = 0;
+  // "Hold it": how long the voice stays above the line in one go (shown on the upright layout; it does not change the score)
+  const HOLD_LINE = 38, HOLD_FULL = 8, HW_N = 8; let holdRun = 0, holdBest = 0, holdGap = 0, holdLast = 0;
+  const holdKey = () => "wf_hold_" + new Date().toISOString().slice(0, 10), holdDay = () => { try { return +(localStorage.getItem(holdKey()) || 0); } catch { return 0; } };
+  $("hw-y").innerHTML = "<i>Y</i>".repeat(HW_N);
+  function paintHold() { const s = Math.max(holdRun, 0); $("hold-s").textContent = s.toFixed(1); $("hold-bar").style.width = Math.min(100, s / HOLD_FULL * 100) + "%"; const n = Math.round(Math.min(1, s / HOLD_FULL) * HW_N); [...$("hw-y").children].forEach((el, i) => el.classList.toggle("f", i < n)); $("hold-best").textContent = Math.max(holdDay(), holdBest).toFixed(1); }
+  function setBeat(n) { [...$("beats").children].forEach((el) => { const b = +el.dataset.b; el.classList.toggle("on", b === n); el.classList.toggle("done", b < n); }); }
+  function resetHold() { holdRun = holdBest = holdGap = 0; holdLast = performance.now(); paintHold(); setBeat(1); }
+  function trackHold(pct) { const now = performance.now(), dt = Math.min(.2, (now - holdLast) / 1000); holdLast = now;
+    if (pct >= HOLD_LINE) { holdRun += dt; holdGap = 0; } else { holdGap += dt; if (holdGap > .35) holdRun = 0; }
+    if (holdRun > holdBest) holdBest = holdRun; paintHold(); }
   function loop(t) {
     rafId = requestAnimationFrame(loop);
     const db = currentDb(); smooth = db > smooth ? db : smooth * .9 + db * .1;
@@ -858,6 +904,8 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     if (mode === "count") drawCountRing($("ring-count"), countPct);
     if (mode === "scream") {
       if (windowOpen && db > peakDb) peakDb = db;
+      if (windowOpen) { SD.frames++; if (clipNow > .01) SD.clip++; }
+      if (windowOpen) trackHold(pct);
       if (windowOpen) { SUS.push(Math.pow(10, db / 10)); if (SUS.length > 30) SUS.shift(); if (SUS.length >= 10) susDb = Math.max(susDb, 10 * Math.log10(SUS.reduce((a, b) => a + b, 0) / SUS.length)); }
       gaugeShown += (pct - gaugeShown) * .25;
       drawLiveA($("live-cv"), gaugeShown / 100, t); $("pop-w").style.setProperty("--lv", Math.min(1, gaugeShown / 100).toFixed(2));
@@ -868,6 +916,14 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
 
   // ---------- speech ----------
   let heardAt = 0, recogErr = "", recogGot = false, recogWant = false;
+  // Speech diagnostics: saved with every scream so "no words heard" can be explained afterwards (mic too loud, Chrome error, wrong mic...).
+  let clipNow = 0, judgeRoute = "auto", SD = { starts: 0, ends: 0, results: 0, firstMs: null, errs: [], frames: 0, clip: 0, t0: 0 };
+  const clipPct = () => SD.frames ? Math.round(SD.clip / SD.frames * 100) : 0;
+  function speechDiag() {
+    let mic = "", micDefault = null; try { const tr = stream && stream.getAudioTracks()[0]; if (tr) { mic = (tr.label || "").slice(0, 60); const id = (tr.getSettings() || {}).deviceId; micDefault = id === "default" || /^default/i.test(tr.label || "") || !localStorage.getItem("wf_mic_" + K.station); } } catch {}
+    const ua = navigator.userAgent, os = /Android/.test(ua) ? "Android" : /Windows/.test(ua) ? "Windows" : /Mac/.test(ua) ? "Mac" : /Linux/.test(ua) ? "Linux" : "other", ch = (ua.match(/Chrome\/(\d+)/) || [])[1] || "";
+    return { route: judgeRoute, sr: !!(window.SpeechRecognition || window.webkitSpeechRecognition), got: recogGot, err: recogErr, errs: SD.errs.slice(0, 6), starts: SD.starts, ends: SD.ends, results: SD.results, firstMs: SD.firstMs, clipPct: clipPct(), mic, micDefault, os, chrome: ch, online: navigator.onLine };
+  }
   const WITH_S_RE = /\b(w|v)h?[aei]nd(ys|ies|is|ees|eez|yz|es)\b|\bwhen ?these\b|\bwendy is\b/i;
   const NO_S_RE = /\b(w|v)h?[aei]nd(y|i|ee|ie)\b/i;
   function showHeard() {
@@ -881,21 +937,21 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     else if (n >= 0) { heardAt = performance.now(); $("heard").classList.add("miss"); $("listen-pill").classList.add("miss"); $("listen-l").textContent = "Missed the S!"; }
   }
   function startRecog() {
-    transcript = ""; $("trans").textContent = "…"; heardAt = 0; $("heard").classList.remove("got", "miss"); $("listen-pill").classList.remove("got", "miss"); $("listen-wendy").classList.remove("got"); $("listen-l").textContent = "Listening…"; $("heard-v").textContent = (window.SpeechRecognition || window.webkitSpeechRecognition) && $("judge-mode").value !== "host" ? "…" : "Host will judge";
+    transcript = ""; $("trans").textContent = "…"; heardAt = 0; recogErr = ""; recogGot = false; Object.assign(SD, { starts: 0, ends: 0, results: 0, firstMs: null, errs: [], t0: performance.now() }); $("heard").classList.remove("got", "miss"); $("listen-pill").classList.remove("got", "miss"); $("listen-wendy").classList.remove("got"); $("listen-l").textContent = "Listening…"; $("heard-v").textContent = (window.SpeechRecognition || window.webkitSpeechRecognition) && $("judge-mode").value !== "host" ? "…" : "Host will judge";
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition; if (!SR || $("judge-mode").value === "host") return;
     // Chrome on Android ends a recognition session after one phrase (or straight away if it cannot get the mic),
     // so keep restarting it while the scream window is open, and remember what went wrong for the host.
-    recogErr = ""; recogGot = false; recogWant = true; let base = "";
+    recogErr = ""; recogGot = false; recogWant = true; let base = ""; SD.t0 = performance.now();
     const FATAL = ["not-allowed", "service-not-allowed", "audio-capture", "network", "language-not-supported"];
-    const make = () => { recog = new SR(); recog.lang = "en-US"; recog.interimResults = true; recog.continuous = true; recog.maxAlternatives = 3;
-      recog.onresult = (e) => { recogGot = true; let s = ""; for (let i = 0; i < e.results.length; i++) for (let j = 0; j < e.results[i].length; j++) s += " " + e.results[i][j].transcript; transcript = (base + " " + s).trim(); $("trans").textContent = "We heard: " + (transcript || "…"); showHeard(); };
-      recog.onerror = (e) => { if (e.error && e.error !== "no-speech" && e.error !== "aborted") recogErr = e.error; };
-      recog.onend = () => { base = transcript; if (recogWant && !FATAL.includes(recogErr)) { try { make(); } catch { recogErr = recogErr || "restart-failed"; } } };
+    const make = () => { recog = new SR(); SD.starts++; recog.lang = "en-US"; recog.interimResults = true; recog.continuous = true; recog.maxAlternatives = 3;
+      recog.onresult = (e) => { recogGot = true; SD.results++; if (SD.firstMs === null) SD.firstMs = Math.round(performance.now() - SD.t0); let s = ""; for (let i = 0; i < e.results.length; i++) for (let j = 0; j < e.results[i].length; j++) s += " " + e.results[i][j].transcript; transcript = (base + " " + s).trim(); $("trans").textContent = "We heard: " + (transcript || "…"); showHeard(); };
+      recog.onerror = (e) => { if (e.error) SD.errs.push(e.error); if (e.error && e.error !== "no-speech" && e.error !== "aborted") recogErr = e.error; };
+      recog.onend = () => { SD.ends++; base = transcript; if (recogWant && !FATAL.includes(recogErr)) { try { make(); } catch { recogErr = recogErr || "restart-failed"; } } };
       recog.start(); };
     try { make(); } catch (e) { recog = null; recogErr = "start-failed"; }
   }
   function stopRecog() { recogWant = false; try { recog && recog.stop(); } catch {} srStatus(); }
-  function srStatus() { const el = $("sr-status"); if (!el) return; el.textContent = "Last speech check: " + (recogErr ? "problem (" + recogErr + ")" : recogGot ? "worked, heard “" + (transcript || "…") + "”" : "heard no words"); }
+  function srStatus() { const el = $("sr-status"); if (!el) return; el.textContent = "Last speech check: " + (recogErr ? "problem (" + recogErr + ")" : recogGot ? "worked, heard “" + (transcript || "…") + "”" : "heard no words") + (clipPct() >= 15 ? " · mic too loud, the sound was distorting (" + clipPct() + "% of the scream). Turn the mic input down or hold it further away." : ""); }
 
   // ---------- code entry ----------
   const codeEl = $("code");
@@ -950,19 +1006,24 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     }
     $("go-count").style.display = "none"; $("go-meter").style.display = "block"; setStep("5", "Live"); fitText(); enter($("go-meter"));
     SFX.go(); await wait(320);
-    peakDb = -100; SUS = []; susDb = -100; gaugeShown = 0; windowOpen = true; mode = "scream";
-    const dur = CFG.scream.durationMs || 5000, t0 = performance.now();   // one short window; ends early once their first attempt at the word is heard
+    peakDb = -100; SUS = []; susDb = -100; gaugeShown = 0; resetHold(); SD.frames = 0; SD.clip = 0; windowOpen = true; mode = "scream";
+    const dur = CFG.scream.durationMs || 5000, t0 = performance.now();   // ends early once the word is heard and the guest has stopped holding the note
+    $("tdur").textContent = Math.round(dur / 1000);
     while (performance.now() - t0 < dur) {
-      if (heardAt && performance.now() - heardAt > 1300 && performance.now() - t0 > 1500) break; const left = dur - (performance.now() - t0); $("tleft").textContent = (left / 1000).toFixed(1); $("tbar").style.transform = `scaleX(${left / dur})`; await wait(50); }
-    $("tleft").textContent = "0.0"; $("tbar").style.transform = "scaleX(0)"; windowOpen = false;
+      if (heardAt || performance.now() - t0 > 1500) setBeat(2);
+      if (heardAt && performance.now() - heardAt > 1300 && performance.now() - t0 > 1500 && holdGap > .7) break; const left = dur - (performance.now() - t0); $("tleft").textContent = (left / 1000).toFixed(1); $("tbar").style.transform = `scaleX(${left / dur})`; await wait(50); }
+    $("tleft").textContent = "0.0"; $("tbar").style.transform = "scaleX(0)"; windowOpen = false; setBeat(3); holdRun = holdBest; paintHold(); if (holdBest > holdDay()) { try { localStorage.setItem(holdKey(), holdBest.toFixed(1)); } catch {} }
     await wait(900); stopRecog(); await wait(400);
     // Speech recognition broke, or it heard no words at all although the guest was clearly loud: let the host call it, never fail the guest for the tech.
     const srDown = !!recogErr && !transcript, deaf = !recogGot && dbToPct(peakDb) >= 45;
-    if ($("judge-mode").value === "host" || !(window.SpeechRecognition || window.webkitSpeechRecognition) || srDown || deaf) { K.show("s-judge"); return; }
+    judgeRoute = $("judge-mode").value === "host" ? "host-mode" : !(window.SpeechRecognition || window.webkitSpeechRecognition) ? "host-no-speech-support" : srDown ? "host-speech-error" : deaf ? "host-no-words" : "auto"; submitting = false;
+    if (judgeRoute !== "auto") { K.show("s-judge"); return; }
     submitScream(null);
   };
+  let submitting = false;   // a double tap on a host button must not save the scream twice
   async function submitScream(accuracyOverride) {
-    try { const r = await K.api("/api/kiosk/scream", { code: guest.code, peakDb, sustainedDb: susDb, transcript, accuracyOverride }); showResult(r); }
+    if (submitting || !guest) return; submitting = true;
+    try { const r = await K.api("/api/kiosk/scream", { code: guest.code, peakDb, sustainedDb: susDb, transcript, accuracyOverride, speech: speechDiag() }); showResult(r); }
     catch (e) { alert("Could not submit: " + e.message); goIdle(); }
   }
   function confetti(n = 90) {
@@ -1006,8 +1067,8 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   function fitResTitle() {
     const t = $("res-title"), div = document.querySelector("#s-result .vdiv"); if (!t || !div) return;
     const up = innerHeight > innerWidth, u = up ? Math.min(innerWidth / 1080, innerHeight / 1920) : Math.min(innerWidth / 1440, innerHeight / 760), rg = document.createRange(); rg.selectNodeContents(t);
-    const limit = up ? t.getBoundingClientRect().right + 2 : div.getBoundingClientRect().left - 22 * u, maxH = (up ? 215 : 150) * u, set = (px) => t.style.setProperty("font-size", px, up ? "important" : "");
-    let fs = up ? 96 : 71; t.style.fontSize = "";
+    const limit = up ? t.getBoundingClientRect().right + 2 : div.getBoundingClientRect().left - 22 * u, maxH = (up ? 270 : 150) * u, set = (px) => t.style.setProperty("font-size", px, up ? "important" : "");
+    let fs = up ? 124 : 71; t.style.fontSize = "";
     while ((rg.getBoundingClientRect().right > limit || t.offsetHeight > maxH) && fs > 30) { fs -= 2; set(fs * u + "px"); }
   }
 </script>

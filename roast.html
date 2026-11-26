@@ -1,10 +1,10 @@
 <!doctype html>
 <html lang="en">
-<head><script>fetch("./version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwwvuluo" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<head><script>fetch("./version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwx1n1ov" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>[DEMO] Roasted by Wendy's · Wendy Fest</title><meta name="theme-color" content="#CD2028"><link rel="icon" href="./assets/cameo.png">
 <meta property="og:title" content="I just got roasted by Wendy's 🔥"><meta property="og:description" content="Wendy Fest · Sri Lanka">
-<link rel="stylesheet" href="./css/guest.css?v=mwwvuluo">
+<link rel="stylesheet" href="./css/guest.css?v=mwx1n1ov">
 </head>
 <body>
 <div class="app">
@@ -26,9 +26,10 @@
   </main>
   <div id="foot"></div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js?v=mwwvuluo"></script><script src="./js/i18n.js?v=mwwvuluo"></script><script src="./js/app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js?v=mwx1n1ov"></script><script src="./js/i18n.js?v=mwx1n1ov"></script><script src="./js/app.js"></script><script src="./js/roast-card.js"></script>
 <script>
   document.getElementById("foot").outerHTML = brandFoot();
+  const card = async () => { try { return await roastCard(R, window.lang); } catch (e) { console.warn(e); return renderRoastCard(R, window.lang); } };
   const token = new URLSearchParams(location.search).get("t");
   let R = null;
   function paint() {
@@ -44,7 +45,7 @@
   document.querySelectorAll("#tabs button").forEach((b) => b.onclick = () => setLang(b.dataset.l));
   document.addEventListener("langchange", paint);
   api(`/api/roast/${token}`).then((r) => { R = r; if (!new URLSearchParams(location.search).get("lang") && !localStorage.getItem("wf_lang")) window.lang = r.lang; paint(); }).catch(() => { document.getElementById("title").textContent = "This roast went cold."; });
-  document.getElementById("dl").onclick = async () => { const c = await renderRoastCard(R, window.lang); downloadCanvas(c, `wendys-roast-${R.name}.png`); };
-  document.getElementById("share").onclick = async () => { const c = await renderRoastCard(R, window.lang); const f = await canvasToFile(c, "wendys-roast.png"); shareLink({ title: "Roasted by Wendy's", text: t("roastShare"), url: R.url, file: f }); };
+  document.getElementById("dl").onclick = async () => { const c = await card(); downloadCanvas(c, `wendys-roast-${R.name}.png`); };
+  document.getElementById("share").onclick = async () => { const c = await card(); const f = await canvasToFile(c, "wendys-roast.png"); shareLink({ title: "Roasted by Wendy's", text: t("roastShare"), url: R.url, file: f }); };
 </script>
 </body></html>

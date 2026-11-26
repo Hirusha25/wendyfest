@@ -219,7 +219,8 @@ app.post("/api/kiosk/lookup", requirePin("kiosk"), (req, res) => {
 });
 
 app.post("/api/kiosk/scream", requirePin("kiosk"), async (req, res) => {
-  const { code, peakDb, sustainedDb, transcript, accuracyOverride, station } = req.body || {};
+  const { code, peakDb, sustainedDb, transcript, accuracyOverride, station, speech } = req.body || {};
+  let speechLog = null; try { if (speech && typeof speech === "object") speechLog = JSON.stringify(speech).slice(0, 800); } catch {}
   const p = participantByCode.get(String(code || "").toUpperCase());
   if (!p) return res.status(404).json({ error: "code not found" });
   const s = screamSettings();
@@ -233,8 +234,8 @@ app.post("/api/kiosk/scream", requirePin("kiosk"), async (req, res) => {
     coupon = db.prepare("SELECT * FROM coupons WHERE claimed_by IS NULL ORDER BY id LIMIT 1").get();
     if (coupon) db.prepare("UPDATE coupons SET claimed_by = ?, claimed_at = datetime('now'), activity = 'scream' WHERE id = ?").run(p.id, coupon.id);
   }
-  const info = db.prepare("INSERT INTO scream_attempts(participant_id, peak_db, loudness, accuracy, score, transcript, won, coupon_id, station) VALUES (?,?,?,?,?,?,?,?,?)")
-    .run(p.id, Number(peakDb) || null, loud, acc, score, transcript ? String(transcript).slice(0, 200) : null, won ? 1 : 0, coupon?.id || null, station || null);
+  const info = db.prepare("INSERT INTO scream_attempts(participant_id, peak_db, loudness, accuracy, score, transcript, won, coupon_id, station, speech) VALUES (?,?,?,?,?,?,?,?,?,?)")
+    .run(p.id, Number(peakDb) || null, loud, acc, score, transcript ? String(transcript).slice(0, 200) : null, won ? 1 : 0, coupon?.id || null, station || null, speechLog);
 
   const first = p.name.split(" ")[0];
   const t = templates(p.lang);

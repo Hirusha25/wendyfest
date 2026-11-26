@@ -68,6 +68,9 @@ CREATE TABLE IF NOT EXISTS settings (
 );
 `);
 
+// Added later: what the kiosk's speech check reported for this scream (JSON), so a "no words heard" can be explained afterwards.
+if (!db.prepare("PRAGMA table_info(scream_attempts)").all().some((c) => c.name === "speech")) db.exec("ALTER TABLE scream_attempts ADD COLUMN speech TEXT");
+
 export function getSetting(key, fallback) {
   const row = db.prepare("SELECT value FROM settings WHERE key = ?").get(key);
   if (!row) return fallback;

@@ -260,9 +260,17 @@ app.post("/api/kiosk/scream", requirePin("kiosk"), async (req, res) => {
   const rival = rivalCheck(transcript);
   const offScript = !won && transcript && (accuracyOverride === undefined || accuracyOverride === null) && (rival || reason === "unclear");
   const sass = offScript ? await screamSass({ transcript, name: first, rival, loud, acc }) : null;
+  // Wendy says the comeback out loud: one short voice clip, made in the background and kept for a few minutes only
+  let sassAudio = null;
+  if (sass && sass.title && voiceEnabled()) {
+    const t = "s" + token(12), head = /[.!?]["”']?$/.test(sass.title.trim()) ? sass.title.trim() : sass.title.trim() + ".";
+    startVoice(t, `${head} ${sass.text || ""}`, `[teasing] ${head} [short pause] [playfully sarcastic] ${sass.text || ""}`);
+    sassAudio = `/api/kiosk/lines-audio/${t}`;
+    setTimeout(() => fs.rm(voiceFile(t), { force: true }, () => {}), 5 * 60_000);
+  }
 
   res.json({
-    attemptId: info.lastInsertRowid, name: first, score, loudness: loud, accuracy: acc, threshold: s.threshold, minLoud: s.minLoud, minAcc: s.minAcc, reason, won, sass,
+    attemptId: info.lastInsertRowid, name: first, score, loudness: loud, accuracy: acc, threshold: s.threshold, minLoud: s.minLoud, minAcc: s.minAcc, reason, won, sass, sassAudio,
     coupon: coupon ? { code: coupon.code, label } : null, couponPoolEmpty: won && !coupon,
     profileUrl: profileUrl(p), attemptsLeft: isDemo(p) ? 1 : Math.max(0, s.attemptsPerPerson - used.length - 1),
   });
@@ -287,7 +295,7 @@ app.post("/api/kiosk/roast-lines", requirePin("kiosk"), async (req, res) => {
 });
 app.get("/api/kiosk/lines-audio/:t", async (req, res) => {
   const t = String(req.params.t || "");
-  if (!/^w[A-Za-z0-9_-]{8,}$/.test(t) || !(await voiceReady(t, 12_000))) return res.status(404).json({ error: "no voice clip" });
+  if (!/^[ws][A-Za-z0-9_-]{8,}$/.test(t) || !(await voiceReady(t, 12_000))) return res.status(404).json({ error: "no voice clip" });
   res.set("Cache-Control", "private, no-store").type("audio/mpeg").sendFile(voiceFile(t));
 });
 

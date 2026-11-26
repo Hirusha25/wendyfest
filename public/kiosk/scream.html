@@ -804,6 +804,10 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
       unlock: () => {},
     };
   })();
+  // Wendy says the comeback out loud after the lose sound. Never while the mic is scoring, and it stops when the next round starts.
+  let sassVoice = null;
+  function stopSass() { if (sassVoice) { try { sassVoice.pause(); } catch {} sassVoice = null; } }
+  function saySass(url) { stopSass(); if (!url || (localStorage.getItem("wf_sfx") || "on") !== "on") return; const a = sassVoice = new Audio(url); setTimeout(() => { if (sassVoice === a && !windowOpen) a.play().catch(() => {}); }, 1700); }
   // a tap sound on every button outside the keypad (keypad keys have their own)
   document.addEventListener("pointerdown", (e) => { const b = e.target.closest && e.target.closest("button"); if (b && !b.disabled && !b.closest("#kbd")) SFX.tap(); }, true);
   $("sfx-mode").value = localStorage.getItem("wf_sfx") || "on"; $("sfx-mode").onchange = () => { localStorage.setItem("wf_sfx", $("sfx-mode").value); SFX.click(); };
@@ -1004,7 +1008,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   function shakeBoxes() { SFX.error(); [...$("boxes").children].forEach((b) => { b.classList.add("err"); setTimeout(() => b.classList.remove("err"), 500); }); }
 
   // ---------- flow ----------
-  function goIdle() { K.resetIdle(0); stopRecog(); windowOpen = false; guest = null; codeEl.value = ""; paintBoxes(); $("code-msg").textContent = ""; mode = "idle"; document.querySelectorAll(".confetti").forEach((c) => c.remove()); K.show("s-idle"); }
+  function goIdle() { stopSass(); K.resetIdle(0); stopRecog(); windowOpen = false; guest = null; codeEl.value = ""; paintBoxes(); $("code-msg").textContent = ""; mode = "idle"; document.querySelectorAll(".confetti").forEach((c) => c.remove()); K.show("s-idle"); }
   document.addEventListener("kiosk-home", goIdle);
   $("start").onclick = () => { K.show("s-code"); codeEl.focus({ preventScroll: true }); startAudio(); K.resetIdle(60000, goIdle); };
   document.querySelector(".brand").onclick = () => { if (!$("s-pin").classList.contains("on")) goIdle(); };
@@ -1026,7 +1030,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     }
     $("go-count").style.display = "none"; $("go-meter").style.display = "block"; setStep("5", "Live"); fitText(); enter($("go-meter"));
     SFX.go(); await wait(320);
-    peakDb = -100; SUS = []; susDb = -100; gaugeShown = 0; resetHold(); SD.frames = 0; SD.clip = 0; SFX.hush(); windowOpen = true; mode = "scream";
+    peakDb = -100; SUS = []; susDb = -100; gaugeShown = 0; resetHold(); SD.frames = 0; SD.clip = 0; SFX.hush(); stopSass(); windowOpen = true; mode = "scream";
     const dur = CFG.scream.durationMs || 5000, t0 = performance.now();   // ends early once the word is heard and the guest has stopped holding the note
     $("tdur").textContent = Math.round(dur / 1000);
     while (performance.now() - t0 < dur) {
@@ -1078,7 +1082,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     } else {
       $("res-title").textContent = { no_s: "Don’t forget the S!", quiet: "Louder next time.", close: "So close!" }[r.reason] || (r.loudness < r.accuracy ? "Louder next time." : "We heard… something.");
       renderDetail({ no_s: "So close. It’s WENDY’S, with the S.", quiet: "Clear as day. Now say it LOUDER!", unclear: "The meter heard you. It just didn’t hear a clear “Wendy’s”.", close: "So close. Just a little more of both." }[r.reason] || (r.loudness < 40 ? "Louder! Colombo traffic is louder than that." : "The meter heard you. It just didn’t hear “Wendy’s”."), r);
-      if (r.sass) { $("res-title").textContent = r.sass.title; renderDetail(r.sass.text, r); }
+      if (r.sass) { $("res-title").textContent = r.sass.title; renderDetail(r.sass.text, r); saySass(r.sassAudio); }
       $("qr-label").innerHTML = "Scan for<br>your pass"; SFX.lose();
     }
     $("qr-profile").src = `/api/qr?text=${encodeURIComponent(r.profileUrl)}`;

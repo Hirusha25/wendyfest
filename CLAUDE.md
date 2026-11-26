@@ -67,6 +67,8 @@ The event kiosk is a 1080 x 1920 upright touch screen. `public/kiosk/roast.html`
 
 - Roast Me sound: effects (`public/assets/sfx/`) and Wendy's recorded waiting lines (`public/assets/voice/`) are made with ElevenLabs by `node scripts/make-sounds.mjs .env public` (owner: ElevenLabs only for sound, no other source). The page plays them from `<audio>` tags (so the demo build rewrites the paths). While the roast cooks Wendy says recorded lines, then three lines about the guest's photo (`/api/kiosk/roast-lines` returns `audio`), then "Here comes the roast", a drum roll, and the roast in her voice.
 
+- Logos: `public/assets/wendys-horiz.svg` (colour), `wendys-horiz-white.svg` (white wordmark for coloured backgrounds), `wendyfest-logo.svg` and `.png` are built from the client's final artwork PDFs by `python scripts/make-logos.py <Wendy's PDF> <Wendy Fest PDF>`. Use the Wendy Fest logo image (`img.wfl`) wherever the event name appears as a logo; the old CSS text lockup is retired.
+
 ## Kiosk install and the speech check
 
 - Each kiosk page has a web app manifest in `public/assets/*.webmanifest` (kept there so the demo build rewrites the path). `public/js/kiosk.js` shows an "Add to home screen" button on the PIN and station-picker screens only, never to guests. If Chrome does not offer it, use Chrome menu > Add to Home screen.

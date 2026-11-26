@@ -18,7 +18,7 @@
     if (!document.querySelector(`link[href="${FONTS}"]`)) { const l = document.createElement("link"); l.rel = "stylesheet"; l.href = FONTS; document.head.appendChild(l); }
     try { await within(Promise.all(["900 100px 'Barlow Condensed'", "italic 900 60px 'Barlow Semi Condensed'", "italic 900 60px Poppins"].map((f) => document.fonts.load(f))), 6000); } catch {}
   })());
-  const art = () => artP || (artP = Promise.all([load(new URL("assets/wendys-horiz.svg", BASE).href), load(new URL("assets/roast-wendy.png", BASE).href)]));
+  const art = () => artP || (artP = Promise.all([load(new URL("assets/wendys-horiz.svg", BASE).href), load(new URL("assets/roast-wendy.png", BASE).href), load(new URL("assets/wendyfest-logo.png", BASE).href)]));
   const segmenter = () => segP || (segP = (async () => {
     const { FilesetResolver, ImageSegmenter } = await import(MP + "/vision_bundle.mjs");
     const files = await FilesetResolver.forVisionTasks(MP + "/wasm");
@@ -51,7 +51,7 @@
   async function roastCard(r, lang) {
     const name = String(r.name || "").trim().split(/\s+/)[0].toUpperCase();
     const text = String((r.roast && (r.roast[lang] || r.roast.en)) || "").trim();
-    const [, [logo, wendy], img] = await Promise.all([fonts(), art(), r.photo ? load(r.photo).catch(() => null) : null]);
+    const [, [logo, wendy, fest], img] = await Promise.all([fonts(), art(), r.photo ? load(r.photo).catch(() => null) : null]);
     let P = null; if (img) { try { P = await cutout(img, r.photo); } catch (e) { console.warn("roast card: no cut-out,", e.message); } }
     const out = document.createElement("canvas"); out.width = W; out.height = H; const o = out.getContext("2d"); o.imageSmoothingQuality = "high";
     const poly = (pts, fill) => { o.beginPath(); pts.forEach(([x, y], i) => i ? o.lineTo(x, y) : o.moveTo(x, y)); o.closePath(); o.fillStyle = fill; o.fill(); };
@@ -65,7 +65,7 @@
     const pg = o.createLinearGradient(0, 0, 0, 1100); pg.addColorStop(0, "#FFFFFF"); pg.addColorStop(1, "#F6F0E6"); o.fillStyle = pg; o.fillRect(0, 0, W, H); dots(1040, 250, 420, "#CFC6BD", .7); dots(40, 760, 300, "#CFC6BD", .5);
     const lh = 104, lw = Math.round(lh * logo.naturalWidth / logo.naturalHeight), lc = document.createElement("canvas"); lc.width = lw * 2; lc.height = lh * 2; const lx = lc.getContext("2d"); lx.drawImage(logo, 0, 0, lw * 2, lh * 2);
     try { const ld = lx.getImageData(0, 0, lc.width, lc.height), c0 = Math.round(lc.width * .665); for (let y = 0; y < lc.height; y++) for (let x = 0; x < c0; x++) { const i = (y * lc.width + x) * 4; ld.data[i] = 22; ld.data[i + 1] = 19; ld.data[i + 2] = 19; } lx.putImageData(ld, 0, 0); } catch {}
-    o.font = "italic 900 66px 'Barlow Semi Condensed', sans-serif"; const lkw = o.measureText("WENDY").width + o.measureText("FEST").width + 2 * 47 - 15, hx = Math.round((W - (lw + 72 + lkw)) / 2); o.drawImage(lc, hx, 50, lw, lh); o.fillStyle = "rgba(22,19,19,.55)"; o.fillRect(hx + lw + 34, 58, 4, 90); lockup(hx + lw + 72, 68, 1.06);
+    const fh = 156, fw = Math.round(fh * fest.naturalWidth / fest.naturalHeight), hx = Math.round((W - (lw + 72 + fw)) / 2); o.drawImage(lc, hx, 50, lw, lh); o.fillStyle = "rgba(22,19,19,.55)"; o.fillRect(hx + lw + 34, 58, 4, 90); o.drawImage(fest, hx + lw + 72, Math.round(50 + lh / 2 - fh / 2), fw, fh);   // the final Wendy Fest logo
     // ROASTED. headline: straight, soft 3D
     const tall = 350, depth = 13, baseY = 232 + tall;
     o.save(); o.translate(W / 2 - 6, baseY); o.textAlign = "center";

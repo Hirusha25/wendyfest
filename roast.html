@@ -1,47 +1,118 @@
 <!doctype html>
 <html lang="en">
-<head><script>fetch("./version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwxwsqkq" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<head><script>fetch("./version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwy4a6to" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>[DEMO] Roasted by Wendy's · Wendy Fest</title><meta name="theme-color" content="#CD2028"><link rel="icon" href="./assets/cameo.png">
 <meta property="og:title" content="I just got roasted by Wendy's 🔥"><meta property="og:description" content="Wendy Fest · Sri Lanka">
-<link rel="stylesheet" href="./css/guest.css?v=mwxwsqkq">
+<link rel="stylesheet" href="./css/guest.css?v=mwy4a6to">
+<style>
+  /* the roast card hangs from a lanyard, sways and turns a little, like on the kiosk */
+  .hang { position:relative; width:min(74vw, 310px); margin:64px auto 0; transform-origin:50% -14%; animation:hangIn 2.8s cubic-bezier(.3, .6, .35, 1) both, hangSway 5.6s ease-in-out 2.8s infinite alternate, hangTurn 7.4s ease-in-out infinite alternate; }
+  .hang .lany { position:absolute; left:50%; top:-74px; width:70px; height:82px; translate:-50% 0; z-index:3; filter:drop-shadow(0 4px 6px rgba(0,0,0,.4)); overflow:visible; }
+  .hang img.hcard { display:block; width:100%; aspect-ratio:9 / 16; object-fit:cover; border-radius:12px; background:#1E1B1B; box-shadow:1px 1px 0 #EDE6DB, 2px 2px 0 #D9D1C5, 3px 3px 0 #C4BBAE, 4px 4px 0 #A99F92, 5px 6px 0 #5E564D, 14px 24px 36px rgba(0,0,0,.45), 3px 6px 10px rgba(0,0,0,.3); }
+  .hang::after { content:""; position:absolute; inset:0; border-radius:12px; pointer-events:none; mix-blend-mode:screen; background:linear-gradient(112deg, transparent 38%, rgba(255,255,255,.07) 44%, rgba(255,255,255,.3) 50%, rgba(255,255,255,.07) 56%, transparent 62%) 0 0 / 280% 100% no-repeat; animation:hangSheen 7.4s ease-in-out infinite alternate; }
+  @keyframes hangIn { 0% { rotate:-13deg; } 22% { rotate:7deg; } 42% { rotate:-6deg; } 60% { rotate:2.5deg; } 78% { rotate:-3.6deg; } 100% { rotate:-2deg; } }
+  @keyframes hangSway { from { rotate:-2deg; } to { rotate:.8deg; } }
+  @keyframes hangTurn { from { transform:perspective(900px) rotateY(-10deg) rotateX(3deg); } to { transform:perspective(900px) rotateY(10deg) rotateX(-2deg); } }
+  @keyframes hangSheen { from { background-position:110% 0; } to { background-position:-10% 0; } }
+  @media (prefers-reduced-motion: reduce) { .hang, .hang::after { animation:none; rotate:-2deg; } }
+  /* until the finished card is drawn: a dark card with a soft pulse and a short line, never the raw photo */
+  .hang.wait img.hcard { visibility:hidden; }
+  .hang.wait::before { content:"Plating your card…"; position:absolute; inset:0; z-index:1; border-radius:12px; display:grid; place-items:center; background:linear-gradient(160deg, #2A2525, #141111); color:#fff; font:italic 800 15px/1 Poppins, sans-serif; letter-spacing:.14em; text-transform:uppercase; box-shadow:5px 6px 0 #5E564D, 14px 24px 36px rgba(0,0,0,.45); animation:hangWait 1.2s ease-in-out infinite alternate; }
+  @keyframes hangWait { from { filter:brightness(1); } to { filter:brightness(1.35); } }
+  /* card colour: beige, blue, black, red */
+  .swatch { display:flex; align-items:center; justify-content:center; gap:14px; margin:26px 0 4px; }
+  .swatch span { font-size:11px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; color:#fff; opacity:.9; margin-right:4px; }
+  .swatch button { width:42px; height:42px; border-radius:50%; padding:0; border:3px solid #fff; box-shadow:0 3px 0 rgba(0,0,0,.3), 0 6px 12px rgba(0,0,0,.2); transition:transform .12s; }
+  .swatch button[data-c="paper"] { background:linear-gradient(160deg, #F8F1E4, #E3D5BE); } .swatch button[data-c="blue"] { background:linear-gradient(160deg, #27B1F0, #0A7FBC); }
+  .swatch button[data-c="dark"] { background:linear-gradient(160deg, #3A3434, #0D0B0B); } .swatch button[data-c="red"] { background:linear-gradient(160deg, #EA3640, #B01A22); }
+  .swatch button.on { transform:scale(1.16); box-shadow:0 0 0 3px #1E1B1B, 0 0 0 6px #fff, 0 6px 12px rgba(0,0,0,.3); }
+  .swatch.busy button { opacity:.55; pointer-events:none; }
+  /* the page wears the Roast Me kiosk look (owner's pick): blue header with a white line, red stage with rays, a white wave, then a dark half */
+  html, body, .app { background:#141111; }
+  .hdr { z-index:5; padding:12px 16px; background:linear-gradient(180deg, #23B4F0, #0590C6); border-bottom:4px solid #fff; border-radius:0; overflow:visible; box-shadow:0 6px 14px rgba(0,0,0,.3); }
+  .hdr::before, .hdr::after { display:none; }
+  .hdr .top { display:flex; align-items:center; gap:10px; }
+  .hdr .lockup { height:24px; width:auto; } .hdr .fest { height:34px; width:auto; margin-right:auto; padding-left:10px; border-left:1.5px solid rgba(255,255,255,.55); }
+  main.body { display:block; padding:0; margin:0; }
+  /* the card hangs from the header's white line: the top of the strap is tucked under the header */
+  .stage { position:relative; padding:0 0 78px; overflow:hidden; background:repeating-conic-gradient(from -6deg at 50% -10%, rgba(255,255,255,.055) 0 6deg, transparent 6deg 12deg), radial-gradient(ellipse 90% 70% at 50% 30%, #EA3640, #B01A22); }
+  .stage .hang { margin-top:56px; }
+  .stage .wave { position:absolute; left:0; right:0; bottom:-1px; width:100%; height:64px; display:block; }
+  .lower { padding:4px 18px 22px; }
+  .lower .vibe { display:flex; align-items:center; gap:10px; min-height:11px; font:italic 800 11px/1 Poppins, sans-serif; letter-spacing:.2em; text-transform:uppercase; color:#5CC3F2; }
+  .lower .vibe:not(:empty)::after { content:""; width:34px; height:2px; background:#5CC3F2; }
+  .lower .rtitle { margin:8px 0 14px; font-size:31px; line-height:1; color:#fff; text-shadow:1px 1px 0 #D8232D, 2px 2px 0 #D8232D, 3px 3px 0 #D8232D; overflow-wrap:anywhere; }
+  /* "Wendy says": the card takes the card colour the guest picked (never dark on dark), white line all round, dots; keywords bold and coloured */
+  .rpaper { margin:0; padding:16px 18px 18px; border-radius:14px; background:var(--sb, linear-gradient(160deg, #E5303A, #A9161F)); border:2px solid rgba(255,255,255,.92); box-shadow:0 12px 26px rgba(0,0,0,.3); color:var(--st, #fff); }
+  .rpaper::before { inset:0; border:0; border-radius:0; background:radial-gradient(circle, var(--sd, rgba(255,255,255,.55)) 3px, transparent 3.6px) 0 0 / 16px 16px; -webkit-mask:radial-gradient(ellipse 60% 85% at 100% 100%, #000 0, rgba(0,0,0,.5) 45%, transparent 100%); mask:radial-gradient(ellipse 60% 85% at 100% 100%, #000 0, rgba(0,0,0,.5) 45%, transparent 100%); }
+  .rpaper > * { position:relative; z-index:1; }
+  .rpaper .who { display:flex; align-items:center; gap:9px; margin-bottom:10px; font:italic 800 11px/1 Poppins, sans-serif; letter-spacing:.18em; text-transform:uppercase; color:var(--sh, #fff); }
+  .rpaper .who img { width:26px; height:26px; border-radius:50%; background:#fff; }
+  .rpaper .rbody { margin:0; color:var(--st, #fff); font-size:18px; line-height:1.45; } .rpaper .sig { color:var(--sm, #B9B0B0); }
+  .rpaper .rbody b { font-weight:800; color:var(--kw, #FFE08A); background:var(--kb, transparent); padding:0 .2em; margin:0 -.06em; border-radius:.22em; -webkit-box-decoration-break:clone; box-decoration-break:clone; }
+  body[data-card="dark"] { --sb:linear-gradient(160deg, #E5303A, #A9161F); --st:#fff; --sh:#fff; --sm:rgba(255,255,255,.82); --sd:rgba(255,255,255,.55); --kw:#fff; --kb:#1A1616; --tb:rgba(255,255,255,.55); --ta:#1A1616; --tas:#000; }
+  body[data-card="red"] { --sb:linear-gradient(160deg, #E5303A, #A9161F); --st:#fff; --sh:#fff; --sm:rgba(255,255,255,.82); --sd:rgba(255,255,255,.55); --kw:#FFE08A; --kb:transparent; --tb:rgba(255,255,255,.55); --ta:#029CD4; --tas:#01476A; }
+  body[data-card="blue"] { --sb:linear-gradient(160deg, #23B4F0, #0A7FBC); --st:#fff; --sh:#fff; --sm:rgba(255,255,255,.85); --sd:rgba(255,255,255,.6); --kw:#FFE08A; --kb:transparent; --tb:rgba(255,255,255,.6); --ta:#D8232D; --tas:#7E0F16; }
+  body[data-card="paper"] { --sb:linear-gradient(160deg, #FBF5EA, #E8DCC8); --st:#1F1A1A; --sh:#0A6FA6; --sm:#6B6060; --sd:rgba(227,32,43,.85); --kw:#D8232D; --kb:transparent; --tb:rgba(30,27,27,.3); --ta:#029CD4; --tas:#01476A; }
+  .lower .two { margin-top:18px; gap:12px; }
+  .lower .two .btn { height:56px; font-size:15px; border-radius:999px; }
+  .lower .two .btn.outline { background:transparent; color:#fff; border:2.5px solid #fff; box-shadow:none; }
+  .lower .two .btn:not(.outline) { box-shadow:0 5px 0 #7E0F16; }
+  .lower a.link { display:inline-block; padding:12px 0 4px; color:#fff; opacity:.8; }
+  .body + .brandfoot { margin-top:0; } .brandfoot, .brandfoot * { background-color:#0590C6; color:#fff; }
+</style>
 </head>
 <body>
 <div class="app">
-  <header class="hdr" style="padding-bottom:70px">
-    <div class="top"><img class="lockup" src="./assets/wendys-horiz-white.svg" alt="Wendy's"><div class="rtabs" id="tabs"><button data-l="en">EN</button><button data-l="si">සිං</button><button data-l="ta">தமிழ்</button></div></div>
-    <div class="eyebrow" style="margin-top:16px" data-t="roastedBy">Roasted by Wendy’s</div>
-    <h1 class="display h2" id="who">…</h1>
+  <header class="hdr">
+    <div class="top"><img class="lockup" src="./assets/wendys-horiz-white.svg" alt="Wendy's"><img class="fest" src="./assets/wendyfest-logo.svg" alt="Wendy Fest"><div class="rtabs" id="tabs"><button data-l="en">EN</button><button data-l="si">සිං</button><button data-l="ta">தமிழ்</button></div></div>
   </header>
-  <main class="body" style="padding-top:0;margin-top:-56px">
-    <div class="photo rise"><img id="photo" alt=""></div>
+  <main class="body">
+   <div class="stage">
+    <div class="hang"><svg class="lany" viewBox="0 0 120 140" aria-hidden="true"><defs><linearGradient id="lyS" x1="0" x2="1"><stop offset="0" stop-color="#1668AE"/><stop offset=".18" stop-color="#2F93DE"/><stop offset=".5" stop-color="#46A8EE"/><stop offset=".82" stop-color="#2F93DE"/><stop offset="1" stop-color="#1668AE"/></linearGradient><pattern id="lyW" width="4" height="4" patternUnits="userSpaceOnUse"><path d="M0 4L4 0M-1 1L1 -1M3 5L5 3" stroke="#0E4F8A" stroke-width=".9" opacity=".5"/><path d="M0 0L4 4" stroke="#8FD0FF" stroke-width=".5" opacity=".35"/></pattern><linearGradient id="lyM" x1="0" x2="1"><stop offset="0" stop-color="#8B949C"/><stop offset=".22" stop-color="#F7F9FA"/><stop offset=".5" stop-color="#B9C1C8"/><stop offset=".78" stop-color="#F2F5F7"/><stop offset="1" stop-color="#7C858D"/></linearGradient><linearGradient id="lyB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FDFEFE"/><stop offset=".45" stop-color="#C3CAD0"/><stop offset="1" stop-color="#8A939B"/></linearGradient></defs><rect x="24" y="110" width="72" height="30" rx="9" fill="#F6F0E6" stroke="rgba(0,0,0,.2)" stroke-width="1"/><rect x="39" y="119" width="42" height="13" rx="6" fill="#211C1C"/><rect x="26" y="0" width="68" height="42" fill="url(#lyS)"/><rect x="26" y="0" width="68" height="42" fill="url(#lyW)"/><rect x="26" y="26" width="68" height="16" fill="#0E4F8A" opacity=".28"/><path d="M30 28H90M30 39H90" stroke="#BFE3FF" stroke-width="1.2" stroke-dasharray="3 2.4" opacity=".85"/><path d="M28 42H92A27 27 0 0 1 65 70H55A27 27 0 0 1 28 42Z" fill="none" stroke="#3E464D" stroke-width="11" stroke-linejoin="round" opacity=".3" transform="translate(0 3)"/><path d="M28 42H92A27 27 0 0 1 65 70H55A27 27 0 0 1 28 42Z" fill="none" stroke="url(#lyM)" stroke-width="9" stroke-linejoin="round"/><rect x="26" y="33" width="68" height="13" fill="url(#lyS)"/><rect x="26" y="33" width="68" height="13" fill="url(#lyW)"/><rect x="49" y="70" width="22" height="12" rx="4" fill="url(#lyM)" stroke="#6F7880" stroke-width=".8"/><ellipse cx="60" cy="72" rx="9" ry="3" fill="#EEF1F3" opacity=".9"/><path d="M41 84Q41 80 45 80H75Q79 80 79 84V120Q79 128 71 128H49Q41 128 41 120Z" fill="url(#lyB)" stroke="#6F7880" stroke-width="1"/><path d="M46 85H60V123H50Q46 123 46 119Z" fill="#fff" opacity=".45"/><rect x="50" y="113" width="20" height="5" rx="2.5" fill="#7C858D" opacity=".55"/></svg><img class="hcard" id="photo" alt="Your roast card"></div>
+    <div class="swatch" id="swatch"><span>Card colour</span><button data-c="paper" aria-label="Beige"></button><button data-c="blue" aria-label="Blue"></button><button data-c="dark" aria-label="Black"></button><button data-c="red" aria-label="Red"></button></div>
+    <svg class="wave" viewBox="0 0 390 64" preserveAspectRatio="none" aria-hidden="true"><path d="M0 40 C 80 14, 190 66, 390 20 L390 64 L0 64Z" fill="#141111"/><path d="M0 40 C 80 14, 190 66, 390 20" fill="none" stroke="#fff" stroke-width="5"/><path d="M0 28 C 80 2, 190 54, 390 8" fill="none" stroke="#fff" stroke-width="1.6" opacity=".85"/></svg>
+   </div>
+   <div class="lower">
+    <div class="vibe" id="vibe"></div>
+    <h2 class="display rtitle" id="title">…</h2>
     <div class="rpaper rise-2">
-      <div class="vibe" id="vibe"></div>
-      <h2 class="display rtitle" id="title">…</h2>
+      <div class="who"><img src="./assets/cameo.png" alt="">Wendy says</div>
       <p class="rbody" id="body"></p>
       <div class="sig">— Wendy’s, <span data-t="fest">Wendy Fest</span></div>
     </div>
-    <div class="two rise-3"><button class="btn outline" id="dl" data-t="download">Download</button><button class="btn" id="share" style="height:52px;font-size:15px" data-t="share">Share</button></div>
-    <a class="link" href="./index.html" style="padding:6px 0 10px" data-t="tryIt">Get roasted too</a>
+    <div class="two rise-3"><button class="btn outline" id="dl" data-t="download">Download</button><button class="btn" id="share" data-t="share">Share</button></div>
+    <a class="link" href="./index.html" data-t="tryIt">Get roasted too</a>
+   </div>
   </main>
   <div id="foot"></div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js?v=mwxwsqkq"></script><script src="./js/i18n.js?v=mwxwsqkq"></script><script src="./js/app.js"></script><script src="./js/roast-card.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js?v=mwy4a6to"></script><script src="./js/i18n.js?v=mwy4a6to"></script><script src="./js/app.js"></script><script src="./js/roast-card.js"></script>
 <script>
   document.getElementById("foot").outerHTML = brandFoot();
-  const card = async () => { try { return await roastCard(R, window.lang); } catch (e) { console.warn(e); return renderRoastCard(R, window.lang); } };
+  const card = async () => { try { return await roastCard(R, window.lang, R.theme); } catch (e) { console.warn(e); return renderRoastCard(R, window.lang); } };
   const token = new URLSearchParams(location.search).get("t");
   let R = null;
   function paint() {
     if (!R) return;
     document.querySelectorAll("#tabs button").forEach((b) => b.classList.toggle("on", b.dataset.l === window.lang));
-    document.getElementById("who").textContent = R.name.split(" ")[0];
     document.getElementById("title").textContent = R.title[window.lang] || R.title.en;
-    document.getElementById("body").textContent = R.roast[window.lang] || R.roast.en;
+    document.getElementById("body").innerHTML = boldKeywords(R.roast[window.lang] || R.roast.en, roastKeys(R));
     document.getElementById("vibe").textContent = R.vibe || "";
-    if (R.photo) document.getElementById("photo").src = R.photo;
-    applyLang();
+    drawCard(); applyLang();
   }
+  // The card on the page: the photo shows first, then the finished card replaces it. It is redrawn when the language or colour changes.
+  let drawJob = 0;
+  function drawCard() {
+    const img = document.getElementById("photo"), sw = document.getElementById("swatch"), job = ++drawJob;
+    const hang = img.closest(".hang"); if (!img.getAttribute("src")) hang.classList.add("wait");   // the raw photo is never shown: a dark card waits until the finished card is drawn (owner)
+    document.body.dataset.card = R.theme;
+    sw.querySelectorAll("button").forEach((b) => b.classList.toggle("on", b.dataset.c === R.theme)); sw.classList.add("busy");
+    card().then((c) => { if (job === drawJob) { img.src = c.toDataURL("image/jpeg", .9); hang.classList.remove("wait"); } }).catch((e) => console.warn(e)).finally(() => { if (job === drawJob) sw.classList.remove("busy"); });
+  }
+  document.querySelectorAll("#swatch button").forEach((b) => b.onclick = () => { if (!R) return; R.theme = b.dataset.c; drawCard();
+    fetch(`/api/roast/${token}/theme`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ theme: R.theme }) }).catch(() => {}); });
   document.querySelectorAll("#tabs button").forEach((b) => b.onclick = () => setLang(b.dataset.l));
   document.addEventListener("langchange", paint);
   api(`/api/roast/${token}`).then((r) => { R = r; if (!new URLSearchParams(location.search).get("lang") && !localStorage.getItem("wf_lang")) window.lang = r.lang; paint(); }).catch(() => { document.getElementById("title").textContent = "This roast went cold."; });

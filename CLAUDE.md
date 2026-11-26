@@ -65,6 +65,8 @@ The event kiosk is a 1080 x 1920 upright touch screen. `public/kiosk/roast.html`
 - `kiosk-check.mjs` only covers the wide layout. For the upright one, walk the flow in a 1080 x 1920 browser window and check English, Sinhala and Tamil.
 - Roasts are two short billboard-style lines (8 to 18 words). The English roast can be voiced with ElevenLabs (`server/voice.js`); it needs `ELEVENLABS_API_KEY` and `ELEVENLABS_VOICE_ID`, and is skipped without them. The voice model is `eleven_v4`, which follows delivery directions in square brackets; the roast writer returns a `voice` script with them, and `speakable()` in `server/voice.js` only uses it when its words match the roast on screen (allowed directions are listed there).
 
+- Roast Me sound: effects (`public/assets/sfx/`) and Wendy's recorded waiting lines (`public/assets/voice/`) are made with ElevenLabs by `node scripts/make-sounds.mjs .env public` (owner: ElevenLabs only for sound, no other source). The page plays them from `<audio>` tags (so the demo build rewrites the paths). While the roast cooks Wendy says recorded lines, then three lines about the guest's photo (`/api/kiosk/roast-lines` returns `audio`), then "Here comes the roast", a drum roll, and the roast in her voice.
+
 ## Kiosk install and the speech check
 
 - Each kiosk page has a web app manifest in `public/assets/*.webmanifest` (kept there so the demo build rewrites the path). `public/js/kiosk.js` shows an "Add to home screen" button on the PIN and station-picker screens only, never to guests. If Chrome does not offer it, use Chrome menu > Add to Home screen.

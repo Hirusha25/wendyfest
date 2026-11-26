@@ -274,7 +274,21 @@ app.post("/api/kiosk/roast-lines", requirePin("kiosk"), async (req, res) => {
   const p = participantByCode.get(String(code || "").toUpperCase());
   const m = String(image || "").match(/^data:(image\/(?:jpeg|png|webp));base64,(.+)$/);
   if (!p || !consent || !m) return res.json({ lines: [] });
-  res.json({ lines: await generateTeasers({ imageBase64: m[2], mediaType: m[1], name: p.name.split(" ")[0] }) });
+  const lines = await generateTeasers({ imageBase64: m[2], mediaType: m[1], name: p.name.split(" ")[0] });
+  // Wendy says the first three out loud: one short voice clip, made in the background and kept for a few minutes only
+  let audio = null; const spoken = lines.slice(0, 3);
+  if (voiceEnabled() && spoken.length === 3) {
+    const t = "w" + token(12);
+    startVoice(t, spoken.join(" "), spoken.map((l, i) => `[${["amused", "teasing", "smug"][i]}] ${l}`).join(" "));
+    audio = `/api/kiosk/lines-audio/${t}`;
+    setTimeout(() => fs.rm(voiceFile(t), { force: true }, () => {}), 5 * 60_000);
+  }
+  res.json({ lines, audio, spoken: spoken.length });
+});
+app.get("/api/kiosk/lines-audio/:t", async (req, res) => {
+  const t = String(req.params.t || "");
+  if (!/^w[A-Za-z0-9_-]{8,}$/.test(t) || !(await voiceReady(t, 12_000))) return res.status(404).json({ error: "no voice clip" });
+  res.set("Cache-Control", "private, no-store").type("audio/mpeg").sendFile(voiceFile(t));
 });
 
 app.post("/api/kiosk/roast", requirePin("kiosk"), async (req, res) => {

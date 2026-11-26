@@ -14,7 +14,7 @@ PLAIN WORDS (as important as the sass): the crowd is Sri Lankan and English is a
 - One simple idea per line. Short sentences.
 - No idioms, no sayings, no wordplay that needs strong English, no rare or grown-up words (not "ransom", "negotiate", "recalculating", "forecast", "confession", "devastated", "case closed").
 - No foreign pop-culture, no internet slang, no cricket terms, no place or bus jokes, no slang words from Sinhala or Tamil.
-- The joke should come from everyday things everyone here knows: a phone call, school, Amma, lunch, the weather, being lost, a shop.
+- The joke should come from everyday things everyone here knows: a phone call, school, lunch, the weather, being lost, a shop.
 
 MAKE IT THEIRS: build the joke from the exact words this guest shouted: how they sound, what they mean, or where a person would normally say them. Take their words literally and run with them (they shouted "windy"? Then the wind got loud and nobody heard a "Wendy's". They shouted "hello"? Wendy is not a phone). If the same reply could be shown to a different guest who shouted something different, it has failed, so write another. Use the guest's first name once if it fits. Quote or echo their words when it is funny and clean.
 Do not use these worn-out lines or anything close to them: "almost there", "so close", "nice try", "try again", "wrong party", "wrong restaurant", "wrong word", "wrong password", "check the sign", "magic word", "bold move", "interesting".

@@ -150,6 +150,7 @@ const V = Date.now().toString(36);
 const QR_CDN = `<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>`;
 const links = [
   [/href="\/register\?next=([a-z]+)"/g, 'href="PFXregister.html?next=$1"'],
+  [/href="\/register\?new=1"/g, 'href="PFXregister.html?new=1"'],
   [/href="\/register"/g, 'href="PFXregister.html"'], [/href="\/profile"/g, 'href="PFXprofile.html"'],
   [/href="\/kiosk\/scream"/g, 'href="PFXkiosk/scream.html"'], [/href="\/kiosk\/roast"/g, 'href="PFXkiosk/roast.html"'],
   [/href="\/kiosk"/g, 'href="PFXkiosk/index.html"'], [/href="\/admin"/g, 'href="PFXadmin.html"'], [/href="\/"/g, 'href="PFXindex.html"'],

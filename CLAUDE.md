@@ -71,6 +71,12 @@ The event kiosk is a 1080 x 1920 upright touch screen. `public/kiosk/roast.html`
 - Scream & Win also has an upright 1080 x 1920 layout: a generated `@media (orientation: portrait)` block at the end of its `<style>`. Edit `scripts/scream-portrait-css.py` and run `python scripts/scream-portrait-css.py public/kiosk/scream.html`; do not hand-edit the block. `fitText` reads `data-pfit` / `data-pfs` for upright sizes, and `drawLiveA` and `fitResTitle` have their own upright geometry. `kiosk-check.mjs` covers the wide layout only.
 - Scream & Win hears the word through Chrome's speech recognition, which needs internet and is unreliable on Android (sessions end early, and the mic may be busy with the loudness meter). The page restarts it during the scream window, and if it errors or hears no words from a loud guest, the host judges instead. The last result is shown in Station settings.
 
+## Roast card and guest sign-in
+
+- The share card is drawn by `public/js/roast-card.js` (`roastCard(r, lang)`, 1080 x 1920): the guest is cut out of the photo with MediaPipe in the browser (needs internet the first time; a framed photo is used if it fails). The kiosk reveal screen shows it over the older CSS poster, and the guest page uses it for Download and Share. The owner approved: slanted poster, name on a red tape, roast on cream strips with the last line on blue, no dots on the red.
+- With `SMS_PROVIDER=console` the sign-up code is shown on the phone (demo mode) until an SMS provider is set. A phone that has registered keeps a one-year cookie; `/register` then opens its pass, and `/register?new=1` signs up someone else.
+- Waiting lines and comebacks must not mention Amma or other family members (owner, Nov 2026).
+
 ## Branches
 
 - `main` — everything approved.

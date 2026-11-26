@@ -67,7 +67,12 @@ function publicProfile(p) {
 
 // ---------- public pages ----------
 app.get("/", (req, res) => res.sendFile(page("index.html")));
-app.get("/register", (req, res) => res.sendFile(page("register.html")));
+app.get("/register", (req, res) => {
+  // A phone that has already registered goes straight to its pass. /register?new=1 lets someone else sign up on the same phone.
+  const c = cookies(req);
+  if (req.query.new === undefined && c.wf_session && participantByToken.get(c.wf_session)) return res.redirect("/profile");
+  res.sendFile(page("register.html"));
+});
 app.get("/profile", (req, res) => res.sendFile(page("profile.html")));
 app.get("/p/:token", (req, res) => {
   const p = participantByToken.get(req.params.token);

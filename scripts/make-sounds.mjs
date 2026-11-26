@@ -28,6 +28,23 @@ const WAIT = [
   ["[amused] Hold that smile. I am nearly done.", "Hold that smile. I am nearly done."],
   ["[cheerfully] Fresh roast, never frozen. Almost ready.", "Fresh roast, never frozen. Almost ready."],
 ];
+// Scream & Win result lines Wendy says. A random one plays: WIN when the guest wins, QUIET when the word was right but not loud enough.
+const WIN = [
+  "[excited] Now that is how you say it! [smug] Wendy's. Loud and clear. [cheerfully] You win!",
+  "[mock impressed] Wow. My ears are ringing. [cheerfully] That was perfect. You win!",
+  "[excited] Yes! That is my name! [teasing] Say it just like that when you order. [cheerfully] You win!",
+  "[amused] Okay, okay, I heard you. [smug] The whole place heard you. [cheerfully] We have a winner!",
+  "[cheerfully] Loud. Clear. Correct. [smug] I like you already. [excited] You win!",
+  "[excited] We have a winner! [teasing] Somebody has been practising at home.",
+];
+const QUIET = [
+  "[teasing] I heard Wendy's. [deadpan] Just about. [playfully sarcastic] Was that a shout, or a secret?",
+  "[amused] Right word. Wrong volume. [teasing] My grill is louder than that.",
+  "[deadpan] Sorry, did somebody whisper? [cheerfully] You said it right. Now say it louder!",
+  "[teasing] That was Wendy's, in a classroom voice. [cheerfully] Next time, let it out!",
+  "[playfully sarcastic] Very polite. Very quiet. [teasing] This is a scream booth, not a meeting.",
+  "[amused] You got my name right. [smug] Now tell the people at the back.",
+];
 const HERE = "[cheerfully] Okay. Here comes the roast!";
 const save = async (file, r) => { if (!r.ok) { console.log("FAILED", path.basename(file), r.status, (await r.text()).slice(0, 200)); return; } const b = Buffer.from(await r.arrayBuffer()); fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, b); console.log("made", path.relative(pub, file), b.length, "bytes"); };
 for (const [name, [text, secs]] of Object.entries(SFX)) { if (only && !only.includes(name)) continue;
@@ -35,4 +52,5 @@ for (const [name, [text, secs]] of Object.entries(SFX)) { if (only && !only.incl
 const say = (text) => fetch(`https://api.elevenlabs.io/v1/text-to-speech/${env.ELEVENLABS_VOICE_ID}?output_format=mp3_44100_128`, { method: "POST", headers: H, body: JSON.stringify({ text, model_id: "eleven_v4", voice_settings: { stability: 0.5, similarity_boost: 0.8, style: 0.45, use_speaker_boost: true } }) });
 for (let i = 0; i < WAIT.length; i++) { if (only && !only.includes("wait")) continue; await save(path.join(pub, "assets/voice", `wait-${i + 1}.mp3`), await say(WAIT[i][0])); }
 if (!only || only.includes("here")) await save(path.join(pub, "assets/voice", "here-it-comes.mp3"), await say(HERE));
+for (const [kind, list] of [["win", WIN], ["quiet", QUIET]]) for (let i = 0; i < list.length; i++) { if (only && !only.includes("say-" + kind)) continue; await save(path.join(pub, "assets/voice", `${kind}-${i + 1}.mp3`), await say(list[i])); }
 console.log("WAIT TEXT", JSON.stringify(WAIT.map((w) => w[1])));

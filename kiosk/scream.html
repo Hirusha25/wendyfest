@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
-<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwxwik51" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwxwsqkq" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Scream & Win · Wendy Fest</title><link rel="icon" href="../assets/cameo.png"><link rel="manifest" href="../assets/scream.webmanifest"><meta name="theme-color" content="#029CD4"><meta name="mobile-web-app-capable" content="yes">
-<link rel="stylesheet" href="../css/brand.css?v=mwxwik51">
+<link rel="stylesheet" href="../css/brand.css?v=mwxwsqkq">
 <style>
 /* ================= RETRO BLUE (formerly Studio Cream) · Scream & Win ================= */
 :root { --u:min(calc(100vw / 1440), calc(100vh / 760)); --v:var(--u); --blue:#029CD4; --red:#CD2028; --red2:#DA2A33; --red-dark:#8E141B; --ink:#1F1A1A; --cream:#F7F2EC; --blush:#F2D4D7; --cyan:#29C9E0; --line:rgba(205,32,40,.18); }
@@ -612,10 +612,11 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
 
 <!-- sounds (made with ElevenLabs; the same set as Roast Me) -->
 <audio id="sfx-tap" src="../assets/sfx/tap.mp3" preload="auto"></audio><audio id="sfx-key" src="../assets/sfx/key.mp3" preload="auto"></audio><audio id="sfx-delete" src="../assets/sfx/delete.mp3" preload="auto"></audio><audio id="sfx-go" src="../assets/sfx/go.mp3" preload="auto"></audio><audio id="sfx-error" src="../assets/sfx/error.mp3" preload="auto"></audio><audio id="sfx-whoosh" src="../assets/sfx/whoosh.mp3" preload="auto"></audio><audio id="sfx-beep" src="../assets/sfx/beep.mp3" preload="auto"></audio><audio id="sfx-win" src="../assets/sfx/win.mp3" preload="auto"></audio><audio id="sfx-lose" src="../assets/sfx/lose.mp3" preload="auto"></audio>
-<!-- Wendy's recorded result lines: six for a win, six for the right word said too quietly -->
+<!-- Wendy's recorded result lines: six each for a win, the right word said too quietly, and "Wendy" without the S -->
+<audio id="vo-nos-1" src="../assets/voice/nos-1.mp3" preload="auto"></audio><audio id="vo-nos-2" src="../assets/voice/nos-2.mp3" preload="auto"></audio><audio id="vo-nos-3" src="../assets/voice/nos-3.mp3" preload="auto"></audio><audio id="vo-nos-4" src="../assets/voice/nos-4.mp3" preload="auto"></audio><audio id="vo-nos-5" src="../assets/voice/nos-5.mp3" preload="auto"></audio><audio id="vo-nos-6" src="../assets/voice/nos-6.mp3" preload="auto"></audio>
 <audio id="vo-win-1" src="../assets/voice/win-1.mp3" preload="auto"></audio><audio id="vo-win-2" src="../assets/voice/win-2.mp3" preload="auto"></audio><audio id="vo-win-3" src="../assets/voice/win-3.mp3" preload="auto"></audio><audio id="vo-win-4" src="../assets/voice/win-4.mp3" preload="auto"></audio><audio id="vo-win-5" src="../assets/voice/win-5.mp3" preload="auto"></audio><audio id="vo-win-6" src="../assets/voice/win-6.mp3" preload="auto"></audio>
 <audio id="vo-quiet-1" src="../assets/voice/quiet-1.mp3" preload="auto"></audio><audio id="vo-quiet-2" src="../assets/voice/quiet-2.mp3" preload="auto"></audio><audio id="vo-quiet-3" src="../assets/voice/quiet-3.mp3" preload="auto"></audio><audio id="vo-quiet-4" src="../assets/voice/quiet-4.mp3" preload="auto"></audio><audio id="vo-quiet-5" src="../assets/voice/quiet-5.mp3" preload="auto"></audio><audio id="vo-quiet-6" src="../assets/voice/quiet-6.mp3" preload="auto"></audio>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwxwik51"></script><script src="../js/kiosk.js?v=mwxwik51"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwxwsqkq"></script><script src="../js/kiosk.js?v=mwxwsqkq"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let CFG = { scream: { threshold: 70, durationMs: 3000, dbFloor: -42, dbCeil: -6, loudWeight: .6, accWeight: .4 } };
@@ -811,7 +812,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   let sassVoice = null;
   function stopSass() { if (sassVoice) { try { sassVoice.pause(); } catch {} sassVoice = null; } }
   function saySass(url, delay = 1700) { stopSass(); if (!url || (localStorage.getItem("wf_sfx") || "on") !== "on") return; const a = sassVoice = typeof url === "string" ? new Audio(url) : url; try { a.currentTime = 0; } catch {} setTimeout(() => { if (sassVoice === a && !windowOpen) a.play().catch(() => {}); }, delay); }
-  // one of Wendy's recorded lines, picked at random (never the same one twice in a row): "win", or "quiet" for the right word said too softly
+  // one of Wendy's recorded lines, picked at random (never the same one twice in a row): "win", "quiet" for the right word said too softly, "nos" for "Wendy" without the S
   const lastPreset = {};
   function sayPreset(kind, delay) { let i; do { i = 1 + Math.floor(Math.random() * 6); } while (i === lastPreset[kind]); lastPreset[kind] = i; saySass($(`vo-${kind}-${i}`), delay); }
   // a tap sound on every button outside the keypad (keypad keys have their own)
@@ -1090,6 +1091,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
       renderDetail({ no_s: "So close. It’s WENDY’S, with the S.", quiet: "Clear as day. Now say it LOUDER!", unclear: "The meter heard you. It just didn’t hear a clear “Wendy’s”.", close: "So close. Just a little more of both." }[r.reason] || (r.loudness < 40 ? "Louder! Colombo traffic is louder than that." : "The meter heard you. It just didn’t hear “Wendy’s”."), r);
       if (r.sass) { $("res-title").textContent = r.sass.title; renderDetail(r.sass.text, r); saySass(r.sassAudio); }
       else if (r.reason === "quiet") sayPreset("quiet", 1700);
+      else if (r.reason === "no_s") sayPreset("nos", 1700);
       $("qr-label").innerHTML = "Scan for<br>your pass"; SFX.lose();
     }
     $("qr-profile").src = qrUrl(r.profileUrl);

@@ -39,7 +39,7 @@ const now = () => new Date().toISOString().slice(0, 19).replace("T", " ");
 if (!DB.participants.some((p) => p.code === "WENDYS")) { DB.participants.unshift({ id: 1000, code: "WENDYS", token: "demo-guest-token", name: "Demo Guest", phone: "94770000000", email: null, dob: null, lang: "en", created_at: now() }); save(); }
 const cookie = (n) => (document.cookie.match(new RegExp("(?:^|; )" + n + "=([^;]*)")) || [])[1];
 const setCookie = (n, v) => (document.cookie = n + "=" + v + "; path=/; max-age=31536000; SameSite=Lax");
-const scream = () => Object.assign({ threshold: 75, minLoud: 60, minAcc: 70, loudWeight: .6, accWeight: .4, dbFloor: -42, dbCeil: -6, attemptsPerPerson: 99, durationMs: 5000 }, DB.settings.scream || {});
+const scream = () => Object.assign({ threshold: 75, minLoud: 60, minAcc: 70, loudWeight: .6, accWeight: .4, dbFloor: -42, dbCeil: -6, attemptsPerPerson: 99, durationMs: 10000 }, DB.settings.scream || {});
 const coupon = () => Object.assign({ valueLabel: "10% OFF your next Wendy's order", terms: "Valid at Wendy's Sri Lanka outlets during the launch period. One use per code." }, DB.settings.coupon || {});
 const roastS = () => Object.assign({ attemptsPerPerson: 99 }, DB.settings.roast || {});
 const profileUrl = (p) => BASE + "/profile.html?t=" + p.token;

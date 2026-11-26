@@ -43,7 +43,7 @@ export const config = {
     dbFloor: Number(env("SCREAM_DB_FLOOR", -42)),       // dBFS that maps to 0
     dbCeil: Number(env("SCREAM_DB_CEIL", -6)),          // dBFS that maps to 100
     attemptsPerPerson: Number(env("SCREAM_ATTEMPTS", 1)),
-    durationMs: Number(env("SCREAM_DURATION_MS", 5000)),   // one 5-second window; only the first attempt at the word counts
+    durationMs: Number(env("SCREAM_DURATION_MS", 10000)),   // up to 10 seconds so the guest can hold the note; ends early once the word is heard and they stop
   },
   roast: {
     attemptsPerPerson: Number(env("ROAST_ATTEMPTS", 1)),

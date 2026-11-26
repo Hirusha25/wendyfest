@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
-<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwxqak6e" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwxsgt6e" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Roast Me · Wendy Fest</title><link rel="icon" href="../assets/cameo.png"><link rel="manifest" href="../assets/roast.webmanifest"><meta name="theme-color" content="#1593D6"><meta name="mobile-web-app-capable" content="yes">
-<link rel="stylesheet" href="../css/brand.css?v=mwxqak6e"><link rel="stylesheet" href="../css/kiosk.css?v=mwxqak6e">
+<link rel="stylesheet" href="../css/brand.css?v=mwxsgt6e"><link rel="stylesheet" href="../css/kiosk.css?v=mwxsgt6e">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@600;700&family=Barlow+Semi+Condensed:ital,wght@1,900&display=swap" rel="stylesheet">
 <style>
   body.kiosk { background: var(--ink); }
@@ -632,7 +632,10 @@
   </aside>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwxqak6e"></script><script src="../js/i18n.js?v=mwxqak6e"></script><script src="../js/kiosk.js"></script><script src="../js/roast-card.js"></script>
+<!-- sounds: effects and Wendy's pre-recorded waiting lines (made with ElevenLabs, in Wendy's voice) -->
+<audio id="sfx-tap" src="../assets/sfx/tap.mp3" preload="auto"></audio><audio id="sfx-key" src="../assets/sfx/key.mp3" preload="auto"></audio><audio id="sfx-delete" src="../assets/sfx/delete.mp3" preload="auto"></audio><audio id="sfx-go" src="../assets/sfx/go.mp3" preload="auto"></audio><audio id="sfx-error" src="../assets/sfx/error.mp3" preload="auto"></audio><audio id="sfx-whoosh" src="../assets/sfx/whoosh.mp3" preload="auto"></audio><audio id="sfx-beep" src="../assets/sfx/beep.mp3" preload="auto"></audio><audio id="sfx-shutter" src="../assets/sfx/shutter.mp3" preload="auto"></audio><audio id="sfx-sizzle" src="../assets/sfx/sizzle.mp3" preload="auto"></audio><audio id="sfx-reveal" src="../assets/sfx/reveal.mp3" preload="auto"></audio>
+<audio id="vo-wait-1" src="../assets/voice/wait-1.mp3" preload="auto"></audio><audio id="vo-wait-2" src="../assets/voice/wait-2.mp3" preload="auto"></audio><audio id="vo-wait-3" src="../assets/voice/wait-3.mp3" preload="auto"></audio><audio id="vo-wait-4" src="../assets/voice/wait-4.mp3" preload="auto"></audio><audio id="vo-wait-5" src="../assets/voice/wait-5.mp3" preload="auto"></audio><audio id="vo-wait-6" src="../assets/voice/wait-6.mp3" preload="auto"></audio><audio id="vo-wait-7" src="../assets/voice/wait-7.mp3" preload="auto"></audio><audio id="vo-wait-8" src="../assets/voice/wait-8.mp3" preload="auto"></audio><audio id="vo-here" src="../assets/voice/here-it-comes.mp3" preload="auto"></audio>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwxsgt6e"></script><script src="../js/i18n.js?v=mwxsgt6e"></script><script src="../js/kiosk.js"></script><script src="../js/roast-card.js"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let guest = null, stream = null, glang = "en", R = null, BASE = location.origin;
@@ -678,9 +681,10 @@
   function stopVoice() { if (voice) { voice.pause(); voice.removeAttribute("src"); voice = null; } }
   function playVoice() {
     if (!R || !R.audio || R.voiced) return;
-    R.voiced = true; stopVoice(); voice = new Audio(R.audio); voice.play().catch(() => {});
+    R.voiced = true; stopVoice(); const a = voice = new Audio(R.audio);   // starts after the fanfare
+    setTimeout(() => { if (voice === a) a.play().catch(() => {}); }, Math.max(0, (R.voiceAt || 0) - Date.now()));
   }
-  function goIdle() { stopVoice(); K.resetIdle(0); setHeat("medium"); guest = null; R = null; $("code").value = ""; paintCode(); $("code-msg").textContent = ""; K.show("s-idle"); }
+  function goIdle() { stopVoice(); stopTalk(); sizzleOn(false); K.resetIdle(0); setHeat("medium"); guest = null; R = null; $("code").value = ""; paintCode(); $("code-msg").textContent = ""; K.show("s-idle"); }
   document.addEventListener("kiosk-home", goIdle);
   $("start").onclick = () => { K.show("s-code"); $("code").focus(); startCam(); };
   // code screen: slots mirror the (visually hidden) input; keys, Delete and Go drive it
@@ -706,8 +710,8 @@
       if (guest.roastsLeft <= 0) { $("code-msg").textContent = `${guest.firstName} has already been roasted. One roast per guest.`; return; }
       glang = guest.lang || "en"; setGLang(glang);
       $("c-name").textContent = `${guest.firstName}!`;
-      K.show("s-consent"); fitConsent(); K.resetIdle(120000, goIdle);
-    } catch (e) { $("code-msg").textContent = e.message; $("slots").classList.add("err"); setTimeout(() => $("slots").classList.remove("err"), 500); }
+      sfx("go"); K.show("s-consent"); fitConsent(); K.resetIdle(120000, goIdle);
+    } catch (e) { sfx("error"); $("code-msg").textContent = e.message; $("slots").classList.add("err"); setTimeout(() => $("slots").classList.remove("err"), 500); }
   }
   function setGLang(l) { glang = l; document.querySelectorAll(".lang-pick button").forEach((b) => b.classList.toggle("on", b.dataset.l === l)); document.querySelectorAll("#c-box [lang]").forEach((p) => p.style.display = p.lang === l ? "" : "none"); fitConsent(); }
   // keep the greeting on the charcoal side and the card above the footer, whatever the name or language
@@ -724,28 +728,63 @@
   $("agree").onclick = async () => { K.show("s-cam"); await startCam(); K.resetIdle(120000, goIdle); };
   $("snap").onclick = async () => {
     K.resetIdle(0); $("snap").disabled = true;
-    for (const n of [3, 2, 1]) { $("count").textContent = n; $("count").classList.remove("hidden", "pop"); void $("count").offsetWidth; $("count").classList.add("pop"); await wait(900); }
+    for (const n of [3, 2, 1]) { sfx("beep", .6); $("count").textContent = n; $("count").classList.remove("hidden", "pop"); void $("count").offsetWidth; $("count").classList.add("pop"); await wait(900); }
     $("count").classList.add("hidden");
-    $("flash").classList.remove("go"); void $("flash").offsetWidth; $("flash").classList.add("go");
+    $("flash").classList.remove("go"); void $("flash").offsetWidth; $("flash").classList.add("go"); sfx("shutter", .7);
     const image = capture(); $("snap").disabled = false;
     $("ck-photo").src = image; paintHeatCap(); setCook(2); K.show("s-cooking"); cookLines(); personalLines(image);
     try {
       R = await K.api("/api/kiosk/roast", { code: guest.code, image, consent: true, heat });
-      setCook(3); await wait(800); setCook(4); await wait(450);
+      setCook(3); await talkDone(1300); setCook(4);            // let Wendy finish the sentence she is on
+      await hereItComes();             // "Here comes the roast", then a drum roll, so heads turn before it appears
       reveal();
     } catch (e) { alert("Roast failed: " + e.message); goIdle(); }
   };
-  const LINES = ["Checking the fit.", "Judging the pose. Respectfully.", "Warming up the grill.", "Adding a little extra sass.", "Fresh roast, never frozen."];
-  let cookTimer = null;
-  function cookLines() { let i = 0; clearInterval(cookTimer); $("cook-line").textContent = LINES[0]; cookTimer = setInterval(() => { i = (i + 1) % LINES.length; $("cook-line").textContent = LINES[i]; }, 1800); }
+  // ---------- sound ----------
+  // Short effects on taps, keys, screen changes, the countdown and the photo. Each one is a small sound file.
+  function sfx(name, vol = .5) { const a = $("sfx-" + name); if (!a) return; try { const c = a.cloneNode(); c.volume = vol; c.play().catch(() => {}); } catch {} }
+  document.addEventListener("pointerdown", (e) => { const b = e.target.closest && e.target.closest("button"); if (!b || b.disabled) return; sfx(b.closest("#kb") ? "key" : b.id === "code-del" ? "delete" : "tap", b.closest("#kb") ? .45 : .55); }, true);
+  document.addEventListener("screen", (e) => { if (e.detail !== "s-pin" && e.detail !== "s-reveal") sfx("whoosh", .3); });
+  const sizzle = $("sfx-sizzle"); sizzle.loop = true;
+  function sizzleOn(on) { try { if (on) { sizzle.volume = .1; sizzle.currentTime = 0; sizzle.play().catch(() => {}); } else sizzle.pause(); } catch {} }
+  // While the roast is being written, Wendy talks to the guest: her recorded lines play one after another and the bubble
+  // shows the line she is saying. When lines about this guest's own photo arrive, she says those next.
+  const LINES = ["Okay. Let me have a good look at you.", "Hmm. Interesting choices today.", "Do not move. I am thinking.", "Oh, this is going to be good.", "Warming up the grill, just for you.", "Adding a little extra sass. You can take it.", "Hold that smile. I am nearly done.", "Fresh roast, never frozen. Almost ready."];
+  let cookTimer = null, talk = null, talkOn = false, personal = null;
+  function stopTalk() { talkOn = false; personal = null; clearTimeout(cookTimer); if (talk) { talk.onended = talk.onerror = talk.ontimeupdate = null; talk.pause(); talk = null; } }
+  function say(a, done) { talk = a; let over = false; const end = () => { if (over) return; over = true; if (talk === a) talk = null; done(); }; a.onended = end; a.onerror = end; try { a.currentTime = 0; } catch {} a.volume = 1; a.play().catch(() => { cookTimer = setTimeout(end, 2200); }); }
+  function sayPersonal(p, done) {
+    const lines = p.lines, total = lines.join(" ").length; $("cook-line").textContent = lines[0];
+    if (!p.audio) { let i = 0; const step = () => { if (!talkOn) return; if (++i >= lines.length) return done(); $("cook-line").textContent = lines[i]; cookTimer = setTimeout(step, 2200); }; cookTimer = setTimeout(step, 2200); return; }
+    const a = new Audio(p.audio); let shown = 0;
+    a.ontimeupdate = () => { const f = a.duration ? a.currentTime / a.duration : 0; let acc = 0, k = 0; for (; k < lines.length - 1; k++) { acc += lines[k].length + 1; if (f < acc / total) break; } if (k !== shown) { shown = k; $("cook-line").textContent = lines[k]; } };
+    say(a, done);
+  }
+  function cookLines() {
+    stopTalk(); talkOn = true; sizzleOn(true);
+    const order = LINES.map((_, i) => i).slice(1).sort(() => Math.random() - .5); order.unshift(0); let n = 0;
+    const next = () => {
+      if (!talkOn) return;
+      if (personal) { const p = personal; personal = null; return sayPersonal(p, () => { cookTimer = setTimeout(next, 350); }); }
+      const i = order[n++ % order.length]; $("cook-line").textContent = LINES[i]; say($("vo-wait-" + (i + 1)), () => { cookTimer = setTimeout(next, 350); });
+    };
+    next();
+  }
+  // resolves when the line being spoken ends, or after ms at the latest; nothing new is started
+  function talkDone(ms) { talkOn = false; clearTimeout(cookTimer); return new Promise((r) => { const a = talk; if (!a || a.paused) return r(); const t = setTimeout(r, ms); a.addEventListener("ended", () => { clearTimeout(t); r(); }, { once: true }); }); }
+  // the build-up: Wendy announces the roast, then a drum roll; the roast screen appears on the fanfare
+  async function hereItComes() {
+    stopTalk(); sizzleOn(false);
+    await new Promise((r) => { const a = $("vo-here"); $("cook-line").textContent = "Okay. Here comes the roast!"; const t = setTimeout(r, 3500); say(a, () => { clearTimeout(t); r(); }); });
+    sfx("reveal", .8); await wait(1050);
+  }
   // Lines about this guest's own photo: they take over the bubble as soon as they arrive; if they never do, the general lines stay.
   function personalLines(image) {
     const who = guest.code;
     K.api("/api/kiosk/roast-lines", { code: who, image, consent: true }).then((r) => {
       const mine = (r && Array.isArray(r.lines) ? r.lines : []).filter(Boolean);
-      if (mine.length < 3 || !guest || guest.code !== who || !$("s-cooking").classList.contains("on")) return;
-      let i = 0; clearInterval(cookTimer); $("cook-line").textContent = mine[0];
-      cookTimer = setInterval(() => { i = Math.min(i + 1, mine.length - 1); $("cook-line").textContent = mine[i]; }, 2200);
+      if (mine.length < 3 || !guest || guest.code !== who || !talkOn || !$("s-cooking").classList.contains("on")) return;
+      personal = { lines: mine.slice(0, r.spoken || 3), audio: r.audio || null };   // said after the line she is on
     }).catch(() => {});
   }
   function paintReveal(l) {
@@ -763,7 +802,7 @@
     roastCard(R, l).then((c) => { if (job !== cardJob || who !== R) return; $("r-card").src = c.toDataURL("image/jpeg", .9); document.querySelector("#s-reveal .pcard").classList.add("has-card"); }).catch((e) => console.warn("roast card", e));
   }
   function reveal() {
-    clearInterval(cookTimer); document.querySelector("#s-reveal .pcard").classList.remove("has-card");
+    stopTalk(); sizzleOn(false); R.voiceAt = Date.now() + 1500; document.querySelector("#s-reveal .pcard").classList.remove("has-card");
     K.show("s-reveal");
     $("r-photo").src = R.photo; $("rp-name").textContent = String(R.name || "").split(" ")[0].toUpperCase(); $("r-vibe").textContent = R.vibe || "Roasted";
     $("r-who").textContent = R.name; paintReveal(glang);

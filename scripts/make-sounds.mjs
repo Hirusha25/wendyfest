@@ -45,6 +45,15 @@ const QUIET = [
   "[playfully sarcastic] Very polite. Very quiet. [teasing] This is a scream booth, not a meeting.",
   "[amused] You got my name right. [smug] Now tell the people at the back.",
 ];
+// NOS: the guest said "Wendy" without the S.
+const NOS = [
+  "[teasing] So close. [deadpan] But my name has an S at the end. [cheerfully] It is Wendy's!",
+  "[amused] Wendy? [playfully sarcastic] Who is Wendy? [smug] Around here, we say Wendy's.",
+  "[mock impressed] Great shout. [teasing] But you dropped something. An S. [cheerfully] It is Wendy's!",
+  "[deadpan] Almost my name. [teasing] You forgot the last letter. [cheerfully] Wendy's, with an S.",
+  "[teasing] Wendy is nice. [smug] Wendy's is better. [cheerfully] Do not forget the S!",
+  "[amused] One letter short. [playfully sarcastic] And it was the important one. [cheerfully] Wendy's!",
+];
 const HERE = "[cheerfully] Okay. Here comes the roast!";
 const save = async (file, r) => { if (!r.ok) { console.log("FAILED", path.basename(file), r.status, (await r.text()).slice(0, 200)); return; } const b = Buffer.from(await r.arrayBuffer()); fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, b); console.log("made", path.relative(pub, file), b.length, "bytes"); };
 for (const [name, [text, secs]] of Object.entries(SFX)) { if (only && !only.includes(name)) continue;
@@ -52,5 +61,5 @@ for (const [name, [text, secs]] of Object.entries(SFX)) { if (only && !only.incl
 const say = (text) => fetch(`https://api.elevenlabs.io/v1/text-to-speech/${env.ELEVENLABS_VOICE_ID}?output_format=mp3_44100_128`, { method: "POST", headers: H, body: JSON.stringify({ text, model_id: "eleven_v4", voice_settings: { stability: 0.5, similarity_boost: 0.8, style: 0.45, use_speaker_boost: true } }) });
 for (let i = 0; i < WAIT.length; i++) { if (only && !only.includes("wait")) continue; await save(path.join(pub, "assets/voice", `wait-${i + 1}.mp3`), await say(WAIT[i][0])); }
 if (!only || only.includes("here")) await save(path.join(pub, "assets/voice", "here-it-comes.mp3"), await say(HERE));
-for (const [kind, list] of [["win", WIN], ["quiet", QUIET]]) for (let i = 0; i < list.length; i++) { if (only && !only.includes("say-" + kind)) continue; await save(path.join(pub, "assets/voice", `${kind}-${i + 1}.mp3`), await say(list[i])); }
+for (const [kind, list] of [["win", WIN], ["quiet", QUIET], ["nos", NOS]]) for (let i = 0; i < list.length; i++) { if (only && !only.includes("say-" + kind)) continue; await save(path.join(pub, "assets/voice", `${kind}-${i + 1}.mp3`), await say(list[i])); }
 console.log("WAIT TEXT", JSON.stringify(WAIT.map((w) => w[1])));

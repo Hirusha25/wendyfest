@@ -18,7 +18,7 @@ const SFX = {
   lose: ["playful sad trombone, three descending wah notes, short and comedic", 1.8],
   reveal: ["short snare drum roll building for one second, then a bright ta-da brass fanfare hit with a cymbal crash, game show reveal", 3],
   // sounds that say what the button or the moment is (owner: "relevant sounds, not the common ones")
-  start: ["arcade game start button, punchy power-up with a quick rising zap and a bright ping", 1],       // the big Start / Let's go / Yes buttons
+  start: ["one thick glossy restaurant menu page flipped over, smooth card paper swish", 0.7],       // the big Start / Let's go / Yes buttons (owner picked the menu flip)
   coin: ["single arcade coin dropping into a slot with a bright ding, next player", 0.8],                  // Next player / Next guest
   pop: ["single cartoon bubble pop, bright and round", 0.5],                                               // things popping onto the screen
   stamp: ["heavy rubber stamp slamming onto a desk, one deep punchy thud with a short paper slap", 0.7],   // the prize ribbon slamming in
@@ -69,11 +69,16 @@ const NOS = [
   "[amused] One letter short. [playfully sarcastic] And it was the important one. [cheerfully] Wendy's!",
 ];
 const HERE = "[cheerfully] Okay. Here comes the roast!";
+// Roast Me guide lines: the Ready screen in a few seconds (one photo, Wendy's roast, sent to your phone), and the camera screen
+const STEPS = "[cheerfully] Quick one! I take one photo. [teasing] I roast your style, nicely. [cheerfully] Then it lands on your phone.";
+const HEAT = "[teasing] Now, pick your heat!";
 const save = async (file, r) => { if (!r.ok) { console.log("FAILED", path.basename(file), r.status, (await r.text()).slice(0, 200)); return; } const b = Buffer.from(await r.arrayBuffer()); fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, b); console.log("made", path.relative(pub, file), b.length, "bytes"); };
 for (const [name, [text, secs]] of Object.entries(SFX)) { if (only && !only.includes(name)) continue;
   await save(path.join(pub, "assets/sfx", name + ".mp3"), await fetch("https://api.elevenlabs.io/v1/sound-generation?output_format=mp3_44100_128", { method: "POST", headers: H, body: JSON.stringify({ text, duration_seconds: secs, prompt_influence: 0.6 }) })); }
 const say = (text) => fetch(`https://api.elevenlabs.io/v1/text-to-speech/${env.ELEVENLABS_VOICE_ID}?output_format=mp3_44100_128`, { method: "POST", headers: H, body: JSON.stringify({ text, model_id: "eleven_v4", voice_settings: { stability: 0.5, similarity_boost: 0.8, style: 0.45, use_speaker_boost: true } }) });
 for (let i = 0; i < WAIT.length; i++) { if (only && !only.includes("wait")) continue; await save(path.join(pub, "assets/voice", `wait-${i + 1}.mp3`), await say(WAIT[i][0])); }
 if (!only || only.includes("here")) await save(path.join(pub, "assets/voice", "here-it-comes.mp3"), await say(HERE));
+if (!only || only.includes("steps")) await save(path.join(pub, "assets/voice", "steps.mp3"), await say(STEPS));
+if (!only || only.includes("heat")) await save(path.join(pub, "assets/voice", "heat.mp3"), await say(HEAT));
 for (const [kind, list] of [["win", WIN], ["quiet", QUIET], ["nos", NOS]]) for (let i = 0; i < list.length; i++) { if (only && !only.includes("say-" + kind)) continue; await save(path.join(pub, "assets/voice", `${kind}-${i + 1}.mp3`), await say(list[i])); }
 console.log("WAIT TEXT", JSON.stringify(WAIT.map((w) => w[1])));

@@ -144,6 +144,7 @@ rule("#s-cooking .art", M((0, 1080), (1080, 900), (1080, 1860), (0, 1860)))
 # the layered Wendy (same as the welcome screen): white outline so her ponytail reads against the red behind it
 rule("#s-cooking .art .wd", "left:-10u; right:auto; top:800u; bottom:auto; width:1100u; height:1100u; filter:drop-shadow(7u 0 0 #fff) drop-shadow(-7u 0 0 #fff) drop-shadow(0 7u 0 #fff) drop-shadow(0 -7u 0 #fff)")
 rule("#s-cooking .art .wd img", "left:0; top:0; right:auto; bottom:auto; width:100%; height:100%")
+rule("#s-cooking .art .wd img.lip", "left:61.563%; top:64.753%; width:22.169%; height:11.324%")   # the lip-sync mouth sits on her own mouth
 rule("#s-cooking .eb", "left:60u; top:226u"); rule("#s-cooking .t3", "left:54u; top:268u; font-size:82u")
 rule("#s-cooking .chk", "left:60u; top:520u; gap:26u"); rule("#s-cooking .chk .st i", "width:70u; height:70u"); rule("#s-cooking .chk .st b", "font-size:38u")
 # the photo hangs from the blue header line on the roast card's lanyard clip, swings in, sways, turns in 3D and catches the light (owner's pick)

@@ -7,20 +7,53 @@
 <style>
   body { background: var(--cream); }
   .head { background: var(--ink); color: #fff; padding: 18px 0; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
   .kpi { background: #fff; border-radius: 16px; padding: 16px; }
-  .kpi .display { font-size: 2.2rem; color: var(--red); }
+  .kpi .display { font-size: 2.2rem; margin-top: 5px; color: var(--red); }
+  #dash > *, #dash .stack > *, #dash .two > *, #dash .grid > * { min-width: 0; }   /* wide tables scroll inside their card, never the page */
+  @media (max-width: 640px) { .head b { display: none; } .grid { grid-template-columns: 1fr 1fr; } }
   .kpi small { color: var(--gray); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; font-size: .7rem; }
+  .kpi .note { font-size: .74rem; color: var(--gray); margin-top: 6px; line-height: 1.3; }
+  .kpi.big { background: var(--red); }
+  .kpi.big .display, .kpi.big small, .kpi.big .note { color: #fff; }
   .two { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
   @media (max-width: 800px) { .two { grid-template-columns: 1fr; } }
   table { width: 100%; border-collapse: collapse; font-size: .85rem; }
   td, th { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--gray-light); }
   th { font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; color: var(--gray); }
+  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+  tr.today td { background: #FFF8E1; font-weight: 700; }
   textarea.input { min-height: 120px; font-family: ui-monospace, monospace; font-size: .85rem; }
   .fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
   .fields .input { padding: 10px 12px; }
   .warn { background: #FFF3C4; color: #7A5A00; padding: 10px 14px; border-radius: 12px; font-size: .85rem; font-weight: 600; }
   .ok { background: #DDF5E3; color: #1E6B3A; }
+  .tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+  .tab { border: 2px solid var(--ink); background: transparent; color: var(--ink); border-radius: 999px; padding: 9px 18px; font-family: inherit; font-weight: 700; font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; cursor: pointer; }
+  .tab.on { background: var(--ink); color: #fff; }
+  .tab b { font-weight: 800; opacity: .7; margin-left: 6px; }
+  .sec { font-weight: 800; font-size: 1.05rem; margin: 6px 0 -6px; }
+  .funnel { display: grid; gap: 10px; }
+  .frow { display: grid; grid-template-columns: 200px 1fr 110px; gap: 12px; align-items: center; font-size: .88rem; font-weight: 600; }
+  .frow .track { background: var(--gray-light); border-radius: 8px; height: 26px; overflow: hidden; }
+  .frow .bar { height: 100%; background: var(--red); border-radius: 8px; min-width: 3px; }
+  .frow .bar.b2 { background: var(--blue); }
+  .frow .bar.b3 { background: var(--ink); }
+  .frow .num { text-align: right; font-weight: 800; }
+  .frow .num span { color: var(--gray); font-weight: 600; font-size: .78rem; margin-left: 6px; }
+  @media (max-width: 640px) { .frow { grid-template-columns: 1fr 90px; } .frow .track { grid-column: 1 / -1; order: 3; } }
+  .scroll, #dash .card { overflow-x: auto; }
+  .tools { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .tools .input { max-width: 300px; padding: 10px 12px; }
+  .pill { border: 0; background: var(--gray-light); color: var(--ink); border-radius: 999px; padding: 8px 14px; font-family: inherit; font-weight: 700; font-size: .76rem; cursor: pointer; }
+  .pill.on { background: var(--red); color: #fff; }
+  .link { display: grid; grid-template-columns: 1fr auto; gap: 6px 14px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--gray-light); }
+  .link:last-child { border-bottom: 0; }
+  .link b { font-size: .95rem; }
+  .link code { font-size: .8rem; color: var(--gray); word-break: break-all; }
+  .link .help { grid-column: 1 / -1; }
+  .mini { font-size: .75rem; color: var(--gray); }
+  label.check { display: inline-flex; gap: 8px; align-items: center; font-size: .85rem; font-weight: 600; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -29,48 +62,95 @@
   <section id="login" class="card" style="max-width:380px;margin:40px auto"><div class="stack"><div class="eyebrow">Admin PIN</div><input class="input" id="pin" type="password" inputmode="numeric"><button class="btn block" id="pin-go">Unlock</button></div></section>
 
   <section id="dash" class="hidden stack" style="gap:18px">
+    <div class="row between" style="flex-wrap:wrap">
+      <div class="tabs" id="tabs">
+        <button class="tab on" data-t="overview">Numbers</button><button class="tab" data-t="guests">Guests<b id="tab-guests"></b></button><button class="tab" data-t="half">Half registered<b id="tab-half"></b></button><button class="tab" data-t="links">Links</button><button class="tab" data-t="settings">Settings</button>
+      </div>
+      <span class="mini" id="stamp"></span>
+    </div>
     <div id="alerts" class="stack" style="gap:8px"></div>
-    <div class="grid" id="kpis"></div>
 
-    <div class="two">
-      <div class="card stack">
-        <h3 class="eyebrow">Scream & Win scoring</h3>
-        <div class="fields">
-          <div class="field"><label>Win threshold</label><input class="input" id="threshold" type="number" min="1" max="100"></div>
-          <div class="field"><label>Min loudness to win</label><input class="input" id="minLoud" type="number" min="0" max="100"></div>
-          <div class="field"><label>Min clarity to win</label><input class="input" id="minAcc" type="number" min="0" max="100"></div>
-          <div class="field"><label>Loud weight</label><input class="input" id="loudWeight" type="number" step=".05" min="0" max="1"></div>
-          <div class="field"><label>Clarity weight</label><input class="input" id="accWeight" type="number" step=".05" min="0" max="1"></div>
-          <div class="field"><label>dB floor (=0)</label><input class="input" id="dbFloor" type="number"></div>
-          <div class="field"><label>dB ceiling (=100)</label><input class="input" id="dbCeil" type="number"></div>
-          <div class="field"><label>Scream window ms</label><input class="input" id="durationMs" type="number" step="500"></div>
-          <div class="field"><label>Scream attempts</label><input class="input" id="attemptsPerPerson" type="number" min="1"></div>
-          <div class="field"><label>Roast attempts</label><input class="input" id="roastAttempts" type="number" min="1"></div>
+    <!-- Numbers -->
+    <div class="stack" id="t-overview" style="gap:18px">
+      <label class="check hidden" id="real-wrap"><input type="checkbox" id="real"> <span id="real-l"></span></label>
+      <div class="sec">Sign-up</div>
+      <div class="grid" id="k-signup"></div>
+      <div class="card stack"><h3 class="eyebrow">From the QR code to the games</h3><div class="funnel" id="funnel"></div><div class="help">Each line counts people, not tries. "Asked for a sign-up code" is everyone who filled the form and was sent a code by SMS.</div></div>
+      <div class="sec">Games</div>
+      <div class="grid" id="k-games"></div>
+      <div class="card"><h3 class="eyebrow">Day by day (Sri Lanka time)</h3><div class="scroll"><table id="days"></table></div></div>
+      <div class="two">
+        <div class="card"><h3 class="eyebrow">Text messages sent</h3><table id="sms"></table><div class="help" style="margin-top:8px">One line per kind of message. A guest who asks for the code again counts again.</div></div>
+        <div class="card"><h3 class="eyebrow">Language chosen</h3><table id="langs"></table><h3 class="eyebrow" style="margin-top:14px">By kiosk</h3><table id="stations"></table></div>
+      </div>
+      <div class="two">
+        <div class="card"><h3 class="eyebrow">Recent screams</h3><table id="recent"></table></div>
+        <div class="card"><h3 class="eyebrow">Leaderboard</h3><table id="lead"></table><h3 class="eyebrow" style="margin-top:14px">Recent roasts</h3><table id="roasts"></table></div>
+      </div>
+    </div>
+
+    <!-- Guests -->
+    <div class="card stack hidden" id="t-guests">
+      <div class="tools"><input class="input" id="g-q" placeholder="Search name, code or phone">
+        <span id="g-f"><button class="pill on" data-f="all">Everyone</button> <button class="pill" data-f="scream">Played Scream &amp; Win</button> <button class="pill" data-f="roast">Played Roast Me</button> <button class="pill" data-f="both">Played both</button> <button class="pill" data-f="none">Not played yet</button> <button class="pill" data-f="won">Winners</button></span></div>
+      <div class="scroll"><table id="g-table"></table></div>
+      <div class="row between"><span class="help" id="g-count"></span><span class="row"><button class="btn sm ghost" id="g-prev">Earlier page</button><button class="btn sm ghost" id="g-next">Next page</button></span></div>
+    </div>
+
+    <!-- Half registered -->
+    <div class="card stack hidden" id="t-half">
+      <div class="help" style="font-size:.86rem">These people filled the sign-up form and were sent a code by SMS, but never typed it in, so they have no guest code and cannot play. The phone number is partly hidden because it was never confirmed as theirs. If this list grows fast, check that the SMS is arriving.</div>
+      <div class="scroll"><table id="h-table"></table></div>
+    </div>
+
+    <!-- Links -->
+    <div class="stack hidden" id="t-links" style="gap:18px">
+      <div class="two">
+        <div class="card"><h3 class="eyebrow">For guests</h3><div id="l-guest"></div></div>
+        <div class="card" style="text-align:center"><h3 class="eyebrow">Sign-up QR code</h3><img id="l-qr" alt="QR code for the sign-up page" style="width:min(100%,260px);margin:10px auto;display:block"><div class="help">Opens the sign-up page. Right-click to save it for print.</div></div>
+      </div>
+      <div class="two">
+        <div class="card"><h3 class="eyebrow">For the kiosks (kiosk PIN needed)</h3><div id="l-kiosk"></div></div>
+        <div class="card"><h3 class="eyebrow">For the team (admin PIN needed)</h3><div id="l-team"></div></div>
+      </div>
+    </div>
+
+    <!-- Settings -->
+    <div class="stack hidden" id="t-settings" style="gap:18px">
+      <div class="two">
+        <div class="card stack">
+          <h3 class="eyebrow">Scream & Win scoring</h3>
+          <div class="fields">
+            <div class="field"><label>Win threshold</label><input class="input" id="threshold" type="number" min="1" max="100"></div>
+            <div class="field"><label>Min loudness to win</label><input class="input" id="minLoud" type="number" min="0" max="100"></div>
+            <div class="field"><label>Min clarity to win</label><input class="input" id="minAcc" type="number" min="0" max="100"></div>
+            <div class="field"><label>Loud weight</label><input class="input" id="loudWeight" type="number" step=".05" min="0" max="1"></div>
+            <div class="field"><label>Clarity weight</label><input class="input" id="accWeight" type="number" step=".05" min="0" max="1"></div>
+            <div class="field"><label>dB floor (=0)</label><input class="input" id="dbFloor" type="number"></div>
+            <div class="field"><label>dB ceiling (=100)</label><input class="input" id="dbCeil" type="number"></div>
+            <div class="field"><label>Scream window ms</label><input class="input" id="durationMs" type="number" step="500"></div>
+            <div class="field"><label>Scream attempts</label><input class="input" id="attemptsPerPerson" type="number" min="1"></div>
+            <div class="field"><label>Roast attempts</label><input class="input" id="roastAttempts" type="number" min="1"></div>
+          </div>
+          <div class="help">To win, a guest needs the overall score AND the minimum loudness AND the minimum clarity. Clarity only passes for a clear "Wendy's" with the S; only their first attempt at the word counts. Loudness is the loudest sustained half-second (dBFS) from the kiosk mic. Calibrate on site: a normal talking voice at 1 m should read near the floor, a full scream near the ceiling.</div>
+          <button class="btn sm" id="save-scream">Save scoring</button>
         </div>
-        <div class="help">To win, a guest needs the overall score AND the minimum loudness AND the minimum clarity. Clarity only passes for a clear "Wendy's" with the S; only their first attempt at the word counts. Loudness is the loudest sustained half-second (dBFS) from the kiosk mic. Calibrate on site: a normal talking voice at 1 m should read near the floor, a full scream near the ceiling.</div>
-        <button class="btn sm" id="save-scream">Save scoring</button>
+        <div class="card stack">
+          <h3 class="eyebrow">Reward copy (what the coupon unlocks)</h3>
+          <div class="field"><label>Label on screens + SMS</label><input class="input" id="valueLabel"></div>
+          <div class="field"><label>Terms line</label><input class="input" id="terms"></div>
+          <div class="help">Pending confirmation from client (Eromika): discount %, validity window, outlets, one-use rule.</div>
+          <button class="btn sm" id="save-coupon">Save copy</button>
+          <h3 class="eyebrow" style="margin-top:8px">Coupon pool</h3>
+          <textarea class="input" id="codes" placeholder="Paste codes from Kamalesh, one per line (optional ,label)"></textarea>
+          <div class="row"><button class="btn sm" id="import">Import codes</button><button class="btn sm ghost" id="gen">Generate 100 demo codes</button><span class="help" id="pool"></span></div>
+        </div>
       </div>
       <div class="card stack">
-        <h3 class="eyebrow">Reward copy (what the coupon unlocks)</h3>
-        <div class="field"><label>Label on screens + SMS</label><input class="input" id="valueLabel"></div>
-        <div class="field"><label>Terms line</label><input class="input" id="terms"></div>
-        <div class="help">Pending confirmation from client (Eromika): discount %, validity window, outlets, one-use rule.</div>
-        <button class="btn sm" id="save-coupon">Save copy</button>
-        <h3 class="eyebrow" style="margin-top:8px">Coupon pool</h3>
-        <textarea class="input" id="codes" placeholder="Paste codes from Kamalesh, one per line (optional ,label)"></textarea>
-        <div class="row"><button class="btn sm" id="import">Import codes</button><button class="btn sm ghost" id="gen">Generate 100 demo codes</button><span class="help" id="pool"></span></div>
+        <h3 class="eyebrow">Tools</h3>
+        <div class="row"><input class="input" id="resend-code" placeholder="Guest code" style="max-width:160px;text-transform:uppercase"><button class="btn sm ink" id="resend">Resend welcome SMS</button><span class="help">Use when a guest didn't receive their code.</span></div>
+        <div class="help" id="env"></div>
       </div>
-    </div>
-
-    <div class="two">
-      <div class="card"><h3 class="eyebrow">Recent screams</h3><table id="recent"></table></div>
-      <div class="card"><h3 class="eyebrow">Leaderboard</h3><table id="lead"></table><h3 class="eyebrow" style="margin-top:14px">Recent roasts</h3><table id="roasts"></table></div>
-    </div>
-
-    <div class="card stack">
-      <h3 class="eyebrow">Tools</h3>
-      <div class="row"><input class="input" id="resend-code" placeholder="Guest code" style="max-width:160px;text-transform:uppercase"><button class="btn sm ink" id="resend">Resend welcome SMS</button><span class="help">Use when a guest didn't receive their code.</span></div>
-      <div class="help" id="env"></div>
     </div>
   </section>
 </main>
@@ -80,11 +160,28 @@
   async function unlock() { try { await api("/api/admin/login", { method: "POST", body: { pin: $("pin").value } }); $("login").classList.add("hidden"); $("dash").classList.remove("hidden"); load(); } catch { toast("Wrong PIN"); } }
   $("pin-go").onclick = unlock; $("pin").addEventListener("keydown", (e) => e.key === "Enter" && unlock());
   if (document.cookie.includes("wf_admin=")) { $("login").classList.add("hidden"); $("dash").classList.remove("hidden"); load(); }
-  let S = null;
+
+  let S = null, O = null, TAB = "overview"; const G = { q: "", f: "all", page: 1 };
+  const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const pct = (a, b) => (b ? Math.round((a / b) * 100) + "%" : "0%");
+  const v = (x) => x || 0;
+  const kpi = (l, val, note = "", big = false) => `<div class="kpi${big ? " big" : ""}"><small>${l}</small><div class="display">${val}</div>${note ? `<div class="note">${note}</div>` : ""}</div>`;
+  const LANG = { en: "English", si: "Sinhala", ta: "Tamil" };
+  const KIND = { otp: "Sign-up code", welcome: "Welcome and guest code", win: "You won", lose: "Not this time", roast: "Your roast link", other: "Other" };
+  const focused = (id) => document.activeElement === $(id);
+
+  function showTab(t) {
+    TAB = t;
+    document.querySelectorAll("#tabs .tab").forEach((b) => b.classList.toggle("on", b.dataset.t === t));
+    ["overview", "guests", "half", "links", "settings"].forEach((x) => $("t-" + x).classList.toggle("hidden", x !== t));
+    if (t === "guests") loadGuests(); if (t === "half") loadHalf();
+  }
+  document.querySelectorAll("#tabs .tab").forEach((b) => (b.onclick = () => showTab(b.dataset.t)));
+  $("real").onchange = () => load();
+
   async function load() {
     try { S = await api("/api/admin/stats"); } catch (e) { if (e.status === 401) { $("login").classList.remove("hidden"); $("dash").classList.add("hidden"); } return; }
-    const k = [["Registered", S.participants], ["Screams", S.screams], ["Wins", S.wins], ["Avg score", S.avgScore ?? "—"], ["Roasts", S.roasts], ["Coupons left", `${S.couponsLeft}/${S.couponsTotal}`], ["SMS sent", S.smsSent], ["SMS failed", S.smsFailed]];
-    $("kpis").innerHTML = k.map(([l, v]) => `<div class="kpi"><small>${l}</small><div class="display">${v}</div></div>`).join("");
+    try { O = await api("/api/admin/overview" + ($("real").checked ? "?real=1" : "")); } catch { O = null; }
     const a = [];
     if (S.couponsLeft < 50) a.push(`<div class="warn">Only ${S.couponsLeft} coupon codes left in the pool. Import more.</div>`);
     if (!S.settings.anthropicKey) a.push(`<div class="warn">ANTHROPIC_API_KEY not set – Roast Me is using the offline fallback bank (generic roasts).</div>`);
@@ -93,15 +190,72 @@
     if (S.smsFailed > 0) a.push(`<div class="warn">${S.smsFailed} SMS failed – check provider credentials / sender ID approval.</div>`);
     if (!a.length) a.push(`<div class="warn ok">All systems go.</div>`);
     $("alerts").innerHTML = a.join("");
-    const sc = S.settings.scream; ["threshold", "minLoud", "minAcc", "loudWeight", "accWeight", "dbFloor", "dbCeil", "durationMs", "attemptsPerPerson"].forEach((f) => $(f).value = sc[f] ?? "");
-    $("roastAttempts").value = S.settings.roast.attemptsPerPerson;
-    $("valueLabel").value = S.settings.coupon.valueLabel; $("terms").value = S.settings.coupon.terms;
+    if (O) drawOverview();
+    const sc = S.settings.scream; ["threshold", "minLoud", "minAcc", "loudWeight", "accWeight", "dbFloor", "dbCeil", "durationMs", "attemptsPerPerson"].forEach((f) => { if (!focused(f)) $(f).value = sc[f] ?? ""; });
+    if (!focused("roastAttempts")) $("roastAttempts").value = S.settings.roast.attemptsPerPerson;
+    if (!focused("valueLabel")) $("valueLabel").value = S.settings.coupon.valueLabel;
+    if (!focused("terms")) $("terms").value = S.settings.coupon.terms;
     $("pool").textContent = `${S.couponsLeft} unclaimed of ${S.couponsTotal}`;
-    $("recent").innerHTML = `<tr><th>Guest</th><th>Code</th><th>Score</th><th>Won</th><th>Coupon</th><th>Time (Sri Lanka)</th></tr>` + S.recent.map((r) => `<tr><td>${r.name}</td><td>${r.code}</td><td>${r.score}</td><td>${r.won ? "🏆" : ""}</td><td>${r.coupon || ""}</td><td>${r.created_at.slice(11, 16)}</td></tr>`).join("");
-    $("lead").innerHTML = `<tr><th>#</th><th>Guest</th><th>Best</th></tr>` + S.leaderboard.map((r, i) => `<tr><td>${i + 1}</td><td>${r.name}</td><td>${r.score}</td></tr>`).join("");
-    $("roasts").innerHTML = `<tr><th>Guest</th><th>Title</th><th></th></tr>` + S.recentRoasts.map((r) => `<tr><td>${r.name}</td><td>${r.title_en || ""} ${r.fallback ? "<span class='chip'>fallback</span>" : ""}</td><td><a href="/r/${r.token}" target="_blank">open</a></td></tr>`).join("");
-    $("env").textContent = `BASE_URL ${S.settings.baseUrl} · SMS ${S.settings.sms.provider} (sender ${S.settings.sms.senderId}) · roast model ${S.settings.roastModel} · fallback roasts so far: ${S.roastFallbacks}`;
+    $("recent").innerHTML = `<tr><th>Guest</th><th>Code</th><th>Score</th><th>Won</th><th>Coupon</th><th>Time (Sri Lanka)</th></tr>` + S.recent.map((r) => `<tr><td>${esc(r.name)}</td><td>${esc(r.code)}</td><td>${r.score}</td><td>${r.won ? "🏆" : ""}</td><td>${esc(r.coupon || "")}</td><td>${String(r.created_at).slice(11, 16)}</td></tr>`).join("");
+    $("lead").innerHTML = `<tr><th>#</th><th>Guest</th><th>Best</th></tr>` + S.leaderboard.map((r, i) => `<tr><td>${i + 1}</td><td>${esc(r.name)}</td><td>${r.score}</td></tr>`).join("");
+    $("roasts").innerHTML = `<tr><th>Guest</th><th>Title</th><th></th></tr>` + S.recentRoasts.map((r) => `<tr><td>${esc(r.name)}</td><td>${esc(r.title_en || "")} ${r.fallback ? "<span class='chip'>fallback</span>" : ""}</td><td><a href="/r/${r.token}" target="_blank">open</a></td></tr>`).join("");
+    $("env").textContent = `BASE_URL ${S.settings.baseUrl} · SMS ${S.settings.sms.provider} (sender ${S.settings.sms.senderId}) · roast model ${S.settings.roastModel} · fallback roasts so far: ${S.roastFallbacks}` + (O && O.testCodes.length ? ` · test codes that never run out of turns: ${O.testCodes.join(", ")}` : "");
+    drawLinks();
+    if (TAB === "guests" && !focused("g-q")) loadGuests(); if (TAB === "half") loadHalf();
   }
+
+  function drawOverview() {
+    const s = O.signup, g = O.games, t = O.days.find((d) => d.day === O.today) || {};
+    $("stamp").textContent = `Updated ${String(O.now).slice(11, 16)} Sri Lanka time · refreshes by itself`;
+    $("real-wrap").classList.toggle("hidden", !O.testCodes.length); $("real-l").textContent = `Leave out our test codes (${O.testCodes.join(", ")})`;
+    $("tab-guests").textContent = s.registered; $("tab-half").textContent = s.half;
+    $("k-signup").innerHTML = kpi("Registered", s.registered, `${v(t.registered)} today`, true) + kpi("Half registered", s.half, "asked for a code, never finished")
+      + kpi("Asked for a code", s.started, `${pct(s.registered, s.started)} finished`) + kpi("Sign-up codes sent", s.otpSms, `${s.otpFailed} failed · ${s.wrongCodes} wrong codes typed`)
+      + kpi("Said yes to offers", s.marketingYes, `${pct(s.marketingYes, s.registered)} of registered`);
+    const top = Math.max(1, s.started), fr = (l, val, of, cls = "") => `<div class="frow"><div>${l}</div><div class="track"><div class="bar ${cls}" style="width:${(val / top) * 100}%"></div></div><div class="num">${val}<span>${pct(val, of)}</span></div></div>`;
+    $("funnel").innerHTML = fr("Asked for a sign-up code", s.started, s.started) + fr("Registered", s.registered, s.started) + fr("Played at least one game", g.played, s.registered, "b2")
+      + fr("Played Scream &amp; Win", g.screamPeople, s.registered, "b2") + fr("Played Roast Me", g.roastPeople, s.registered, "b2") + fr("Played both games", g.both, s.registered, "b3");
+    $("k-games").innerHTML = kpi("Played a game", g.played, `${g.notPlayed} registered but not played`, true) + kpi("Scream &amp; Win", g.screamPeople, `people · ${g.screams} screams`)
+      + kpi("Winners", g.winners, `${pct(g.wins, g.screams)} of screams won`) + kpi("Roast Me", g.roastPeople, `people · ${g.roasts} roasts${g.roastFallbacks ? ` · ${g.roastFallbacks} stand-by roasts` : ""}`)
+      + kpi("Played both", g.both, `${g.screamOnly} scream only · ${g.roastOnly} roast only`) + kpi("Coupons left", `${g.couponsLeft}/${g.couponsTotal}`);
+    $("days").innerHTML = `<tr><th>Day</th><th class="n">Asked for code</th><th class="n">Codes sent</th><th class="n">Registered</th><th class="n">Half registered</th><th class="n">Scream people</th><th class="n">Screams</th><th class="n">Wins</th><th class="n">Roast people</th><th class="n">Roasts</th></tr>`
+      + (O.days.map((d) => `<tr class="${d.day === O.today ? "today" : ""}"><td>${d.day}${d.day === O.today ? " (today)" : ""}</td><td class="n">${v(d.started)}</td><td class="n">${v(d.otpSms)}</td><td class="n">${v(d.registered)}</td><td class="n">${v(d.half)}</td><td class="n">${v(d.screamPeople)}</td><td class="n">${v(d.screams)}</td><td class="n">${v(d.wins)}</td><td class="n">${v(d.roastPeople)}</td><td class="n">${v(d.roasts)}</td></tr>`).join("") || `<tr><td colspan="10" class="help">Nothing yet.</td></tr>`);
+    const order = ["otp", "welcome", "win", "lose", "roast", "other"], rows = O.sms.slice().sort((x, y) => order.indexOf(x.kind) - order.indexOf(y.kind)), tot = rows.reduce((x, r) => [x[0] + r.sent, x[1] + r.failed], [0, 0]);
+    $("sms").innerHTML = `<tr><th>Message</th><th class="n">Sent</th><th class="n">Failed</th></tr>` + rows.map((r) => `<tr><td>${KIND[r.kind] || esc(r.kind)}</td><td class="n">${r.sent}</td><td class="n">${r.failed}</td></tr>`).join("") + `<tr><td><b>All messages</b></td><td class="n"><b>${tot[0]}</b></td><td class="n"><b>${tot[1]}</b></td></tr>`;
+    $("langs").innerHTML = `<tr><th>Language</th><th class="n">Guests</th><th class="n">Share</th></tr>` + O.langs.map((r) => `<tr><td>${LANG[r.lang] || esc(r.lang)}</td><td class="n">${r.n}</td><td class="n">${pct(r.n, s.registered)}</td></tr>`).join("");
+    const st = {}; O.stations.scream.forEach((r) => (st[r.station] = { ...(st[r.station] || {}), screams: r.n, wins: r.wins })); O.stations.roast.forEach((r) => (st[r.station] = { ...(st[r.station] || {}), roasts: r.n }));
+    $("stations").innerHTML = `<tr><th>Kiosk</th><th class="n">Screams</th><th class="n">Wins</th><th class="n">Roasts</th></tr>` + (Object.entries(st).map(([k, r]) => `<tr><td>${esc(k)}</td><td class="n">${v(r.screams)}</td><td class="n">${v(r.wins)}</td><td class="n">${v(r.roasts)}</td></tr>`).join("") || `<tr><td colspan="4" class="help">Nothing yet.</td></tr>`);
+  }
+
+  async function loadGuests() {
+    let r; try { r = await api(`/api/admin/guests?q=${encodeURIComponent(G.q)}&f=${G.f}&page=${G.page}`); } catch { return; }
+    $("g-table").innerHTML = `<tr><th>Guest</th><th>Code</th><th>Phone</th><th>Language</th><th>Registered (Sri Lanka)</th><th class="n">Screams</th><th class="n">Best</th><th>Won</th><th class="n">Roasts</th><th>Open</th></tr>`
+      + (r.rows.map((g) => `<tr><td>${esc(g.name)}${g.test ? " <span class='chip blue'>test</span>" : ""}</td><td><b>${esc(g.code)}</b></td><td>${esc(g.phone)}</td><td>${LANG[g.lang] || esc(g.lang)}</td><td>${String(g.registered).slice(0, 16)}</td><td class="n">${g.screams}</td><td class="n">${g.best ?? ""}</td><td>${g.wins ? "🏆 " + esc(g.coupons || "") : ""}</td><td class="n">${g.roasts}</td><td><a href="${esc(g.pass)}" target="_blank">pass</a>${g.roast ? ` · <a href="${esc(g.roast)}" target="_blank">roast</a>` : ""}</td></tr>`).join("") || `<tr><td colspan="10" class="help">Nobody matches.</td></tr>`);
+    const pages = Math.max(1, Math.ceil(r.total / r.per));
+    $("g-count").textContent = `${r.total} guests · page ${r.page} of ${pages}`; $("g-prev").disabled = r.page <= 1; $("g-next").disabled = r.page >= pages;
+  }
+  let gT; $("g-q").oninput = () => { clearTimeout(gT); gT = setTimeout(() => { G.q = $("g-q").value; G.page = 1; loadGuests(); }, 300); };
+  document.querySelectorAll("#g-f .pill").forEach((b) => (b.onclick = () => { G.f = b.dataset.f; G.page = 1; document.querySelectorAll("#g-f .pill").forEach((x) => x.classList.toggle("on", x === b)); loadGuests(); }));
+  $("g-prev").onclick = () => { G.page--; loadGuests(); }; $("g-next").onclick = () => { G.page++; loadGuests(); };
+
+  async function loadHalf() {
+    let r; try { r = await api("/api/admin/half"); } catch { return; }
+    $("h-table").innerHTML = `<tr><th>Phone</th><th>Language</th><th>First asked (Sri Lanka)</th><th>Last asked</th><th class="n">Codes sent</th><th class="n">Wrong codes typed</th><th>Now</th></tr>`
+      + (r.rows.map((h) => `<tr><td>${esc(h.phone)}</td><td>${LANG[h.lang] || esc(h.lang || "")}</td><td>${String(h.first).slice(0, 16)}</td><td>${String(h.last).slice(0, 16)}</td><td class="n">${h.sends}</td><td class="n">${h.wrong}</td><td>${h.waiting ? "<span class='chip win'>code still valid</span>" : "gave up"}</td></tr>`).join("") || `<tr><td colspan="7" class="help">Nobody. Everyone who asked for a code finished signing up.</td></tr>`);
+  }
+
+  function drawLinks() {
+    const B = S.settings.baseUrl.replace(/\/$/, "");
+    if ($("l-guest").dataset.base === B) return; $("l-guest").dataset.base = B;
+    const row = (name, path, help, abs) => { const u = abs || B + path; return `<div class="link"><div><b>${name}</b><br><code>${esc(u)}</code></div><div class="row"><a class="btn sm" href="${esc(u)}" target="_blank">Open</a><button class="btn sm ghost" data-copy="${esc(u)}">Copy</button></div><div class="help">${help}</div></div>`; };
+    $("l-guest").innerHTML = row("Sign-up page", "/register", "What the QR code on the stand opens. Guests fill it once and get their guest code by SMS.") + row("Home page", "/", "The public front page.");
+    $("l-kiosk").innerHTML = row("Kiosk start page", "/kiosk", "Pick the game for this kiosk and name the station.") + row("Scream &amp; Win", "/kiosk/scream", "Open directly on the Scream &amp; Win kiosk.") + row("Roast Me", "/kiosk/roast", "Open directly on the Roast Me kiosk.");
+    $("l-team").innerHTML = row("This page", "/admin", "Numbers, guests and settings.") + row("Guest list as a spreadsheet", "/api/admin/export.csv", "Downloads every registered guest with phone, consents, best scream, coupons and roasts.")
+      + row("Demo copy", "", "A walk-through copy with made-up data. Nothing typed there reaches this server.", "https://hirusha25.github.io/wendyfest/");
+    $("l-qr").src = qrUrl(B + "/register");
+    document.querySelectorAll("[data-copy]").forEach((b) => (b.onclick = async () => { try { await navigator.clipboard.writeText(b.dataset.copy); toast("Link copied"); } catch { toast(b.dataset.copy, 6000); } }));
+  }
+
   $("save-scream").onclick = async () => { const scream = {}; ["threshold", "minLoud", "minAcc", "loudWeight", "accWeight", "dbFloor", "dbCeil", "durationMs", "attemptsPerPerson"].forEach((f) => scream[f] = $(f).value); await api("/api/admin/settings", { method: "PUT", body: { scream, roast: { attemptsPerPerson: $("roastAttempts").value } } }); toast("Saved"); load(); };
   $("save-coupon").onclick = async () => { await api("/api/admin/settings", { method: "PUT", body: { coupon: { valueLabel: $("valueLabel").value, terms: $("terms").value } } }); toast("Saved"); load(); };
   $("import").onclick = async () => { const r = await api("/api/admin/coupons/import", { method: "POST", body: { text: $("codes").value } }); toast(`Imported ${r.added} codes`); $("codes").value = ""; load(); };

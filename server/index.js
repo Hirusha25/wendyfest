@@ -4,7 +4,7 @@ import fs from "node:fs";
 import QRCode from "qrcode";
 import { config } from "./config.js";
 import { db, getSetting, setSetting } from "./db.js";
-import { shortCode, guestCode, token, normalisePhone, judgeScream, rivalCheck, clamp, csvEscape, slTime, slToday } from "./util.js";
+import { shortCode, guestCode, token, normalisePhone, judgeScream, rivalCheck, clamp, csvEscape, slTime, slToday, SL_DAY_SQL } from "./util.js";
 import { sendSms, templates } from "./sms.js";
 import { generateRoast, generateTeasers } from "./roast.js";
 import { screamSass } from "./sass.js";
@@ -109,7 +109,8 @@ function issueOtp(phone, payload) {
   const now = Date.now();
   db.prepare("INSERT INTO otps(phone, code, payload, attempts, expires_at, last_sent) VALUES (?,?,?,0,?,?) ON CONFLICT(phone) DO UPDATE SET code=excluded.code, payload=excluded.payload, attempts=0, expires_at=excluded.expires_at, last_sent=excluded.last_sent")
     .run(phone, code, JSON.stringify(payload), now + config.otp.ttlSec * 1000, now);
-  sendSms(phone, templates(payload.lang).otp(code));
+  sendSms(phone, templates(payload.lang).otp(code), "otp");
+  db.prepare("INSERT INTO otp_requests(phone, lang, sends) VALUES (?,?,1) ON CONFLICT(phone) DO UPDATE SET sends = sends + 1, lang = excluded.lang, last_at = datetime('now')").run(phone, payload.lang);
   return code;
 }
 function completeRegistration(payload) {
@@ -127,7 +128,7 @@ function completeRegistration(payload) {
     db.prepare("UPDATE participants SET lang = ?, name = COALESCE(NULLIF(?, ''), name) WHERE id = ?").run(lang, name, p.id);
     p = participantByPhone.get(phone);
   }
-  sendSms(p.phone, templates(p.lang).welcome(p.name.split(" ")[0], p.code, profileUrl(p)));
+  sendSms(p.phone, templates(p.lang).welcome(p.name.split(" ")[0], p.code, profileUrl(p)), "welcome");
   return { p, created };
 }
 
@@ -157,8 +158,9 @@ app.post("/api/verify", (req, res) => {
   if (!row) return res.status(400).json({ error: "otp" });
   if (Date.now() > row.expires_at) { db.prepare("DELETE FROM otps WHERE phone = ?").run(normPhone); return res.status(400).json({ error: "expired" }); }
   if (row.attempts >= config.otp.maxAttempts) { db.prepare("DELETE FROM otps WHERE phone = ?").run(normPhone); return res.status(400).json({ error: "expired" }); }
-  if (code !== row.code) { db.prepare("UPDATE otps SET attempts = attempts + 1 WHERE phone = ?").run(normPhone); return res.status(400).json({ error: "otp" }); }
+  if (code !== row.code) { db.prepare("UPDATE otps SET attempts = attempts + 1 WHERE phone = ?").run(normPhone); db.prepare("UPDATE otp_requests SET wrong = wrong + 1 WHERE phone = ?").run(normPhone); return res.status(400).json({ error: "otp" }); }
   db.prepare("DELETE FROM otps WHERE phone = ?").run(normPhone);
+  db.prepare("UPDATE otp_requests SET verified_at = COALESCE(verified_at, datetime('now')) WHERE phone = ?").run(normPhone);
   const { p, created } = completeRegistration(JSON.parse(row.payload));
   setCookie(res, "wf_session", p.token);
   res.json({ ok: true, created, token: p.token, code: p.code, profileUrl: profileUrl(p) });
@@ -175,7 +177,7 @@ app.post("/api/me/resend", (req, res) => {
   const c = cookies(req);
   const p = c.wf_session && participantByToken.get(c.wf_session);
   if (!p) return res.status(401).json({ error: "not registered" });
-  sendSms(p.phone, templates(p.lang).welcome(p.name.split(" ")[0], p.code, profileUrl(p)));
+  sendSms(p.phone, templates(p.lang).welcome(p.name.split(" ")[0], p.code, profileUrl(p)), "welcome");
   res.json({ ok: true });
 });
 
@@ -274,9 +276,9 @@ app.post("/api/kiosk/scream", requirePin("kiosk"), async (req, res) => {
   const first = p.name.split(" ")[0];
   const t = templates(p.lang);
   const label = coupon?.label || couponSettings().valueLabel;
-  if (won && coupon) sendSms(p.phone, t.win(first, coupon.code, label, profileUrl(p)));
-  else if (won && !coupon) sendSms(p.phone, t.win(first, "(pending)", "please see a host", profileUrl(p)));
-  else sendSms(p.phone, t.lose(first, profileUrl(p)));
+  if (won && coupon) sendSms(p.phone, t.win(first, coupon.code, label, profileUrl(p)), "win");
+  else if (won && !coupon) sendSms(p.phone, t.win(first, "(pending)", "please see a host", profileUrl(p)), "win");
+  else sendSms(p.phone, t.lose(first, profileUrl(p)), "lose");
 
   // Shouted another restaurant's name (or anything that was not Wendy's)? Wendy answers back on the result screen.
   const rival = rivalCheck(transcript);
@@ -343,7 +345,7 @@ app.post("/api/kiosk/roast", requirePin("kiosk"), async (req, res) => {
     .run(p.id, rtoken, file, result.title.en, result.title.si, result.title.ta, result.roast.en, result.roast.si, result.roast.ta,
       JSON.stringify(result.observations || []), result.vibe || null, result.model || null, result.fallback ? 1 : 0, 1, station || null);
   const r = db.prepare("SELECT * FROM roasts WHERE token = ?").get(rtoken);
-  sendSms(p.phone, templates(p.lang).roast(p.name.split(" ")[0], roastUrl(r)));
+  sendSms(p.phone, templates(p.lang).roast(p.name.split(" ")[0], roastUrl(r)), "roast");
   startVoice(rtoken, result.roast.en, result.voice);   // English voice-over, made in the background
   res.json({ token: rtoken, url: roastUrl(r), name: p.name.split(" ")[0], lang: p.lang, title: result.title, roast: result.roast, vibe: result.vibe, fallback: !!result.fallback, keys: roastKeys(result.observations), photo: `/api/roast/${rtoken}/photo`, audio: voiceEnabled() ? `/api/roast/${rtoken}/audio` : null });
 });
@@ -373,6 +375,66 @@ app.get("/api/admin/stats", requirePin("admin"), (req, res) => {
     leaderboard: db.prepare(`SELECT p.name, MAX(s.score) AS score FROM scream_attempts s JOIN participants p ON p.id = s.participant_id GROUP BY p.id ORDER BY score DESC LIMIT 10`).all(),
   });
 });
+// ----- the numbers page: sign-up funnel, who played what, messages sent. ?real=1 leaves out the test codes (DEMO_CODES).
+const maskPhone = (ph) => String(ph || "").replace(/^(94)(\d{2})\d{5}(\d{2})$/, "+$1 $2 *** **$3");
+app.get("/api/admin/overview", requirePin("admin"), (req, res) => {
+  const testIds = config.demoCodes.map((c) => participantByCode.get(c)?.id).filter(Boolean), real = req.query.real === "1" && testIds.length > 0;
+  const notP = real ? ` AND p.id NOT IN (${testIds.join(",")})` : "", notA = real ? ` AND participant_id NOT IN (${testIds.join(",")})` : "";
+  const n = (sql) => db.prepare(sql).get().n || 0, all = (sql) => db.prepare(sql).all();
+  const HALF = "FROM otp_requests o WHERE NOT EXISTS (SELECT 1 FROM participants p WHERE p.phone = o.phone)";
+  const registered = n(`SELECT COUNT(*) n FROM participants p WHERE 1=1${notP}`), half = n(`SELECT COUNT(*) n ${HALF}`);
+  const screamPeople = n(`SELECT COUNT(DISTINCT participant_id) n FROM scream_attempts WHERE 1=1${notA}`), roastPeople = n(`SELECT COUNT(DISTINCT participant_id) n FROM roasts WHERE 1=1${notA}`);
+  const both = n(`SELECT COUNT(*) n FROM participants p WHERE EXISTS (SELECT 1 FROM scream_attempts s WHERE s.participant_id = p.id) AND EXISTS (SELECT 1 FROM roasts r WHERE r.participant_id = p.id)${notP}`);
+  const played = screamPeople + roastPeople - both;
+  // one line per Sri Lanka calendar day
+  const days = {}, put = (key, sql) => { for (const r of all(sql)) if (r.d) (days[r.d] ||= { day: r.d })[key] = r.n; };
+  put("started", `SELECT ${SL_DAY_SQL("first_at")} d, COUNT(*) n FROM otp_requests GROUP BY d`);
+  put("half", `SELECT ${SL_DAY_SQL("o.first_at")} d, COUNT(*) n ${HALF} GROUP BY d`);
+  put("otpSms", `SELECT ${SL_DAY_SQL("created_at")} d, COUNT(*) n FROM sms_log WHERE kind = 'otp' GROUP BY d`);
+  put("registered", `SELECT ${SL_DAY_SQL("p.created_at")} d, COUNT(*) n FROM participants p WHERE 1=1${notP} GROUP BY d`);
+  put("screamPeople", `SELECT ${SL_DAY_SQL("created_at")} d, COUNT(DISTINCT participant_id) n FROM scream_attempts WHERE 1=1${notA} GROUP BY d`);
+  put("screams", `SELECT ${SL_DAY_SQL("created_at")} d, COUNT(*) n FROM scream_attempts WHERE 1=1${notA} GROUP BY d`);
+  put("wins", `SELECT ${SL_DAY_SQL("created_at")} d, COUNT(*) n FROM scream_attempts WHERE won = 1${notA} GROUP BY d`);
+  put("roastPeople", `SELECT ${SL_DAY_SQL("created_at")} d, COUNT(DISTINCT participant_id) n FROM roasts WHERE 1=1${notA} GROUP BY d`);
+  put("roasts", `SELECT ${SL_DAY_SQL("created_at")} d, COUNT(*) n FROM roasts WHERE 1=1${notA} GROUP BY d`);
+  const sms = {}; for (const r of all("SELECT COALESCE(kind, 'other') kind, status, COUNT(*) n FROM sms_log GROUP BY 1, 2")) (sms[r.kind] ||= { kind: r.kind, sent: 0, failed: 0 })[r.status === "failed" ? "failed" : "sent"] += r.n;
+  res.json({
+    today: slToday(), now: slTime(new Date().toISOString().slice(0, 19).replace("T", " ")), testCodes: config.demoCodes, real,
+    signup: { started: registered + half, registered, half, otpSms: n("SELECT COUNT(*) n FROM sms_log WHERE kind = 'otp'"), otpFailed: n("SELECT COUNT(*) n FROM sms_log WHERE kind = 'otp' AND status = 'failed'"),
+      wrongCodes: n("SELECT SUM(wrong) n FROM otp_requests"), marketingYes: n(`SELECT COUNT(*) n FROM participants p WHERE consent_marketing = 1${notP}`) },
+    games: { played, notPlayed: Math.max(0, registered - played), both, screamPeople, roastPeople, screamOnly: screamPeople - both, roastOnly: roastPeople - both,
+      screams: n(`SELECT COUNT(*) n FROM scream_attempts WHERE 1=1${notA}`), wins: n(`SELECT COUNT(*) n FROM scream_attempts WHERE won = 1${notA}`), winners: n(`SELECT COUNT(DISTINCT participant_id) n FROM scream_attempts WHERE won = 1${notA}`),
+      roasts: n(`SELECT COUNT(*) n FROM roasts WHERE 1=1${notA}`), roastFallbacks: n(`SELECT COUNT(*) n FROM roasts WHERE fallback = 1${notA}`),
+      couponsTotal: n("SELECT COUNT(*) n FROM coupons"), couponsLeft: n("SELECT COUNT(*) n FROM coupons WHERE claimed_by IS NULL") },
+    days: Object.values(days).sort((a, b) => (a.day < b.day ? 1 : -1)).slice(0, 60),
+    sms: Object.values(sms),
+    langs: all(`SELECT p.lang, COUNT(*) n FROM participants p WHERE 1=1${notP} GROUP BY p.lang ORDER BY n DESC`),
+    stations: { scream: all(`SELECT COALESCE(NULLIF(station, ''), 'not named') station, COUNT(*) n, SUM(won) wins FROM scream_attempts WHERE 1=1${notA} GROUP BY 1 ORDER BY n DESC`),
+      roast: all(`SELECT COALESCE(NULLIF(station, ''), 'not named') station, COUNT(*) n FROM roasts WHERE 1=1${notA} GROUP BY 1 ORDER BY n DESC`) },
+  });
+});
+// The guest list: search by name, code or phone; filter by what they played. 50 a page.
+app.get("/api/admin/guests", requirePin("admin"), (req, res) => {
+  const q = String(req.query.q || "").trim().slice(0, 40).replace(/[%_]/g, ""), f = String(req.query.f || "all"), per = 50, page = clamp(Number(req.query.page) || 1, 1, 9999);
+  const S = "(SELECT COUNT(*) FROM scream_attempts s WHERE s.participant_id = p.id)", R = "(SELECT COUNT(*) FROM roasts r WHERE r.participant_id = p.id)", W = "(SELECT COUNT(*) FROM scream_attempts s WHERE s.participant_id = p.id AND s.won = 1)";
+  const where = ["1=1"], args = [];
+  if (q) { const digits = q.replace(/\D/g, "").replace(/^0/, ""); where.push(`(p.name LIKE ? OR p.code LIKE ?${digits.length >= 3 ? " OR p.phone LIKE ?" : ""})`); args.push(`%${q}%`, `%${q.toUpperCase().replace(/\s/g, "")}%`); if (digits.length >= 3) args.push(`%${digits}%`); }
+  const F = { scream: `${S} > 0`, roast: `${R} > 0`, both: `${S} > 0 AND ${R} > 0`, none: `${S} = 0 AND ${R} = 0`, won: `${W} > 0` }; if (F[f]) where.push(F[f]);
+  const total = db.prepare(`SELECT COUNT(*) n FROM participants p WHERE ${where.join(" AND ")}`).get(...args).n;
+  const rows = db.prepare(`SELECT p.id, p.name, p.code, p.phone, p.lang, p.token, p.created_at, p.consent_marketing, ${S} AS screams, ${W} AS wins, ${R} AS roasts,
+      (SELECT MAX(score) FROM scream_attempts s WHERE s.participant_id = p.id) AS best,
+      (SELECT GROUP_CONCAT(c.code, ', ') FROM coupons c WHERE c.claimed_by = p.id) AS coupons,
+      (SELECT token FROM roasts r WHERE r.participant_id = p.id ORDER BY r.id DESC LIMIT 1) AS roast_token
+      FROM participants p WHERE ${where.join(" AND ")} ORDER BY p.id DESC LIMIT ${per} OFFSET ${(page - 1) * per}`).all(...args);
+  res.json({ total, page, per, rows: rows.map(({ token: t, created_at, phone, ...r }) => ({ ...r, phone: "+" + phone, registered: slTime(created_at), test: config.demoCodes.includes(r.code), pass: `/p/${t}`, roast: r.roast_token ? `/r/${r.roast_token}` : null })) });
+});
+// Half registered: asked for a sign-up code, never finished. The number is shown masked because it was never confirmed as theirs.
+app.get("/api/admin/half", requirePin("admin"), (req, res) => {
+  const rows = db.prepare(`SELECT o.phone, o.lang, o.sends, o.wrong, o.first_at, o.last_at, (SELECT expires_at FROM otps t WHERE t.phone = o.phone) AS expires
+      FROM otp_requests o WHERE NOT EXISTS (SELECT 1 FROM participants p WHERE p.phone = o.phone) ORDER BY o.last_at DESC LIMIT 500`).all();
+  res.json({ rows: rows.map((r) => ({ phone: maskPhone(r.phone), lang: r.lang, sends: r.sends, wrong: r.wrong, first: slTime(r.first_at), last: slTime(r.last_at), waiting: !!r.expires && r.expires > Date.now() })) });
+});
+
 app.put("/api/admin/settings", requirePin("admin"), (req, res) => {
   const { scream, coupon, roast } = req.body || {};
   if (scream) setSetting("scream", { ...getSetting("scream", {}), ...Object.fromEntries(Object.entries(scream).map(([k, v]) => [k, Number(v)])) });
@@ -414,7 +476,7 @@ app.get("/api/admin/export.csv", requirePin("admin"), (req, res) => {
 app.post("/api/admin/resend", requirePin("admin"), (req, res) => {
   const p = participantByCode.get(String(req.body?.code || "").toUpperCase());
   if (!p) return res.status(404).json({ error: "code not found" });
-  sendSms(p.phone, templates(p.lang).welcome(p.name.split(" ")[0], p.code, profileUrl(p)));
+  sendSms(p.phone, templates(p.lang).welcome(p.name.split(" ")[0], p.code, profileUrl(p)), "welcome");
   res.json({ ok: true });
 });
 

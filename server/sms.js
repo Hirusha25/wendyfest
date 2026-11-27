@@ -3,9 +3,10 @@
 import { config } from "./config.js";
 import { db } from "./db.js";
 
-const log = db.prepare("INSERT INTO sms_log(phone, body, provider, status, detail) VALUES (?,?,?,?,?)");
+const log = db.prepare("INSERT INTO sms_log(phone, body, provider, status, detail, kind) VALUES (?,?,?,?,?,?)");
 
-export async function sendSms(phone, body) {
+// kind = which message this is (otp, welcome, win, lose, roast); only used for the counts on the admin page
+export async function sendSms(phone, body, kind = null) {
   const p = config.sms.provider;
   let status = "sent", detail = "";
   try {
@@ -58,7 +59,7 @@ export async function sendSms(phone, body) {
   } catch (e) {
     status = "failed"; detail = String(e?.message || e);
   }
-  log.run(phone, body, p, status, detail.slice(0, 500));
+  log.run(phone, body, p, status, detail.slice(0, 500), kind);
   if (status === "failed") console.warn("SMS failed:", phone, detail);
   return { status, detail };
 }

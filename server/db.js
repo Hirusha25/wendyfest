@@ -75,6 +75,30 @@ for (const c of ["consent_terms", "consent_media"]) if (!db.prepare("PRAGMA tabl
 // the card colour the guest picked on the roast screen (paper = beige, blue, dark = black, red)
 if (!db.prepare("PRAGMA table_info(roasts)").all().some((c) => c.name === "card_theme")) db.exec("ALTER TABLE roasts ADD COLUMN card_theme TEXT");
 
+// Which message each SMS was (otp, welcome, win, lose, roast), so the admin page can count them. Older rows are sorted by their wording.
+if (!db.prepare("PRAGMA table_info(sms_log)").all().some((c) => c.name === "kind")) {
+  db.exec("ALTER TABLE sms_log ADD COLUMN kind TEXT");
+  db.exec(`UPDATE sms_log SET kind = CASE
+    WHEN body GLOB '[0-9][0-9][0-9][0-9]*' AND body NOT LIKE '%http%' THEN 'otp'
+    WHEN body LIKE '%/r/%' THEN 'roast'
+    WHEN body LIKE '%reward code%' OR body LIKE '%ත්‍යාග%' OR body LIKE '%பரிசு%' THEN 'win'
+    WHEN body LIKE '%close one%' OR body LIKE '%ආසන්නයි%' OR body LIKE '%கிட்டத்தட்ட%' THEN 'lose'
+    ELSE 'welcome' END`);
+}
+// One row per phone number that asked for a sign-up code. No participant with that phone = "half registered" (started, never finished).
+// The row stays after the code is used, so the admin page can show how many started, how many codes were sent and how many finished.
+db.exec(`CREATE TABLE IF NOT EXISTS otp_requests (
+  phone TEXT PRIMARY KEY, lang TEXT,
+  sends INTEGER NOT NULL DEFAULT 0,       -- sign-up codes sent to this phone
+  wrong INTEGER NOT NULL DEFAULT 0,       -- wrong codes typed
+  first_at TEXT NOT NULL DEFAULT (datetime('now')), last_at TEXT NOT NULL DEFAULT (datetime('now')), verified_at TEXT
+)`);
+if (!db.prepare("SELECT 1 FROM otp_requests LIMIT 1").get()) {   // first run: rebuilt from the SMS log
+  db.exec(`INSERT INTO otp_requests(phone, lang, sends, first_at, last_at, verified_at)
+    SELECT s.phone, (SELECT lang FROM participants p WHERE p.phone = s.phone), COUNT(*), MIN(s.created_at), MAX(s.created_at), (SELECT created_at FROM participants p WHERE p.phone = s.phone)
+    FROM sms_log s WHERE s.kind = 'otp' AND s.phone IS NOT NULL GROUP BY s.phone`);
+}
+
 export function getSetting(key, fallback) {
   const row = db.prepare("SELECT value FROM settings WHERE key = ?").get(key);
   if (!row) return fallback;

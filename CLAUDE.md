@@ -111,3 +111,11 @@ The event kiosk is a 1080 x 1920 upright touch screen. `public/kiosk/roast.html`
 - Lip sync: while Wendy talks, `img.lip` on her drawn face (Ready screen on the wide layout, cooking screen on both) shows one of six mouth frames (`public/assets/lip/mouth-0..5.webp`, made from `roast-wendy.png`), chosen by the loudness of the playing line (Web Audio on `captureStream()`; a made-up rhythm if that is blocked).
 - Big action buttons play the menu-page flip (`sfx/start.mp3`, owner's pick of 14 options).
 - Wide Roast Me result screen: the card hangs fully on the red side and its swing stays clear of the white stripe; the Scan to save column is narrower. Landscape Scream live screen: Hold it sits above We heard in the same plain style, and the side wave is shorter so it never reaches them.
+
+## Admin page (`/admin`, admin PIN)
+
+- Tabs: Numbers, Guests, Half registered, Links, Settings. One file, `public/admin.html`; data from `/api/admin/stats`, `/api/admin/overview` (`?real=1` leaves out `DEMO_CODES`), `/api/admin/guests` (`q`, `f`, `page`) and `/api/admin/half`.
+- "Half registered" = a phone in `otp_requests` with no row in `participants` (asked for a sign-up code, never typed it in). Their numbers are shown masked, because they were never confirmed.
+- Every `sendSms()` call passes a kind (`otp`, `welcome`, `win`, `lose`, `roast`), saved in `sms_log.kind`. A new message type needs a kind and a label in `KIND` on the admin page.
+- All days and times on the page are Sri Lanka time (`SL_DAY_SQL`, `slTime`). Counts say "people" when they count guests and "screams" or "roasts" when they count tries.
+- The demo copy fakes the same routes in `scripts/build-demo.mjs`; add a stub there for any new admin route.

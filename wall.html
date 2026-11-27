@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head><script>fetch("./version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwz84s5c" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>[DEMO] LED wall · Wendy Fest</title><link rel="icon" href="./assets/cameo.png">
+<link rel="stylesheet" href="./css/brand.css?v=mwz84s5c">
+<style>
+  /* The LED wall: approved roasts, one at a time, shuffled. Landscape. Sizes follow the screen (vh / vw), so any wall size works. */
+  html, body { height: 100%; margin: 0; overflow: hidden; background: #141111; cursor: none; }
+  body { font-family: Poppins, 'Noto Sans Sinhala', 'Noto Sans Tamil', sans-serif; color: #fff; }
+  .slide, #hold, #pinbox { position: fixed; inset: 0; }
+  .slide { opacity: 0; transition: opacity .9s ease; overflow: hidden; }
+  .slide.on { opacity: 1; }
+  .photo .win { position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: .8vh; background: #2A2626; }
+  .photo img { position: absolute; display: block; max-width: none; }   /* placed by frame(): the guest's head is kept in the window */
+  .eb { font-weight: 800; text-transform: uppercase; letter-spacing: .16em; font-size: 2.3vh; }
+  .ttl { font-weight: 900; font-style: italic; text-transform: uppercase; letter-spacing: -.02em; line-height: .95; }
+  .body { font-weight: 600; line-height: 1.32; }
+  .body b { font-weight: 800; }
+  .who { font-weight: 900; font-style: italic; text-transform: uppercase; }
+  .logo { position: absolute; height: 6vh; }
+  .slide.on .photo { animation: pop .9s cubic-bezier(.2, 1.3, .4, 1) both; }
+  .slide.on .txt > * { animation: rise .7s ease both; } .slide.on .txt > :nth-child(2) { animation-delay: .15s; } .slide.on .txt > :nth-child(3) { animation-delay: .3s; } .slide.on .txt > :nth-child(4) { animation-delay: .45s; }
+  @keyframes pop { from { transform: scale(.86) rotate(var(--tilt, 0deg)); opacity: 0; } to { transform: scale(1) rotate(var(--tilt, 0deg)); opacity: 1; } }
+  @keyframes rise { from { transform: translateY(3vh); opacity: 0; } to { transform: none; opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .slide.on .photo, .slide.on .txt > * { animation: none; } }
+
+  /* The look the owner picked (option A): red stage, tilted photo card on the left, roast in a cream bubble on the right. */
+  .slide { background: radial-gradient(circle at 30% 45%, #E02C34 0, #CD2028 38%, #A81B24 70%, #7E131B 100%); }
+  .slide::before { content: ""; position: absolute; left: 24vw; top: 50vh; width: 130vh; height: 130vh; translate: -50% -50%; background: repeating-conic-gradient(rgba(255,255,255,.1) 0 9deg, transparent 9deg 18deg); -webkit-mask: radial-gradient(circle, #000 0, transparent 62%); mask: radial-gradient(circle, #000 0, transparent 62%); }
+  .photo { --tilt: -3deg; display: flex; flex-direction: column; position: absolute; left: 6vw; top: 9vh; height: 76vh; aspect-ratio: 4 / 5; max-width: 34vw; background: #fff; padding: 1.6vh 1.6vh 0; box-sizing: border-box; border-radius: 1.6vh; box-shadow: 0 3vh 6vh rgba(0,0,0,.45); transform: rotate(-3deg); }
+  .photo .win { flex: 1; min-height: 0; }
+  .who { flex: none; height: 9vh; display: flex; align-items: center; justify-content: center; color: #CD2028; font-size: 5vh; line-height: 1; }
+  .txt { position: absolute; left: 44vw; right: 5vw; top: 9vh; bottom: 14vh; display: flex; flex-direction: column; justify-content: center; gap: 3vh; }
+  .ttl { font-size: 11vh; text-shadow: 0 .5vh 0 #8E1219, 0 1vh 0 #6E0C12, 0 2.4vh 3vh rgba(0,0,0,.45); }
+  .body { background: #F6F0E6; color: #1E1B1B; font-size: 4.6vh; padding: 3.4vh 3.6vh; border-radius: 3vh; box-shadow: 0 1.2vh 0 #7A0F16, 0 3vh 5vh rgba(60,0,8,.45); position: relative; }
+  .body::before { content: ""; position: absolute; left: -2.6vh; top: 5vh; border: 2.8vh solid transparent; border-left: 0; border-right-color: #F6F0E6; }
+  .body b { color: #CD2028; }
+  .logo { right: 5vw; bottom: 5vh; }
+
+  /* Holding screen (nothing approved yet, or the wall is paused) and the PIN box */
+  #hold { display: none; background: radial-gradient(circle at 50% 45%, #E02C34 0, #CD2028 40%, #8E1219 100%); flex-direction: column; align-items: center; justify-content: center; gap: 4vh; text-align: center; }
+  #hold.on { display: flex; }
+  #hold img { height: 16vh; } #hold .ttl { font-size: 15vh; text-shadow: 0 .6vh 0 #8E1219, 0 1.2vh 0 #6E0C12; } #hold .body { font-size: 4.6vh; }
+  #pinbox { display: none; background: #F6F0E6; color: #1E1B1B; align-items: center; justify-content: center; cursor: auto; }
+  #pinbox.on { display: flex; }
+</style>
+</head>
+<body>
+  <div class="slide" id="s0"></div><div class="slide" id="s1"></div>
+  <div id="hold"><img src="./assets/wendys-horiz-white.svg" alt="Wendy's"><div class="ttl">Roast Me</div><div class="body">Fresh roasts coming up on this screen.</div></div>
+  <div id="pinbox"><div class="card stack" style="width:min(90vw,380px)"><div class="eyebrow">Kiosk PIN</div><input class="input" id="pin" type="password" inputmode="numeric"><button class="btn block" id="pin-go">Open the wall</button></div></div>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js?v=mwz84s5c"></script><script src="./js/app.js?v=mwz84s5c"></script><script src="./js/roast-card.js"></script>
+<script>
+  const $ = (id) => document.getElementById(id), esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  let LIST = [], QUEUE = [], SECONDS = 12, cur = 0, last = "", timer = null, started = false;
+  // bold the things Wendy noticed in the photo (short phrases), the same way the roast card does
+  function withKeys(text, keys) { let h = esc(text); for (const k of (keys || []).slice().sort((a, b) => b.length - a.length)) { const e = esc(k).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); if (e.length < 3) continue; try { h = h.replace(new RegExp("(^|[^\\w>])(" + e + ")(?![^<]*>)", "i"), "$1<b>$2</b>"); } catch {} } return h; }
+  function draw(el, r) {
+    const lang = r.title[r.lang] && r.roast[r.lang] ? r.lang : "en";
+    el.innerHTML = `<div class="photo"><div class="win"><img src="${esc(r.photo)}" alt=""></div><div class="who">${esc(r.name)}</div></div>`
+      + `<div class="txt"><div class="eb">Roasted by Wendy's</div><div class="ttl">${esc(r.title[lang])}</div><div class="body">${lang === "en" ? withKeys(r.roast.en, r.keys) : esc(r.roast[lang])}</div></div><img class="logo" src="./assets/wendys-horiz-white.svg" alt="">`;
+    el.querySelector(".win img").onload = () => frame(el, r);   // in case the picture was not ready yet
+    frame(el, r); fit(el);
+  }
+  // Place the photo in its window so the guest's head (hair included) is inside it: head near the top, centred, and zoomed in when the guest is far from the camera.
+  // FOCUS holds where the head is (found by the same cut-out engine as the roast card). Without it the photo is simply centred, a little above the middle.
+  const FOCUS = new Map();
+  function frame(el, r) {
+    const win = el.querySelector(".win"), img = win.querySelector("img"), fw = win.clientWidth, fh = win.clientHeight, iw = img.naturalWidth || 16, ih = img.naturalHeight || 9, F = FOCUS.get(r.token);
+    const s0 = Math.max(fw / iw, fh / ih); let s = s0, left = (fw - iw * s) / 2, top = (fh - ih * s) * .3;
+    if (F) {
+      const hw = F.hx1 - F.hx0, hh = F.hy1 - F.hy0, pad = hh * .16;   // room above the hair
+      s = Math.max(s0, Math.min(s0 * 2.4, (.36 * fh) / hh, (fw * .74) / hw));   // head about a third of the window, never wider than it
+      left = fw / 2 - ((F.hx0 + F.hx1) / 2) * s; top = fh * .1 - (F.hy0 - pad) * s;
+      top = Math.min(top, -(F.hy0 - pad) * s);   // the top of the hair is never above the window (when the photo itself has it)
+    }
+    left = Math.min(0, Math.max(fw - iw * s, left)); top = Math.min(0, Math.max(fh - ih * s, top));
+    img.style.width = iw * s + "px"; img.style.height = ih * s + "px"; img.style.left = left + "px"; img.style.top = top + "px";
+    win.dataset.focus = F ? "1" : "0";
+  }
+  const findFocus = (r) => FOCUS.has(r.token) || !window.roastCard ? Promise.resolve() : Promise.race([roastCard.focus(r.photo).then((F) => { FOCUS.set(r.token, F); }), new Promise((res) => setTimeout(res, 9000))]).catch(() => {});
+  // shrink the title, then the roast text, until the column fits its box
+  function fit(el) {
+    const col = el.querySelector(".txt"), t = el.querySelector(".ttl"), b = el.querySelector(".body"), vh = innerHeight / 100; let ts = 11, bs = 4.8;
+    const over = () => col.scrollHeight > col.clientHeight + 1 || t.scrollWidth > col.clientWidth + 1;
+    t.style.fontSize = ts * vh + "px"; b.style.fontSize = bs * vh + "px";
+    while (over() && ts > 6) { ts -= .5; t.style.fontSize = ts * vh + "px"; }
+    while (over() && bs > 2.6) { bs -= .2; b.style.fontSize = bs * vh + "px"; }
+    while (over() && ts > 4) { ts -= .5; t.style.fontSize = ts * vh + "px"; }
+  }
+  function nextRoast() {
+    if (!QUEUE.length) { QUEUE = LIST.slice(); for (let i = QUEUE.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [QUEUE[i], QUEUE[j]] = [QUEUE[j], QUEUE[i]]; } if (QUEUE.length > 1 && QUEUE[0].token === last) QUEUE.push(QUEUE.shift()); }
+    return QUEUE.shift();
+  }
+  function show() {
+    clearTimeout(timer);
+    if (!LIST.length) { started = false; $("hold").classList.add("on"); $("s0").classList.remove("on"); $("s1").classList.remove("on"); return; }
+    const r = nextRoast(); if (!r) return; last = r.token;
+    const img = new Image(), go = () => { const el = $("s" + (cur ^= 1)), old = $("s" + (cur ^ 1)); draw(el, r); $("hold").classList.remove("on"); old.classList.remove("on"); el.classList.add("on"); started = true; timer = setTimeout(show, SECONDS * 1000); };
+    img.onload = () => findFocus(r).then(go); img.onerror = () => { timer = setTimeout(show, 600); }; img.src = r.photo;   // a photo that will not load is skipped
+  }
+  async function refresh() {
+    let res; try { res = await fetch("/api/wall", { cache: "no-store" }); } catch { return; }   // offline for a moment: keep showing what we have
+    if (res.status === 401) { $("pinbox").classList.add("on"); document.body.style.cursor = "auto"; return; }
+    if (!res.ok) return; const d = await res.json(); $("pinbox").classList.remove("on"); document.body.style.cursor = "";
+    SECONDS = Math.min(120, Math.max(5, Number(d.seconds) || 12));
+    const tokens = new Set(d.roasts.map((r) => r.token)); LIST = d.roasts; QUEUE = QUEUE.filter((r) => tokens.has(r.token));
+    const fresh = d.roasts.filter((r) => !window.SEEN || !window.SEEN.has(r.token)); if (window.SEEN && fresh.length) QUEUE.unshift(...fresh);   // a newly approved roast is shown next
+    window.SEEN = tokens;
+    if (!started || !LIST.length || !tokens.has(last)) show();
+  }
+  async function unlock() { const r = await fetch("/api/kiosk/login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pin: $("pin").value }) }); if (r.ok) { $("pin").value = ""; refresh(); } else { $("pin").value = ""; $("pin").placeholder = "Wrong PIN"; } }
+  $("pin-go").onclick = unlock; $("pin").addEventListener("keydown", (e) => e.key === "Enter" && unlock());
+  addEventListener("resize", () => { const el = document.querySelector(".slide.on"), r = LIST.find((x) => x.token === last); if (el) { if (r) frame(el, r); fit(el); } });
+  if (window.roastCard) roastCard.warm();
+  document.fonts.ready.then(refresh); setInterval(refresh, 20000);
+</script>
+</body></html>

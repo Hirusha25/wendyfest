@@ -25,25 +25,69 @@
     return ImageSegmenter.createFromOptions(files, { baseOptions: { modelAssetPath: MODEL, delegate: "CPU" }, runningMode: "IMAGE", outputCategoryMask: false, outputConfidenceMasks: true });
   })().catch((e) => { segP = null; throw e; }));
 
+  // How sure the cut-out engine is that each point is the guest (hair counts even where it is thin), as a small see-through picture,
+  // plus the box around the head (hair and face), in that picture's own points.
+  function personMask(masks) {
+    const bg = masks[0], mw = bg.width, mh = bg.height, n = mw * mh, b = bg.getAsFloat32Array(), hair = masks[1].getAsFloat32Array(), face = masks[3].getAsFloat32Array();
+    const al = new Uint8ClampedArray(n), lab = new Int32Array(n), stack = new Int32Array(n);
+    for (let i = 0; i < n; i++) { const p = Math.max(1 - b[i], Math.min(1, hair[i] * 1.35)), v = Math.min(1, Math.max(0, (p - .4) / .3)); al[i] = v * v * (3 - 2 * v) * 255; }
+    // Keep only the main guest: the biggest joined-up shape that has a head. People in the background, or a second person standing apart, are left out
+    // (friends who stand touching stay together).
+    let best = 0, bestScore = 0, id = 0;
+    for (let s0 = 0; s0 < n; s0++) {
+      if (al[s0] < 110 || lab[s0]) continue; id++; let top = 0, area = 0, head = 0; stack[top++] = s0; lab[s0] = id;
+      while (top) { const i = stack[--top], x = i % mw; area++; if (hair[i] > .5 || face[i] > .5) head++;
+        if (x > 0 && al[i - 1] >= 110 && !lab[i - 1]) { lab[i - 1] = id; stack[top++] = i - 1; } if (x < mw - 1 && al[i + 1] >= 110 && !lab[i + 1]) { lab[i + 1] = id; stack[top++] = i + 1; }
+        if (i >= mw && al[i - mw] >= 110 && !lab[i - mw]) { lab[i - mw] = id; stack[top++] = i - mw; } if (i < n - mw && al[i + mw] >= 110 && !lab[i + mw]) { lab[i + mw] = id; stack[top++] = i + mw; } }
+      const score = head >= 12 ? area : 0; if (score > bestScore) { bestScore = score; best = id; }
+    }
+    const mk = document.createElement("canvas"); mk.width = mw; mk.height = mh; const mx = mk.getContext("2d"), im = mx.createImageData(mw, mh); let hx0 = mw, hx1 = 0, hy0 = mh, hy1 = 0;
+    if (best) for (let y = 0; y < mh; y++) for (let x = 0; x < mw; x++) {
+      const i = y * mw + x; if (!al[i]) continue; let keep = lab[i] === best;
+      if (!keep && !lab[i]) for (let dy = -3; dy <= 3 && !keep; dy++) { const yy = y + dy; if (yy < 0 || yy >= mh) continue; for (let dx = -3; dx <= 3; dx++) { const xx = x + dx; if (xx >= 0 && xx < mw && lab[yy * mw + xx] === best) { keep = true; break; } } }   // the soft edge (thin hair) around the guest
+      if (!keep) continue; im.data[i * 4 + 3] = al[i];
+      if (lab[i] === best && (hair[i] > .5 || face[i] > .5)) { if (x < hx0) hx0 = x; if (x > hx1) hx1 = x; if (y < hy0) hy0 = y; if (y > hy1) hy1 = y; }
+    }
+    mx.putImageData(im, 0, 0); masks.forEach((m) => m.close && m.close());
+    return { mk, mw, mh, head: hx1 > hx0 && hy1 - hy0 >= 8 ? { x0: hx0, x1: hx1 + 1, y0: hy0, y1: hy1 + 1 } : null };
+  }
   // The guest cut out of the photo, with the box around the whole person and around the head.
+  // Two looks: one at the whole photo to find the guest, then a close one at the head and shoulders, so hair is traced at about three
+  // times the detail (the engine only sees 256 x 256 points, which is very little when the guest is small in the frame).
   const cuts = new Map();
   async function cutout(img, key) {
     if (cuts.has(key)) return cuts.get(key);
-    const seg = await within(segmenter(), 20000);
-    const masks = seg.segment(img).confidenceMasks, bg = masks[0], mw = bg.width, mh = bg.height, b = bg.getAsFloat32Array();
-    const cut = document.createElement("canvas"); cut.width = img.naturalWidth; cut.height = img.naturalHeight; const cx = cut.getContext("2d");
-    const mk = document.createElement("canvas"); mk.width = mw; mk.height = mh; const mx = mk.getContext("2d"), id = mx.createImageData(mw, mh);
-    for (let i = 0; i < b.length; i++) { const p = 1 - b[i], v = Math.min(1, Math.max(0, (p - .45) / .3)); id.data[i * 4 + 3] = v * v * (3 - 2 * v) * 255; }
-    mx.putImageData(id, 0, 0);
-    cx.imageSmoothingQuality = "high"; cx.filter = "blur(1.4px)"; cx.drawImage(mk, 0, 0, cut.width, cut.height); cx.filter = "none"; cx.globalCompositeOperation = "source-in"; cx.drawImage(img, 0, 0);
-    const a = cx.getImageData(0, 0, cut.width, cut.height).data; let x0 = cut.width, x1 = 0, y0 = cut.height, y1 = 0;
-    for (let y = 0; y < cut.height; y += 2) for (let x = 0; x < cut.width; x += 2) if (a[(y * cut.width + x) * 4 + 3] > 60) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
-    const hair = masks[1].getAsFloat32Array(), face = masks[3].getAsFloat32Array(); let hx0 = mw, hx1 = 0, hy0 = mh, hy1 = 0;
-    for (let y = 0; y < mh; y += 2) for (let x = 0; x < mw; x += 2) { const i = y * mw + x; if (hair[i] > .5 || face[i] > .5) { if (x < hx0) hx0 = x; if (x > hx1) hx1 = x; if (y < hy0) hy0 = y; if (y > hy1) hy1 = y; } }
-    masks.forEach((m) => m.close && m.close());
-    const kx = cut.width / mw, ky = cut.height / mh;
-    if (x1 - x0 < cut.width * .12 || hy1 - hy0 < 8 || hx1 <= hx0) throw new Error("no person found");
-    const out = { cut, x0, x1, y0, y1, hx0: hx0 * kx, hx1: hx1 * kx, hy0: hy0 * ky, hy1: hy1 * ky };
+    const seg = await within(segmenter(), 20000), iw = img.naturalWidth, ih = img.naturalHeight;
+    const one = personMask(seg.segment(img).confidenceMasks); if (!one.head) throw new Error("no person found");
+    const kx = iw / one.mw, ky = ih / one.mh; let H = { x0: one.head.x0 * kx, x1: one.head.x1 * kx, y0: one.head.y0 * ky, y1: one.head.y1 * ky };
+    const al = document.createElement("canvas"); al.width = iw; al.height = ih; const ax = al.getContext("2d"); ax.imageSmoothingQuality = "high";
+    ax.filter = "blur(1.4px)"; ax.drawImage(one.mk, 0, 0, iw, ih); ax.filter = "none";
+    try {
+      const side = Math.max(H.x1 - H.x0, H.y1 - H.y0) * 2.2, mx0 = (H.x0 + H.x1) / 2;
+      const rx0 = Math.max(0, Math.round(mx0 - side / 2)), ry0 = Math.max(0, Math.round(H.y0 - side * .24)), rx1 = Math.min(iw, Math.round(mx0 + side / 2)), ry1 = Math.min(ih, Math.round(H.y0 + side * .76)), rw = rx1 - rx0, rh = ry1 - ry0;
+      if (rw > 48 && rh > 48 && rw * rh < iw * ih * .7) {   // a guest who already fills the photo gains nothing from a second look
+        const k = Math.max(1, 512 / Math.max(rw, rh)), cc = document.createElement("canvas"); cc.width = Math.round(rw * k); cc.height = Math.round(rh * k);
+        const c2 = cc.getContext("2d"); c2.imageSmoothingQuality = "high"; c2.drawImage(img, rx0, ry0, rw, rh, 0, 0, cc.width, cc.height);
+        const two = personMask(seg.segment(cc).confidenceMasks);
+        if (two.head) {
+          // the close look replaces the first one inside its box, fading into it over the box's edge so no seam shows
+          const fe = Math.round(Math.min(rw, rh) * .07), t = document.createElement("canvas"); t.width = rw; t.height = rh; const tx = t.getContext("2d"); tx.imageSmoothingQuality = "high";
+          tx.filter = `blur(${Math.max(.6, 1.1 / k)}px)`; tx.drawImage(two.mk, 0, 0, rw, rh); tx.filter = "none";
+          const w = document.createElement("canvas"); w.width = rw; w.height = rh; const wx = w.getContext("2d"); wx.filter = `blur(${fe / 2}px)`; wx.fillStyle = "#000";
+          wx.fillRect(rx0 > 0 ? fe : -fe, ry0 > 0 ? fe : -fe, rw - (rx0 > 0 ? fe : -fe) - (rx1 < iw ? fe : -fe), rh - (ry0 > 0 ? fe : -fe) - (ry1 < ih ? fe : -fe)); wx.filter = "none";
+          tx.globalCompositeOperation = "destination-in"; tx.drawImage(w, 0, 0);
+          ax.globalCompositeOperation = "destination-out"; ax.drawImage(w, rx0, ry0); ax.globalCompositeOperation = "lighter"; ax.drawImage(t, rx0, ry0); ax.globalCompositeOperation = "source-over";
+          const qx = rw / two.mw, qy = rh / two.mh; H = { x0: rx0 + two.head.x0 * qx, x1: rx0 + two.head.x1 * qx, y0: ry0 + two.head.y0 * qy, y1: ry0 + two.head.y1 * qy };
+        }
+      }
+    } catch (e) { console.warn("roast card: close look at the head failed,", e.message); }
+    const cut = document.createElement("canvas"); cut.width = iw; cut.height = ih; const cx = cut.getContext("2d");
+    cx.drawImage(al, 0, 0); cx.globalCompositeOperation = "source-in"; cx.drawImage(img, 0, 0);
+    const a = cx.getImageData(0, 0, iw, ih).data; let x0 = iw, x1 = 0, y0 = ih, y1 = 0;
+    for (let y = 0; y < ih; y += 2) for (let x = 0; x < iw; x += 2) if (a[(y * iw + x) * 4 + 3] > 24) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+    if (x1 - x0 < iw * .12) throw new Error("no person found");
+    x0 = Math.max(0, x0 - 3); y0 = Math.max(0, y0 - 3); x1 = Math.min(iw, x1 + 3); y1 = Math.min(ih, y1 + 3);   // keep the soft edge of the hair inside the box
+    const out = { cut, x0, x1, y0, y1, hx0: H.x0, hx1: H.x1, hy0: H.y0, hy1: H.y1 };
     cuts.set(key, out); if (cuts.size > 4) cuts.delete(cuts.keys().next().value);
     return out;
   }
@@ -129,5 +173,7 @@
   }
   // Load the fonts, art and cut-out engine ahead of time (the kiosk calls this once staff have signed in).
   roastCard.warm = () => { fonts(); art().catch(() => {}); segmenter().catch(() => {}); };
+  // Where the guest is in a photo (sizes in the photo's own pixels): the whole person and the head. Used by the LED wall to frame the photo.
+  roastCard.focus = async (src) => { const img = await load(src), P = await cutout(img, src); return { w: img.naturalWidth, h: img.naturalHeight, x0: P.x0, x1: P.x1, y0: P.y0, y1: P.y1, hx0: P.hx0, hx1: P.hx1, hy0: P.hy0, hy1: P.hy1 }; };
   window.roastCard = roastCard;
 })();

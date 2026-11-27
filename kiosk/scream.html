@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
-<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwyfqraz" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwyhhdco" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Scream & Win · Wendy Fest</title><link rel="icon" href="../assets/cameo.png"><link rel="manifest" href="../assets/scream.webmanifest"><meta name="theme-color" content="#029CD4"><meta name="mobile-web-app-capable" content="yes">
-<link rel="stylesheet" href="../css/brand.css?v=mwyfqraz">
+<link rel="stylesheet" href="../css/brand.css?v=mwyhhdco">
 <style>
 /* ================= RETRO BLUE (formerly Studio Cream) · Scream & Win ================= */
 :root { --u:min(calc(100vw / 1440), calc(100vh / 760)); --v:var(--u); --blue:#029CD4; --red:#CD2028; --red2:#DA2A33; --red-dark:#8E141B; --ink:#1F1A1A; --cream:#F7F2EC; --blush:#F2D4D7; --cyan:#29C9E0; --line:rgba(205,32,40,.18); }
@@ -156,6 +156,16 @@ br.up, .up-only, .up-in { display:none; }
 #trans { display:none; }
 /* countdown title: a small white "Get ready to" over a big "Scream." in the cover-page lettering (owner) */
 #go-count .t .gr { font-size:.42em; color:#fff; letter-spacing:.01em; text-shadow:0 calc(3 * var(--u)) 0 rgba(0,50,90,.45); }
+/* landscape (LED) live screen: Hold it above We heard, in the same plain style as the time left (owner) */
+@media (orientation: landscape) {
+  #go-meter .holdcard.up-only { display:block; left:calc(90 * var(--u)); top:calc(404 * var(--u)); width:calc(330 * var(--u)); height:auto; padding:0; background:none; border:0; box-shadow:none; }
+  #go-meter .holdcard .top { display:flex; align-items:baseline; gap:calc(14 * var(--u)); justify-content:flex-start; }
+  #go-meter .holdcard .top b { font:italic 800 calc(20 * var(--u))/1 Poppins, sans-serif; letter-spacing:.2em; color:#CDEBF7; }
+  #go-meter .holdcard .top > span { font:italic 900 calc(44 * var(--u))/1 Poppins, sans-serif; color:#F6F0E6; text-shadow:0 calc(3 * var(--u)) 0 #A5171F, 0 calc(6 * var(--u)) 0 #7A0F16; }
+  #go-meter .holdcard .hbar { width:calc(260 * var(--u)); height:calc(10 * var(--u)); margin-top:calc(10 * var(--u)); border:0; background:rgba(0,50,80,.35); } #go-meter .holdcard .hbar i { background:linear-gradient(90deg, #FF6A72, #D8232D); }
+  #go-meter .holdcard .bot { display:none; }
+  #go-meter .heard { top:calc(486 * var(--u)); }
+}
 /* result */
 /* upright winner's screen (owner's pick, Nov 2026): sassy one-line title, score badge, the meal in a medallion, the prize on a
    ribbon, and one beige coupon with the code and the QR. Shown only when the guest wins a coupon; sizes are upright-canvas units. */
@@ -748,7 +758,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
 <audio id="vo-nos-1" src="../assets/voice/nos-1.mp3" preload="auto"></audio><audio id="vo-nos-2" src="../assets/voice/nos-2.mp3" preload="auto"></audio><audio id="vo-nos-3" src="../assets/voice/nos-3.mp3" preload="auto"></audio><audio id="vo-nos-4" src="../assets/voice/nos-4.mp3" preload="auto"></audio><audio id="vo-nos-5" src="../assets/voice/nos-5.mp3" preload="auto"></audio><audio id="vo-nos-6" src="../assets/voice/nos-6.mp3" preload="auto"></audio>
 <audio id="vo-win-1" src="../assets/voice/win-1.mp3" preload="auto"></audio><audio id="vo-win-2" src="../assets/voice/win-2.mp3" preload="auto"></audio><audio id="vo-win-3" src="../assets/voice/win-3.mp3" preload="auto"></audio><audio id="vo-win-4" src="../assets/voice/win-4.mp3" preload="auto"></audio><audio id="vo-win-5" src="../assets/voice/win-5.mp3" preload="auto"></audio><audio id="vo-win-6" src="../assets/voice/win-6.mp3" preload="auto"></audio>
 <audio id="vo-quiet-1" src="../assets/voice/quiet-1.mp3" preload="auto"></audio><audio id="vo-quiet-2" src="../assets/voice/quiet-2.mp3" preload="auto"></audio><audio id="vo-quiet-3" src="../assets/voice/quiet-3.mp3" preload="auto"></audio><audio id="vo-quiet-4" src="../assets/voice/quiet-4.mp3" preload="auto"></audio><audio id="vo-quiet-5" src="../assets/voice/quiet-5.mp3" preload="auto"></audio><audio id="vo-quiet-6" src="../assets/voice/quiet-6.mp3" preload="auto"></audio>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwyfqraz"></script><script src="../js/kiosk.js?v=mwyfqraz"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwyhhdco"></script><script src="../js/kiosk.js?v=mwyhhdco"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let CFG = { scream: { threshold: 70, durationMs: 3000, dbFloor: -42, dbCeil: -6, loudWeight: .6, accWeight: .4 } };
@@ -913,7 +923,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
         const a = .18 + .82 * inner, gr = ctx.createLinearGradient(0, wy - h, 0, wy + h);
         gr.addColorStop(0, `rgba(250,244,235,${(a * .35).toFixed(2)})`); gr.addColorStop(.5, `rgba(250,244,235,${a.toFixed(2)})`); gr.addColorStop(1, `rgba(250,244,235,${(a * .35).toFixed(2)})`);
         ctx.fillStyle = i % 6 === 3 ? `rgba(205,32,40,${a.toFixed(2)})` : gr; ctx.beginPath(); ctx.roundRect(x0 + i * gap + (gap - w) / 2, wy - h, w, h * 2, w / 2); ctx.fill(); } };
-    if (UP) { wave(12 * U, 152 * U, true, cy, 160, 10); wave(928 * U, 1068 * U, false, cy, 160, 10); }   /* upright: the sound wave stands on both sides of the meter (owner); the old strip along the bottom is gone */ else { wave(40 * U, cx - R * 1.38, true); wave(cx + R * 1.38, 1400 * U, false); }
+    if (UP) { wave(12 * U, 152 * U, true, cy, 160, 10); wave(928 * U, 1068 * U, false, cy, 160, 10); }   /* upright: the sound wave stands on both sides of the meter (owner); the old strip along the bottom is gone */ else { wave(40 * U, cx - R * 1.38, true, cy, 66); wave(cx + R * 1.38, 1400 * U, false, cy, 66);   /* landscape: a shorter wave, clear of Hold it */ }
     ctx.lineCap = "round";
     for (let r = 0; r < 3; r++) { const rr = R * (1.12 + r * .08); for (let d = 0; d <= 1; d += 1 / 160) { const th = a0 + d * span; ctx.fillStyle = `rgba(205,32,40,${(.95 - r * .25).toFixed(3)})`; ctx.beginPath(); ctx.arc(cx + Math.cos(th) * rr, cy + Math.sin(th) * rr, 2.6 * fd, 0, 7); ctx.fill(); } }
     ctx.strokeStyle = "rgba(250,244,235,.35)"; ctx.lineWidth = 2 * fd; ctx.beginPath(); ctx.arc(cx, cy, R - len * 1.5, a0, a0 + span); ctx.stroke();

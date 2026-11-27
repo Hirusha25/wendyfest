@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
-<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwyfqraz" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwyhhdco" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Roast Me · Wendy Fest</title><link rel="icon" href="../assets/cameo.png"><link rel="manifest" href="../assets/roast.webmanifest"><meta name="theme-color" content="#1593D6"><meta name="mobile-web-app-capable" content="yes">
-<link rel="stylesheet" href="../css/brand.css?v=mwyfqraz"><link rel="stylesheet" href="../css/kiosk.css?v=mwyfqraz">
+<link rel="stylesheet" href="../css/brand.css?v=mwyhhdco"><link rel="stylesheet" href="../css/kiosk.css?v=mwyhhdco">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@600;700&family=Barlow+Semi+Condensed:ital,wght@1,900&display=swap" rel="stylesheet">
 <style>
   body.kiosk { background: var(--ink); }
@@ -268,6 +268,21 @@
   .cv .rsave { font:italic 900 calc(60 * var(--p))/.95 Poppins, sans-serif; text-transform:uppercase; letter-spacing:-.02em; color:#fff; text-shadow:0 calc(4 * var(--p)) 0 rgba(90,8,14,.45); }
   .cv .qrs { width:calc(300 * var(--p)); background:#fff; padding:calc(20 * var(--p)); box-sizing:border-box; border-radius:calc(8 * var(--p)); box-shadow:0 calc(10 * var(--p)) 0 #7E1016, 0 calc(20 * var(--p)) calc(40 * var(--p)) rgba(0,0,0,.35); }
   .cv .qrs img { width:100%; aspect-ratio:1; display:block; }
+  /* wide (desktop) result screen: the card hangs fully on the red side from the header line, clear of the white stripe; the Scan to save column is narrower (owner) */
+  @media (orientation: landscape) {
+    #s-reveal .pcard { left:calc(1092 * var(--p)) !important; top:calc(262 * var(--p)) !important; width:calc(372 * var(--p)) !important; height:calc(598 * var(--p)) !important; }
+    #s-reveal .pcard .lany { top:calc(-96 * var(--p)) !important; width:calc(82 * var(--p)) !important; height:calc(96 * var(--p)) !important; }
+    #s-reveal .rsave { left:calc(1520 * var(--p)) !important; top:calc(236 * var(--p)) !important; font-size:calc(54 * var(--p)) !important; }
+    #s-reveal .qrs { left:calc(1520 * var(--p)) !important; top:calc(376 * var(--p)) !important; width:calc(300 * var(--p)) !important; }
+    #s-reveal .qnote { left:calc(1520 * var(--p)) !important; top:calc(694 * var(--p)) !important; width:calc(310 * var(--p)) !important; font-size:calc(19 * var(--p)) !important; }
+    #s-reveal .swatch { left:calc(1520 * var(--p)) !important; top:calc(770 * var(--p)) !important; } #s-reveal .swatch span { display:none !important; }
+    #s-reveal .nextb { left:calc(1520 * var(--p)) !important; top:calc(848 * var(--p)) !important; width:calc(310 * var(--p)) !important; }
+  }
+  /* lip sync: Wendy's own mouth opens with the loudness of what she is saying (owner picked "B") */
+  .cv .art .lipbox { position:absolute; right:0; bottom:calc(-40 * var(--p)); width:calc(1220 * var(--p)); height:calc(1220 * var(--p)); pointer-events:none; }
+  .cv .art img.lip, :is(#s-idle, #s-cooking) .art .wd img.lip { position:absolute; left:61.563%; top:64.753%; right:auto; bottom:auto; width:22.169%; height:11.324%; max-width:none; object-fit:fill; clip-path:none; transform:none; animation:none; visibility:hidden; }
+  .cv .art img.lip.on, :is(#s-idle, #s-cooking) .art .wd img.lip.on { visibility:visible; }
+  @media (orientation: portrait) { #s-consent .art .lipbox { display:none; } }
   .cv .cbox.out { background:transparent; box-shadow:none; }
   /* camera, option A: LIVE tag in the frame, heat as 3D blocks on the red side, blue Take my photo */
   #s-cam .cam .live { left:calc(120 * var(--p)); top:calc(36 * var(--p)); border-radius:calc(8 * var(--p)); padding:calc(11 * var(--p)) calc(20 * var(--p)); font-size:calc(22 * var(--p)); }
@@ -480,6 +495,7 @@
     #s-cooking .art { clip-path:none !important; -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1080 1920' preserveAspectRatio='none'%3E%3Cpath d='M0 1080C380 1080 700 954 1080 900L1080 1860C700 1860 380 1860 0 1860Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat !important; mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1080 1920' preserveAspectRatio='none'%3E%3Cpath d='M0 1080C380 1080 700 954 1080 900L1080 1860C700 1860 380 1860 0 1860Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat !important; }
     #s-cooking .art .wd { left:calc(-10 * var(--p)) !important; right:auto !important; top:calc(800 * var(--p)) !important; bottom:auto !important; width:calc(1100 * var(--p)) !important; height:calc(1100 * var(--p)) !important; filter:drop-shadow(calc(7 * var(--p)) 0 0 #fff) drop-shadow(calc(-7 * var(--p)) 0 0 #fff) drop-shadow(0 calc(7 * var(--p)) 0 #fff) drop-shadow(0 calc(-7 * var(--p)) 0 #fff) !important; }
     #s-cooking .art .wd img { left:0 !important; top:0 !important; right:auto !important; bottom:auto !important; width:100% !important; height:100% !important; }
+    #s-cooking .art .wd img.lip { left:61.563% !important; top:64.753% !important; width:22.169% !important; height:11.324% !important; }
     #s-cooking .eb { left:calc(60 * var(--p)) !important; top:calc(226 * var(--p)) !important; }
     #s-cooking .t3 { left:calc(54 * var(--p)) !important; top:calc(268 * var(--p)) !important; font-size:calc(82 * var(--p)) !important; }
     #s-cooking .chk { left:calc(60 * var(--p)) !important; top:calc(520 * var(--p)) !important; gap:calc(26 * var(--p)) !important; }
@@ -604,14 +620,14 @@
   </div></section>
 
   <section class="screen cv" id="s-consent"><div class="s">
-    <div class="art"><img src="../assets/roast-wendy.png" alt="" onerror="this.remove()"><img class="wcameo" src="../assets/cameo.png" alt=""></div>
+    <div class="art"><img src="../assets/roast-wendy.png" alt="" onerror="this.remove()"><div class="lipbox"><img class="lip" alt=""></div><img class="wcameo" src="../assets/cameo.png" alt=""></div>
     <div class="eb" style="left:calc(125 * var(--p));top:calc(230 * var(--p))">Before we roast you</div>
     <div class="hi" id="c-hi" style="left:calc(112 * var(--p));top:calc(270 * var(--p))"><span class="l1">Hi</span><span class="l2" id="c-name">there!</span></div>
     <div class="lang-pick" style="left:calc(125 * var(--p));top:calc(412 * var(--p))"><button data-l="en">English</button><button data-l="si">සිංහල</button><button data-l="ta">தமிழ்</button></div>
     <div class="consent-box" id="c-box" style="left:calc(125 * var(--p));top:calc(468 * var(--p))">
       <div class="rows">
         <div class="row"><i><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h4l2-3h6l2 3h4v11H3z"/><circle cx="12" cy="13" r="3.6"/></svg></i><div><b lang="en">One photo</b><b lang="si">එක ඡායාරූපයක්</b><b lang="ta">ஒரு புகைப்படம்</b><span lang="en">We’ll take one photo of you at this booth.</span><span lang="si">මෙම booth එකේදී ඔබේ ඡායාරූපයක් ගනු ලැබේ.</span><span lang="ta">இந்த booth-இல் உங்கள் ஒரு புகைப்படம் எடுக்கப்படும்.</span></div></div>
-        <div class="row"><i><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1 4 5 5.500 5 10.500a5 5 0 0 1-10 0c0-2 1-3.500 2-4.500 0 2 1 3 2 3 0-3-1-5 1-9z"/></svg></i><div><b lang="en">A playful roast</b><b lang="si">විහිළු roast එකක්</b><b lang="ta">விளையாட்டான roast</b><span lang="en">Our AI will look at your style, outfit and expression to write a playful roast.</span><span lang="si">ඔබේ style, ඇඳුම සහ මුහුණේ ඉරියව්ව බලා AI විහිළු roast එකක් ලියයි.</span><span lang="ta">உங்கள் style, உடை, முகபாவனையைப் பார்த்து AI ஒரு விளையாட்டான roast எழுதும்.</span></div></div>
+        <div class="row"><i><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1 4 5 5.500 5 10.500a5 5 0 0 1-10 0c0-2 1-3.500 2-4.500 0 2 1 3 2 3 0-3-1-5 1-9z"/></svg></i><div><b lang="en">A playful roast</b><b lang="si">විහිළු roast එකක්</b><b lang="ta">விளையாட்டான roast</b><span lang="en">Wendy will look at your style, outfit and expression to write a playful roast.</span><span lang="si">ඔබේ style, ඇඳුම සහ මුහුණේ ඉරියව්ව බලා Wendy විහිළු roast එකක් ලියයි.</span><span lang="ta">உங்கள் style, உடை, முகபாவனையைப் பார்த்து Wendy ஒரு விளையாட்டான roast எழுதும்.</span></div></div>
         <div class="row"><i><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.500" width="10" height="19" rx="2"/><path d="M11 18h2"/></svg></i><div><b lang="en">Sent to your phone</b><b lang="si">ඔබේ දුරකථනයට</b><b lang="ta">உங்கள் போனுக்கு</b><span lang="en">The photo and roast are saved to your Wendy Fest profile and a link is sent to your phone so you can download and share it.</span><span lang="si">ඡායාරූපය සහ roast එක ඔබේ Wendy Fest profile එකේ save වී link එකක් ඔබේ දුරකථනයට යවනු ලැබේ.</span><span lang="ta">புகைப்படமும் roast-ும் உங்கள் Wendy Fest profile-இல் சேமிக்கப்பட்டு link உங்கள் போனுக்கு அனுப்பப்படும்.</span></div></div>
       </div>
       <div class="no">No roast is ever about body, skin, age, religion or anything you can’t change. Just your vibe.</div>
@@ -638,7 +654,7 @@
   </div></section>
 
   <section class="screen cv" id="s-cooking"><div class="s">
-    <div class="art"><div class="wd"><img class="hd0" src="../assets/roast-wendy.png" alt="" onerror="this.parentNode.remove()"><img class="pt" src="../assets/roast-wendy.png" alt=""><i class="lid l"></i><i class="lid r"></i></div></div>
+    <div class="art"><div class="wd"><img class="hd0" src="../assets/roast-wendy.png" alt="" onerror="this.parentNode.remove()"><img class="pt" src="../assets/roast-wendy.png" alt=""><img class="lip" alt=""><i class="lid l"></i><i class="lid r"></i></div></div>
     <div class="eb" style="left:calc(125 * var(--p));top:calc(230 * var(--p))">Hang tight</div>
     <div class="t3" style="left:calc(112 * var(--p));top:calc(280 * var(--p));font-size:calc(104 * var(--p))"><span class="l1">Cooking</span><span class="l2">your roast…</span></div>
     <div class="chk" id="steps3" style="left:calc(125 * var(--p));top:calc(560 * var(--p))">
@@ -685,8 +701,8 @@
 
 <!-- sounds: effects and Wendy's pre-recorded waiting lines (made with ElevenLabs, in Wendy's voice) -->
 <audio id="sfx-start" src="../assets/sfx/start.mp3" preload="auto"></audio><audio id="sfx-coin" src="../assets/sfx/coin.mp3" preload="auto"></audio><audio id="sfx-spray" src="../assets/sfx/spray.mp3" preload="auto"></audio><audio id="sfx-switch" src="../assets/sfx/switch.mp3" preload="auto"></audio><audio id="sfx-card" src="../assets/sfx/card.mp3" preload="auto"></audio><audio id="sfx-pop" src="../assets/sfx/pop.mp3" preload="auto"></audio><audio id="sfx-ding" src="../assets/sfx/ding.mp3" preload="auto"></audio><audio id="sfx-tap" src="../assets/sfx/tap.mp3" preload="auto"></audio><audio id="sfx-key" src="../assets/sfx/key.mp3" preload="auto"></audio><audio id="sfx-delete" src="../assets/sfx/delete.mp3" preload="auto"></audio><audio id="sfx-go" src="../assets/sfx/go.mp3" preload="auto"></audio><audio id="sfx-error" src="../assets/sfx/error.mp3" preload="auto"></audio><audio id="sfx-whoosh" src="../assets/sfx/whoosh.mp3" preload="auto"></audio><audio id="sfx-beep" src="../assets/sfx/beep.mp3" preload="auto"></audio><audio id="sfx-shutter" src="../assets/sfx/shutter.mp3" preload="auto"></audio><audio id="sfx-sizzle" src="../assets/sfx/sizzle.mp3" preload="auto"></audio><audio id="sfx-reveal" src="../assets/sfx/reveal.mp3" preload="auto"></audio>
-<audio id="vo-wait-1" src="../assets/voice/wait-1.mp3" preload="auto"></audio><audio id="vo-wait-2" src="../assets/voice/wait-2.mp3" preload="auto"></audio><audio id="vo-wait-3" src="../assets/voice/wait-3.mp3" preload="auto"></audio><audio id="vo-wait-4" src="../assets/voice/wait-4.mp3" preload="auto"></audio><audio id="vo-wait-5" src="../assets/voice/wait-5.mp3" preload="auto"></audio><audio id="vo-wait-6" src="../assets/voice/wait-6.mp3" preload="auto"></audio><audio id="vo-wait-7" src="../assets/voice/wait-7.mp3" preload="auto"></audio><audio id="vo-wait-8" src="../assets/voice/wait-8.mp3" preload="auto"></audio><audio id="vo-here" src="../assets/voice/here-it-comes.mp3" preload="auto"></audio>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwyfqraz"></script><script src="../js/i18n.js?v=mwyfqraz"></script><script src="../js/kiosk.js"></script><script src="../js/roast-card.js"></script>
+<div id="lip-frames" hidden><img src="../assets/lip/mouth-0.webp" alt=""><img src="../assets/lip/mouth-1.webp" alt=""><img src="../assets/lip/mouth-2.webp" alt=""><img src="../assets/lip/mouth-3.webp" alt=""><img src="../assets/lip/mouth-4.webp" alt=""><img src="../assets/lip/mouth-5.webp" alt=""></div><audio id="vo-steps" src="../assets/voice/steps.mp3" preload="auto"></audio><audio id="vo-heat" src="../assets/voice/heat.mp3" preload="auto"></audio><audio id="vo-wait-1" src="../assets/voice/wait-1.mp3" preload="auto"></audio><audio id="vo-wait-2" src="../assets/voice/wait-2.mp3" preload="auto"></audio><audio id="vo-wait-3" src="../assets/voice/wait-3.mp3" preload="auto"></audio><audio id="vo-wait-4" src="../assets/voice/wait-4.mp3" preload="auto"></audio><audio id="vo-wait-5" src="../assets/voice/wait-5.mp3" preload="auto"></audio><audio id="vo-wait-6" src="../assets/voice/wait-6.mp3" preload="auto"></audio><audio id="vo-wait-7" src="../assets/voice/wait-7.mp3" preload="auto"></audio><audio id="vo-wait-8" src="../assets/voice/wait-8.mp3" preload="auto"></audio><audio id="vo-here" src="../assets/voice/here-it-comes.mp3" preload="auto"></audio>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwyhhdco"></script><script src="../js/i18n.js?v=mwyhhdco"></script><script src="../js/kiosk.js"></script><script src="../js/roast-card.js"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let guest = null, stream = null, glang = "en", R = null, BASE = location.origin;
@@ -820,6 +836,27 @@
   let cookTimer = null, talk = null, talkOn = false, personal = null;
   function stopTalk() { talkOn = false; personal = null; clearTimeout(cookTimer); if (talk) { talk.onended = talk.onerror = talk.ontimeupdate = null; talk.pause(); talk = null; } }
   function say(a, done) { talk = a; let over = false; const end = () => { if (over) return; over = true; if (talk === a) talk = null; done(); }; a.onended = end; a.onerror = end; try { a.currentTime = 0; } catch {} a.volume = 1; a.play().catch(() => { cookTimer = setTimeout(end, 2200); }); }
+  // Lip sync: while Wendy is talking, her drawn mouth opens with the loudness of the line (read from the audio itself; a gentle
+  // made-up rhythm if the browser will not let us listen). Frames are images 0 (closed) to 5 (open) in #lip-frames.
+  const LIPF = [...document.querySelectorAll("#lip-frames img")].map((i) => i.src); let lipCtx = null, lipSm = 0; const lipAn = new WeakMap();
+  function lipLevel(a) {
+    try { if (!lipCtx) lipCtx = new (window.AudioContext || window.webkitAudioContext)(); if (lipCtx.state !== "running") lipCtx.resume().catch(() => {});
+      let n = lipAn.get(a); if (!n) { const st = a.captureStream ? a.captureStream() : a.mozCaptureStream(); if (!st.getAudioTracks().length) return -1;
+        const an = lipCtx.createAnalyser(); an.fftSize = 512; lipCtx.createMediaStreamSource(st).connect(an); n = { an, buf: new Uint8Array(512) }; lipAn.set(a, n); }
+      n.an.getByteTimeDomainData(n.buf); let s = 0; for (const v of n.buf) { const d = (v - 128) / 128; s += d * d; } return lipCtx.state === "running" ? Math.sqrt(s / n.buf.length) : -1;
+    } catch { return -1; }
+  }
+  setInterval(() => {
+    const a = talk, scr = document.querySelector(".screen.on"), lips = scr ? scr.querySelectorAll("img.lip") : [];
+    if (!lips.length) return;
+    let o = 0; if (a && !a.paused && !a.ended) { const l = lipLevel(a); o = l < 0 ? .45 + .4 * Math.sin(performance.now() / 70) * Math.sin(performance.now() / 190) : Math.min(1, l * 6); }
+    lipSm += (o - lipSm) * (o > lipSm ? .7 : .45); const k = lipSm < .08 ? 0 : Math.min(5, Math.round(lipSm * 5));
+    lips.forEach((im) => { im.classList.toggle("on", k > 0); if (k > 0 && im.dataset.k !== String(k)) { im.src = LIPF[k]; im.dataset.k = k; } });
+  }, 60);
+  // Wendy talks the guest through the Ready screen (the three steps in a few seconds), then says "Pick your heat" on the camera screen (owner)
+  let guideT = 0;
+  document.addEventListener("screen", (e) => { clearTimeout(guideT); if (talk && (talk.id === "vo-steps" || talk.id === "vo-heat")) stopTalk();
+    const id = { "s-consent": "vo-steps", "s-cam": "vo-heat" }[e.detail]; if (id) guideT = setTimeout(() => { if (document.getElementById(e.detail).classList.contains("on")) say($(id), () => {}); }, e.detail === "s-cam" ? 500 : 700); });
   function sayPersonal(p, done) {
     const lines = p.lines, total = lines.join(" ").length; $("cook-line").textContent = lines[0];
     if (!p.audio) { let i = 0; const step = () => { if (!talkOn) return; if (++i >= lines.length) return done(); $("cook-line").textContent = lines[i]; cookTimer = setTimeout(step, 2200); }; cookTimer = setTimeout(step, 2200); return; }

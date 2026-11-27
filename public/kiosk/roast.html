@@ -734,16 +734,18 @@
     if (stream) stream.getTracks().forEach((t) => t.stop());
     try {
       const id = localStorage.getItem("wf_cam_" + K.station);
-      stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId: id ? { exact: id } : undefined, width: { ideal: 1280 }, height: { ideal: 960 }, facingMode: "user" }, audio: false });
+      stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId: id ? { exact: id } : undefined, width: { ideal: 1920 }, height: { ideal: 1080 }, facingMode: "user" }, audio: false });
       $("video").srcObject = stream; await listCams(); applyMirror();
       $("cam-status").textContent = "Camera: " + (camSel.selectedOptions[0]?.textContent || "default"); $("s-cam").classList.remove("camerr");
       return true;
     } catch (e) { $("cam-status").textContent = "Camera blocked or missing: " + e.message + " · staff: press S for settings"; $("s-cam").classList.add("camerr"); return false; }
   }
   function capture() {
-    const v = $("video"), c = $("shot"); const w = 1024, h = Math.round(1024 * (v.videoHeight / v.videoWidth || .75));
-    c.width = w; c.height = h; const ctx = c.getContext("2d"); ctx.drawImage(v, 0, 0, w, h);
-    return c.toDataURL("image/jpeg", .86);
+    // The photo is kept as sharp as the camera gives it, up to 1600 wide (it was always shrunk to 1024 before), with a light lift in contrast and colour.
+    // Both happen in the same instant as the snap, so there is no extra wait (owner, Nov 2026).
+    const v = $("video"), c = $("shot"); const w = Math.min(1600, Math.max(1024, v.videoWidth || 1024)), h = Math.round(w * (v.videoHeight / v.videoWidth || .75));
+    c.width = w; c.height = h; const ctx = c.getContext("2d"); ctx.imageSmoothingQuality = "high"; try { ctx.filter = "contrast(1.06) saturate(1.1) brightness(1.03)"; } catch {} ctx.drawImage(v, 0, 0, w, h); ctx.filter = "none";
+    return c.toDataURL("image/jpeg", .9);
   }
 
   // ---------- flow ----------

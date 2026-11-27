@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
-<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwyendtr" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwyfqraz" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Scream & Win · Wendy Fest</title><link rel="icon" href="../assets/cameo.png"><link rel="manifest" href="../assets/scream.webmanifest"><meta name="theme-color" content="#029CD4"><meta name="mobile-web-app-capable" content="yes">
-<link rel="stylesheet" href="../css/brand.css?v=mwyendtr">
+<link rel="stylesheet" href="../css/brand.css?v=mwyfqraz">
 <style>
 /* ================= RETRO BLUE (formerly Studio Cream) · Scream & Win ================= */
 :root { --u:min(calc(100vw / 1440), calc(100vh / 760)); --v:var(--u); --blue:#029CD4; --red:#CD2028; --red2:#DA2A33; --red-dark:#8E141B; --ink:#1F1A1A; --cream:#F7F2EC; --blush:#F2D4D7; --cyan:#29C9E0; --line:rgba(205,32,40,.18); }
@@ -367,6 +367,10 @@ body { color:#fff; }
 .boxes i { background:#F6F0E6; border-color:#CD2028; color:#1F1A1A; box-shadow:0 calc(6 * var(--u)) 0 #014F72; }
 .boxes i.err { background:#F2D4D7; }
 .kbd button { box-shadow:0 calc(4 * var(--u)) 0 #7A0F16, inset 0 calc(1.5 * var(--u)) 0 rgba(255,255,255,.28); }
+/* keys: the same raised, glossy keys as the Roast Me keypad, in this game's own colours: red letters, cream numbers (owner) */
+.kbd button { font:italic 900 calc(34 * var(--u))/1 Poppins, sans-serif; border:calc(2 * var(--u)) solid rgba(255,255,255,.35); background:linear-gradient(180deg, #F0434C 0%, #D8232D 46%, #A9161F 100%); box-shadow:0 calc(5 * var(--u)) 0 #7A0F16, 0 calc(10 * var(--u)) calc(11 * var(--u)) rgba(0,30,60,.35), inset 0 calc(2.2 * var(--u)) 0 rgba(255,255,255,.4), inset 0 calc(-4.5 * var(--u)) calc(6.5 * var(--u)) rgba(126,15,22,.45) !important; text-shadow:0 calc(2 * var(--u)) 0 rgba(0,0,0,.35); }
+.kbd button.n { background:linear-gradient(180deg, #FFFFFF 0%, #FBF5EA 46%, #E4D8C2 100%); color:#D8232D; border-color:rgba(255,255,255,.85); box-shadow:0 calc(5 * var(--u)) 0 #B5A88F, 0 calc(10 * var(--u)) calc(11 * var(--u)) rgba(0,30,60,.3), inset 0 calc(2.2 * var(--u)) 0 #fff, inset 0 calc(-4.5 * var(--u)) calc(6.5 * var(--u)) rgba(181,168,143,.5) !important; text-shadow:none; }
+.kbd button:active { transform:translateY(calc(4 * var(--u))); box-shadow:0 calc(1 * var(--u)) 0 #7A0F16 !important; } .kbd button.n:active { box-shadow:0 calc(1 * var(--u)) 0 #B5A88F !important; }
 #s-code .msg { color:#FFE3E5 !important; }
 #s-code .ask { color:#fff; }
 .bx .lined::before, .bx .lined::after { background:#F6F0E6; }
@@ -508,7 +512,10 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   .boxes i.cur:empty::after { height:calc(100 * var(--u)) !important; width:calc(6 * var(--u)) !important; }
   #s-code .msg { left:0 !important; width:calc(1080 * var(--u)) !important; top:calc(634 * var(--u)) !important; font-size:calc(32 * var(--u)) !important; }
   .kbd { left:calc(30 * var(--u)) !important; top:calc(690 * var(--u)) !important; width:calc(1020 * var(--u)) !important; gap:calc(14 * var(--u)) !important; grid-auto-rows:calc(136 * var(--u)) !important; }
-  .kbd button.n { box-shadow:0 calc(8 * var(--u)) 0 #B5A88F !important; }
+  .kbd button { border-width:calc(3 * var(--u)) !important; box-shadow:0 calc(9 * var(--u)) 0 #7A0F16, 0 calc(18 * var(--u)) calc(20 * var(--u)) rgba(0,30,60,.4), inset 0 calc(4.0 * var(--u)) 0 rgba(255,255,255,.4), inset 0 calc(-8.1 * var(--u)) calc(11.7 * var(--u)) rgba(126,15,22,.45) !important; text-shadow:0 calc(3 * var(--u)) 0 rgba(0,0,0,.35) !important; }
+  .kbd button.n { box-shadow:0 calc(9 * var(--u)) 0 #B5A88F, 0 calc(18 * var(--u)) calc(20 * var(--u)) rgba(0,30,60,.35), inset 0 calc(4.0 * var(--u)) 0 #fff, inset 0 calc(-8.1 * var(--u)) calc(11.7 * var(--u)) rgba(181,168,143,.5) !important; text-shadow:none !important; }
+  .kbd button:active { transform:translateY(calc(7 * var(--u))) !important; box-shadow:0 calc(2 * var(--u)) 0 #7A0F16 !important; }
+  .kbd button.n:active { box-shadow:0 calc(2 * var(--u)) 0 #B5A88F !important; }
   .kbd .krow { height:calc(128 * var(--u)) !important; gap:calc(9 * var(--u)) !important; }
   .kbd .krow.r2 { padding:0 calc(52 * var(--u)) !important; }
   .kbd button { font-size:calc(64 * var(--u)) !important; border-radius:calc(16 * var(--u)) !important; }
@@ -741,7 +748,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
 <audio id="vo-nos-1" src="../assets/voice/nos-1.mp3" preload="auto"></audio><audio id="vo-nos-2" src="../assets/voice/nos-2.mp3" preload="auto"></audio><audio id="vo-nos-3" src="../assets/voice/nos-3.mp3" preload="auto"></audio><audio id="vo-nos-4" src="../assets/voice/nos-4.mp3" preload="auto"></audio><audio id="vo-nos-5" src="../assets/voice/nos-5.mp3" preload="auto"></audio><audio id="vo-nos-6" src="../assets/voice/nos-6.mp3" preload="auto"></audio>
 <audio id="vo-win-1" src="../assets/voice/win-1.mp3" preload="auto"></audio><audio id="vo-win-2" src="../assets/voice/win-2.mp3" preload="auto"></audio><audio id="vo-win-3" src="../assets/voice/win-3.mp3" preload="auto"></audio><audio id="vo-win-4" src="../assets/voice/win-4.mp3" preload="auto"></audio><audio id="vo-win-5" src="../assets/voice/win-5.mp3" preload="auto"></audio><audio id="vo-win-6" src="../assets/voice/win-6.mp3" preload="auto"></audio>
 <audio id="vo-quiet-1" src="../assets/voice/quiet-1.mp3" preload="auto"></audio><audio id="vo-quiet-2" src="../assets/voice/quiet-2.mp3" preload="auto"></audio><audio id="vo-quiet-3" src="../assets/voice/quiet-3.mp3" preload="auto"></audio><audio id="vo-quiet-4" src="../assets/voice/quiet-4.mp3" preload="auto"></audio><audio id="vo-quiet-5" src="../assets/voice/quiet-5.mp3" preload="auto"></audio><audio id="vo-quiet-6" src="../assets/voice/quiet-6.mp3" preload="auto"></audio>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwyendtr"></script><script src="../js/kiosk.js?v=mwyendtr"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwyfqraz"></script><script src="../js/kiosk.js?v=mwyfqraz"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let CFG = { scream: { threshold: 70, durationMs: 3000, dbFloor: -42, dbCeil: -6, loudWeight: .6, accWeight: .4 } };

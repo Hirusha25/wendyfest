@@ -39,15 +39,15 @@ export const config = {
 
   // Scream & Win scoring (editable live from /admin; these are the defaults)
   scream: {
-    threshold: Number(env("SCREAM_THRESHOLD", 75)),   // overall score needed to win (0-100)
-    minLoud: Number(env("SCREAM_MIN_LOUD", 60)),       // loudness must also reach this on its own
+    threshold: Number(env("SCREAM_THRESHOLD", 88)),   // overall score needed to win (0-100). The defaults here are the "Hard" level (see SCREAM_LEVELS in index.js)
+    minLoud: Number(env("SCREAM_MIN_LOUD", 85)),       // loudness must also reach this on its own
     minAcc: Number(env("SCREAM_MIN_ACC", 70)),         // clarity must also reach this: only a clear "Wendy's" (with the S) passes
     loudWeight: Number(env("SCREAM_LOUD_WEIGHT", 0.6)),
     accWeight: Number(env("SCREAM_ACC_WEIGHT", 0.4)),
     dbFloor: Number(env("SCREAM_DB_FLOOR", -42)),       // dBFS that maps to 0
-    dbCeil: Number(env("SCREAM_DB_CEIL", -6)),          // dBFS that maps to 100
+    dbCeil: Number(env("SCREAM_DB_CEIL", -2)),          // dBFS that maps to 100
     attemptsPerPerson: Number(env("SCREAM_ATTEMPTS", 1)),
-    durationMs: Number(env("SCREAM_DURATION_MS", 10000)),   // up to 10 seconds so the guest can hold the note; ends early once the word is heard and they stop
+    durationMs: Number(env("SCREAM_DURATION_MS", 5000)),   // one quick shout: the round ends as soon as the guest has shouted and gone quiet, 5 seconds at most
   },
   roast: {
     attemptsPerPerson: Number(env("ROAST_ATTEMPTS", 1)),

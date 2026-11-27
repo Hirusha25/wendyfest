@@ -75,6 +75,8 @@ for (const c of ["consent_terms", "consent_media"]) if (!db.prepare("PRAGMA tabl
 // the card colour the guest picked on the roast screen (paper = beige, blue, dark = black, red)
 if (!db.prepare("PRAGMA table_info(roasts)").all().some((c) => c.name === "card_theme")) db.exec("ALTER TABLE roasts ADD COLUMN card_theme TEXT");
 
+// The loudest 0.6 s of the scream in dBFS, kept so the admin page can show how many past screams would win at each difficulty level.
+if (!db.prepare("PRAGMA table_info(scream_attempts)").all().some((c) => c.name === "sus_db")) db.exec("ALTER TABLE scream_attempts ADD COLUMN sus_db REAL");
 // Which message each SMS was (otp, welcome, win, lose, roast), so the admin page can count them. Older rows are sorted by their wording.
 if (!db.prepare("PRAGMA table_info(sms_log)").all().some((c) => c.name === "kind")) {
   db.exec("ALTER TABLE sms_log ADD COLUMN kind TEXT");

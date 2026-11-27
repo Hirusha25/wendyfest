@@ -39,7 +39,7 @@ const now = () => new Date().toISOString().slice(0, 19).replace("T", " ");
 if (!DB.participants.some((p) => p.code === "123AB")) { DB.participants.unshift({ id: 1000, code: "123AB", token: "demo-guest-token", name: "Demo Guest", phone: "94770000000", email: null, dob: null, lang: "en", created_at: now() }); save(); }
 const cookie = (n) => (document.cookie.match(new RegExp("(?:^|; )" + n + "=([^;]*)")) || [])[1];
 const setCookie = (n, v) => (document.cookie = n + "=" + v + "; path=/; max-age=31536000; SameSite=Lax");
-const scream = () => Object.assign({ threshold: 75, minLoud: 60, minAcc: 70, loudWeight: .6, accWeight: .4, dbFloor: -42, dbCeil: -6, attemptsPerPerson: 99, durationMs: 10000 }, DB.settings.scream || {});
+const scream = () => Object.assign({ threshold: 88, minLoud: 85, minAcc: 70, loudWeight: .6, accWeight: .4, dbFloor: -42, dbCeil: -2, attemptsPerPerson: 99, durationMs: 5000 }, DB.settings.scream || {});
 const coupon = () => Object.assign({ valueLabel: "10% OFF your next Wendy's order", terms: "Valid at Wendy's Sri Lanka outlets during the launch period. One use per code." }, DB.settings.coupon || {});
 const roastS = () => Object.assign({ attemptsPerPerson: 99 }, DB.settings.roast || {});
 const profileUrl = (p) => BASE + "/profile.html?t=" + p.token;
@@ -128,6 +128,7 @@ async function route(method, url, body) {
     if (p.endsWith("/roasts")) { const f = u.searchParams.get("f") || "waiting", all = DB.roasts.filter((r) => r.photo), rows = all.filter((r) => f === "wall" ? r.wall : f === "all" ? true : !r.wall).reverse();
       return json({ total: rows.length, waiting: all.filter((r) => !r.wall).length, onWall: all.filter((r) => r.wall).length, page: 1, per: Math.max(60, rows.length), wall: wallS(), rows: rows.map(wallRow) }); }
     if (p.endsWith("/wall") && p.indexOf("/roasts/") > 0) { const r = DB.roasts.find((x) => x.token === p.split("/")[4]); if (!r) return json({ ok: false }, 404); r.wall = !!body.on; save(); return json({ ok: true, onWall: r.wall }); }
+    if (p.endsWith("scream-levels")) return json({ clear: 0, now: 0, levels: [] });
     if (p.endsWith("overview")) {   // the numbers page, worked out from the demo's own made-up data
       const P = DB.participants, ids = (a) => new Set(a.map((x) => x.participant_id)), sp = ids(DB.screams), rp = ids(DB.roasts), both = [...sp].filter((i) => rp.has(i)).length, played = sp.size + rp.size - both;
       const half = DB.pending && !P.some((x) => x.phone === DB.pending.phone) ? 1 : 0, wins = DB.screams.filter((s) => s.won).length, today = new Date(Date.now() + 330 * 60000).toISOString().slice(0, 10);

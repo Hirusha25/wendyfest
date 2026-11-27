@@ -143,7 +143,10 @@
     <div class="stack hidden" id="t-settings" style="gap:18px">
       <div class="two">
         <div class="card stack">
-          <h3 class="eyebrow">Scream & Win scoring</h3>
+          <h3 class="eyebrow">Scream & Win: how hard is it to win?</h3>
+          <div class="tools" id="lv"></div>
+          <div class="help" id="lv-note"></div>
+          <h3 class="eyebrow" style="margin-top:6px">The numbers behind it</h3>
           <div class="fields">
             <div class="field"><label>Win threshold</label><input class="input" id="threshold" type="number" min="1" max="100"></div>
             <div class="field"><label>Min loudness to win</label><input class="input" id="minLoud" type="number" min="0" max="100"></div>
@@ -156,7 +159,7 @@
             <div class="field"><label>Scream attempts</label><input class="input" id="attemptsPerPerson" type="number" min="1"></div>
             <div class="field"><label>Roast attempts</label><input class="input" id="roastAttempts" type="number" min="1"></div>
           </div>
-          <div class="help">To win, a guest needs the overall score AND the minimum loudness AND the minimum clarity. Clarity only passes for a clear "Wendy's" with the S; only their first attempt at the word counts. Loudness is the loudest sustained half-second (dBFS) from the kiosk mic. Calibrate on site: a normal talking voice at 1 m should read near the floor, a full scream near the ceiling.</div>
+          <div class="help">The round is one quick shout: it ends as soon as the guest has shouted and gone quiet, or when the scream window runs out. To win, a guest needs the overall score AND the minimum loudness AND the minimum clarity. Clarity only passes for a clear "Wendy's" with the S; only their first attempt at the word counts. Loudness is the loudest 0.6 seconds (dBFS) from the kiosk mic. Calibrate on site: a normal talking voice at 1 m should read near the floor, a full scream near the ceiling.</div>
           <button class="btn sm" id="save-scream">Save scoring</button>
         </div>
         <div class="card stack">
@@ -198,7 +201,7 @@
     TAB = t;
     document.querySelectorAll("#tabs .tab").forEach((b) => b.classList.toggle("on", b.dataset.t === t));
     ["overview", "guests", "half", "wall", "links", "settings"].forEach((x) => $("t-" + x).classList.toggle("hidden", x !== t));
-    if (t === "guests") loadGuests(); if (t === "half") loadHalf(); if (t === "wall") loadWall();
+    if (t === "guests") loadGuests(); if (t === "half") loadHalf(); if (t === "wall") loadWall(); if (t === "settings") loadLevels();
   }
   document.querySelectorAll("#tabs .tab").forEach((b) => (b.onclick = () => showTab(b.dataset.t)));
   $("real").onchange = () => load();
@@ -295,7 +298,14 @@
     document.querySelectorAll("[data-copy]").forEach((b) => (b.onclick = async () => { try { await navigator.clipboard.writeText(b.dataset.copy); toast("Link copied"); } catch { toast(b.dataset.copy, 6000); } }));
   }
 
-  $("save-scream").onclick = async () => { const scream = {}; ["threshold", "minLoud", "minAcc", "loudWeight", "accWeight", "dbFloor", "dbCeil", "durationMs", "attemptsPerPerson"].forEach((f) => scream[f] = $(f).value); await api("/api/admin/settings", { method: "PUT", body: { scream, roast: { attemptsPerPerson: $("roastAttempts").value } } }); toast("Saved"); load(); };
+  // Difficulty levels: one tap sets the scoring numbers. Under each is how many recent clear shouts would have won at that level.
+  async function loadLevels() {
+    let r; try { r = await api("/api/admin/scream-levels"); } catch { return; }
+    $("lv").innerHTML = r.levels.map((l) => `<button class="pill${l.on ? " on" : ""}" data-lv="${l.key}">${l.label}${r.clear ? ` · ${l.wins} of ${r.clear} would win` : ""}</button>`).join("");
+    $("lv-note").textContent = r.levels.length ? (r.clear ? `Counted on the last ${r.clear} screams that had a clear "Wendy's". With the numbers saved now, ${r.now} of them would win. ` : "") + "Loudness depends on the kiosk's mic level, so check this again at the venue after a few test screams." : "";
+    document.querySelectorAll("[data-lv]").forEach((b) => (b.onclick = async () => { const l = r.levels.find((x) => x.key === b.dataset.lv); await api("/api/admin/settings", { method: "PUT", body: { scream: l.set } }); toast(l.label + " saved"); await load(); loadLevels(); }));
+  }
+  $("save-scream").onclick = async () => { const scream = {}; ["threshold", "minLoud", "minAcc", "loudWeight", "accWeight", "dbFloor", "dbCeil", "durationMs", "attemptsPerPerson"].forEach((f) => scream[f] = $(f).value); await api("/api/admin/settings", { method: "PUT", body: { scream, roast: { attemptsPerPerson: $("roastAttempts").value } } }); toast("Saved"); await load(); loadLevels(); };
   $("save-coupon").onclick = async () => { await api("/api/admin/settings", { method: "PUT", body: { coupon: { valueLabel: $("valueLabel").value, terms: $("terms").value } } }); toast("Saved"); load(); };
   $("import").onclick = async () => { const r = await api("/api/admin/coupons/import", { method: "POST", body: { text: $("codes").value } }); toast(`Imported ${r.added} codes`); $("codes").value = ""; load(); };
   $("gen").onclick = async () => { const r = await api("/api/admin/coupons/generate", { method: "POST", body: { count: 100 } }); toast(`Generated ${r.added} demo codes`); load(); };

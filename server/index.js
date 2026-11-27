@@ -272,8 +272,8 @@ app.post("/api/kiosk/scream", requirePin("kiosk"), async (req, res) => {
     coupon = db.prepare("SELECT * FROM coupons WHERE claimed_by IS NULL ORDER BY id LIMIT 1").get();
     if (coupon) db.prepare("UPDATE coupons SET claimed_by = ?, claimed_at = datetime('now'), activity = 'scream' WHERE id = ?").run(p.id, coupon.id);
   }
-  const info = db.prepare("INSERT INTO scream_attempts(participant_id, peak_db, loudness, accuracy, score, transcript, won, coupon_id, station, speech) VALUES (?,?,?,?,?,?,?,?,?,?)")
-    .run(p.id, Number(peakDb) || null, loud, acc, score, transcript ? String(transcript).slice(0, 200) : null, won ? 1 : 0, coupon?.id || null, station || null, speechLog);
+  const info = db.prepare("INSERT INTO scream_attempts(participant_id, peak_db, loudness, accuracy, score, transcript, won, coupon_id, station, speech, sus_db) VALUES (?,?,?,?,?,?,?,?,?,?,?)")
+    .run(p.id, Number(peakDb) || null, loud, acc, score, transcript ? String(transcript).slice(0, 200) : null, won ? 1 : 0, coupon?.id || null, station || null, speechLog, Number.isFinite(Number(sustainedDb)) ? Number(sustainedDb) : null);
 
   const first = p.name.split(" ")[0];
   const t = templates(p.lang);
@@ -455,6 +455,23 @@ app.get("/api/admin/roasts", requirePin("admin"), (req, res) => {
 app.post("/api/admin/roasts/:token/wall", requirePin("admin"), (req, res) => {
   const on = req.body?.on ? 1 : 0, done = db.prepare("UPDATE roasts SET wall = ?, wall_at = CASE WHEN ? = 1 THEN datetime('now') ELSE NULL END WHERE token = ?").run(on, on, String(req.params.token || ""));
   res.status(done.changes ? 200 : 404).json({ ok: !!done.changes, onWall: !!on });
+});
+
+// ----- how hard Scream & Win is. Four levels the owner can pick on the admin page; each is just a set of the scoring numbers.
+// The mic's top end (dbCeil) moves up with the level, so only a really loud shout reaches a high loudness score.
+const SCREAM_LEVELS = [
+  { key: "easy", label: "Easy", set: { threshold: 75, minLoud: 60, dbCeil: -6 } },
+  { key: "medium", label: "Medium", set: { threshold: 82, minLoud: 75, dbCeil: -4 } },
+  { key: "hard", label: "Hard", set: { threshold: 88, minLoud: 85, dbCeil: -2 } },
+  { key: "extra", label: "Very hard", set: { threshold: 93, minLoud: 92, dbCeil: -1 } },
+];
+// For each level: how many of the recent screams with a clear "Wendy's" would have won. Older rows have no saved loudness in dB, so it is worked back from their score.
+app.get("/api/admin/scream-levels", requirePin("admin"), (req, res) => {
+  const cur = screamSettings(), rows = db.prepare("SELECT peak_db, loudness, accuracy, sus_db FROM scream_attempts WHERE accuracy >= ? ORDER BY id DESC LIMIT 200").all(cur.minAcc ?? 70)
+    .map((r) => ({ acc: r.accuracy, db: r.sus_db ?? (r.loudness < 100 ? -42 + r.loudness * 0.36 : Math.max(-6, (r.peak_db ?? -3) - 2.5)) }));
+  const wins = (set) => { const s = { ...cur, ...set }; return rows.filter((r) => judgeScream({ sustainedDb: r.db, accuracyOverride: r.acc }, s).won).length; };
+  const same = (set) => Object.entries(set).every(([k, v]) => Number(cur[k]) === v);
+  res.json({ clear: rows.length, now: wins({}), levels: SCREAM_LEVELS.map((l) => ({ ...l, wins: wins(l.set), on: same(l.set) })) });
 });
 
 app.put("/api/admin/settings", requirePin("admin"), (req, res) => {

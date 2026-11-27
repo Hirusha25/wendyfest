@@ -128,3 +128,13 @@ The event kiosk is a 1080 x 1920 upright touch screen. `public/kiosk/roast.html`
 - Cut-out (`cutout()` in `public/js/roast-card.js`): two looks with MediaPipe. The first finds the guest in the whole photo; the second looks closely at the head and shoulders, so hair is traced at about three times the detail. Only the main guest is kept (the biggest joined-up shape with a head): background people and a second person standing apart are left out. A head that the camera itself cut off cannot be brought back.
 - `roastCard.focus(src)` gives the head box; the wall uses it (`frame()`) to keep the whole head, hair included, inside its photo window.
 - Do not commit screenshots of the wall or the card made with real guest photos. Test pictures for docs use drawn placeholder faces.
+
+## Scream & Win: one quick shout (owner, Nov 2026)
+
+- No long hold. The round is 5 seconds at most (`SCREAM_DURATION_MS`) and ends as soon as the guest has shouted and gone quiet for 0.8 s. A guest still mid-shout at zero may finish (up to 1.5 s more). Before this the kiosk made everyone shout for the full 10 seconds, because Chrome hears no words on Android and the old early finish waited for the word.
+- Loudness is the loudest 0.6 seconds, measured by time (`SUS_MS`), not by screen frames. That is the "slight hold": full voice for about half a second.
+- The recording starts one second before GO and keeps a 0.35 s tail, so the mic waking up never eats the word. A quick shout is about 6 to 11 KB.
+- Word check: the recording is sent, and sent again alongside after 1.5 s if no answer has come; the first good answer is used (`hearOnServer`). A loud, clear guest should not be sent back to try again because one upload stalled.
+- Difficulty: four levels on the admin Settings tab (`SCREAM_LEVELS` in `server/index.js`): Easy, Medium, Hard, Very hard. Each sets `threshold`, `minLoud` and `dbCeil`. The code defaults are Hard. `/api/admin/scream-levels` counts how many recent clear screams would win at each level (`scream_attempts.sus_db` keeps the loudness in dB for this). Loudness depends on the kiosk's mic level, so the level must be checked at the venue.
+- The upright Hold it bar fills in 2.5 seconds (`HOLD_FULL`); the hold time still does not change the score.
+- Two drawings on one page must not share colour names (`id`s): the Roast Me result lanyard uses `lyS2...` because the cooking screen's copy is hidden on the wide layout, and a hidden drawing cannot lend its colours (the strap went see-through).

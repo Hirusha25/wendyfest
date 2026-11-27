@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
-<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwz84s5c" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwz8m1e4" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Scream & Win · Wendy Fest</title><link rel="icon" href="../assets/cameo.png"><link rel="manifest" href="../assets/scream.webmanifest"><meta name="theme-color" content="#029CD4"><meta name="mobile-web-app-capable" content="yes">
-<link rel="stylesheet" href="../css/brand.css?v=mwz84s5c">
+<link rel="stylesheet" href="../css/brand.css?v=mwz8m1e4">
 <style>
 /* ================= RETRO BLUE (formerly Studio Cream) · Scream & Win ================= */
 :root { --u:min(calc(100vw / 1440), calc(100vh / 760)); --v:var(--u); --blue:#029CD4; --red:#CD2028; --red2:#DA2A33; --red-dark:#8E141B; --ink:#1F1A1A; --cream:#F7F2EC; --blush:#F2D4D7; --cyan:#29C9E0; --line:rgba(205,32,40,.18); }
@@ -712,7 +712,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
       <div class="abs" id="gauge-num">0</div>
       <div class="abs lbl">Loudness<br>score</div>
       <div class="abs heard" id="heard"><small>We heard</small><b id="heard-v">…</b></div>
-      <div class="tleft"><div class="v"><b><span id="tleft">10.0</span>s</b><small>Left<span class="up-in"> of <span id="tdur">10</span></span></small></div><div class="tbar"><i id="tbar"></i></div></div>
+      <div class="tleft"><div class="v"><b><span id="tleft">5.0</span>s</b><small>Left<span class="up-in"> of <span id="tdur">5</span></span></small></div><div class="tbar"><i id="tbar"></i></div></div>
       <div id="trans">…</div>
       <div class="up-only beats" id="beats"><span data-b="1"><i>1</i>Shout</span><span data-b="2"><i>2</i>Hold it</span><span data-b="3"><i>3</i>Finish</span></div>
       <div class="up-only holdword" id="hold-word">WEND<span id="hw-y"></span>’S!</div>
@@ -772,12 +772,12 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
 <audio id="vo-nos-1" src="../assets/voice/nos-1.mp3" preload="auto"></audio><audio id="vo-nos-2" src="../assets/voice/nos-2.mp3" preload="auto"></audio><audio id="vo-nos-3" src="../assets/voice/nos-3.mp3" preload="auto"></audio><audio id="vo-nos-4" src="../assets/voice/nos-4.mp3" preload="auto"></audio><audio id="vo-nos-5" src="../assets/voice/nos-5.mp3" preload="auto"></audio><audio id="vo-nos-6" src="../assets/voice/nos-6.mp3" preload="auto"></audio>
 <audio id="vo-win-1" src="../assets/voice/win-1.mp3" preload="auto"></audio><audio id="vo-win-2" src="../assets/voice/win-2.mp3" preload="auto"></audio><audio id="vo-win-3" src="../assets/voice/win-3.mp3" preload="auto"></audio><audio id="vo-win-4" src="../assets/voice/win-4.mp3" preload="auto"></audio><audio id="vo-win-5" src="../assets/voice/win-5.mp3" preload="auto"></audio><audio id="vo-win-6" src="../assets/voice/win-6.mp3" preload="auto"></audio>
 <audio id="vo-quiet-1" src="../assets/voice/quiet-1.mp3" preload="auto"></audio><audio id="vo-quiet-2" src="../assets/voice/quiet-2.mp3" preload="auto"></audio><audio id="vo-quiet-3" src="../assets/voice/quiet-3.mp3" preload="auto"></audio><audio id="vo-quiet-4" src="../assets/voice/quiet-4.mp3" preload="auto"></audio><audio id="vo-quiet-5" src="../assets/voice/quiet-5.mp3" preload="auto"></audio><audio id="vo-quiet-6" src="../assets/voice/quiet-6.mp3" preload="auto"></audio>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwz84s5c"></script><script src="../js/kiosk.js?v=mwz84s5c"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwz8m1e4"></script><script src="../js/kiosk.js?v=mwz8m1e4"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let CFG = { scream: { threshold: 70, durationMs: 3000, dbFloor: -42, dbCeil: -6, loudWeight: .6, accWeight: .4 } };
   let guest = null, audio = null, analyser = null, buf = null, fbuf = null, stream = null, rafId = null;
-  let SUS = [], susDb = -100;
+  let SUS = [], susDb = -100; const SUS_MS = 600;
   let peakDb = -100, transcript = "", recog = null, windowOpen = false, smooth = -100, gaugeShown = 0, mode = "idle";
   $("corner-l").textContent = "Station " + K.station;
   $("qr-reg").src = qrUrl(location.href.replace(/[#?].*$/, "").replace(/\/(kiosk\/)?[^/]*$/, "") + "/register.html");
@@ -1052,14 +1052,14 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   // ---------- main loop ----------
   let countPct = 0;
   // "Hold it": how long the voice stays above the line in one go (shown on the upright layout; it does not change the score)
-  const HOLD_LINE = 38, HOLD_FULL = 8, HW_N = 8; let holdRun = 0, holdBest = 0, holdGap = 0, holdLast = 0;
+  const HOLD_LINE = 38, HOLD_FULL = 2.5, HW_N = 8; let holdRun = 0, holdBest = 0, holdGap = 0, holdLast = 0, voiceTotal = 0;
   const holdKey = () => "wf_hold_" + new Date(Date.now() + 330 * 60000).toISOString().slice(0, 10),   /* the day is the Sri Lanka day */ holdDay = () => { try { return +(localStorage.getItem(holdKey()) || 0); } catch { return 0; } };
   $("hw-y").innerHTML = "<i>Y</i>".repeat(HW_N);
   function paintHold() { const s = Math.max(holdRun, 0); $("hold-s").textContent = s.toFixed(1); $("hold-bar").style.width = Math.min(100, s / HOLD_FULL * 100) + "%"; const n = Math.round(Math.min(1, s / HOLD_FULL) * HW_N); [...$("hw-y").children].forEach((el, i) => el.classList.toggle("f", i < n)); $("hold-best").textContent = Math.max(holdDay(), holdBest).toFixed(1); }
   function setBeat(n) { [...$("beats").children].forEach((el) => { const b = +el.dataset.b; el.classList.toggle("on", b === n); el.classList.toggle("done", b < n); }); }
-  function resetHold() { holdRun = holdBest = holdGap = 0; holdLast = performance.now(); paintHold(); setBeat(1); }
+  function resetHold() { holdRun = holdBest = holdGap = voiceTotal = 0; holdLast = performance.now(); paintHold(); setBeat(1); }
   function trackHold(pct) { const now = performance.now(), dt = Math.min(.2, (now - holdLast) / 1000); holdLast = now;
-    if (pct >= HOLD_LINE) { holdRun += dt; holdGap = 0; } else { holdGap += dt; if (holdGap > .35) holdRun = 0; }
+    if (pct >= HOLD_LINE) { holdRun += dt; voiceTotal += dt; holdGap = 0; } else { holdGap += dt; if (holdGap > .35) holdRun = 0; }
     if (holdRun > holdBest) holdBest = holdRun; paintHold(); }
   function loop(t) {
     rafId = requestAnimationFrame(loop);
@@ -1073,7 +1073,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
       if (windowOpen && db > peakDb) peakDb = db;
       if (windowOpen) { SD.frames++; if (clipNow > .01) SD.clip++; }
       if (windowOpen) trackHold(pct);
-      if (windowOpen) { SUS.push(Math.pow(10, db / 10)); if (SUS.length > 30) SUS.shift(); if (SUS.length >= 10) susDb = Math.max(susDb, 10 * Math.log10(SUS.reduce((a, b) => a + b, 0) / SUS.length)); }
+      if (windowOpen) { SUS.push([t, Math.pow(10, db / 10)]); while (SUS.length > 1 && t - SUS[0][0] > SUS_MS) SUS.shift(); if (t - SUS[0][0] >= SUS_MS * .6) susDb = Math.max(susDb, 10 * Math.log10(SUS.reduce((a, b) => a + b[1], 0) / SUS.length)); }   // the loudest 0.6 s: a short hold at full voice, not a clap or a click
       gaugeShown += (pct - gaugeShown) * .25;
       drawLiveA($("live-cv"), gaugeShown / 100, t); $("pop-w").style.setProperty("--lv", Math.min(1, gaugeShown / 100).toFixed(2));
       $("gauge-num").textContent = Math.round(dbToPct(susDb));
@@ -1118,15 +1118,17 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     try {
       await new Promise((res) => { rec.onstop = res; try { rec.stop(); } catch { res(); } setTimeout(res, 1200); });
       const blob = new Blob(recChunks, { type: rec.mimeType || "audio/webm" }); STT.bytes = blob.size; if (blob.size < 800) throw new Error("empty");
-      // Sent as raw audio (small), up to two times: a stalled upload is cancelled and sent again as a fresh request.
-      for (const [n, limit] of [[1, 5000], [2, 6000]]) {
-        const ac = new AbortController(), timer = setTimeout(() => ac.abort(), limit), t1 = performance.now(); let err = "", r = null;
-        try { const res = await fetch("/api/kiosk/hear", { method: "POST", headers: { "Content-Type": blob.type || "audio/webm", "X-Try": String(n) }, body: blob, signal: ac.signal, cache: "no-store" });
-          if (!res.ok) throw new Error("http " + res.status); r = await res.json(); err = (r && r.error) || ""; }
-        catch (e) { err = e.name === "AbortError" ? "timeout" : String(e.message || "failed").slice(0, 30); }
-        clearTimeout(timer); STT.tries.push({ ms: Math.round(performance.now() - t1), err });
-        STT.text = (r && r.text) || ""; STT.err = err; if (!err) break;
-      }
+      // Sent as raw audio (a quick shout is about 10 KB). The first upload on a connection sometimes stalls, so if no answer has come after
+      // 1.5 s the same recording is sent again alongside it, and the first good answer is used. A guest who shouted loud and clear is not sent back to try again.
+      const send = (n, limit) => { const ac = new AbortController(), timer = setTimeout(() => ac.abort(), limit), t1 = performance.now(), note = { ms: 0, err: "" }; STT.tries.push(note);
+        return fetch("/api/kiosk/hear", { method: "POST", headers: { "Content-Type": blob.type || "audio/webm", "X-Try": String(n) }, body: blob, signal: ac.signal, cache: "no-store" })
+          .then(async (res) => { if (!res.ok) throw new Error("http " + res.status); const r = await res.json(); if (r && r.error) throw new Error(r.error); return (r && r.text) || ""; })
+          .catch((e) => { note.err = e.name === "AbortError" ? "timeout" : String(e.message || "failed").slice(0, 30); throw e; })
+          .finally(() => { clearTimeout(timer); note.ms = Math.round(performance.now() - t1); }); };
+      const first = send(1, 6000), second = new Promise((res) => setTimeout(res, 1500)).then(() => (settled ? Promise.reject(new Error("not needed")) : send(2, 5500))); let settled = false;
+      first.then(() => { settled = true; }, () => {});
+      try { STT.text = await Promise.any([first, second]); STT.err = ""; } catch { STT.text = ""; STT.err = (STT.tries.find((x) => x.err) || { err: "failed" }).err; }
+      settled = true;
     } catch (e) { STT.err = STT.err || String(e.message || "failed").slice(0, 40); }
     STT.ms = Math.round(performance.now() - t0); rec = null;
     // Keep whichever heard the word: a clear "Wendy's" from either wins, then a "Wendy", then whatever the server heard.
@@ -1197,7 +1199,8 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     const dots = [...$("dots").querySelectorAll("span")];
     for (let n = 3; n >= 1; n--) {
       $("cnt").textContent = n; restart($("cnt"), "pop"); n > 1 ? SFX.tick() : SFX.last(); dots.forEach((d, i) => d.classList.toggle("on", i <= 3 - n));
-      if (n === 2) { startRecog(); startRec(); }
+      if (n === 2) startRecog();
+      if (n === 1) startRec();   // one second of run-up, so the start of the shout is never lost to the mic waking up
       const t0 = performance.now(); while (performance.now() - t0 < 1000) { countPct = ((4 - n) - 1 + (performance.now() - t0) / 1000) / 3 * 100; await wait(16); }
     }
     $("go-count").style.display = "none"; $("go-meter").style.display = "block"; setStep("5", "Live"); fitText(); enter($("go-meter"));
@@ -1205,20 +1208,26 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     [...$("go-meter").children].forEach((el) => el.style.setProperty("--i", el.id === "beats" ? 0 : 9 + (+el.style.getPropertyValue("--i") || 0) * 1.5));
     SFX.go(); await wait(320);
     peakDb = -100; SUS = []; susDb = -100; gaugeShown = 0; resetHold(); SD.frames = 0; SD.clip = 0; SFX.hush(); stopSass(); windowOpen = true; mode = "scream";
-    const dur = CFG.scream.durationMs || 5000, t0 = performance.now();   // ends early once the word is heard and the guest has stopped holding the note
+    const dur = CFG.scream.durationMs || 5000, t0 = performance.now(), OVER = 1500;
     $("tdur").textContent = Math.round(dur / 1000);
     // Wendy cheers the guest on by name in the Listening pill while they shout (on screen only: nothing is spoken while the mic is scoring)
-    const nm = String((guest && guest.firstName) || "").trim().slice(0, 12), who = nm ? ", " + nm : "", goal = CFG.scream.threshold || 70; let cheerAt = 0, cheerN = 0;
-    const cheer = () => { const el = performance.now() - t0; if (heardAt || el - cheerAt < 1300 && cheerN) return; cheerAt = el;
-      const L = el > dur - 2500 ? [`Finish strong${who}!`] : gaugeShown < goal ? [`Come on${who}!`, "Louder!", `Stronger${who}!`, "Faster! Louder!", `Is that all${who}?`] : [`Yes${who}!`, "Hold it!", `Keep going${who}!`, "Don’t stop!"];
+    const nm = String((guest && guest.firstName) || "").trim().slice(0, 12), who = nm ? ", " + nm : "", goal = CFG.scream.minLoud || CFG.scream.threshold || 70; let cheerAt = 0, cheerN = 0;
+    const cheer = () => { const el = performance.now() - t0; if (heardAt || el - cheerAt < 1100 && cheerN) return; cheerAt = el;
+      const L = el > dur - 1500 ? [`Last chance${who}!`] : gaugeShown < goal ? [`Come on${who}!`, "Louder!", `Is that all${who}?`, "Even louder!"] : [`Yes${who}!`, "That’s loud!", `Big one${who}!`];
       $("listen-l").textContent = L[cheerN++ % L.length]; };
-    while (performance.now() - t0 < dur) { cheer();
-      if (heardAt || performance.now() - t0 > 1500) setBeat(2);
-      if (heardAt && performance.now() - heardAt > 1300 && performance.now() - t0 > 1500 && holdGap > .7) break; const left = dur - (performance.now() - t0); $("tleft").textContent = (left / 1000).toFixed(1); $("tbar").style.transform = `scaleX(${left / dur})`; await wait(50); }
-    $("tleft").textContent = "0.0"; $("tbar").style.transform = "scaleX(0)"; windowOpen = false; setBeat(3); holdRun = holdBest; paintHold(); if (holdBest > holdDay()) { try { localStorage.setItem(holdKey(), holdBest.toFixed(1)); } catch {} }
+    // One quick shout (owner, Nov 2026): no long hold. The round is over as soon as the guest has shouted and then gone quiet for a moment.
+    // A guest still mid-shout when the clock reaches zero is allowed to finish (up to 1.5 s more), so the end of the word is never cut off.
+    for (;;) { const el = performance.now() - t0; cheer();
+      if (heardAt || voiceTotal > .25) setBeat(2);
+      if (el > 1200 && voiceTotal >= .5 && holdGap > .8) break;                       // shouted, then quiet: done
+      if (el >= dur && !(voiceTotal > 0 && holdGap < .25 && el < dur + OVER)) break;   // time is up (unless they are mid-shout)
+      const left = Math.max(0, dur - el); $("tleft").textContent = (left / 1000).toFixed(1); $("tbar").style.transform = `scaleX(${left / dur})`; await wait(50); }
+    $("tleft").textContent = "0.0"; $("tbar").style.transform = "scaleX(0)"; setBeat(3);
     if (rec) fetch("/api/ping", { cache: "no-store" }).catch(() => {});   // opens the connection before the recording is sent
-    await wait(900); stopRecog(); await wait(400);
-    if (rec) { $("listen-l").textContent = "Checking the word…"; await hearOnServer(); srStatus(); }
+    await wait(350); windowOpen = false;                                   // a short tail, so the last sound of the word is in the recording and in the loudness
+    holdRun = holdBest; paintHold(); if (holdBest > holdDay()) { try { localStorage.setItem(holdKey(), holdBest.toFixed(1)); } catch {} }
+    if (rec) { stopRecog(); $("listen-l").textContent = "Checking the word…"; await hearOnServer(); srStatus(); }
+    else { await wait(550); stopRecog(); await wait(400); }                // Chrome's own speech check needs a moment to hand over its last words
     // Speech recognition broke, or it heard no words at all although the guest was clearly loud: let the host call it, never fail the guest for the tech.
     const srOK = !!(window.SpeechRecognition || window.webkitSpeechRecognition), sttOn = STT.used;
     const srDown = !transcript && (sttOn ? !!STT.err && (!srOK || !!recogErr) : !!recogErr), deaf = !recogGot && !STT.text && dbToPct(peakDb) >= 45;

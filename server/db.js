@@ -99,6 +99,9 @@ if (!db.prepare("SELECT 1 FROM otp_requests LIMIT 1").get()) {   // first run: r
     FROM sms_log s WHERE s.kind = 'otp' AND s.phone IS NOT NULL GROUP BY s.phone`);
 }
 
+// The LED wall only shows roasts the team approved on the admin page (wall = 1), newest approval first.
+for (const [c, t] of [["wall", "INTEGER NOT NULL DEFAULT 0"], ["wall_at", "TEXT"]]) if (!db.prepare("PRAGMA table_info(roasts)").all().some((x) => x.name === c)) db.exec(`ALTER TABLE roasts ADD COLUMN ${c} ${t}`);
+
 export function getSetting(key, fallback) {
   const row = db.prepare("SELECT value FROM settings WHERE key = ?").get(key);
   if (!row) return fallback;

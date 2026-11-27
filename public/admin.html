@@ -53,6 +53,15 @@
   .link code { font-size: .8rem; color: var(--gray); word-break: break-all; }
   .link .help { grid-column: 1 / -1; }
   .mini { font-size: .75rem; color: var(--gray); }
+  .wgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
+  .wcard { border: 2px solid var(--gray-light); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; background: #fff; }
+  .wcard.on { border-color: #1E6B3A; }
+  .wcard img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: var(--gray-light); display: block; }
+  .wcard .in { padding: 12px; display: grid; gap: 6px; flex: 1; align-content: start; }
+  .wcard .t { font-weight: 800; font-size: .92rem; line-height: 1.2; }
+  .wcard .r { font-size: .8rem; line-height: 1.35; color: #444; }
+  .wcard .btn { margin: 0 12px 12px; }
+  .btn.green { background: #1E6B3A; } .btn.green:hover { background: #17552E; }
   label.check { display: inline-flex; gap: 8px; align-items: center; font-size: .85rem; font-weight: 600; cursor: pointer; }
 </style>
 </head>
@@ -64,7 +73,7 @@
   <section id="dash" class="hidden stack" style="gap:18px">
     <div class="row between" style="flex-wrap:wrap">
       <div class="tabs" id="tabs">
-        <button class="tab on" data-t="overview">Numbers</button><button class="tab" data-t="guests">Guests<b id="tab-guests"></b></button><button class="tab" data-t="half">Half registered<b id="tab-half"></b></button><button class="tab" data-t="links">Links</button><button class="tab" data-t="settings">Settings</button>
+        <button class="tab on" data-t="overview">Numbers</button><button class="tab" data-t="guests">Guests<b id="tab-guests"></b></button><button class="tab" data-t="half">Half registered<b id="tab-half"></b></button><button class="tab" data-t="wall">LED wall<b id="tab-wall"></b></button><button class="tab" data-t="links">Links</button><button class="tab" data-t="settings">Settings</button>
       </div>
       <span class="mini" id="stamp"></span>
     </div>
@@ -101,6 +110,21 @@
     <div class="card stack hidden" id="t-half">
       <div class="help" style="font-size:.86rem">These people filled the sign-up form and were sent a code by SMS, but never typed it in, so they have no guest code and cannot play. The phone number is partly hidden because it was never confirmed as theirs. If this list grows fast, check that the SMS is arriving.</div>
       <div class="scroll"><table id="h-table"></table></div>
+    </div>
+
+    <!-- LED wall -->
+    <div class="stack hidden" id="t-wall" style="gap:18px">
+      <div class="card stack">
+        <h3 class="eyebrow">The LED wall</h3>
+        <div class="help" style="font-size:.86rem">Open the wall link on the computer that feeds the LED wall and make the browser full screen. It shows only the roasts you approve below, one at a time, in a random order. A roast you approve joins by itself within half a minute; a roast you take off leaves the same way.</div>
+        <div id="w-link"></div>
+        <div class="tools"><label class="check"><input type="checkbox" id="w-on"> Wall is showing roasts</label><span class="row"><label class="mini" for="w-sec">Seconds per roast</label><input class="input" id="w-sec" type="number" min="5" max="120" style="width:90px"></span><button class="btn sm" id="w-save">Save</button><span class="help" id="w-state"></span></div>
+      </div>
+      <div class="card stack">
+        <div class="tools"><span id="w-f"><button class="pill on" data-f="waiting">Waiting for you</button> <button class="pill" data-f="wall">On the wall</button> <button class="pill" data-f="all">All roasts</button></span><span class="help" id="w-count"></span></div>
+        <div class="wgrid" id="w-grid"></div>
+        <div class="row between"><span></span><span class="row"><button class="btn sm ghost" id="w-prev">Earlier page</button><button class="btn sm ghost" id="w-next">Next page</button></span></div>
+      </div>
     </div>
 
     <!-- Links -->
@@ -173,8 +197,8 @@
   function showTab(t) {
     TAB = t;
     document.querySelectorAll("#tabs .tab").forEach((b) => b.classList.toggle("on", b.dataset.t === t));
-    ["overview", "guests", "half", "links", "settings"].forEach((x) => $("t-" + x).classList.toggle("hidden", x !== t));
-    if (t === "guests") loadGuests(); if (t === "half") loadHalf();
+    ["overview", "guests", "half", "wall", "links", "settings"].forEach((x) => $("t-" + x).classList.toggle("hidden", x !== t));
+    if (t === "guests") loadGuests(); if (t === "half") loadHalf(); if (t === "wall") loadWall();
   }
   document.querySelectorAll("#tabs .tab").forEach((b) => (b.onclick = () => showTab(b.dataset.t)));
   $("real").onchange = () => load();
@@ -201,7 +225,7 @@
     $("roasts").innerHTML = `<tr><th>Guest</th><th>Title</th><th></th></tr>` + S.recentRoasts.map((r) => `<tr><td>${esc(r.name)}</td><td>${esc(r.title_en || "")} ${r.fallback ? "<span class='chip'>fallback</span>" : ""}</td><td><a href="/r/${r.token}" target="_blank">open</a></td></tr>`).join("");
     $("env").textContent = `BASE_URL ${S.settings.baseUrl} · SMS ${S.settings.sms.provider} (sender ${S.settings.sms.senderId}) · roast model ${S.settings.roastModel} · fallback roasts so far: ${S.roastFallbacks}` + (O && O.testCodes.length ? ` · test codes that never run out of turns: ${O.testCodes.join(", ")}` : "");
     drawLinks();
-    if (TAB === "guests" && !focused("g-q")) loadGuests(); if (TAB === "half") loadHalf();
+    if (TAB === "guests" && !focused("g-q")) loadGuests(); if (TAB === "half") loadHalf(); if (TAB === "wall" && !focused("w-sec")) loadWall();
   }
 
   function drawOverview() {
@@ -244,12 +268,27 @@
       + (r.rows.map((h) => `<tr><td>${esc(h.phone)}</td><td>${LANG[h.lang] || esc(h.lang || "")}</td><td>${String(h.first).slice(0, 16)}</td><td>${String(h.last).slice(0, 16)}</td><td class="n">${h.sends}</td><td class="n">${h.wrong}</td><td>${h.waiting ? "<span class='chip win'>code still valid</span>" : "gave up"}</td></tr>`).join("") || `<tr><td colspan="7" class="help">Nobody. Everyone who asked for a code finished signing up.</td></tr>`);
   }
 
+  const W = { f: "waiting", page: 1 };
+  async function loadWall() {
+    let r; try { r = await api(`/api/admin/roasts?f=${W.f}&page=${W.page}`); } catch { return; }
+    $("tab-wall").textContent = r.onWall;
+    if (!focused("w-sec")) $("w-sec").value = r.wall.seconds; $("w-on").checked = !!r.wall.on;
+    $("w-state").textContent = r.wall.on ? `${r.onWall} on the wall · ${r.waiting} waiting` : "Paused: the wall shows the holding screen";
+    const pages = Math.max(1, Math.ceil(r.total / r.per)); $("w-count").textContent = `${r.total} roasts · page ${r.page} of ${pages}`; $("w-prev").disabled = r.page <= 1; $("w-next").disabled = r.page >= pages;
+    $("w-grid").innerHTML = r.rows.map((x) => `<div class="wcard${x.onWall ? " on" : ""}"><img loading="lazy" src="${esc(x.photo)}" alt=""><div class="in"><div class="mini">${esc(x.fullName)} · ${esc(x.code)} · ${String(x.at).slice(5, 16)}${x.test ? " <span class='chip blue'>test</span>" : ""}${x.fallback ? " <span class='chip'>stand-by roast</span>" : ""}</div><div class="t">${esc(x.title.en || "")}</div><div class="r">${esc(x.roast.en || "")}</div></div><button class="btn sm ${x.onWall ? "ink" : "green"}" data-wall="${esc(x.token)}" data-on="${x.onWall ? 0 : 1}">${x.onWall ? "Take off the wall" : "Show on the wall"}</button></div>`).join("") || `<div class="help">${W.f === "waiting" ? "Nothing waiting. Every roast has been looked at." : W.f === "wall" ? "Nothing on the wall yet. Approve roasts under Waiting for you." : "No roasts yet."}</div>`;
+    document.querySelectorAll("[data-wall]").forEach((b) => (b.onclick = async () => { b.disabled = true; try { await api(`/api/admin/roasts/${b.dataset.wall}/wall`, { method: "POST", body: { on: b.dataset.on === "1" } }); toast(b.dataset.on === "1" ? "On the wall" : "Taken off the wall"); } catch (e) { toast(e.message); } loadWall(); }));
+  }
+  document.querySelectorAll("#w-f .pill").forEach((b) => (b.onclick = () => { W.f = b.dataset.f; W.page = 1; document.querySelectorAll("#w-f .pill").forEach((x) => x.classList.toggle("on", x === b)); loadWall(); }));
+  $("w-prev").onclick = () => { W.page--; loadWall(); }; $("w-next").onclick = () => { W.page++; loadWall(); };
+  $("w-save").onclick = async () => { await api("/api/admin/settings", { method: "PUT", body: { wall: { on: $("w-on").checked, seconds: $("w-sec").value } } }); toast("Saved"); loadWall(); };
+
   function drawLinks() {
     const B = S.settings.baseUrl.replace(/\/$/, "");
     if ($("l-guest").dataset.base === B) return; $("l-guest").dataset.base = B;
     const row = (name, path, help, abs) => { const u = abs || B + path; return `<div class="link"><div><b>${name}</b><br><code>${esc(u)}</code></div><div class="row"><a class="btn sm" href="${esc(u)}" target="_blank">Open</a><button class="btn sm ghost" data-copy="${esc(u)}">Copy</button></div><div class="help">${help}</div></div>`; };
     $("l-guest").innerHTML = row("Sign-up page", "/register", "What the QR code on the stand opens. Guests fill it once and get their guest code by SMS.") + row("Home page", "/", "The public front page.");
-    $("l-kiosk").innerHTML = row("Kiosk start page", "/kiosk", "Pick the game for this kiosk and name the station.") + row("Scream &amp; Win", "/kiosk/scream", "Open directly on the Scream &amp; Win kiosk.") + row("Roast Me", "/kiosk/roast", "Open directly on the Roast Me kiosk.");
+    $("w-link").innerHTML = row("LED wall", "/wall", "Needs the kiosk PIN the first time. Press F11 for full screen.");
+    $("l-kiosk").innerHTML = row("LED wall (approved roasts)", "/wall", "For the computer feeding the LED wall. Approve roasts on the LED wall tab.") + row("Kiosk start page", "/kiosk", "Pick the game for this kiosk and name the station.") + row("Scream &amp; Win", "/kiosk/scream", "Open directly on the Scream &amp; Win kiosk.") + row("Roast Me", "/kiosk/roast", "Open directly on the Roast Me kiosk.");
     $("l-team").innerHTML = row("This page", "/admin", "Numbers, guests and settings.") + row("Guest list as a spreadsheet", "/api/admin/export.csv", "Downloads every registered guest with phone, consents, best scream, coupons and roasts.")
       + row("Demo copy", "", "A walk-through copy with made-up data. Nothing typed there reaches this server.", "https://hirusha25.github.io/wendyfest/");
     $("l-qr").src = qrUrl(B + "/register");

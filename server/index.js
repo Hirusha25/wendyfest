@@ -26,6 +26,7 @@ const setCookie = (res, name, value, days = 365) => res.append("Set-Cookie", `${
 const screamSettings = () => ({ ...config.scream, ...getSetting("scream", {}) });
 const couponSettings = () => ({ ...config.coupon, ...getSetting("coupon", {}) });
 const roastSettings = () => ({ ...config.roast, ...getSetting("roast", {}) });
+const wallSettings = () => ({ on: true, seconds: 12, ...getSetting("wall", {}) });   // the LED wall: showing or paused, and seconds per roast
 
 const requirePin = (which) => (req, res, next) => {
   const c = cookies(req);
@@ -88,6 +89,7 @@ app.get("/kiosk/scream-cream", (req, res) => res.redirect("/kiosk/scream"));   /
 app.get("/kiosk/scream-dark", (req, res) => res.sendFile(page("kiosk/scream-dark.html")));   // earlier dark design, kept as a spare
 app.get("/kiosk/roast", (req, res) => res.sendFile(page("kiosk/roast.html")));
 app.get("/admin", (req, res) => res.sendFile(page("admin.html")));
+app.get("/wall", (req, res) => res.sendFile(page("wall.html")));   // the LED wall: approved roasts, shuffled
 
 // ---------- config for the front end ----------
 app.get("/api/config", (req, res) => {
@@ -435,8 +437,29 @@ app.get("/api/admin/half", requirePin("admin"), (req, res) => {
   res.json({ rows: rows.map((r) => ({ phone: maskPhone(r.phone), lang: r.lang, sends: r.sends, wrong: r.wrong, first: slTime(r.first_at), last: slTime(r.last_at), waiting: !!r.expires && r.expires > Date.now() })) });
 });
 
+// ----- the LED wall. The wall page asks for this list; only roasts approved on the admin page are in it. Needs the kiosk PIN, like the kiosks.
+const wallRow = (r) => ({ token: r.token, name: String(r.name || "").split(" ")[0], lang: r.lang, title: { en: r.title_en, si: r.title_si, ta: r.title_ta }, roast: { en: r.roast_en, si: r.roast_si, ta: r.roast_ta }, photo: `/api/roast/${r.token}/photo`, keys: roastKeys(r.observations) });
+app.get("/api/wall", requirePin("kiosk"), (req, res) => {
+  const w = wallSettings();
+  const rows = w.on ? db.prepare("SELECT r.*, p.name, p.lang FROM roasts r JOIN participants p ON p.id = r.participant_id WHERE r.wall = 1 AND r.photo_file IS NOT NULL ORDER BY r.wall_at DESC LIMIT 300").all() : [];
+  res.set("Cache-Control", "no-store").json({ on: !!w.on, seconds: w.seconds, roasts: rows.map(wallRow) });
+});
+// The admin page's list of roasts to approve: f = waiting | wall | all. 60 a page, newest first.
+app.get("/api/admin/roasts", requirePin("admin"), (req, res) => {
+  const f = String(req.query.f || "waiting"), per = 60, page = clamp(Number(req.query.page) || 1, 1, 9999), where = f === "wall" ? "r.wall = 1" : f === "all" ? "1=1" : "r.wall = 0";
+  const count = (w) => db.prepare(`SELECT COUNT(*) n FROM roasts r WHERE ${w} AND r.photo_file IS NOT NULL`).get().n;
+  const rows = db.prepare(`SELECT r.*, p.name, p.lang, p.code FROM roasts r JOIN participants p ON p.id = r.participant_id WHERE ${where} AND r.photo_file IS NOT NULL ORDER BY r.id DESC LIMIT ${per} OFFSET ${(page - 1) * per}`).all();
+  res.json({ total: count(where), waiting: count("r.wall = 0"), onWall: count("r.wall = 1"), page, per, wall: wallSettings(),
+    rows: rows.map((r) => ({ ...wallRow(r), fullName: r.name, code: r.code, at: slTime(r.created_at), onWall: !!r.wall, fallback: !!r.fallback, test: config.demoCodes.includes(r.code) })) });
+});
+app.post("/api/admin/roasts/:token/wall", requirePin("admin"), (req, res) => {
+  const on = req.body?.on ? 1 : 0, done = db.prepare("UPDATE roasts SET wall = ?, wall_at = CASE WHEN ? = 1 THEN datetime('now') ELSE NULL END WHERE token = ?").run(on, on, String(req.params.token || ""));
+  res.status(done.changes ? 200 : 404).json({ ok: !!done.changes, onWall: !!on });
+});
+
 app.put("/api/admin/settings", requirePin("admin"), (req, res) => {
-  const { scream, coupon, roast } = req.body || {};
+  const { scream, coupon, roast, wall } = req.body || {};
+  if (wall) setSetting("wall", { on: !!wall.on, seconds: clamp(Number(wall.seconds) || 12, 5, 120) });
   if (scream) setSetting("scream", { ...getSetting("scream", {}), ...Object.fromEntries(Object.entries(scream).map(([k, v]) => [k, Number(v)])) });
   if (coupon) setSetting("coupon", { ...getSetting("coupon", {}), ...coupon });
   if (roast) setSetting("roast", { ...getSetting("roast", {}), ...Object.fromEntries(Object.entries(roast).map(([k, v]) => [k, Number(v)])) });

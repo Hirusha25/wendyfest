@@ -78,14 +78,14 @@ export function templates(lang) {
     si: {
       otp: (code) => `${code} ඔබේ Wendy Fest කේතයයි. මිනිත්තු 2කින් කල් ඉකුත් වේ. කිසිවෙකුට දෙන්න එපා.`,
       welcome: (name, code, link) => `${name}, Wendy Fest වෙත සාදරයෙන් පිළිගනිමු! ඔබේ කේතය ${code}. Scream & Win / Roast Me කියෝස්ක් එකේදී පෙන්වන්න. ${link}`,
-      win: (name, coupon, label, link) => `${name}, ඔබ දිනුම්! Wendy's ත්‍යාග කේතය: ${coupon} (${label}). One Galle Face (OGF) 5 වන මහලේ Wendy's counter එකේදී මෙම කේතය පෙන්වන්න. ${link}`,
+      win: (name, coupon, label, link) => `${name}, ඔබ දිනුම්! Wendy's ත්‍යාග කේතය: ${coupon} (${label}). Show this code at the Wendy's counter, 5th floor, One Galle Face (OGF). ${link}`,
       lose: (name, link) => `${name}, ආසන්නයි! මේ පාර ටිකක් අඩුයි. ${link}`,
       roast: (name, link) => `${name}, Wendy's ඔබව roast කළා. බලන්න, බාගන්න, බෙදාගන්න: ${link}`,
     },
     ta: {
       otp: (code) => `${code} உங்கள் Wendy Fest குறியீடு. 2 நிமிடத்தில் காலாவதியாகும். யாருடனும் பகிர வேண்டாம்.`,
       welcome: (name, code, link) => `${name}, Wendy Fest-க்கு வரவேற்கிறோம்! உங்கள் குறியீடு ${code}. Scream & Win / Roast Me கியோஸ்கில் காட்டுங்கள். ${link}`,
-      win: (name, coupon, label, link) => `${name}, நீங்கள் வென்றீர்கள்! Wendy's பரிசு குறியீடு: ${coupon} (${label}). One Galle Face (OGF) 5வது மாடியில் உள்ள Wendy's counter-ல் இந்தக் குறியீட்டைக் காட்டுங்கள். ${link}`,
+      win: (name, coupon, label, link) => `${name}, நீங்கள் வென்றீர்கள்! Wendy's பரிசு குறியீடு: ${coupon} (${label}). Show this code at the Wendy's counter, 5th floor, One Galle Face (OGF). ${link}`,
       lose: (name, link) => `${name}, கிட்டத்தட்ட! இந்த முறை சற்று குறைவு. ${link}`,
       roast: (name, link) => `${name}, Wendy's உங்களை roast செய்தது. பாருங்கள், சேமியுங்கள், பகிருங்கள்: ${link}`,
     },

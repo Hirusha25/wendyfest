@@ -92,6 +92,8 @@
   /* Backdrop pictures supplied by the owner (public/assets/wall-bg/): the picture fills the window and the cut-out guest stands on it with a soft glow. */
   .win .bk { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; }
   .win.bg-img .ph { filter: drop-shadow(0 0 .3em rgba(255,214,160,.9)) drop-shadow(0 0 1.3em rgba(255,110,40,.55)) drop-shadow(0 .5em .8em rgba(0,0,0,.4)); }
+  .win.bk-red .ph { filter: drop-shadow(0 0 .3em rgba(255,255,255,.95)) drop-shadow(0 0 1.3em rgba(120,200,255,.7)) drop-shadow(0 .5em .8em rgba(0,0,30,.45)); }   /* camera flashes: a cool white rim, as if lit by the flashes */
+  .win.bk-cream .ph { filter: drop-shadow(0 0 .3em rgba(255,236,200,.95)) drop-shadow(0 0 1.2em rgba(120,0,10,.55)) drop-shadow(0 .5em .8em rgba(60,0,8,.4)); }   /* red bolt: a warm rim and a deep red shadow */
   .win.bk-blue .ph { filter: drop-shadow(.22em .18em 0 #18A6E8) drop-shadow(0 0 .12em rgba(0,0,0,.9)) drop-shadow(0 .5em .7em rgba(0,0,0,.3)); }   /* the comic burst: a blue offset shadow and a thin dark edge, like the burst's own outline */
   .win.bg-a { background: radial-gradient(90% 70% at 50% 34%, #4A4242 0%, #262121 46%, #0C0A0A 100%); }
   .win.bg-a::before { background: radial-gradient(circle, #E3202B .16em, transparent .19em) 0 0 / .8em .8em; -webkit-mask: radial-gradient(70% 55% at 100% 100%, #000 0, transparent 75%), radial-gradient(60% 45% at 0 0, #000 0, transparent 75%); mask: radial-gradient(70% 55% at 100% 100%, #000 0, transparent 75%), radial-gradient(60% 45% at 0 0, #000 0, transparent 75%); opacity: .85; }
@@ -176,7 +178,7 @@
   // FOCUS holds where the head is (found by the same cut-out engine as the roast card). Without it the photo is simply centred, a little above the middle.
   // Backdrop pictures by card colour (files in public/assets/wall-bg/). When a card colour has one, the guest is cut out of their photo and placed on it;
   // with several, each roast keeps the same one. A card colour with no picture shows the photo as it was taken.
-  const BACKS = { dark: ["black.jpg"], blue: ["blue.jpg"], red: [], paper: [] }, HAS_BACKS = Object.values(BACKS).some((a) => a.length);
+  const BACKS = { dark: ["black.jpg"], blue: ["blue.jpg"], red: ["red.jpg"], paper: ["cream.jpg"] }, HAS_BACKS = Object.values(BACKS).some((a) => a.length);
   const backFor = (theme, token) => { const a = BACKS[theme] || []; if (!a.length) return ""; let h = 0; for (const ch of String(token)) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return a[h % a.length]; };
   const FOCUS = new Map(), CUTS = new Map(), BG = (new URLSearchParams(location.search).get("bg") || "").toLowerCase();   // ?bg=a|b|c: cut the guest out and use that backdrop
   function frame(el, r) {

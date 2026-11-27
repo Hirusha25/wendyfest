@@ -93,14 +93,21 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
 #s-code .msg { left:calc(57 * var(--u)); width:calc(666 * var(--u)); top:calc(414 * var(--u)); text-align:center; font:700 calc(21 * var(--u))/1.3 Poppins, sans-serif; color:var(--red); min-height:0; }
 #s-code .ask { left:calc(57 * var(--u)); width:calc(666 * var(--u)); top:calc(492 * var(--u)); font:500 calc(27 * var(--u))/1 Poppins, sans-serif; color:#1F1A1A; gap:calc(52 * var(--u)); }
 #s-code .ask::before, #s-code .ask::after { width:calc(62 * var(--u)); }
-.kbd { position:absolute; left:calc(787 * var(--u)); top:calc(49 * var(--u)); width:calc(613 * var(--u)); display:grid; gap:calc(13 * var(--u)); }
+.kbd { position:absolute; left:calc(787 * var(--u)); top:calc(49 * var(--u)); width:calc(613 * var(--u)); display:grid; gap:calc(11 * var(--u)); grid-auto-rows:calc(72 * var(--u)); }
+/* one kind of key at a time: numbers (3 across, 0 under the 8), then letters (6 across); numbers are cream, letters red */
+.kbd[data-mode="num"] { grid-template-columns:repeat(3, 1fr); } .kbd[data-mode="let"] { grid-template-columns:repeat(6, 1fr); }
+.kbd[data-mode="num"] button.l, .kbd[data-mode="let"] button.n { display:none; } .kbd button.z { grid-column:2; }
+.kbd button.n { background:linear-gradient(180deg, #FFFBF3, #EADFCB); color:#D8232D; box-shadow:0 calc(5 * var(--u)) 0 #B5A88F !important; }
+.boxes .dash { align-self:center; font:900 calc(60 * var(--u))/1 Poppins, sans-serif; color:#F6F0E6; }
+#code-del { left:calc(787 * var(--u)); top:calc(393 * var(--u)); width:calc(176 * var(--u)); height:calc(100 * var(--u)); font-size:calc(25 * var(--u)); justify-content:center; padding:0; background:linear-gradient(180deg, #3A3434, #141111) !important; box-shadow:0 calc(8 * var(--u)) 0 #000 !important; } #code-del::after { display:none; }
+.kbd button { font-size:calc(34 * var(--u)); }
 .kbd .krow { display:flex; gap:calc(5 * var(--u)); height:calc(60 * var(--u)); }
 .kbd .krow.r2 { padding:0 calc(22 * var(--u)) 0 calc(33 * var(--u)); }
 .kbd button { flex:1; min-width:0; height:100%; padding:0; border:0; border-radius:calc(9 * var(--u)); background:linear-gradient(180deg, #D8262F, #B91D25); color:#fff; font:700 calc(27 * var(--u))/1 Poppins, sans-serif; box-shadow:0 calc(4 * var(--u)) 0 #8E141B, inset 0 calc(1.5 * var(--u)) 0 rgba(255,255,255,.28); cursor:pointer; display:grid; place-items:center; }
 .kbd button:active { transform:translateY(calc(3 * var(--u))); box-shadow:0 calc(1 * var(--u)) 0 #8E141B; }
 .kbd button svg { width:calc(34 * var(--u)); height:calc(34 * var(--u)); }
 .kbd .shift { flex:0 0 calc(81 * var(--u)); } .kbd .bksp { flex:0 0 calc(73 * var(--u)); } .kbd .num { flex:0 0 calc(124 * var(--u)); font-size:calc(24 * var(--u)); } .kbd .space { font-size:calc(24 * var(--u)); letter-spacing:.12em; }
-#code-go { left:calc(820 * var(--u)); top:calc(393 * var(--u)); width:calc(543 * var(--u)); height:calc(100 * var(--u)); }
+#code-go { left:calc(978 * var(--u)); top:calc(393 * var(--u)); width:calc(422 * var(--u)); height:calc(100 * var(--u)); font-size:calc(34 * var(--u)); }
 /* mic check */
 #s-ready .box { height:calc(490 * var(--u)); }
 #s-ready .sub2 { top:calc(137 * var(--u)); font:600 calc(34 * var(--u))/1 Poppins, sans-serif; color:#1F1A1A; }
@@ -495,20 +502,23 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   #s-code .box { height:calc(1640 * var(--u)) !important; }
   #s-code .box > .abs:first-child { left:0 !important; top:calc(40 * var(--u)) !important; width:calc(1080 * var(--u)) !important; text-align:center !important; }
   #s-code .sub2 { left:0 !important; width:calc(1080 * var(--u)) !important; top:calc(236 * var(--u)) !important; font-size:calc(44 * var(--u)) !important; }
-  .boxes { left:calc(32 * var(--u)) !important; top:calc(410 * var(--u)) !important; gap:calc(16 * var(--u)) !important; }
+  .boxes { left:0 !important; width:calc(1080 * var(--u)) !important; justify-content:center !important; top:calc(410 * var(--u)) !important; gap:calc(16 * var(--u)) !important; }
+  .boxes .dash { font-size:calc(90 * var(--u)) !important; }
   .boxes i { width:calc(156 * var(--u)) !important; height:calc(200 * var(--u)) !important; font-size:calc(120 * var(--u)) !important; border-radius:calc(18 * var(--u)) !important; border-width:calc(4 * var(--u)) !important; }
   .boxes i.cur:empty::after { height:calc(100 * var(--u)) !important; width:calc(6 * var(--u)) !important; }
   #s-code .msg { left:0 !important; width:calc(1080 * var(--u)) !important; top:calc(634 * var(--u)) !important; font-size:calc(32 * var(--u)) !important; }
-  .kbd { left:calc(30 * var(--u)) !important; top:calc(700 * var(--u)) !important; width:calc(1020 * var(--u)) !important; gap:calc(18 * var(--u)) !important; }
+  .kbd { left:calc(30 * var(--u)) !important; top:calc(690 * var(--u)) !important; width:calc(1020 * var(--u)) !important; gap:calc(14 * var(--u)) !important; grid-auto-rows:calc(136 * var(--u)) !important; }
+  .kbd button.n { box-shadow:0 calc(8 * var(--u)) 0 #B5A88F !important; }
   .kbd .krow { height:calc(128 * var(--u)) !important; gap:calc(9 * var(--u)) !important; }
   .kbd .krow.r2 { padding:0 calc(52 * var(--u)) !important; }
-  .kbd button { font-size:calc(54 * var(--u)) !important; border-radius:calc(16 * var(--u)) !important; }
+  .kbd button { font-size:calc(64 * var(--u)) !important; border-radius:calc(16 * var(--u)) !important; }
   .kbd button svg { width:calc(60 * var(--u)) !important; height:calc(60 * var(--u)) !important; }
   .kbd .shift { flex:0 0 calc(146 * var(--u)) !important; }
   .kbd .bksp { flex:0 0 calc(146 * var(--u)) !important; }
   .kbd .num { flex:0 0 calc(220 * var(--u)) !important; font-size:calc(42 * var(--u)) !important; }
   .kbd .space { font-size:calc(42 * var(--u)) !important; }
-  #code-go { left:calc(90 * var(--u)) !important; top:calc(1334 * var(--u)) !important; width:calc(900 * var(--u)) !important; height:calc(156 * var(--u)) !important; }
+  #code-go { left:calc(380 * var(--u)) !important; top:calc(1300 * var(--u)) !important; width:calc(670 * var(--u)) !important; height:calc(150 * var(--u)) !important; }
+  #code-del { left:calc(30 * var(--u)) !important; top:calc(1300 * var(--u)) !important; width:calc(330 * var(--u)) !important; height:calc(150 * var(--u)) !important; font-size:calc(40 * var(--u)) !important; }
   #s-code .ask { left:0 !important; width:calc(1080 * var(--u)) !important; top:calc(1556 * var(--u)) !important; font-size:calc(38 * var(--u)) !important; }
   #s-ready .box { height:calc(1560 * var(--u)) !important; }
   #s-ready .crow:first-child { top:calc(40 * var(--u)) !important; line-height:.9 !important; text-align:center !important; }
@@ -633,12 +643,13 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   <!-- CODE -->
   <section class="screen bx" id="s-code"><div class="box">
     <div class="abs" style="left:calc(57 * var(--u));top:calc(57 * var(--u))"><span class="t" data-fit="662" data-fs="94" data-pfit="1010" data-pfs="150">Let’s hear you.</span></div>
-    <div class="abs sub2">Enter your 6-character guest code<br>to start the experience.</div>
+    <div class="abs sub2">Enter your guest code.<br><span id="code-hint">First, your 3 numbers.</span></div>
     <input id="code" autocomplete="off" aria-label="Guest code">
-    <div class="boxes" id="boxes"><i class="cur"></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="boxes" id="boxes"><i class="cur"></i><i></i><i></i><b class="dash">–</b><i></i><i></i></div>
     <div class="abs msg" id="code-msg"></div>
     <div class="abs ask lined">Ask your host for help.</div>
     <div class="kbd" id="kbd"></div>
+    <button class="btn ink" id="code-del">← Delete</button>
     <button class="btn" id="code-go">Continue</button>
   </div></section>
 
@@ -933,7 +944,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   function sayPreset(kind, delay) { let i; do { i = 1 + Math.floor(Math.random() * 6); } while (i === lastPreset[kind]); lastPreset[kind] = i; saySass($(`vo-${kind}-${i}`), delay); }
   // a tap sound on every button outside the keypad (keypad keys have their own)
   // each kind of button has its own sound: Next player drops a coin, the big action buttons power up, small option buttons flick, the rest tap
-  document.addEventListener("pointerdown", (e) => { const b = e.target.closest && e.target.closest("button"); if (!b || b.disabled || b.closest("#kbd")) return;
+  document.addEventListener("pointerdown", (e) => { const b = e.target.closest && e.target.closest("button"); if (!b || b.disabled || b.closest("#kbd") || b.id === "code-del") return;
     if (b.closest("#s-result")) SFX.coin(); else if (b.classList.contains("btn")) SFX.start(); else if (b.closest(".rtabs, .seg, .pillx, select")) SFX.flick(); else SFX.tap(); }, true);
   $("sfx-mode").value = localStorage.getItem("wf_sfx") || "on"; $("sfx-mode").onchange = () => { localStorage.setItem("wf_sfx", $("sfx-mode").value); SFX.click(); };
   addEventListener("pointerdown", SFX.unlock, { once: true }); addEventListener("keydown", SFX.unlock, { once: true });
@@ -1011,7 +1022,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   let countPct = 0;
   // "Hold it": how long the voice stays above the line in one go (shown on the upright layout; it does not change the score)
   const HOLD_LINE = 38, HOLD_FULL = 8, HW_N = 8; let holdRun = 0, holdBest = 0, holdGap = 0, holdLast = 0;
-  const holdKey = () => "wf_hold_" + new Date().toISOString().slice(0, 10), holdDay = () => { try { return +(localStorage.getItem(holdKey()) || 0); } catch { return 0; } };
+  const holdKey = () => "wf_hold_" + new Date(Date.now() + 330 * 60000).toISOString().slice(0, 10),   /* the day is the Sri Lanka day */ holdDay = () => { try { return +(localStorage.getItem(holdKey()) || 0); } catch { return 0; } };
   $("hw-y").innerHTML = "<i>Y</i>".repeat(HW_N);
   function paintHold() { const s = Math.max(holdRun, 0); $("hold-s").textContent = s.toFixed(1); $("hold-bar").style.width = Math.min(100, s / HOLD_FULL * 100) + "%"; const n = Math.round(Math.min(1, s / HOLD_FULL) * HW_N); [...$("hw-y").children].forEach((el, i) => el.classList.toggle("f", i < n)); $("hold-best").textContent = Math.max(holdDay(), holdBest).toFixed(1); }
   function setBeat(n) { [...$("beats").children].forEach((el) => { const b = +el.dataset.b; el.classList.toggle("on", b === n); el.classList.toggle("done", b < n); }); }
@@ -1104,33 +1115,30 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
 
   // ---------- code entry ----------
   const codeEl = $("code");
-  const SVG_SHIFT = '<svg viewBox="0 0 24 24" fill="#fff"><path d="M12 3 21 13h-5v8H8v-8H3z"/></svg>';
-  const SVG_BKSP = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M21 5H9l-6.5 7L9 19h12z"/><path d="M12.5 9.5l5 5M17.5 9.5l-5 5"/></svg>';
-  const typeKey = (k) => { if (codeEl.value.length < 6) { codeEl.value += k; paintBoxes(); } K.resetIdle(60000, goIdle); };
-  const krow = (cls) => { const r = document.createElement("div"); r.className = "krow " + cls; $("kbd").appendChild(r); return r; };
-  const key = (r, label, fn, cls = "") => { const b = document.createElement("button"); b.className = cls; b.innerHTML = label; b.onclick = (e) => { cls === "bksp" ? SFX.bksp() : SFX.click(); fn(e); }; r.appendChild(b); return b; };
-  const r1 = krow("r1"), r2 = krow("r2"), r3 = krow("r3"), r4 = krow("r4");
-  const r1keys = [..."QWERTYUIOP"].map((k) => key(r1, k, (e) => typeKey(e.currentTarget.textContent)));
-  [..."ASDFGHJKL"].forEach((k) => key(r2, k, () => typeKey(k)));
-  key(r3, SVG_SHIFT, () => {}, "shift");
-  [..."ZXCVBNM"].forEach((k) => key(r3, k, () => typeKey(k)));
-  key(r3, SVG_BKSP, () => { codeEl.value = codeEl.value.slice(0, -1); paintBoxes(); }, "bksp");
-  let numMode = false;
-  const numKey = key(r4, "123", () => { numMode = !numMode; numKey.textContent = numMode ? "ABC" : "123"; const set = numMode ? "1234567890" : "QWERTYUIOP"; r1keys.forEach((b, i) => { b.textContent = set[i]; }); }, "num");
-  key(r4, "SPACE", () => {}, "space");
+  // Guest code: 3 numbers then 2 letters (for example 482 KT). The pad shows numbers first and switches to letters by itself; Delete sits beside Continue.
+  const CODE_LETTERS = "ABCDEFGHJKLMNPQRSTUVWXYZ", CODE_LEN = 5;   // no I or O: they look like 1 and 0
+  const codeClean = (raw) => { let out = ""; for (const c of String(raw || "").toUpperCase()) { if (out.length >= CODE_LEN) break; if (out.length < 3 ? /\d/.test(c) : CODE_LETTERS.includes(c)) out += c; } return out; };
+  const typeKey = (k) => { codeEl.value = codeClean(codeEl.value + k); paintBoxes(); K.resetIdle(60000, goIdle); };
+  for (const k of "1234567890" + CODE_LETTERS) { const b = document.createElement("button"); b.textContent = k; b.className = /\d/.test(k) ? (k === "0" ? "n z" : "n") : "l"; b.onclick = () => { SFX.click(); typeKey(k); }; $("kbd").appendChild(b); }
+  $("code-del").onclick = () => { SFX.bksp(); codeEl.value = codeEl.value.slice(0, -1); paintBoxes(); K.resetIdle(60000, goIdle); };
   let lastLen = 0;
-  function paintBoxes() { const v = codeEl.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6); if (v.length === 6 && paintBoxes.n !== 6) SFX.ding(); paintBoxes.n = v.length;   /* a ding when the last box is filled */ if (codeEl.value !== v) codeEl.value = v; [...$("boxes").children].forEach((b, i) => { b.textContent = v[i] || ""; b.classList.toggle("cur", i === v.length); b.classList.remove("err"); if (i === v.length - 1 && v.length > lastLen) { b.classList.remove("pop"); void b.offsetWidth; b.classList.add("pop"); } }); lastLen = v.length; }
+  function paintBoxes() { const v = codeClean(codeEl.value); if (v.length === CODE_LEN && paintBoxes.n !== CODE_LEN) SFX.ding(); paintBoxes.n = v.length;   /* a ding when the last box is filled */
+    if (codeEl.value !== v) codeEl.value = v; $("kbd").dataset.mode = v.length < 3 ? "num" : "let"; $("code-hint").textContent = v.length < 3 ? "First, your 3 numbers." : "Now your 2 letters.";
+    [...$("boxes").querySelectorAll("i")].forEach((b, i) => { b.textContent = v[i] || ""; b.classList.toggle("cur", i === v.length); b.classList.remove("err"); if (i === v.length - 1 && v.length > lastLen) { b.classList.remove("pop"); void b.offsetWidth; b.classList.add("pop"); } }); lastLen = v.length; }
   codeEl.addEventListener("input", paintBoxes); codeEl.addEventListener("keydown", (e) => e.key === "Enter" && lookup(codeEl.value));
   $("code-go").onclick = () => lookup(codeEl.value);
+  paintBoxes();   // sets the pad to numbers before the first guest arrives
   async function lookup(code) {
     $("code-msg").textContent = "Looking up…";
+    if (Date.now() < lookup.lockUntil) { $("code-msg").textContent = "Too many wrong codes. Please wait a moment, or ask our crew."; shakeBoxes(); return; }
     try {
-      guest = await K.api("/api/kiosk/lookup", { code });
+      guest = await K.api("/api/kiosk/lookup", { code }); lookup.bad = 0;
       if (guest.screamsLeft <= 0) { $("code-msg").textContent = `${guest.firstName} has already used their attempt${guest.alreadyWon ? " (and won!)" : ""}.`; shakeBoxes(); return; }
       $("r-name").textContent = guest.firstName; mode = "ready"; $("mic-pill").classList.remove("heard-ok"); K.show("s-ready"); if (await startAudio()) { $("mic-status").textContent = "Mic connected · say “Hello”"; SFX.mic(); } resetVoiceCheck(); K.resetIdle(90000, goIdle);
-    } catch (e) { $("code-msg").textContent = e.message; shakeBoxes(); }
+    } catch (e) { $("code-msg").textContent = e.message; shakeBoxes(); lookup.bad = (lookup.bad || 0) + 1;
+      if (lookup.bad >= 3) { lookup.bad = 0; lookup.lockUntil = Date.now() + 30000; $("code-msg").textContent = "Too many wrong codes. Try again in 30 seconds, or ask our crew."; } }   // three wrong codes lock the pad for half a minute
   }
-  function shakeBoxes() { SFX.error(); [...$("boxes").children].forEach((b) => { b.classList.add("err"); setTimeout(() => b.classList.remove("err"), 500); }); }
+  function shakeBoxes() { SFX.error(); [...$("boxes").querySelectorAll("i")].forEach((b) => { b.classList.add("err"); setTimeout(() => b.classList.remove("err"), 500); }); }
 
   // ---------- flow ----------
   function goIdle() { missRetries = 0; winTimers.forEach(clearTimeout); stopSass(); K.resetIdle(0); stopRecog(); windowOpen = false; guest = null; codeEl.value = ""; paintBoxes(); $("code-msg").textContent = ""; mode = "idle"; document.querySelectorAll(".confetti").forEach((c) => c.remove()); K.show("s-idle"); }

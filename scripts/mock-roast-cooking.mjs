@@ -33,7 +33,7 @@ try {
   for (const [k, o] of Object.entries(OPTS)) {
     const ctx = await browser.newContext({ viewport: { width: 1080, height: 1920 }, permissions: ["camera", "microphone"] }); const p = await ctx.newPage(); const errors = []; p.on("pageerror", (e) => errors.push(e.message));
     await p.goto(`${site.base}/kiosk/roast.html`); await p.waitForTimeout(800); await p.evaluate(() => { document.cookie = "wf_kiosk=2468; path=/"; }); await p.reload(); await p.waitForTimeout(1500);
-    await p.click("#start"); await on(p, "s-code"); for (const ch of "WENDYS") await p.locator("#kb button").filter({ hasText: new RegExp(`^${ch}$`) }).first().click();
+    await p.click("#start"); await on(p, "s-code"); for (const ch of "123AB") await p.locator("#kb button").filter({ hasText: new RegExp(`^${ch}$`) }).first().click();
     await p.click("#code-go"); await on(p, "s-consent"); await p.click("#agree"); await on(p, "s-cam"); await p.waitForTimeout(2500);
     if (k === "base") await p.screenshot({ path: path.join(out, "cam-chips.png"), clip: { x: 40, y: 330, width: 1000, height: 330 } });
     await p.click("#snap"); await on(p, "s-cooking"); await p.waitForTimeout(1500);

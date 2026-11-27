@@ -70,6 +70,8 @@ CREATE TABLE IF NOT EXISTS settings (
 
 // Added later: what the kiosk's speech check reported for this scream (JSON), so a "no words heard" can be explained afterwards.
 if (!db.prepare("PRAGMA table_info(scream_attempts)").all().some((c) => c.name === "speech")) db.exec("ALTER TABLE scream_attempts ADD COLUMN speech TEXT");
+// what the guest ticked when registering: the terms and privacy statement, and photo + voice at the games (both required), with the time
+for (const c of ["consent_terms", "consent_media"]) if (!db.prepare("PRAGMA table_info(participants)").all().some((x) => x.name === c)) db.exec(`ALTER TABLE participants ADD COLUMN ${c} INTEGER NOT NULL DEFAULT 0`);
 // the card colour the guest picked on the roast screen (paper = beige, blue, dark = black, red)
 if (!db.prepare("PRAGMA table_info(roasts)").all().some((c) => c.name === "card_theme")) db.exec("ALTER TABLE roasts ADD COLUMN card_theme TEXT");
 

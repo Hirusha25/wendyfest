@@ -125,7 +125,7 @@ try {
     if (want.length && !want.includes(k)) continue;
     const ctx = await browser.newContext({ viewport: { width: 1080, height: 1920 }, permissions: ["microphone"] }); const p = await ctx.newPage(); const errors = []; p.on("pageerror", (e) => errors.push(e.message));
     await p.goto(`${site.base}/kiosk/scream.html`); await p.waitForTimeout(800); await p.evaluate(() => { document.cookie = "wf_kiosk=2468; path=/"; }); await p.reload(); await p.waitForTimeout(1500);
-    await p.click("#start"); await on(p, "s-code"); for (const ch of "WENDYS") await p.locator("#kbd button").filter({ hasText: new RegExp(`^${ch}$`) }).first().click();
+    await p.click("#start"); await on(p, "s-code"); for (const ch of "123AB") await p.locator("#kbd button").filter({ hasText: new RegExp(`^${ch}$`) }).first().click();
     await p.click("#code-go"); await on(p, "s-ready"); await p.waitForTimeout(1200);
     await p.addStyleTag({ content: o.css + BARCSS });
     await p.evaluate(() => { const t = document.querySelector("#go-count .t"); if (document.querySelector("#go-count .t .rd") || !window.__two) return; });

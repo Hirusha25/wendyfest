@@ -16,6 +16,10 @@ if (fs.existsSync(envFile)) {
   }
 }
 
+// The event runs on Sri Lanka time. Stored times stay in UTC; this makes the server's own clock (logs, any local date) Sri Lanka time too,
+// wherever the machine is.
+if (!process.env.TZ) process.env.TZ = "Asia/Colombo";
+
 const env = (k, d) => (process.env[k] === undefined || process.env[k] === "" ? d : process.env[k]);
 
 export const config = {

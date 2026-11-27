@@ -50,20 +50,23 @@ rule(".idle canvas.wave", "left:0; width:1080u; height:250u; pointer-events:none
 rule("#s-code .box", "height:1640u")
 rule("#s-code .box > .abs:first-child", "left:0; top:40u; width:1080u; text-align:center")
 rule("#s-code .sub2", "left:0; width:1080u; top:236u; font-size:44u")
-rule(".boxes", "left:32u; top:410u; gap:16u")
+rule(".boxes", "left:0; width:1080u; justify-content:center; top:410u; gap:16u")   # five boxes and a dash, centred
+rule(".boxes .dash", "font-size:90u")
 rule(".boxes i", "width:156u; height:200u; font-size:120u; border-radius:18u; border-width:4u")
 rule(".boxes i.cur:empty::after", "height:100u; width:6u")
 rule("#s-code .msg", "left:0; width:1080u; top:634u; font-size:32u")
-rule(".kbd", "left:30u; top:700u; width:1020u; gap:18u")
+rule(".kbd", "left:30u; top:690u; width:1020u; gap:14u; grid-auto-rows:136u")   # the two-step pad: numbers, then letters
+rule(".kbd button.n", "box-shadow:0 8u 0 #B5A88F")
 rule(".kbd .krow", "height:128u; gap:9u")
 rule(".kbd .krow.r2", "padding:0 52u")
-rule(".kbd button", "font-size:54u; border-radius:16u")
+rule(".kbd button", "font-size:64u; border-radius:16u")
 rule(".kbd button svg", "width:60u; height:60u")
 rule(".kbd .shift", "flex:0 0 146u")
 rule(".kbd .bksp", "flex:0 0 146u")
 rule(".kbd .num", "flex:0 0 220u; font-size:42u")
 rule(".kbd .space", "font-size:42u")
-rule("#code-go", "left:90u; top:1334u; width:900u; height:156u")
+rule("#code-go", "left:380u; top:1300u; width:670u; height:150u")
+rule("#code-del", "left:30u; top:1300u; width:330u; height:150u; font-size:40u")   # Delete sits beside Continue, not in the pad (owner)
 rule("#s-code .ask", "left:0; width:1080u; top:1556u; font-size:38u")
 
 # 3 mic check

@@ -128,7 +128,8 @@
   .cv .k-input::placeholder { color:#D6CFCB; }
   /* code screen: slots above the keypad, solid 3D keys (charcoal letters, blue numbers) */
   .cv #code { left:-9999px; top:0; opacity:0; pointer-events:none; }
-  .cv .slots { display:grid; grid-template-columns:repeat(6, 1fr); gap:calc(12 * var(--p)); width:calc(747 * var(--p)); }
+  .cv .slots .dash { align-self:center; justify-self:center; font:900 calc(54 * var(--p))/1 Poppins, sans-serif; color:#fff; }
+  .cv .slots { display:grid; grid-template-columns:repeat(3, 1fr) calc(40 * var(--p)) repeat(2, 1fr); gap:calc(12 * var(--p)); width:calc(747 * var(--p)); }
   .cv .slots b { height:calc(100 * var(--p)); border-radius:calc(10 * var(--p)); background:#fff; color:#1E1B1B; display:grid; place-items:center; font:italic 900 calc(64 * var(--p))/1 Poppins, sans-serif; box-shadow:0 calc(8 * var(--p)) 0 #7E1016, 0 calc(18 * var(--p)) calc(30 * var(--p)) rgba(60,0,8,.35); box-sizing:border-box; }
   .cv .slots b.e::after { content:""; width:calc(34 * var(--p)); height:calc(8 * var(--p)); border-radius:calc(4 * var(--p)); background:#DCD5D1; }
   .cv .slots b.a { border:calc(6 * var(--p)) solid #1E1B1B; } .cv .slots b.a::after { width:calc(6 * var(--p)); height:calc(54 * var(--p)); background:#1E1B1B; animation:car 1s steps(2) infinite; }
@@ -136,6 +137,9 @@
   .cv .slots.err { animation:shk .4s; } @keyframes shk { 20%, 60% { transform:translateX(calc(-12 * var(--p))); } 40%, 80% { transform:translateX(calc(12 * var(--p))); } }
   .cv .cnt { width:calc(267 * var(--p)); text-align:right; font:italic 800 calc(22 * var(--p))/1 Poppins, sans-serif; letter-spacing:.14em; text-transform:uppercase; color:#fff; }
   .cv .msg.onred { color:#fff; font:700 calc(18 * var(--p))/1.2 Poppins, sans-serif; }
+  /* the pad shows one kind of key at a time: numbers (3 across, 0 in the middle of the last row), then letters (6 across) */
+  .cv .kb[data-mode="num"] button.l, .cv .kb[data-mode="let"] button.n { display:none; }
+  .cv .kb[data-mode="num"] { grid-template-columns:repeat(3, 1fr); } .cv .kb[data-mode="let"] { grid-template-columns:repeat(6, 1fr); } .cv .kb button.z { grid-column:2; }
   .cv .kb { display:grid; grid-template-columns:repeat(8, 1fr); gap:calc(18 * var(--p)) calc(12 * var(--p)); width:calc(747 * var(--p)); }
   .cv .kb button, .cv .act .del { border:0; padding:0; border-radius:calc(12 * var(--p)); color:#fff; cursor:pointer; background:linear-gradient(180deg, #403939 0%, #1E1B1B 100%); box-shadow:0 calc(6 * var(--p)) 0 #0A0909, 0 calc(12 * var(--p)) calc(16 * var(--p)) rgba(60,0,8,.3), inset 0 calc(2 * var(--p)) 0 rgba(255,255,255,.16); transition:transform .06s; }
   .cv .kb button { height:calc(78 * var(--p)); font:italic 900 calc(38 * var(--p))/1 Poppins, sans-serif; }
@@ -417,8 +421,8 @@
     #s-code .slots { left:calc(60 * var(--p)) !important; top:calc(1012 * var(--p)) !important; width:calc(960 * var(--p)) !important; gap:calc(14 * var(--p)) !important; }
     #s-code .slots b { height:calc(112 * var(--p)) !important; font-size:calc(72 * var(--p)) !important; }
     #s-code .msg { left:calc(60 * var(--p)) !important; top:calc(1136 * var(--p)) !important; width:calc(960 * var(--p)) !important; font-size:calc(22 * var(--p)) !important; }
-    #s-code .kb { left:calc(60 * var(--p)) !important; top:calc(1178 * var(--p)) !important; width:calc(960 * var(--p)) !important; gap:calc(20 * var(--p)) calc(14 * var(--p)) !important; }
-    #s-code .kb button { height:calc(100 * var(--p)) !important; font-size:calc(46 * var(--p)) !important; }
+    #s-code .kb { left:calc(60 * var(--p)) !important; top:calc(1178 * var(--p)) !important; width:calc(960 * var(--p)) !important; gap:calc(18 * var(--p)) calc(14 * var(--p)) !important; }
+    #s-code .kb button { height:calc(110 * var(--p)) !important; font-size:calc(58 * var(--p)) !important; margin-top:0 !important; }
     #s-code .act { left:calc(60 * var(--p)) !important; top:calc(1690 * var(--p)) !important; width:calc(960 * var(--p)) !important; height:calc(130 * var(--p)) !important; grid-template-columns:calc(320 * var(--p)) 1fr !important; }
     #s-code .act button { font-size:calc(34 * var(--p)) !important; }
     #s-code .act .go.ready { font-size:calc(60 * var(--p)) !important; }
@@ -584,12 +588,12 @@
   <section class="screen cv" id="s-code"><div class="s">
     <div class="eb" style="left:calc(125 * var(--p));top:calc(230 * var(--p))">Guest code</div>
     <div class="t3" style="left:calc(112 * var(--p));top:calc(280 * var(--p));font-size:calc(150 * var(--p))"><span class="l1">Your</span><span class="l2">code.</span></div>
-    <div class="sub" style="left:calc(125 * var(--p));top:calc(574 * var(--p));width:calc(640 * var(--p))">6 letters and numbers, from your SMS or your Wendy Fest pass.</div>
+    <div class="sub" style="left:calc(125 * var(--p));top:calc(574 * var(--p));width:calc(640 * var(--p))">3 numbers and 2 letters, from your SMS or your Wendy Fest pass.</div>
     <div class="help" style="left:calc(125 * var(--p));top:calc(716 * var(--p))"><div class="q"><img id="qr-reg2" alt="QR"></div><i></i><div><em>No code yet?</em><br>Scan to register,<br>or ask our crew</div></div>
     <button class="ghostb" style="left:calc(125 * var(--p));top:calc(888 * var(--p))" onclick="goIdle()">← Back</button>
-    <div class="eb w" style="left:calc(1080 * var(--p));top:calc(230 * var(--p))">Tap your code</div>
+    <div class="eb w" style="left:calc(1080 * var(--p));top:calc(230 * var(--p))" id="code-hint">First, your 3 numbers</div>
     <div class="cnt" id="code-n" style="left:calc(1560 * var(--p));top:calc(231 * var(--p))"></div>
-    <input id="code" maxlength="6" autocomplete="off" inputmode="none" aria-label="Guest code">
+    <input id="code" maxlength="5" autocomplete="off" inputmode="none" aria-label="Guest code">
     <div class="slots" id="slots" style="left:calc(1080 * var(--p));top:calc(276 * var(--p))"></div>
     <div class="msg onred" id="code-msg" style="left:calc(1080 * var(--p));top:calc(393 * var(--p));width:calc(747 * var(--p))"></div>
     <div class="kb" id="kb" style="left:calc(1080 * var(--p));top:calc(440 * var(--p))"></div>
@@ -743,32 +747,35 @@
   function goIdle() { setCardTheme("dark"); stopVoice(); stopTalk(); sizzleOn(false); K.resetIdle(0); setHeat("medium"); guest = null; R = null; $("code").value = ""; paintCode(); $("code-msg").textContent = ""; K.show("s-idle"); }
   document.addEventListener("kiosk-home", goIdle);
   $("start").onclick = () => { K.show("s-code"); $("code").focus(); startCam(); };
-  // code screen: slots mirror the (visually hidden) input; keys, Delete and Go drive it
-  const CODE_KEYS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  // code screen: 3 numbers then 2 letters (for example 482 KT). The pad shows numbers first and switches to letters by itself.
+  const CODE_LETTERS = "ABCDEFGHJKLMNPQRSTUVWXYZ", CODE_LEN = 5;   // no I or O: they look like 1 and 0
+  const codeClean = (raw) => { let out = ""; for (const c of String(raw || "").toUpperCase()) { if (out.length >= CODE_LEN) break; if (out.length < 3 ? /\d/.test(c) : CODE_LETTERS.includes(c)) out += c; } return out; };
   function paintCode() {
-    { const full = $("code").value.length === 6; if (full && !paintCode.full) sfx("ding", .55); paintCode.full = full; }   // a ding when the last box is filled
-    const v = $("code").value = [...$("code").value.toUpperCase()].filter((c) => CODE_KEYS.includes(c)).slice(0, 6).join("");
-    $("slots").innerHTML = [0, 1, 2, 3, 4, 5].map((i) => v[i] ? `<b>${v[i]}</b>` : `<b class="e${i === v.length ? " a" : ""}"></b>`).join("");
-    const left = 6 - v.length; $("code-n").textContent = left ? `${v.length} of 6` : "6 of 6 ✓";
+    const v = $("code").value = codeClean($("code").value);
+    { const full = v.length === CODE_LEN; if (full && !paintCode.full) sfx("ding", .55); paintCode.full = full; }   // a ding when the last box is filled
+    $("slots").innerHTML = [0, 1, 2, 3, 4].map((i) => (i === 3 ? '<span class="dash">–</span>' : "") + (v[i] ? `<b>${v[i]}</b>` : `<b class="e${i === v.length ? " a" : ""}"></b>`)).join("");
+    const left = CODE_LEN - v.length; $("code-n").textContent = left ? `${v.length} of ${CODE_LEN}` : `${CODE_LEN} of ${CODE_LEN} ✓`;
+    $("kb").dataset.mode = v.length < 3 ? "num" : "let"; $("code-hint").textContent = v.length < 3 ? "First, your 3 numbers" : "Now your 2 letters";
     $("code-go").classList.toggle("ready", !left); $("code-go-l").textContent = left ? `${left} more to go` : "Go";
   }
   function codeEdit(fn) { $("code").value = fn($("code").value); if (!/Looking/.test($("code-msg").textContent)) $("code-msg").textContent = ""; paintCode(); $("code").focus(); }
-  for (const k of CODE_KEYS) { const b = document.createElement("button"); b.textContent = k; if (/\d/.test(k)) b.className = "n"; b.onclick = () => codeEdit((v) => v.length < 6 ? v + k : v); $("kb").appendChild(b); }
+  for (const k of "1234567890" + CODE_LETTERS) { const b = document.createElement("button"); b.textContent = k; b.className = /\d/.test(k) ? (k === "0" ? "n z" : "n") : "l"; b.onclick = () => codeEdit((v) => v + k); $("kb").appendChild(b); }
   $("code-del").onclick = () => codeEdit((v) => v.slice(0, -1));
-  $("code-go").onclick = () => { if ($("code").value.length === 6) lookup($("code").value); };
+  $("code-go").onclick = () => { if ($("code").value.length === CODE_LEN) lookup($("code").value); };
   $("code").addEventListener("keydown", (e) => e.key === "Enter" && $("code-go").onclick());
   $("code").addEventListener("input", () => { $("code-msg").textContent = ""; paintCode(); });
   $("s-code").addEventListener("click", () => $("code").focus());
   paintCode();
   async function lookup(code) {
     $("code-msg").textContent = "Looking up…";
+    if (Date.now() < lookup.lockUntil) { $("code-msg").textContent = "Too many wrong codes. Please wait a moment, or ask our crew."; return; }
     try {
-      guest = await K.api("/api/kiosk/lookup", { code });
+      guest = await K.api("/api/kiosk/lookup", { code }); lookup.bad = 0;
       if (guest.roastsLeft <= 0) { $("code-msg").textContent = `${guest.firstName} has already been roasted. One roast per guest.`; return; }
       glang = guest.lang || "en"; setGLang(glang);
       $("c-name").textContent = `${guest.firstName}!`;
       sfx("go"); K.show("s-consent"); fitConsent(); K.resetIdle(120000, goIdle);
-    } catch (e) { sfx("error"); $("code-msg").textContent = e.message; $("slots").classList.add("err"); setTimeout(() => $("slots").classList.remove("err"), 500); }
+    } catch (e) { sfx("error"); $("code-msg").textContent = e.message; $("slots").classList.add("err"); setTimeout(() => $("slots").classList.remove("err"), 500); lookup.bad = (lookup.bad || 0) + 1; if (lookup.bad >= 3) { lookup.bad = 0; lookup.lockUntil = Date.now() + 30000; $("code-msg").textContent = "Too many wrong codes. Try again in 30 seconds, or ask our crew."; }   /* three wrong codes lock the pad for half a minute */ }
   }
   function setGLang(l) { glang = l; document.querySelectorAll(".lang-pick button").forEach((b) => b.classList.toggle("on", b.dataset.l === l)); document.querySelectorAll("#c-box [lang]").forEach((p) => p.style.display = p.lang === l ? "" : "none"); fitConsent(); }
   // keep the greeting on the charcoal side and the card above the footer, whatever the name or language

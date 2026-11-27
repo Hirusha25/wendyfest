@@ -20,7 +20,11 @@
         <div class="field"><label for="email"><span data-t="email">Email</span> <small>(<span data-t="optional">optional</span>)</small></label><input class="input" id="email" name="email" type="email" inputmode="email" autocomplete="email"></div>
         <div class="field"><label for="dob" data-t="dob">Date of birth</label>
           <div class="dobwrap"><input class="input" id="dob" name="dob" type="text" inputmode="numeric" autocomplete="bday" placeholder="DD / MM / YYYY" maxlength="14"><span class="cal" id="dob-cal" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span><input type="date" id="dob-native" aria-label="Pick date of birth from calendar" min="1930-01-01"></div></div>
-        <label class="consent"><input type="checkbox" id="consent" checked><span data-t="consent"></span></label>
+        <!-- consent, kept short (owner): one box the guest must tick (terms, privacy, photo and voice at the games) and one optional box (offers). Neither is ticked for them. -->
+        <div class="consents" id="consents">
+          <label class="consent"><input type="checkbox" id="c-terms"><span data-t="cAll"></span></label>
+          <label class="consent"><input type="checkbox" id="consent"><span data-t="consent"></span></label>
+        </div>
         <button class="btn" id="submit" type="submit"><span data-t="getCode">Get my code</span><svg class="arr" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </form>
     </main>
@@ -100,9 +104,11 @@
     if (name.length < 2) return toast(t("errName"));
     if (!/^07\d{8}$/.test(phoneDigits)) return toast(t("errPhone"));
     const dob = dobIso(); dobEl.classList.toggle("err", dob === null); if (dob === null) return toast(t("errDob"));
+    const okT = $("c-terms").checked; $("c-terms").closest(".consent").classList.toggle("err", !okT);
+    if (!okT) return toast(t("errConsent"));
     const btn = $("submit"); btn.disabled = true; btn.querySelector("span").textContent = t("sending");
     try {
-      const r = await api("/api/register", { method: "POST", body: { name, phone, email: form.email.value.trim(), dob, lang: window.lang, consentMarketing: $("consent").checked } });
+      const r = await api("/api/register", { method: "POST", body: { name, phone, email: form.email.value.trim(), dob, lang: window.lang, consentTerms: true, consentMedia: true, consentMarketing: $("consent").checked } });
       pending = { phone, ...r }; digits = r.digits || 4; buildOtp();
       $("otp-phone").textContent = r.phoneMasked; startTimers(r.ttl, r.resendIn);
       $("demo-otp").classList.toggle("hidden", !r.devOtp); if (r.devOtp) $("demo-otp-code").textContent = r.devOtp;

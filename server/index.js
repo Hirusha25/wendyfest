@@ -4,7 +4,7 @@ import fs from "node:fs";
 import QRCode from "qrcode";
 import { config } from "./config.js";
 import { db, getSetting, setSetting } from "./db.js";
-import { shortCode, token, normalisePhone, judgeScream, rivalCheck, clamp, csvEscape } from "./util.js";
+import { shortCode, guestCode, token, normalisePhone, judgeScream, rivalCheck, clamp, csvEscape, slTime, slToday } from "./util.js";
 import { sendSms, templates } from "./sms.js";
 import { generateRoast, generateTeasers } from "./roast.js";
 import { screamSass } from "./sass.js";
@@ -113,14 +113,14 @@ function issueOtp(phone, payload) {
   return code;
 }
 function completeRegistration(payload) {
-  const { name, phone, email, dob, lang, consentMarketing } = payload;
+  const { name, phone, email, dob, lang, consentMarketing, consentTerms, consentMedia } = payload;
   let p = participantByPhone.get(phone);
   let created = false;
   if (!p) {
     let code;
-    do { code = shortCode(6); } while (participantByCode.get(code));
-    db.prepare("INSERT INTO participants(code, token, name, phone, email, dob, lang, consent_marketing) VALUES (?,?,?,?,?,?,?,?)")
-      .run(code, token(), name, phone, email || null, dob || null, lang, consentMarketing ? 1 : 0);
+    do { code = guestCode(); } while (participantByCode.get(code));   // 3 numbers + 2 letters, for example 482KT
+    db.prepare("INSERT INTO participants(code, token, name, phone, email, dob, lang, consent_marketing, consent_terms, consent_media) VALUES (?,?,?,?,?,?,?,?,?,?)")
+      .run(code, token(), name, phone, email || null, dob || null, lang, consentMarketing ? 1 : 0, consentTerms ? 1 : 0, consentMedia ? 1 : 0);
     p = participantByPhone.get(phone);
     created = true;
   } else {
@@ -132,14 +132,15 @@ function completeRegistration(payload) {
 }
 
 app.post("/api/register", (req, res) => {
-  const { name, phone, email, dob, lang = "en", consentMarketing } = req.body || {};
+  const { name, phone, email, dob, lang = "en", consentMarketing, consentTerms, consentMedia } = req.body || {};
   const cleanName = String(name || "").trim().slice(0, 60);
   const normPhone = normalisePhone(phone);
   if (cleanName.length < 2) return res.status(400).json({ error: "name" });
   if (!normPhone) return res.status(400).json({ error: "phone" });
   if (dob && !/^\d{4}-\d{2}-\d{2}$/.test(dob)) return res.status(400).json({ error: "dob" });
+  if (!consentTerms || !consentMedia) return res.status(400).json({ error: "consent" });   // both required boxes must be ticked
   const safeLang = ["en", "si", "ta"].includes(lang) ? lang : "en";
-  const payload = { name: cleanName, phone: normPhone, email: email ? String(email).trim().slice(0, 120) : null, dob: dob || null, lang: safeLang, consentMarketing: !!consentMarketing };
+  const payload = { name: cleanName, phone: normPhone, email: email ? String(email).trim().slice(0, 120) : null, dob: dob || null, lang: safeLang, consentMarketing: !!consentMarketing, consentTerms: true, consentMedia: true };
   const existing = db.prepare("SELECT last_sent FROM otps WHERE phone = ?").get(normPhone);
   if (existing && Date.now() - existing.last_sent < config.otp.resendSec * 1000) return res.status(429).json({ error: "wait", retryIn: Math.ceil((config.otp.resendSec * 1000 - (Date.now() - existing.last_sent)) / 1000) });
   const code = issueOtp(normPhone, payload);
@@ -355,8 +356,9 @@ app.get("/api/admin/stats", requirePin("admin"), (req, res) => {
     smsFailed: q("SELECT COUNT(*) n FROM sms_log WHERE status = 'failed'").n,
     smsSent: q("SELECT COUNT(*) n FROM sms_log WHERE status = 'sent'").n,
     settings: { scream: screamSettings(), coupon: couponSettings(), roast: roastSettings(), sms: { provider: config.sms.provider, senderId: config.sms.senderId }, baseUrl: config.baseUrl, roastModel: config.roast.model, anthropicKey: !!config.anthropicApiKey },
-    recent: db.prepare(`SELECT p.name, p.code, s.score, s.won, s.created_at, c.code AS coupon FROM scream_attempts s JOIN participants p ON p.id = s.participant_id LEFT JOIN coupons c ON c.id = s.coupon_id ORDER BY s.id DESC LIMIT 15`).all(),
-    recentRoasts: db.prepare(`SELECT p.name, r.token, r.title_en, r.fallback, r.created_at FROM roasts r JOIN participants p ON p.id = r.participant_id ORDER BY r.id DESC LIMIT 15`).all(),
+    timeZone: "Asia/Colombo", today: slToday(), now: slTime(new Date().toISOString().slice(0, 19).replace("T", " ")),   // the admin page shows Sri Lanka time
+    recent: db.prepare(`SELECT p.name, p.code, s.score, s.won, s.created_at, c.code AS coupon FROM scream_attempts s JOIN participants p ON p.id = s.participant_id LEFT JOIN coupons c ON c.id = s.coupon_id ORDER BY s.id DESC LIMIT 15`).all().map((r) => ({ ...r, created_at: slTime(r.created_at) })),
+    recentRoasts: db.prepare(`SELECT p.name, r.token, r.title_en, r.fallback, r.created_at FROM roasts r JOIN participants p ON p.id = r.participant_id ORDER BY r.id DESC LIMIT 15`).all().map((r) => ({ ...r, created_at: slTime(r.created_at) })),
     leaderboard: db.prepare(`SELECT p.name, MAX(s.score) AS score FROM scream_attempts s JOIN participants p ON p.id = s.participant_id GROUP BY p.id ORDER BY score DESC LIMIT 10`).all(),
   });
 });
@@ -388,12 +390,12 @@ app.post("/api/admin/coupons/generate", requirePin("admin"), (req, res) => {
   res.json({ ok: true, added });
 });
 app.get("/api/admin/export.csv", requirePin("admin"), (req, res) => {
-  const rows = db.prepare(`SELECT p.id, p.created_at, p.name, p.phone, p.email, p.dob, p.lang, p.code, p.consent_marketing,
+  const rows = db.prepare(`SELECT p.id, p.created_at, p.name, p.phone, p.email, p.dob, p.lang, p.code, p.consent_terms, p.consent_media, p.consent_marketing,
       (SELECT MAX(score) FROM scream_attempts s WHERE s.participant_id = p.id) AS best_scream,
       (SELECT COUNT(*) FROM scream_attempts s WHERE s.participant_id = p.id AND won = 1) AS wins,
       (SELECT GROUP_CONCAT(c.code) FROM coupons c WHERE c.claimed_by = p.id) AS coupons,
       (SELECT COUNT(*) FROM roasts r WHERE r.participant_id = p.id) AS roasts
-      FROM participants p ORDER BY p.id`).all();
+      FROM participants p ORDER BY p.id`).all().map(({ created_at, ...r }) => ({ id: r.id, registered_sri_lanka_time: slTime(created_at), ...r }));   // times in the export are Sri Lanka time
   const head = Object.keys(rows[0] || { id: 1 });
   res.type("text/csv").attachment("wendyfest-participants.csv")
     .send([head.join(","), ...rows.map((r) => head.map((h) => csvEscape(r[h])).join(","))].join("\n"));

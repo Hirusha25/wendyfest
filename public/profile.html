@@ -48,7 +48,7 @@
     const parts = p.name.trim().split(/\s+/); const first = parts.shift(); const rest = parts.join(" ");
     $("name").innerHTML = `${esc(first)}${rest ? `<br><span class="o">${esc(rest)}</span>` : ""}`;
     $("num").textContent = "#" + String(p.number).padStart(4, "0"); $("code").textContent = p.code;
-    $("date").textContent = new Date(p.joined + "Z").toLocaleDateString(window.lang === "en" ? "en-GB" : window.lang, { day: "numeric", month: "short" });
+    $("date").textContent = new Date(p.joined.replace(" ", "T") + "Z").toLocaleDateString(window.lang === "en" ? "en-GB" : window.lang, { day: "numeric", month: "short", timeZone: "Asia/Colombo" });
     const b = p.badges;
     const steps = [["star", true, "bRookie"], ["mic", b.screamer, "bScreamer"], ["trophy", b.winner, "bWinner"], ["cam", b.roasted, "bRoasted"]];
     const done = steps.filter((x) => x[1]).length;

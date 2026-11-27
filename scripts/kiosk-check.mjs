@@ -22,8 +22,8 @@ try {
     check(await on() === "s-idle", "opens on the welcome screen"); await shot(p, "roast-1-welcome");
     await p.click("#start"); await p.waitForTimeout(400);
     check(await p.evaluate(() => document.getElementById("code-go").classList.contains("ready")) === false, "Go is locked before six characters");
-    for (const k of "WENDYS") await p.click(`#kb button:text-is("${k}")`);
-    check(await p.inputValue("#code") === "WENDYS", "keypad types the code"); await shot(p, "roast-2-code");
+    for (const k of "123AB") await p.click(`#kb button:text-is("${k}")`);
+    check(await p.inputValue("#code") === "123AB", "keypad types the code"); await shot(p, "roast-2-code");
     await p.click("#code-go"); await p.waitForTimeout(900);
     check(await on() === "s-consent", "valid code opens the Ready? screen"); await shot(p, "roast-3-ready");
     for (const l of ["si", "ta", "en"]) { await p.click(`.lang-pick button[data-l="${l}"]`); await p.waitForTimeout(200); }

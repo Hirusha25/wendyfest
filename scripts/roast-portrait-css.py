@@ -87,7 +87,7 @@ rule("#s-code .ghostb", "left:60u; top:712u")
 rule("#s-code .eb.w", "left:60u; top:966u"); rule("#s-code .cnt", "left:753u; top:967u; font-size:22u")
 rule("#s-code .slots", "left:60u; top:1012u; width:960u; gap:14u"); rule("#s-code .slots b", "height:112u; font-size:72u")
 rule("#s-code .msg", "left:60u; top:1136u; width:960u; font-size:22u")
-rule("#s-code .kb", "left:60u; top:1178u; width:960u; gap:20u 14u"); rule("#s-code .kb button", "height:100u; font-size:46u")
+rule("#s-code .kb", "left:60u; top:1178u; width:960u; gap:18u 14u"); rule("#s-code .kb button", "height:110u; font-size:58u; margin-top:0")
 rule("#s-code .act", "left:60u; top:1690u; width:960u; height:130u; grid-template-columns:320u 1fr")
 rule("#s-code .act button", "font-size:34u"); rule("#s-code .act .go.ready", "font-size:60u")
 

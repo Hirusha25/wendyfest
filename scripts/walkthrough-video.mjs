@@ -21,7 +21,7 @@ async function record(name, page, vp, run) {
 }
 const scream = async (p) => {
   await p.click("#start"); await on(p, "s-code"); await p.waitForTimeout(900);
-  await typeCode(p, "#kbd", "WENDYS"); await p.waitForTimeout(700); await p.click("#code-go");
+  await typeCode(p, "#kbd", "123AB"); await p.waitForTimeout(700); await p.click("#code-go");
   await on(p, "s-ready"); await p.waitForTimeout(2600);
   // the fake microphone only beeps, so a loud, clear "Wendy's" is fed in for this one scream
   await p.evaluate(() => { const o = K.api; K.api = (u, b) => o(u, /\/scream$/.test(u) ? { ...b, peakDb: -6, sustainedDb: -6, transcript: "Wendy's", accuracyOverride: null } : b); });
@@ -35,7 +35,7 @@ await record("scream-up", "scream.html", { width: 1080, height: 1920 }, scream);
 await record("scream-wide", "scream.html", { width: 1920, height: 1080 }, scream);
 await record("roast", "roast.html", { width: 1080, height: 1920 }, async (p) => {
   await p.waitForTimeout(2500); await p.click("#start"); await on(p, "s-code"); await p.waitForTimeout(900);
-  await typeCode(p, "#kb", "WENDYS"); await p.waitForTimeout(700); await p.click("#code-go");
+  await typeCode(p, "#kb", "123AB"); await p.waitForTimeout(700); await p.click("#code-go");
   await on(p, "s-consent"); await p.waitForTimeout(3500); await p.click("#agree");
   await on(p, "s-cam"); await p.waitForTimeout(3000); await p.click('#heat button[data-h="extra"]'); await p.waitForTimeout(1200); await p.click("#snap");
   await on(p, "s-reveal", 90000); await p.waitForTimeout(11000);

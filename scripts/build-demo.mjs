@@ -36,7 +36,7 @@ const DB = Object.assign({ participants: [], coupons: [], screams: [], roasts: [
 const save = () => localStorage.setItem("wf_demo", JSON.stringify(DB));
 if (!DB.coupons.length) { for (let i = 0; i < 100; i++) DB.coupons.push({ id: i + 1, code: "WF-" + shortCode2(6), label: null, claimed_by: null }); save(); }
 const now = () => new Date().toISOString().slice(0, 19).replace("T", " ");
-if (!DB.participants.some((p) => p.code === "WENDYS")) { DB.participants.unshift({ id: 1000, code: "WENDYS", token: "demo-guest-token", name: "Demo Guest", phone: "94770000000", email: null, dob: null, lang: "en", created_at: now() }); save(); }
+if (!DB.participants.some((p) => p.code === "123AB")) { DB.participants.unshift({ id: 1000, code: "123AB", token: "demo-guest-token", name: "Demo Guest", phone: "94770000000", email: null, dob: null, lang: "en", created_at: now() }); save(); }
 const cookie = (n) => (document.cookie.match(new RegExp("(?:^|; )" + n + "=([^;]*)")) || [])[1];
 const setCookie = (n, v) => (document.cookie = n + "=" + v + "; path=/; max-age=31536000; SameSite=Lax");
 const scream = () => Object.assign({ threshold: 75, minLoud: 60, minAcc: 70, loudWeight: .6, accWeight: .4, dbFloor: -42, dbCeil: -6, attemptsPerPerson: 99, durationMs: 10000 }, DB.settings.scream || {});
@@ -52,7 +52,7 @@ function publicProfile(p) {
   return { name: p.name, code: p.code, lang: p.lang, number: DB.participants.indexOf(p) + 1, joined: p.created_at, phoneMasked: p.phone.replace(/^(94)(\\d{2})\\d{5}(\\d{2})$/, "+$1 $2*****$3"), profileUrl: profileUrl(p), screams, roasts,
     badges: { screamer: screams.length > 0, winner: screams.some((s) => s.won), roasted: roasts.length > 0 }, coupon: coupon(), limits: { screamAttempts: scream().attemptsPerPerson, roastAttempts: roastS().attemptsPerPerson } };
 }
-const byCode = (c) => { let k = String(c || "").toUpperCase().replace(/[^A-Z0-9]/g, ""); if (k === "DEMO" || k === "DEMO01") k = "WENDYS"; return DB.participants.find((p) => p.code === k); };
+const byCode = (c) => { let k = String(c || "").toUpperCase().replace(/[^A-Z0-9]/g, ""); if (k === "DEMO" || k === "DEMO01" || k === "WENDYS") k = "123AB";   /* the demo guest: type 123 AB on the kiosk */ return DB.participants.find((p) => p.code === k); };
 const needPin = (which) => { const c = cookie("wf_" + which); return c === KIOSK_PIN || c === ADMIN_PIN; };
 
 async function route(method, url, body) {

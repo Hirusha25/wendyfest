@@ -97,7 +97,7 @@
     $("roastAttempts").value = S.settings.roast.attemptsPerPerson;
     $("valueLabel").value = S.settings.coupon.valueLabel; $("terms").value = S.settings.coupon.terms;
     $("pool").textContent = `${S.couponsLeft} unclaimed of ${S.couponsTotal}`;
-    $("recent").innerHTML = `<tr><th>Guest</th><th>Code</th><th>Score</th><th>Won</th><th>Coupon</th><th>Time</th></tr>` + S.recent.map((r) => `<tr><td>${r.name}</td><td>${r.code}</td><td>${r.score}</td><td>${r.won ? "🏆" : ""}</td><td>${r.coupon || ""}</td><td>${r.created_at.slice(11, 16)}</td></tr>`).join("");
+    $("recent").innerHTML = `<tr><th>Guest</th><th>Code</th><th>Score</th><th>Won</th><th>Coupon</th><th>Time (Sri Lanka)</th></tr>` + S.recent.map((r) => `<tr><td>${r.name}</td><td>${r.code}</td><td>${r.score}</td><td>${r.won ? "🏆" : ""}</td><td>${r.coupon || ""}</td><td>${r.created_at.slice(11, 16)}</td></tr>`).join("");
     $("lead").innerHTML = `<tr><th>#</th><th>Guest</th><th>Best</th></tr>` + S.leaderboard.map((r, i) => `<tr><td>${i + 1}</td><td>${r.name}</td><td>${r.score}</td></tr>`).join("");
     $("roasts").innerHTML = `<tr><th>Guest</th><th>Title</th><th></th></tr>` + S.recentRoasts.map((r) => `<tr><td>${r.name}</td><td>${r.title_en || ""} ${r.fallback ? "<span class='chip'>fallback</span>" : ""}</td><td><a href="/r/${r.token}" target="_blank">open</a></td></tr>`).join("");
     $("env").textContent = `BASE_URL ${S.settings.baseUrl} · SMS ${S.settings.sms.provider} (sender ${S.settings.sms.senderId}) · roast model ${S.settings.roastModel} · fallback roasts so far: ${S.roastFallbacks}`;

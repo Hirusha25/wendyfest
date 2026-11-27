@@ -17,6 +17,7 @@ try {
     await p.goto(B + "/register", { waitUntil: "domcontentloaded" }); await p.waitForTimeout(2500);
     await p.locator("#name").pressSequentially("Nimal Perera", { delay: 70 }); await p.waitForTimeout(400);
     await p.locator("#phone").pressSequentially("0771234567", { delay: 70 }); await p.waitForTimeout(900);
+    await p.check("#c-terms"); await p.waitForTimeout(700);
     await p.click("#submit"); await p.waitForSelector("#otp-boxes input, #otp-boxes *", { timeout: 15000 }); await p.waitForTimeout(2200);
     const otp = (await p.textContent("#demo-otp-code")).trim();
     await p.locator("#otp-boxes input").first().click().catch(() => {}); await p.keyboard.type(otp, { delay: 350 });

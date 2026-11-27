@@ -8,6 +8,15 @@ export function shortCode(len = 6) {
   for (let i = 0; i < len; i++) s += ALPHABET[bytes[i] % ALPHABET.length];
   return s;
 }
+// Guest code: 3 numbers then 2 letters, for example 482KT (owner, Nov 2026). The kiosk shows a number pad, then a letter pad.
+// To make it easy to type, the two letters are always next to each other on the kiosk's letter pad (6 letters a row), or the same letter twice.
+export const CODE_LETTERS = "ABCDEFGHJKLMNPQRSTUVWXYZ";   // no I or O: they look like 1 and 0
+export function guestCode() {
+  const b = crypto.randomBytes(6), d = (n) => String(b[n] % 10), i = b[3] % CODE_LETTERS.length, row = Math.floor(i / 6), col = i % 6;
+  const near = [i]; if (col > 0) near.push(i - 1); if (col < 5) near.push(i + 1); if (row > 0) near.push(i - 6); if (row < 3) near.push(i + 6);
+  return d(0) + d(1) + d(2) + CODE_LETTERS[i] + CODE_LETTERS[near[b[4] % near.length]];
+}
+export const isGuestCode = (c) => new RegExp(`^\\d{3}[${CODE_LETTERS}]{2}$`).test(String(c || ""));
 export function token(len = 24) {
   return crypto.randomBytes(len).toString("base64url");
 }
@@ -24,6 +33,16 @@ export function normalisePhone(raw) {
 }
 
 export function clamp(n, lo, hi) { return Math.max(lo, Math.min(hi, n)); }
+
+// Sri Lanka Standard Time (UTC+5:30, no daylight saving). The database stores every time in UTC, which never shifts with the
+// server's own clock or location; anything a person reads (admin lists, the export, "today") is turned into Sri Lanka time here.
+export const SL_OFFSET_MIN = 330;
+export function slTime(utc) {            // "2026-11-27 04:10:00" (UTC) -> "2026-11-27 09:40:00" (Sri Lanka)
+  if (!utc) return utc; const d = new Date(String(utc).replace(" ", "T") + "Z"); if (isNaN(d)) return utc;
+  return new Date(d.getTime() + SL_OFFSET_MIN * 60000).toISOString().slice(0, 19).replace("T", " ");
+}
+export function slToday(now = Date.now()) { return new Date(now + SL_OFFSET_MIN * 60000).toISOString().slice(0, 10); }   // today's date in Sri Lanka
+export const SL_DAY_SQL = (col) => `date(${col}, '+5 hours', '+30 minutes')`;   // the Sri Lanka calendar day of a stored UTC time, for SQL
 
 // Levenshtein similarity 0..1
 export function similarity(a, b) {

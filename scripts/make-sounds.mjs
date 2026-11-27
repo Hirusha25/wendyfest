@@ -31,6 +31,13 @@ const SFX = {
   rise: ["quick rising slide whistle sweep, playful cartoon, going up", 0.9],                             // the score bars fill up
   aww: ["small friendly crowd saying aww in sympathy, short, warm, not mocking", 1.6],                    // a near miss
   card: ["plastic ID card on a lanyard swinging in, quick flap of plastic and a small metal clip clink", 0.9],       // the roast card swinging in
+  // Wendy's Claw (game 3)
+  clawmove: ["arcade claw machine motor whirring as the claw travels along its rail, steady mechanical servo hum, no music", 1.0],
+  clawgrab: ["metal arcade claw closing on a prize, one firm mechanical clamp with a small metallic clink", 0.7],
+  clawdrop: ["a prize dropping onto a plastic tray, soft plop with one tiny bounce", 0.6],
+  flip: ["one quick card flip, a thick plastic panel flipping over with a soft snap", 0.5],
+  jackpot: ["arcade jackpot win jingle, bright bells and a shower of coins, exciting and short", 3],
+  tension: ["tense upbeat arcade countdown music, fast ticking clock with a pulsing synth bass that keeps rising in excitement, game show under pressure, no vocals", 14],
 };
 const WAIT = [
   ["[amused] Okay. Let me have a good look at you.", "Okay. Let me have a good look at you."],

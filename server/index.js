@@ -64,7 +64,8 @@ function publicProfile(p) {
     name: p.name, code: p.code, lang: p.lang, number, joined: p.created_at, phoneMasked: p.phone.replace(/^(94)(\d{2})\d{5}(\d{2})$/, "+$1 $2*****$3"),
     profileUrl: profileUrl(p), screams, roasts,
     rewards: db.prepare("SELECT code, label, redeemed_at FROM coupons WHERE claimed_by = ? ORDER BY claimed_at").all(p.id).map((c) => ({ code: c.code, label: c.label || couponSettings().valueLabel, redeemed: !!c.redeemed_at })),
-    badges: { screamer: screams.length > 0, winner: screams.some((s) => s.won), roasted: roasts.length > 0 },
+    claws: clawsFor.all(p.id).map((c) => ({ matched: c.matched, won: !!c.won, at: c.created_at })),
+    badges: { screamer: screams.length > 0, winner: screams.some((s) => s.won) || clawsFor.all(p.id).some((c) => c.won), roasted: roasts.length > 0, clawed: clawsFor.all(p.id).length > 0 },
     coupon: couponSettings(),
     limits: { screamAttempts: screamSettings().attemptsPerPerson, roastAttempts: roastSettings().attemptsPerPerson },
   };

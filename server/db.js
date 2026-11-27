@@ -85,6 +85,7 @@ db.exec(`CREATE TABLE IF NOT EXISTS claw_attempts (
   matched INTEGER NOT NULL DEFAULT 0, won INTEGER NOT NULL DEFAULT 0, ms_left INTEGER, took_ms INTEGER, station TEXT,
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 )`);
+if (!db.prepare("PRAGMA table_info(claw_attempts)").all().some((c) => c.name === "coupon_id")) db.exec("ALTER TABLE claw_attempts ADD COLUMN coupon_id INTEGER REFERENCES coupons(id)");
 // Which message each SMS was (otp, welcome, win, lose, roast), so the admin page can count them. Older rows are sorted by their wording.
 if (!db.prepare("PRAGMA table_info(sms_log)").all().some((c) => c.name === "kind")) {
   db.exec("ALTER TABLE sms_log ADD COLUMN kind TEXT");

@@ -93,7 +93,7 @@ async function route(method, url, body) {
     if (!needPin("kiosk") && !needPin("admin")) return json({ error: "PIN required", which: "kiosk" }, 401);
     const pt = byCode(body.code); if (!pt) return json({ error: "Code not found. Ask the guest to check their SMS or register at the QR code." }, 404);
     const used = DB.screams.filter((s) => s.participant_id === pt.id), roasts = DB.roasts.filter((r) => r.participant_id === pt.id);
-    if (p.endsWith("/claw")) return json({ ok: true, matched: body.matched, won: !!body.won });
+    if (p.endsWith("/claw")) return json({ ok: true, matched: body.matched, won: !!body.won, coupon: body.won ? { code: "DEMO12345", label: coupon().valueLabel } : null, profileUrl: profileUrl(pt) });
     if (p.endsWith("lookup")) return json({ clawsUsed: 0, clawsLeft: 1, name: pt.name, firstName: first(pt), lang: pt.lang, code: pt.code, screamsUsed: used.length, screamsLeft: Math.max(0, scream().attemptsPerPerson - used.length), roastsUsed: roasts.length, roastsLeft: Math.max(0, roastS().attemptsPerPerson - roasts.length), alreadyWon: used.some((s) => s.won), profileUrl: profileUrl(pt) });
     if (p.endsWith("scream")) {
       const s = scream(); if (used.length >= s.attemptsPerPerson) return json({ error: "No attempts left for this guest" }, 409);

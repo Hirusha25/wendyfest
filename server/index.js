@@ -63,6 +63,7 @@ function publicProfile(p) {
   return {
     name: p.name, code: p.code, lang: p.lang, number, joined: p.created_at, phoneMasked: p.phone.replace(/^(94)(\d{2})\d{5}(\d{2})$/, "+$1 $2*****$3"),
     profileUrl: profileUrl(p), screams, roasts,
+    rewards: db.prepare("SELECT code, label, redeemed_at FROM coupons WHERE claimed_by = ? ORDER BY claimed_at").all(p.id).map((c) => ({ code: c.code, label: c.label || couponSettings().valueLabel, redeemed: !!c.redeemed_at })),
     badges: { screamer: screams.length > 0, winner: screams.some((s) => s.won), roasted: roasts.length > 0 },
     coupon: couponSettings(),
     limits: { screamAttempts: screamSettings().attemptsPerPerson, roastAttempts: roastSettings().attemptsPerPerson },
@@ -316,8 +317,15 @@ app.post("/api/kiosk/claw", requirePin("kiosk"), (req, res) => {
   if (!p) return res.status(404).json({ error: "code not found" });
   if (!isDemo(p) && clawsFor.all(p.id).length >= clawSettings().attemptsPerPerson) return res.status(409).json({ error: "This guest has already played" });
   const m = clamp(Math.round(Number(matched) || 0), 0, 3), w = m === 3 && !!won;
-  const info = db.prepare("INSERT INTO claw_attempts(participant_id, matched, won, ms_left, took_ms, station) VALUES (?,?,?,?,?,?)").run(p.id, m, w ? 1 : 0, clamp(Math.round(Number(msLeft) || 0), 0, 600000), clamp(Math.round(Number(tookMs) || 0), 0, 600000), station ? String(station).slice(0, 40) : null);
-  res.json({ ok: true, id: info.lastInsertRowid, matched: m, won: w });
+  // A full order inside the time wins a coupon from the same pool as Scream & Win (owner, Nov 2026). Test codes get a made-up one.
+  let coupon = null;
+  if (w && isDemo(p)) coupon = { id: null, code: "TEST" + String(Math.floor(Math.random() * 90000) + 10000), label: db.prepare("SELECT label FROM coupons WHERE claimed_by IS NULL ORDER BY id LIMIT 1").get()?.label || null };
+  else if (w) { coupon = db.prepare("SELECT * FROM coupons WHERE claimed_by IS NULL ORDER BY id LIMIT 1").get(); if (coupon) db.prepare("UPDATE coupons SET claimed_by = ?, claimed_at = datetime('now'), activity = 'claw' WHERE id = ?").run(p.id, coupon.id); }
+  const info = db.prepare("INSERT INTO claw_attempts(participant_id, matched, won, ms_left, took_ms, station, coupon_id) VALUES (?,?,?,?,?,?,?)").run(p.id, m, w ? 1 : 0, clamp(Math.round(Number(msLeft) || 0), 0, 600000), clamp(Math.round(Number(tookMs) || 0), 0, 600000), station ? String(station).slice(0, 40) : null, coupon?.id || null);
+  const label = coupon?.label || couponSettings().valueLabel, first = p.name.split(" ")[0];
+  if (w && coupon) sendSms(p.phone, templates(p.lang).win(first, coupon.code, label, profileUrl(p)), "win");
+  else if (w) sendSms(p.phone, templates(p.lang).win(first, "(pending)", "please see a host", profileUrl(p)), "win");
+  res.json({ ok: true, id: info.lastInsertRowid, matched: m, won: w, coupon: coupon ? { code: coupon.code, label } : null, couponPoolEmpty: w && !coupon, profileUrl: profileUrl(p) });
 });
 
 // Waiting-screen lines about this guest's photo, asked for alongside the roast. Stores nothing; always answers 200.

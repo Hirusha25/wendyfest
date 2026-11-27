@@ -1178,7 +1178,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   for (const k of "1234567890" + CODE_LETTERS) { const b = document.createElement("button"); b.textContent = k; b.className = /\d/.test(k) ? (k === "0" ? "n z" : "n") : "l"; b.onclick = () => { SFX.click(); typeKey(k); }; $("kbd").appendChild(b); }
   $("code-del").onclick = () => { SFX.bksp(); codeEl.value = codeEl.value.slice(0, -1); paintBoxes(); K.resetIdle(60000, goIdle); };
   let lastLen = 0;
-  function paintBoxes() { const v = codeClean(codeEl.value); if (v.length === CODE_LEN && paintBoxes.n !== CODE_LEN) SFX.ding(); paintBoxes.n = v.length;   /* a ding when the last box is filled */
+  function paintBoxes() { const v = codeClean(codeEl.value); if (v.length === CODE_LEN && paintBoxes.n !== CODE_LEN) { SFX.ding(); autoGo(v); } paintBoxes.n = v.length;   /* a ding when the last box is filled */
     if (codeEl.value !== v) codeEl.value = v; $("kbd").dataset.mode = v.length < 3 ? "num" : "let"; $("code-hint").textContent = v.length < 3 ? "First, your 3 numbers." : "Now your 2 letters.";
     [...$("boxes").querySelectorAll("i")].forEach((b, i) => { b.textContent = v[i] || ""; b.classList.toggle("cur", i === v.length); b.classList.remove("err"); if (i === v.length - 1 && v.length > lastLen) { b.classList.remove("pop"); void b.offsetWidth; b.classList.add("pop"); } }); lastLen = v.length; }
   codeEl.addEventListener("input", paintBoxes); codeEl.addEventListener("keydown", (e) => e.key === "Enter" && lookup(codeEl.value));
@@ -1186,7 +1186,13 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   $("code-back").onclick = () => goIdle();   // a guest without a code can go back to the start (and its QR to register)
   $("miss-next").onclick = () => goIdle();
   paintBoxes();   // sets the pad to numbers before the first guest arrives
+  // The moment the last letter is typed the code is checked, with no need to tap Continue (owner): a right code moves on by itself,
+  // a wrong one shakes the boxes and says why. Continue stays for anyone who wants to tap it.
+  function autoGo(v) { setTimeout(() => { if ($("s-code").classList.contains("on") && codeEl.value === v && v.length === CODE_LEN) lookup(v); }, 220); }
   async function lookup(code) {
+    if (lookup.busy) return; lookup.busy = true; try { await lookup1(code); } finally { lookup.busy = false; }
+  }
+  async function lookup1(code) {
     $("code-msg").textContent = "Looking up…";
     if (Date.now() < lookup.lockUntil) { $("code-msg").textContent = "Too many wrong codes. Please wait a moment, or ask our crew."; shakeBoxes(); return; }
     try {

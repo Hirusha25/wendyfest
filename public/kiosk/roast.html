@@ -768,12 +768,15 @@
   const codeClean = (raw) => { let out = ""; for (const c of String(raw || "").toUpperCase()) { if (out.length >= CODE_LEN) break; if (out.length < 3 ? /\d/.test(c) : CODE_LETTERS.includes(c)) out += c; } return out; };
   function paintCode() {
     const v = $("code").value = codeClean($("code").value);
-    { const full = v.length === CODE_LEN; if (full && !paintCode.full) sfx("ding", .55); paintCode.full = full; }   // a ding when the last box is filled
+    { const full = v.length === CODE_LEN; if (full && !paintCode.full) { sfx("ding", .55); autoGo(v); } paintCode.full = full; }   // a ding when the last box is filled
     $("slots").innerHTML = [0, 1, 2, 3, 4].map((i) => (i === 3 ? '<span class="dash">–</span>' : "") + (v[i] ? `<b>${v[i]}</b>` : `<b class="e${i === v.length ? " a" : ""}"></b>`)).join("");
     const left = CODE_LEN - v.length; $("code-n").textContent = left ? `${v.length} of ${CODE_LEN}` : `${CODE_LEN} of ${CODE_LEN} ✓`;
     $("kb").dataset.mode = v.length < 3 ? "num" : "let"; $("code-hint").textContent = v.length < 3 ? "First, your 3 numbers" : "Now your 2 letters";
     $("code-go").classList.toggle("ready", !left); $("code-go-l").textContent = left ? `${left} more to go` : "Go";
   }
+  // The moment the last letter is typed the code is checked, with no need to tap the button (owner): a right code moves on by itself,
+  // a wrong one shakes the boxes and says why. The button stays for anyone who wants to tap it.
+  function autoGo(v) { setTimeout(() => { if ($("s-code").classList.contains("on") && $("code").value === v && v.length === CODE_LEN) lookup(v); }, 220); }
   function codeEdit(fn) { $("code").value = fn($("code").value); if (!/Looking/.test($("code-msg").textContent)) $("code-msg").textContent = ""; paintCode(); $("code").focus(); }
   for (const k of "1234567890" + CODE_LETTERS) { const b = document.createElement("button"); b.textContent = k; b.className = /\d/.test(k) ? (k === "0" ? "n z" : "n") : "l"; b.onclick = () => codeEdit((v) => v + k); $("kb").appendChild(b); }
   $("code-del").onclick = () => codeEdit((v) => v.slice(0, -1));
@@ -783,6 +786,9 @@
   $("s-code").addEventListener("click", () => $("code").focus());
   paintCode();
   async function lookup(code) {
+    if (lookup.busy) return; lookup.busy = true; try { await lookup1(code); } finally { lookup.busy = false; }
+  }
+  async function lookup1(code) {
     $("code-msg").textContent = "Looking up…";
     if (Date.now() < lookup.lockUntil) { $("code-msg").textContent = "Too many wrong codes. Please wait a moment, or ask our crew."; return; }
     try {

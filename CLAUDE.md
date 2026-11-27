@@ -138,3 +138,12 @@ The event kiosk is a 1080 x 1920 upright touch screen. `public/kiosk/roast.html`
 - Difficulty: four levels on the admin Settings tab (`SCREAM_LEVELS` in `server/index.js`): Easy, Medium, Hard, Very hard. Each sets `threshold`, `minLoud` and `dbCeil`. The code defaults are Hard. `/api/admin/scream-levels` counts how many recent clear screams would win at each level (`scream_attempts.sus_db` keeps the loudness in dB for this). Loudness depends on the kiosk's mic level, so the level must be checked at the venue.
 - The upright Hold it bar fills in 2.5 seconds (`HOLD_FULL`); the hold time still does not change the score.
 - Two drawings on one page must not share colour names (`id`s): the Roast Me result lanyard uses `lyS2...` because the cooking screen's copy is hidden on the wide layout, and a hidden drawing cannot lend its colours (the strap went see-through).
+
+## Coupons and the redeem page (Nov 2026)
+
+- The client's coupon codes are confidential: never commit the file, never print codes in chat or logs. They are imported into `coupons` on the server (code + prize label, in the file's order) and given to winners in that order.
+- Test codes (`DEMO_CODES`) never take a real coupon: a win gets a made-up `TEST12345` code with a real prize name.
+- `/redeem` (`public/redeem.html`) is for the Wendy's counter team, with its own access code (`REDEEM_PIN`; the admin PIN also opens it, the kiosk PIN does not). They look up a winner's code and mark it redeemed (`coupons.redeemed_at`, `redeemed_note`), with an undo. Only coupons that were won can be looked up or listed; the unused pool is never shown. Eight wrong access codes lock that address out for five minutes.
+- A winner sees the code in the win SMS and on their profile; once redeemed the profile says "Redeemed" (English only for now).
+- Wide Scream & Win live screen uses the upright screen's three slanted ribbons (cream Hold it, blue We heard, red clock). The Listening bubble is fitted by `sayPill()` so it never reaches the meter's rings: it shrinks, then drops the guest's name.
+- "We heard" cannot show words while the guest shouts on the kiosk (Chrome hears nothing there); it shows the word for 0.65 s once the word check answers, then the result.

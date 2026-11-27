@@ -31,15 +31,15 @@ const wallSettings = () => ({ on: true, seconds: 12, ...getSetting("wall", {}) }
 const requirePin = (which) => (req, res, next) => {
   const c = cookies(req);
   const supplied = req.headers["x-pin"] || c[`wf_${which}`];
-  const expected = which === "admin" ? config.adminPin : config.kioskPin;
-  if (supplied === expected || (which === "kiosk" && supplied === config.adminPin)) return next();
+  const expected = which === "admin" ? config.adminPin : which === "redeem" ? config.redeemPin : config.kioskPin;
+  if (supplied === expected || (which !== "admin" && supplied === config.adminPin)) return next();   // the admin PIN also opens the kiosks and the redeem page
   res.status(401).json({ error: "PIN required", which });
 };
 
 const participantByToken = db.prepare("SELECT * FROM participants WHERE token = ?");
 const participantByCode = db.prepare("SELECT * FROM participants WHERE code = ?");
 const participantByPhone = db.prepare("SELECT * FROM participants WHERE phone = ?");
-const screamsFor = db.prepare("SELECT s.*, c.code AS coupon_code, c.label AS coupon_label FROM scream_attempts s LEFT JOIN coupons c ON c.id = s.coupon_id WHERE participant_id = ? ORDER BY id DESC");
+const screamsFor = db.prepare("SELECT s.*, c.code AS coupon_code, c.label AS coupon_label, c.redeemed_at AS coupon_redeemed FROM scream_attempts s LEFT JOIN coupons c ON c.id = s.coupon_id WHERE participant_id = ? ORDER BY id DESC");
 const roastsFor = db.prepare("SELECT * FROM roasts WHERE participant_id = ? ORDER BY id DESC");
 const countRow = db.prepare("SELECT COUNT(*) AS n FROM participants");
 
@@ -50,7 +50,7 @@ function roastUrl(r) { return `${config.baseUrl}/r/${r.token}`; }
 function publicProfile(p) {
   const screams = screamsFor.all(p.id).map((s) => ({
     id: s.id, score: s.score, loudness: s.loudness, accuracy: s.accuracy, peakDb: s.peak_db, won: !!s.won,
-    coupon: s.coupon_code ? { code: s.coupon_code, label: s.coupon_label || couponSettings().valueLabel } : null,
+    coupon: s.coupon_code ? { code: s.coupon_code, label: s.coupon_label || couponSettings().valueLabel, redeemed: !!s.coupon_redeemed } : null,
     at: s.created_at,
   }));
   const roasts = roastsFor.all(p.id).map((r) => ({
@@ -90,6 +90,7 @@ app.get("/kiosk/scream-dark", (req, res) => res.sendFile(page("kiosk/scream-dark
 app.get("/kiosk/roast", (req, res) => res.sendFile(page("kiosk/roast.html")));
 app.get("/admin", (req, res) => res.sendFile(page("admin.html")));
 app.get("/wall", (req, res) => res.sendFile(page("wall.html")));   // the LED wall: approved roasts, shuffled
+app.get("/redeem", (req, res) => res.sendFile(page("redeem.html")));   // the Wendy's team marks coupons as redeemed here
 
 // ---------- config for the front end ----------
 app.get("/api/config", (req, res) => {
@@ -268,9 +269,11 @@ app.post("/api/kiosk/scream", requirePin("kiosk"), async (req, res) => {
   const { loud, acc, score, won, reason } = judgeScream({ peakDb, sustainedDb, transcript, accuracyOverride }, s);
 
   let coupon = null;
-  if (won) {
+  if (won && isDemo(p)) {   // our test codes never take a real coupon from the pool: they get a made-up one with a real prize name
+    coupon = { id: null, code: "TEST" + String(Math.floor(Math.random() * 90000) + 10000), label: db.prepare("SELECT label FROM coupons WHERE claimed_by IS NULL ORDER BY id LIMIT 1").get()?.label || null };
+  } else if (won) {
     coupon = db.prepare("SELECT * FROM coupons WHERE claimed_by IS NULL ORDER BY id LIMIT 1").get();
-    if (coupon) db.prepare("UPDATE coupons SET claimed_by = ?, claimed_at = datetime('now'), activity = 'scream' WHERE id = ?").run(p.id, coupon.id);
+    if (coupon && coupon.id) db.prepare("UPDATE coupons SET claimed_by = ?, claimed_at = datetime('now'), activity = 'scream' WHERE id = ?").run(p.id, coupon.id);
   }
   const info = db.prepare("INSERT INTO scream_attempts(participant_id, peak_db, loudness, accuracy, score, transcript, won, coupon_id, station, speech, sus_db) VALUES (?,?,?,?,?,?,?,?,?,?,?)")
     .run(p.id, Number(peakDb) || null, loud, acc, score, transcript ? String(transcript).slice(0, 200) : null, won ? 1 : 0, coupon?.id || null, station || null, speechLog, Number.isFinite(Number(sustainedDb)) ? Number(sustainedDb) : null);
@@ -352,6 +355,39 @@ app.post("/api/kiosk/roast", requirePin("kiosk"), async (req, res) => {
   res.json({ token: rtoken, url: roastUrl(r), name: p.name.split(" ")[0], lang: p.lang, title: result.title, roast: result.roast, vibe: result.vibe, fallback: !!result.fallback, keys: roastKeys(result.observations), photo: `/api/roast/${rtoken}/photo`, audio: voiceEnabled() ? `/api/roast/${rtoken}/audio` : null });
 });
 
+// ---------- redeeming coupons (the Wendy's team, their own access code) ----------
+// They type a winner's code, see whose it is and what it is for, and mark it as redeemed. Only codes that were actually won can be looked up,
+// so the unused pool is never shown here.
+const redeemTries = new Map();
+app.post("/api/redeem/login", (req, res) => {
+  const ip = String(req.headers["x-forwarded-for"] || req.ip || "").split(",")[0].trim(), now = Date.now(), bad = (redeemTries.get(ip) || []).filter((t) => now - t < 5 * 60_000);
+  if (bad.length >= 8) return res.status(429).json({ error: "Too many wrong codes. Try again in a few minutes." });
+  const pin = String(req.body?.pin || "").trim();
+  if (pin && (pin === config.redeemPin || pin === config.adminPin)) { redeemTries.delete(ip); setCookie(res, "wf_redeem", pin, 7); return res.json({ ok: true }); }
+  bad.push(now); redeemTries.set(ip, bad); res.status(401).json({ error: "Wrong access code" });
+});
+const couponRow = "SELECT c.*, p.name, p.phone FROM coupons c JOIN participants p ON p.id = c.claimed_by";
+const couponView = (c) => ({ code: c.code, prize: c.label || couponSettings().valueLabel, winner: String(c.name || "").split(" ")[0], phone: maskPhone(c.phone), wonAt: slTime(c.claimed_at), redeemed: !!c.redeemed_at, redeemedAt: slTime(c.redeemed_at), note: c.redeemed_note || "" });
+const cleanCode = (v) => String(v || "").toUpperCase().replace(/[^A-Z0-9-]/g, "").slice(0, 40);
+app.get("/api/redeem/find", requirePin("redeem"), (req, res) => {
+  const c = db.prepare(couponRow + " WHERE c.code = ?").get(cleanCode(req.query.code));
+  if (!c) return res.status(404).json({ error: "This code has not been won by anyone. Check the numbers and try again." });
+  res.json(couponView(c));
+});
+app.post("/api/redeem/mark", requirePin("redeem"), (req, res) => {
+  const c = db.prepare(couponRow + " WHERE c.code = ?").get(cleanCode(req.body?.code));
+  if (!c) return res.status(404).json({ error: "This code has not been won by anyone." });
+  if (req.body?.undo) db.prepare("UPDATE coupons SET redeemed_at = NULL, redeemed_note = NULL WHERE id = ?").run(c.id);
+  else { if (c.redeemed_at) return res.status(409).json({ error: "Already redeemed", ...couponView(c) });
+    db.prepare("UPDATE coupons SET redeemed_at = datetime('now'), redeemed_note = ? WHERE id = ? AND redeemed_at IS NULL").run(String(req.body?.note || "").trim().slice(0, 80) || null, c.id); }
+  console.log(`Coupon ${req.body?.undo ? "un-redeemed" : "redeemed"}: id ${c.id}`);
+  res.json(couponView(db.prepare(couponRow + " WHERE c.id = ?").get(c.id)));
+});
+app.get("/api/redeem/list", requirePin("redeem"), (req, res) => {
+  const rows = db.prepare(couponRow + " ORDER BY c.claimed_at DESC LIMIT 1000").all();
+  res.json({ won: rows.length, redeemed: rows.filter((c) => c.redeemed_at).length, rows: rows.map(couponView), now: slTime(new Date().toISOString().slice(0, 19).replace("T", " ")) });
+});
+
 // ---------- admin ----------
 app.post("/api/admin/login", (req, res) => {
   if (String(req.body?.pin || "") === config.adminPin) { setCookie(res, "wf_admin", config.adminPin, 7); return res.json({ ok: true }); }
@@ -407,7 +443,7 @@ app.get("/api/admin/overview", requirePin("admin"), (req, res) => {
     games: { played, notPlayed: Math.max(0, registered - played), both, screamPeople, roastPeople, screamOnly: screamPeople - both, roastOnly: roastPeople - both,
       screams: n(`SELECT COUNT(*) n FROM scream_attempts WHERE 1=1${notA}`), wins: n(`SELECT COUNT(*) n FROM scream_attempts WHERE won = 1${notA}`), winners: n(`SELECT COUNT(DISTINCT participant_id) n FROM scream_attempts WHERE won = 1${notA}`),
       roasts: n(`SELECT COUNT(*) n FROM roasts WHERE 1=1${notA}`), roastFallbacks: n(`SELECT COUNT(*) n FROM roasts WHERE fallback = 1${notA}`),
-      couponsTotal: n("SELECT COUNT(*) n FROM coupons"), couponsLeft: n("SELECT COUNT(*) n FROM coupons WHERE claimed_by IS NULL") },
+      couponsTotal: n("SELECT COUNT(*) n FROM coupons"), couponsLeft: n("SELECT COUNT(*) n FROM coupons WHERE claimed_by IS NULL"), couponsRedeemed: n("SELECT COUNT(*) n FROM coupons WHERE redeemed_at IS NOT NULL") },
     days: Object.values(days).sort((a, b) => (a.day < b.day ? 1 : -1)).slice(0, 60),
     sms: Object.values(sms),
     langs: all(`SELECT p.lang, COUNT(*) n FROM participants p WHERE 1=1${notP} GROUP BY p.lang ORDER BY n DESC`),

@@ -77,6 +77,8 @@ if (!db.prepare("PRAGMA table_info(roasts)").all().some((c) => c.name === "card_
 
 // The loudest 0.6 s of the scream in dBFS, kept so the admin page can show how many past screams would win at each difficulty level.
 if (!db.prepare("PRAGMA table_info(scream_attempts)").all().some((c) => c.name === "sus_db")) db.exec("ALTER TABLE scream_attempts ADD COLUMN sus_db REAL");
+// When the Wendy's team marked a coupon as used at the counter (the /redeem page), and an optional note such as the outlet.
+for (const c of ["redeemed_at", "redeemed_note"]) if (!db.prepare("PRAGMA table_info(coupons)").all().some((x) => x.name === c)) db.exec(`ALTER TABLE coupons ADD COLUMN ${c} TEXT`);
 // Which message each SMS was (otp, welcome, win, lose, roast), so the admin page can count them. Older rows are sorted by their wording.
 if (!db.prepare("PRAGMA table_info(sms_log)").all().some((c) => c.name === "kind")) {
   db.exec("ALTER TABLE sms_log ADD COLUMN kind TEXT");

@@ -26,7 +26,7 @@ const setCookie = (res, name, value, days = 365) => res.append("Set-Cookie", `${
 const screamSettings = () => ({ ...config.scream, ...getSetting("scream", {}) });
 const couponSettings = () => ({ ...config.coupon, ...getSetting("coupon", {}) });
 const roastSettings = () => ({ ...config.roast, ...getSetting("roast", {}) });
-const wallSettings = () => ({ on: true, seconds: 12, ...getSetting("wall", {}) });   // the LED wall: showing or paused, and seconds per roast
+const wallSettings = () => ({ on: true, seconds: 15, ...getSetting("wall", {}) });   // the LED wall: showing or paused, and seconds per roast
 
 const requirePin = (which) => (req, res, next) => {
   const c = cookies(req);
@@ -512,7 +512,7 @@ app.get("/api/admin/scream-levels", requirePin("admin"), (req, res) => {
 
 app.put("/api/admin/settings", requirePin("admin"), (req, res) => {
   const { scream, coupon, roast, wall } = req.body || {};
-  if (wall) setSetting("wall", { on: !!wall.on, seconds: clamp(Number(wall.seconds) || 12, 5, 120) });
+  if (wall) setSetting("wall", { on: !!wall.on, seconds: clamp(Number(wall.seconds) || 15, 8, 120) });
   if (scream) setSetting("scream", { ...getSetting("scream", {}), ...Object.fromEntries(Object.entries(scream).map(([k, v]) => [k, Number(v)])) });
   if (coupon) setSetting("coupon", { ...getSetting("coupon", {}), ...coupon });
   if (roast) setSetting("roast", { ...getSetting("roast", {}), ...Object.fromEntries(Object.entries(roast).map(([k, v]) => [k, Number(v)])) });

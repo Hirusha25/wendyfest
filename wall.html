@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
-<head><script>fetch("./version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwza75jv" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<head><script>fetch("./version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwzb3gfl" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] LED wall · Wendy Fest</title><link rel="icon" href="./assets/cameo.png">
-<link rel="stylesheet" href="./css/brand.css?v=mwza75jv">
+<link rel="stylesheet" href="./css/brand.css?v=mwzb3gfl">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@900&family=Barlow+Semi+Condensed:ital,wght@1,900&family=Poppins:ital,wght@1,900&display=swap">
 <style>
   /* The LED wall: approved roasts, one at a time, shuffled. The look is the owner's landscape "ROASTED." pass (Nov 2026): a dark card hanging
@@ -39,12 +39,15 @@
   .photo img { position: absolute; display: block; max-width: none; }
   .tape { position: absolute; left: 10.6em; top: 32.6em; width: 30.4em; height: 6.6em; rotate: -4.4deg; background: linear-gradient(180deg, #F2323C, #C81C25); box-shadow: 0 .6em 0 #8E1219, 0 1.4em 2em rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; z-index: 3; clip-path: polygon(1.5% 0, 100% 0, 98.5% 100%, 0 100%); }
   .tape b { font: italic 900 4.5em/1 'Barlow Semi Condensed', 'Barlow Condensed', 'Noto Sans Sinhala', 'Noto Sans Tamil', sans-serif; text-transform: uppercase; letter-spacing: .02em; color: #FFF8EC; text-shadow: 0 .06em 0 rgba(90,0,10,.6); white-space: nowrap; }
-  .wendy { position: absolute; left: -2.2em; bottom: -3.4em; width: 15.5em; height: 15.5em; object-fit: contain; z-index: 4; filter: drop-shadow(.22em 0 0 #fff) drop-shadow(-.22em 0 0 #fff) drop-shadow(0 .22em 0 #fff) drop-shadow(0 -.22em 0 #fff); }
+  /* Wendy looks in from the bottom left corner. Her picture is a crop (cut flat at the top, the bottom and one side), so it is turned to put the cut side and the
+     bottom under the card's edge, and the flat top of her hair is rounded off with a mask; the white outline is drawn after that, so it follows the smooth shape. */
+  .wendy { position: absolute; left: -.5em; bottom: -4.6em; width: 16.5em; height: 16.5em; z-index: 4; filter: drop-shadow(.2em 0 0 #fff) drop-shadow(-.2em 0 0 #fff) drop-shadow(0 .2em 0 #fff) drop-shadow(0 -.2em 0 #fff) drop-shadow(.3em .5em .5em rgba(0,0,0,.35)); }
+  .wendy img { display: block; width: 100%; height: 100%; transform: scaleX(-1); -webkit-mask: radial-gradient(ellipse 43% 41% at 69% 49%, #000 99.2%, transparent 100%), linear-gradient(#000, #000) 0 100% / 100% 51% no-repeat; mask: radial-gradient(ellipse 43% 41% at 69% 49%, #000 99.2%, transparent 100%), linear-gradient(#000, #000) 0 100% / 100% 51% no-repeat; }
 
   /* right side: logos, ROASTED., the roast on strips, the hashtag */
   .logos { position: absolute; left: 44em; width: 44.5em; top: 1.5em; height: 7.2em; display: flex; align-items: center; justify-content: center; gap: 1.5em; z-index: 3; }
   .logos img.w { height: 4.9em; } .logos i { width: .14em; height: 4.6em; background: rgba(255,255,255,.5); } .logos img.f { height: 6.9em; }
-  .roasted { position: absolute; left: 43.4em; width: 47em; top: 8.6em; height: 17em; z-index: 3; display: flex; align-items: center; justify-content: center; }
+  .roasted { position: absolute; left: 43.4em; width: 47em; top: 9.4em; height: 17em; z-index: 3; display: flex; align-items: center; justify-content: center; rotate: -4.4deg; }   /* leans with the band and the strips: the right side rides up a little (owner) */
   .roasted b { display: block; font: italic 900 12.3em/.86 'Barlow Semi Condensed', 'Barlow Condensed', sans-serif; letter-spacing: -.012em; transform: scaleY(1.32); white-space: nowrap; color: #E3202B;
     background: linear-gradient(180deg, #FF4651 0%, #E3202B 52%, #BE1A23 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; -webkit-text-stroke: .012em rgba(255,255,255,.75);
     filter: drop-shadow(.022em .03em 0 #7E1016) drop-shadow(.022em .03em 0 #4E0A0E) drop-shadow(0 .09em .1em rgba(0,0,0,.5)); padding: 0 .08em; }
@@ -53,6 +56,29 @@
   .strips span:nth-child(odd) { rotate: -.5deg; translate: -.3em 0; } .strips span:nth-child(even) { rotate: .45deg; translate: .35em 0; }
   .strips span.last { color: #fff; background: linear-gradient(180deg, #2BB6F2, #0C8FD3); box-shadow: .1em .12em 0 #06527E; }
   .tag { position: absolute; right: 1.2em; bottom: .62em; font: italic 900 3em/1 Poppins, sans-serif; color: #fff; text-shadow: 0 .09em 0 #7E1016, 0 .2em .4em rgba(0,0,0,.5); z-index: 3; }
+
+  /* Colours (owner, Nov 2026): the same pass in four colours, changed at random from roast to roast. "dark" is the base look above;
+     the others only repaint it. The stage behind turns blue for the red pass, so the card never sits on its own colour. */
+  #bg { transition: filter .8s ease; }
+  #bg2 { position: fixed; inset: 0; opacity: 0; transition: opacity .8s ease; background: radial-gradient(120% 90% at 50% 40%, #2BB6F2 0%, #0C8FD3 45%, #075E8F 100%); }
+  body[data-theme="red"] #bg2 { opacity: 1; }
+  .t-blue .pcard { background: linear-gradient(150deg, #33BDF5 0%, #0C8FD3 50%, #0A6FA6 100%); }
+  .t-blue .pcard::before, .t-red .pcard::before { background-image: radial-gradient(circle, #fff .17em, transparent .2em); opacity: .3; }
+  .t-blue .roasted b, .t-red .roasted b { background: linear-gradient(180deg, #FFFFFF 0%, #FFF8EC 55%, #EFE3D0 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-stroke: 0; }
+  .t-blue .roasted b { filter: drop-shadow(.022em .03em 0 #C41E26) drop-shadow(.022em .03em 0 #7E1016) drop-shadow(0 .09em .1em rgba(0,40,70,.5)); }
+  .t-blue .strips span.last { background: linear-gradient(180deg, #F2323C, #C81C25); box-shadow: .1em .12em 0 #7E1016; }
+  .t-blue .tag { text-shadow: 0 .09em 0 #075E8F, 0 .2em .4em rgba(0,30,60,.5); }
+  .t-red .pcard { background: linear-gradient(150deg, #F2414B 0%, #D01E27 50%, #A3151D 100%); }
+  .t-red .band { background: linear-gradient(180deg, #2A2424, #121010); }
+  .t-red .roasted b { filter: drop-shadow(.022em .03em 0 #7E1016) drop-shadow(.022em .03em 0 #4E0A0E) drop-shadow(0 .09em .1em rgba(60,0,8,.55)); }
+  .t-red .tape { background: linear-gradient(180deg, #2E2828, #141111); box-shadow: 0 .6em 0 #000, 0 1.4em 2em rgba(0,0,0,.45); }
+  .t-paper .pcard { background: linear-gradient(150deg, #FFFBF3 0%, #F3EADA 50%, #E4D8C2 100%); border-color: #fff; }
+  .t-paper .pcard::before { opacity: .55; }
+  .t-paper .logos i { background: rgba(25,22,22,.45); }
+  .t-paper .strips span { color: #FFF8EC; background: linear-gradient(180deg, #2E2828, #141111); box-shadow: .1em .12em 0 rgba(0,0,0,.3); }
+  .t-paper .strips span.last { background: linear-gradient(180deg, #2BB6F2, #0C8FD3); box-shadow: .1em .12em 0 #06527E; color: #fff; }
+  .t-paper .tag { color: #C81C25; text-shadow: 0 .06em 0 rgba(255,255,255,.9); }
+  .t-paper .photo { background: linear-gradient(160deg, #2E2828, #141111); }
 
   /* everything arrives in order: photo, name, ROASTED. stamps in, then the roast line by line */
   .slide.on .photo { animation: popIn .7s cubic-bezier(.2, 1.3, .4, 1) .15s both; } .slide.on .tape { animation: slideIn .5s ease .55s both; } .slide.on .wendy { animation: peek .7s cubic-bezier(.2, 1.4, .4, 1) .9s both; }
@@ -74,21 +100,25 @@
 </style>
 </head>
 <body>
-  <div id="bg"></div><div id="top"></div>
+  <div id="bg"></div><div id="bg2"></div><div id="top"></div>
   <div class="stage"><div class="slide" id="s0"></div><div class="slide" id="s1"></div></div>
   <div id="hold"><img src="./assets/wendys-horiz-white.svg" alt="Wendy's"><div class="ttl">Roast Me</div><div class="body">Fresh roasts coming up on this screen.</div></div>
   <div id="pinbox"><div class="card stack" style="width:min(90vw,380px)"><div class="eyebrow">Kiosk PIN</div><input class="input" id="pin" type="password" inputmode="numeric"><button class="btn block" id="pin-go">Open the wall</button></div></div>
   <template id="lany"><svg class="lany" viewBox="0 0 120 140" aria-hidden="true"><defs><linearGradient id="wlyS" x1="0" x2="1"><stop offset="0" stop-color="#1668AE"/><stop offset=".18" stop-color="#2F93DE"/><stop offset=".5" stop-color="#46A8EE"/><stop offset=".82" stop-color="#2F93DE"/><stop offset="1" stop-color="#1668AE"/></linearGradient><pattern id="wlyW" width="4" height="4" patternUnits="userSpaceOnUse"><path d="M0 4L4 0M-1 1L1 -1M3 5L5 3" stroke="#0E4F8A" stroke-width=".9" opacity=".5"/><path d="M0 0L4 4" stroke="#8FD0FF" stroke-width=".5" opacity=".35"/></pattern><linearGradient id="wlyM" x1="0" x2="1"><stop offset="0" stop-color="#8B949C"/><stop offset=".22" stop-color="#F7F9FA"/><stop offset=".5" stop-color="#B9C1C8"/><stop offset=".78" stop-color="#F2F5F7"/><stop offset="1" stop-color="#7C858D"/></linearGradient><linearGradient id="wlyB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FDFEFE"/><stop offset=".45" stop-color="#C3CAD0"/><stop offset="1" stop-color="#8A939B"/></linearGradient></defs><rect x="24" y="110" width="72" height="30" rx="9" fill="#F6F0E6" stroke="rgba(0,0,0,.2)" stroke-width="1"/><rect x="39" y="119" width="42" height="13" rx="6" fill="#211C1C"/><rect x="26" y="0" width="68" height="42" fill="url(#wlyS)"/><rect x="26" y="0" width="68" height="42" fill="url(#wlyW)"/><rect x="26" y="26" width="68" height="16" fill="#0E4F8A" opacity=".28"/><path d="M30 28H90M30 39H90" stroke="#BFE3FF" stroke-width="1.2" stroke-dasharray="3 2.4" opacity=".85"/><path d="M28 42H92A27 27 0 0 1 65 70H55A27 27 0 0 1 28 42Z" fill="none" stroke="#3E464D" stroke-width="11" stroke-linejoin="round" opacity=".3" transform="translate(0 3)"/><path d="M28 42H92A27 27 0 0 1 65 70H55A27 27 0 0 1 28 42Z" fill="none" stroke="url(#wlyM)" stroke-width="9" stroke-linejoin="round"/><rect x="26" y="33" width="68" height="13" fill="url(#wlyS)"/><rect x="26" y="33" width="68" height="13" fill="url(#wlyW)"/><rect x="49" y="70" width="22" height="12" rx="4" fill="url(#wlyM)" stroke="#6F7880" stroke-width=".8"/><ellipse cx="60" cy="72" rx="9" ry="3" fill="#EEF1F3" opacity=".9"/><path d="M41 84Q41 80 45 80H75Q79 80 79 84V120Q79 128 71 128H49Q41 128 41 120Z" fill="url(#wlyB)" stroke="#6F7880" stroke-width="1"/><path d="M46 85H60V123H50Q46 123 46 119Z" fill="#fff" opacity=".45"/><rect x="50" y="113" width="20" height="5" rx="2.5" fill="#7C858D" opacity=".55"/></svg></template>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js?v=mwza75jv"></script><script src="./js/app.js?v=mwza75jv"></script><script src="./js/roast-card.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js?v=mwzb3gfl"></script><script src="./js/app.js?v=mwzb3gfl"></script><script src="./js/roast-card.js"></script>
 <script>
   const $ = (id) => document.getElementById(id), esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   let LIST = [], QUEUE = [], SECONDS = 12, cur = 0, last = "", timer = null, started = false;
+  // The pass changes colour from roast to roast: all four are used once, in a random order, before any comes round again. ?theme=blue (or dark, red, paper) holds one colour, for checking.
+  const THEMES = ["dark", "blue", "red", "paper"], HOLD = new URLSearchParams(location.search).get("theme"); let themeBag = [], lastTheme = "";
+  function nextTheme() { if (THEMES.includes(HOLD)) return HOLD; if (!themeBag.length) { themeBag = THEMES.slice().sort(() => Math.random() - .5); if (themeBag[0] === lastTheme) themeBag.push(themeBag.shift()); } return (lastTheme = themeBag.shift()); }
   const em = () => parseFloat(getComputedStyle(document.querySelector(".stage")).fontSize);
   function draw(el, r) {
-    const lang = r.roast[r.lang] ? r.lang : "en";
+    const lang = r.roast[r.lang] ? r.lang : "en", theme = nextTheme();
+    el.className = "slide t-" + theme + (el.classList.contains("on") ? " on" : ""); el.dataset.theme = theme;
     el.innerHTML = `<div class="pass">${$("lany").innerHTML}<div class="pcard"><div class="band"></div>
-      <div class="photo"><div class="win"><img src="${esc(r.photo)}" alt=""></div></div><div class="tape"><b>${esc(r.name)}</b></div><img class="wendy" src="./assets/roast-wendy.png" alt="">
-      <div class="logos"><img class="w" src="./assets/wendys-horiz-white.svg" alt="Wendy's"><i></i><img class="f" src="./assets/wendyfest-logo.png" alt="Wendy Fest"></div>
+      <div class="photo"><div class="win"><img src="${esc(r.photo)}" alt=""></div></div><div class="tape"><b>${esc(r.name)}</b></div><div class="wendy"><img src="./assets/roast-wendy.png" alt=""></div>
+      <div class="logos"><img class="w" src="./assets/${theme === "paper" ? "wendys-horiz.svg" : "wendys-horiz-white.svg"}" alt="Wendy's"><i></i><img class="f" src="./assets/wendyfest-logo.png" alt="Wendy Fest"></div>
       <div class="roasted"><b>ROASTED.</b></div><div class="strips"></div><div class="tag">#RoastedByWendy</div></div><div class="sheen"></div></div>`;
     el.querySelector(".win img").onload = () => frame(el, r);   // in case the picture was not ready yet
     frame(el, r); strips(el, r.roast[lang]); fitName(el);
@@ -131,7 +161,7 @@
     clearTimeout(timer);
     if (!LIST.length) { started = false; $("hold").classList.add("on"); $("s0").classList.remove("on"); $("s1").classList.remove("on"); return; }
     const r = nextRoast(); if (!r) return; last = r.token;
-    const img = new Image(), go = () => { const el = $("s" + (cur ^= 1)), old = $("s" + (cur ^ 1)); draw(el, r); $("hold").classList.remove("on"); old.classList.remove("on"); el.classList.add("on"); started = true; timer = setTimeout(show, SECONDS * 1000); };
+    const img = new Image(), go = () => { const el = $("s" + (cur ^= 1)), old = $("s" + (cur ^ 1)); draw(el, r); $("hold").classList.remove("on"); old.classList.remove("on"); el.classList.add("on"); document.body.dataset.theme = el.dataset.theme; started = true; timer = setTimeout(show, SECONDS * 1000); };
     img.onload = () => findFocus(r).then(go); img.onerror = () => { timer = setTimeout(show, 600); }; img.src = r.photo;   // a photo that will not load is skipped
   }
   async function refresh() {

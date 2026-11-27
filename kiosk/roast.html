@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
-<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwza75jv" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwzb3gfl" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Roast Me · Wendy Fest</title><link rel="icon" href="../assets/cameo.png"><link rel="manifest" href="../assets/roast.webmanifest"><meta name="theme-color" content="#1593D6"><meta name="mobile-web-app-capable" content="yes">
-<link rel="stylesheet" href="../css/brand.css?v=mwza75jv"><link rel="stylesheet" href="../css/kiosk.css?v=mwza75jv">
+<link rel="stylesheet" href="../css/brand.css?v=mwzb3gfl"><link rel="stylesheet" href="../css/kiosk.css?v=mwzb3gfl">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@600;700&family=Barlow+Semi+Condensed:ital,wght@1,900&display=swap" rel="stylesheet">
 <style>
   body.kiosk { background: var(--ink); }
@@ -348,6 +348,10 @@
   .cv .swatch button[data-c="dark"] { background:linear-gradient(160deg, #3A3434, #0D0B0B); } .cv .swatch button[data-c="red"] { background:linear-gradient(160deg, #EA3640, #B01A22); }
   .cv .swatch button.on { transform:scale(1.18); box-shadow:0 0 0 calc(4 * var(--p)) #1E1B1B, 0 0 0 calc(8 * var(--p)) #fff, 0 calc(10 * var(--p)) calc(16 * var(--p)) rgba(0,0,0,.35); }
   .cv .swatch button:active { transform:scale(.94); }
+  /* until the guest picks a colour, the circles take turns to press in and pop, one after another, so it is clear they can be tapped (owner) */
+  .cv .swatch.hint button { animation:swTap 2.8s ease-in-out infinite; } .cv .swatch.hint button:nth-of-type(2) { animation-delay:.45s; } .cv .swatch.hint button:nth-of-type(3) { animation-delay:.9s; } .cv .swatch.hint button:nth-of-type(4) { animation-delay:1.35s; }
+  @keyframes swTap { 0%, 22%, 100% { scale:1; filter:none; } 6% { scale:.82; } 13% { scale:1.24; filter:brightness(1.15) drop-shadow(0 0 calc(10 * var(--p)) rgba(255,255,255,.9)); } }
+  @media (prefers-reduced-motion: reduce) { .cv .swatch.hint button { animation:none; } }
   /* the card swings in on its lanyard when the roast appears, settles, then keeps swaying gently. It turns about the top of the strap. */
   #s-reveal .pcard { transform-origin:50% -14%; }
   #s-reveal.on .pcard { animation:cardIn 2.8s cubic-bezier(.3, .6, .35, 1) both, cardSway 5.6s ease-in-out 2.8s infinite alternate, cardTurn 7.4s ease-in-out infinite alternate; }
@@ -685,7 +689,7 @@
     </div><img id="r-card" class="rcard" alt=""></div>
     <div class="rsave" style="left:calc(1340 * var(--p));top:calc(226 * var(--p))">Scan to<br>save</div>
     <div class="qrs" style="left:calc(1340 * var(--p));top:calc(376 * var(--p))"><img id="qr-roast" alt="QR"></div>
-    <div class="swatch" id="swatch" style="left:calc(1340 * var(--p));top:calc(772 * var(--p))"><span>Card colour</span><button data-c="paper" aria-label="Beige"></button><button data-c="blue" aria-label="Blue"></button><button data-c="dark" aria-label="Black"></button><button data-c="red" aria-label="Red"></button></div>
+    <div class="swatch hint" id="swatch" style="left:calc(1340 * var(--p));top:calc(772 * var(--p))"><span>Card colour</span><button data-c="paper" aria-label="Beige"></button><button data-c="blue" aria-label="Blue"></button><button data-c="dark" aria-label="Black"></button><button data-c="red" aria-label="Red"></button></div>
     <div class="qnote" style="left:calc(1340 * var(--p));top:calc(706 * var(--p));width:calc(480 * var(--p))">Download and share. Also sent to your phone by SMS.</div>
     <button class="nextb" style="left:calc(1340 * var(--p));top:calc(838 * var(--p));width:calc(487 * var(--p));height:calc(110 * var(--p))" onclick="goIdle()">Next guest<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg></button>
   </div></section>
@@ -702,7 +706,7 @@
 <!-- sounds: effects and Wendy's pre-recorded waiting lines (made with ElevenLabs, in Wendy's voice) -->
 <audio id="sfx-start" src="../assets/sfx/start.mp3" preload="auto"></audio><audio id="sfx-coin" src="../assets/sfx/coin.mp3" preload="auto"></audio><audio id="sfx-spray" src="../assets/sfx/spray.mp3" preload="auto"></audio><audio id="sfx-switch" src="../assets/sfx/switch.mp3" preload="auto"></audio><audio id="sfx-card" src="../assets/sfx/card.mp3" preload="auto"></audio><audio id="sfx-pop" src="../assets/sfx/pop.mp3" preload="auto"></audio><audio id="sfx-ding" src="../assets/sfx/ding.mp3" preload="auto"></audio><audio id="sfx-tap" src="../assets/sfx/tap.mp3" preload="auto"></audio><audio id="sfx-key" src="../assets/sfx/key.mp3" preload="auto"></audio><audio id="sfx-delete" src="../assets/sfx/delete.mp3" preload="auto"></audio><audio id="sfx-go" src="../assets/sfx/go.mp3" preload="auto"></audio><audio id="sfx-error" src="../assets/sfx/error.mp3" preload="auto"></audio><audio id="sfx-whoosh" src="../assets/sfx/whoosh.mp3" preload="auto"></audio><audio id="sfx-beep" src="../assets/sfx/beep.mp3" preload="auto"></audio><audio id="sfx-shutter" src="../assets/sfx/shutter.mp3" preload="auto"></audio><audio id="sfx-sizzle" src="../assets/sfx/sizzle.mp3" preload="auto"></audio><audio id="sfx-reveal" src="../assets/sfx/reveal.mp3" preload="auto"></audio>
 <div id="lip-frames" hidden><img src="../assets/lip/mouth-0.webp" alt=""><img src="../assets/lip/mouth-1.webp" alt=""><img src="../assets/lip/mouth-2.webp" alt=""><img src="../assets/lip/mouth-3.webp" alt=""><img src="../assets/lip/mouth-4.webp" alt=""><img src="../assets/lip/mouth-5.webp" alt=""></div><audio id="vo-steps" src="../assets/voice/steps.mp3" preload="auto"></audio><audio id="vo-heat" src="../assets/voice/heat.mp3" preload="auto"></audio><audio id="vo-wait-1" src="../assets/voice/wait-1.mp3" preload="auto"></audio><audio id="vo-wait-2" src="../assets/voice/wait-2.mp3" preload="auto"></audio><audio id="vo-wait-3" src="../assets/voice/wait-3.mp3" preload="auto"></audio><audio id="vo-wait-4" src="../assets/voice/wait-4.mp3" preload="auto"></audio><audio id="vo-wait-5" src="../assets/voice/wait-5.mp3" preload="auto"></audio><audio id="vo-wait-6" src="../assets/voice/wait-6.mp3" preload="auto"></audio><audio id="vo-wait-7" src="../assets/voice/wait-7.mp3" preload="auto"></audio><audio id="vo-wait-8" src="../assets/voice/wait-8.mp3" preload="auto"></audio><audio id="vo-here" src="../assets/voice/here-it-comes.mp3" preload="auto"></audio>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwza75jv"></script><script src="../js/i18n.js?v=mwza75jv"></script><script src="../js/kiosk.js"></script><script src="../js/roast-card.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwzb3gfl"></script><script src="../js/i18n.js?v=mwzb3gfl"></script><script src="../js/kiosk.js"></script><script src="../js/roast-card.js"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let guest = null, stream = null, glang = "en", R = null, BASE = location.origin;
@@ -752,15 +756,15 @@
     setTimeout(() => { if (voice === a) a.play().catch(() => {}); }, Math.max(0, (R.voiceAt || 0) - Date.now()));
   }
   // card colour picked with the circles; saved with the roast so the phone download matches
-  let cardTheme = "dark";
+  let cardTheme = "paper";   // the card starts beige (owner, Nov 2026); the guest can change it with the circles
   function setCardTheme(c, save) {
     cardTheme = c; document.body.dataset.card = c; document.querySelectorAll("#swatch button").forEach((b) => b.classList.toggle("on", b.dataset.c === c));
     if (!save || !R) return;
     const on = document.querySelector(".rtabs button.on"); paintReveal(on ? on.dataset.l : glang); K.resetIdle(75000, goIdle);
     fetch(`/api/roast/${R.token}/theme`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ theme: c }) }).catch(() => {});
   }
-  document.querySelectorAll("#swatch button").forEach((b) => b.onclick = () => setCardTheme(b.dataset.c, true)); setCardTheme("dark");
-  function goIdle() { setCardTheme("dark"); stopVoice(); stopTalk(); sizzleOn(false); K.resetIdle(0); setHeat("medium"); guest = null; R = null; $("code").value = ""; paintCode(); $("code-msg").textContent = ""; K.show("s-idle"); }
+  document.querySelectorAll("#swatch button").forEach((b) => b.onclick = () => { $("swatch").classList.remove("hint"); setCardTheme(b.dataset.c, true); }); setCardTheme("paper");
+  function goIdle() { setCardTheme("paper"); $("swatch").classList.add("hint"); stopVoice(); stopTalk(); sizzleOn(false); K.resetIdle(0); setHeat("medium"); guest = null; R = null; $("code").value = ""; paintCode(); $("code-msg").textContent = ""; K.show("s-idle"); }
   document.addEventListener("kiosk-home", goIdle);
   $("start").onclick = () => { K.show("s-code"); $("code").focus(); startCam(); };
   // code screen: 3 numbers then 2 letters (for example 482 KT). The pad shows numbers first and switches to letters by itself.

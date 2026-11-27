@@ -1,10 +1,10 @@
 <!doctype html>
 <html lang="en">
-<head><script>fetch("./version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwza75jv" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<head><script>fetch("./version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwzb3gfl" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>[DEMO] Roasted by Wendy's · Wendy Fest</title><meta name="theme-color" content="#CD2028"><link rel="icon" href="./assets/cameo.png">
 <meta property="og:title" content="I just got roasted by Wendy's 🔥"><meta property="og:description" content="Wendy Fest · Sri Lanka">
-<link rel="stylesheet" href="./css/guest.css?v=mwza75jv">
+<link rel="stylesheet" href="./css/guest.css?v=mwzb3gfl">
 <style>
   /* the roast card hangs from a lanyard, sways and turns a little, like on the kiosk */
   .hang { position:relative; width:min(74vw, 310px); margin:64px auto 0; transform-origin:50% -14%; animation:hangIn 2.8s cubic-bezier(.3, .6, .35, 1) both, hangSway 5.6s ease-in-out 2.8s infinite alternate, hangTurn 7.4s ease-in-out infinite alternate; }
@@ -61,6 +61,10 @@
   .lower .two .btn:not(.outline) { box-shadow:0 5px 0 #7E0F16; }
   .lower a.link { display:inline-block; padding:12px 0 4px; color:#fff; opacity:.8; }
   .body + .brandfoot { margin-top:0; } .brandfoot, .brandfoot * { background-color:#0590C6; color:#fff; }
+  /* until a colour is picked, the circles take turns to press in and pop, so it is clear they can be tapped (owner) */
+  #swatch.hint button { animation:swTap 2.8s ease-in-out infinite; } #swatch.hint button:nth-of-type(2) { animation-delay:.45s; } #swatch.hint button:nth-of-type(3) { animation-delay:.9s; } #swatch.hint button:nth-of-type(4) { animation-delay:1.35s; }
+  @keyframes swTap { 0%, 22%, 100% { scale:1; filter:none; } 6% { scale:.82; } 13% { scale:1.24; filter:brightness(1.15) drop-shadow(0 0 8px rgba(255,255,255,.9)); } }
+  @media (prefers-reduced-motion: reduce) { #swatch.hint button { animation:none; } }
 </style>
 </head>
 <body>
@@ -71,7 +75,7 @@
   <main class="body">
    <div class="stage">
     <div class="hang"><svg class="lany" viewBox="0 0 120 140" aria-hidden="true"><defs><linearGradient id="lyS" x1="0" x2="1"><stop offset="0" stop-color="#1668AE"/><stop offset=".18" stop-color="#2F93DE"/><stop offset=".5" stop-color="#46A8EE"/><stop offset=".82" stop-color="#2F93DE"/><stop offset="1" stop-color="#1668AE"/></linearGradient><pattern id="lyW" width="4" height="4" patternUnits="userSpaceOnUse"><path d="M0 4L4 0M-1 1L1 -1M3 5L5 3" stroke="#0E4F8A" stroke-width=".9" opacity=".5"/><path d="M0 0L4 4" stroke="#8FD0FF" stroke-width=".5" opacity=".35"/></pattern><linearGradient id="lyM" x1="0" x2="1"><stop offset="0" stop-color="#8B949C"/><stop offset=".22" stop-color="#F7F9FA"/><stop offset=".5" stop-color="#B9C1C8"/><stop offset=".78" stop-color="#F2F5F7"/><stop offset="1" stop-color="#7C858D"/></linearGradient><linearGradient id="lyB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FDFEFE"/><stop offset=".45" stop-color="#C3CAD0"/><stop offset="1" stop-color="#8A939B"/></linearGradient></defs><rect x="24" y="110" width="72" height="30" rx="9" fill="#F6F0E6" stroke="rgba(0,0,0,.2)" stroke-width="1"/><rect x="39" y="119" width="42" height="13" rx="6" fill="#211C1C"/><rect x="26" y="0" width="68" height="42" fill="url(#lyS)"/><rect x="26" y="0" width="68" height="42" fill="url(#lyW)"/><rect x="26" y="26" width="68" height="16" fill="#0E4F8A" opacity=".28"/><path d="M30 28H90M30 39H90" stroke="#BFE3FF" stroke-width="1.2" stroke-dasharray="3 2.4" opacity=".85"/><path d="M28 42H92A27 27 0 0 1 65 70H55A27 27 0 0 1 28 42Z" fill="none" stroke="#3E464D" stroke-width="11" stroke-linejoin="round" opacity=".3" transform="translate(0 3)"/><path d="M28 42H92A27 27 0 0 1 65 70H55A27 27 0 0 1 28 42Z" fill="none" stroke="url(#lyM)" stroke-width="9" stroke-linejoin="round"/><rect x="26" y="33" width="68" height="13" fill="url(#lyS)"/><rect x="26" y="33" width="68" height="13" fill="url(#lyW)"/><rect x="49" y="70" width="22" height="12" rx="4" fill="url(#lyM)" stroke="#6F7880" stroke-width=".8"/><ellipse cx="60" cy="72" rx="9" ry="3" fill="#EEF1F3" opacity=".9"/><path d="M41 84Q41 80 45 80H75Q79 80 79 84V120Q79 128 71 128H49Q41 128 41 120Z" fill="url(#lyB)" stroke="#6F7880" stroke-width="1"/><path d="M46 85H60V123H50Q46 123 46 119Z" fill="#fff" opacity=".45"/><rect x="50" y="113" width="20" height="5" rx="2.5" fill="#7C858D" opacity=".55"/></svg><img class="hcard" id="photo" alt="Your roast card"></div>
-    <div class="swatch" id="swatch"><span>Card colour</span><button data-c="paper" aria-label="Beige"></button><button data-c="blue" aria-label="Blue"></button><button data-c="dark" aria-label="Black"></button><button data-c="red" aria-label="Red"></button></div>
+    <div class="swatch hint" id="swatch"><span>Card colour</span><button data-c="paper" aria-label="Beige"></button><button data-c="blue" aria-label="Blue"></button><button data-c="dark" aria-label="Black"></button><button data-c="red" aria-label="Red"></button></div>
     <svg class="wave" viewBox="0 0 390 64" preserveAspectRatio="none" aria-hidden="true"><path d="M0 40 C 80 14, 190 66, 390 20 L390 64 L0 64Z" fill="#141111"/><path d="M0 40 C 80 14, 190 66, 390 20" fill="none" stroke="#fff" stroke-width="5"/><path d="M0 28 C 80 2, 190 54, 390 8" fill="none" stroke="#fff" stroke-width="1.6" opacity=".85"/></svg>
    </div>
    <div class="lower">
@@ -88,7 +92,7 @@
   </main>
   <div id="foot"></div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js?v=mwza75jv"></script><script src="./js/i18n.js?v=mwza75jv"></script><script src="./js/app.js"></script><script src="./js/roast-card.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js?v=mwzb3gfl"></script><script src="./js/i18n.js?v=mwzb3gfl"></script><script src="./js/app.js"></script><script src="./js/roast-card.js"></script>
 <script>
   document.getElementById("foot").outerHTML = brandFoot();
   const card = async () => { try { return await roastCard(R, window.lang, R.theme); } catch (e) { console.warn(e); return renderRoastCard(R, window.lang); } };
@@ -111,7 +115,7 @@
     sw.querySelectorAll("button").forEach((b) => b.classList.toggle("on", b.dataset.c === R.theme)); sw.classList.add("busy");
     card().then((c) => { if (job === drawJob) { img.src = c.toDataURL("image/jpeg", .9); hang.classList.remove("wait"); } }).catch((e) => console.warn(e)).finally(() => { if (job === drawJob) sw.classList.remove("busy"); });
   }
-  document.querySelectorAll("#swatch button").forEach((b) => b.onclick = () => { if (!R) return; R.theme = b.dataset.c; drawCard();
+  document.querySelectorAll("#swatch button").forEach((b) => b.onclick = () => { if (!R) return; document.getElementById("swatch").classList.remove("hint"); R.theme = b.dataset.c; drawCard();
     fetch(`/api/roast/${token}/theme`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ theme: R.theme }) }).catch(() => {}); });
   document.querySelectorAll("#tabs button").forEach((b) => b.onclick = () => setLang(b.dataset.l));
   document.addEventListener("langchange", paint);

@@ -26,6 +26,8 @@ const setCookie = (res, name, value, days = 365) => res.append("Set-Cookie", `${
 const screamSettings = () => ({ ...config.scream, ...getSetting("scream", {}) });
 const couponSettings = () => ({ ...config.coupon, ...getSetting("coupon", {}) });
 const roastSettings = () => ({ ...config.roast, ...getSetting("roast", {}) });
+const clawSettings = () => ({ ...config.claw, ...getSetting("claw", {}) });
+const clawsFor = db.prepare("SELECT * FROM claw_attempts WHERE participant_id = ? ORDER BY id DESC");
 const wallSettings = () => ({ on: true, seconds: 15, ...getSetting("wall", {}) });   // the LED wall: showing or paused, and seconds per roast
 
 const requirePin = (which) => (req, res, next) => {
@@ -88,13 +90,14 @@ app.get("/kiosk/scream", (req, res) => res.sendFile(page("kiosk/scream.html")));
 app.get("/kiosk/scream-cream", (req, res) => res.redirect("/kiosk/scream"));   // old address of the final design
 app.get("/kiosk/scream-dark", (req, res) => res.sendFile(page("kiosk/scream-dark.html")));   // earlier dark design, kept as a spare
 app.get("/kiosk/roast", (req, res) => res.sendFile(page("kiosk/roast.html")));
+app.get("/kiosk/claw", (req, res) => res.sendFile(page("kiosk/claw.html")));   // game 3: Wendy's Claw
 app.get("/admin", (req, res) => res.sendFile(page("admin.html")));
 app.get("/wall", (req, res) => res.sendFile(page("wall.html")));   // the LED wall: approved roasts, shuffled
 app.get("/redeem", (req, res) => res.sendFile(page("redeem.html")));   // the Wendy's team marks coupons as redeemed here
 
 // ---------- config for the front end ----------
 app.get("/api/config", (req, res) => {
-  res.json({ baseUrl: config.baseUrl, coupon: couponSettings(), scream: { ...screamSettings(), stt: hearEnabled() }, roast: { attemptsPerPerson: roastSettings().attemptsPerPerson } });
+  res.json({ baseUrl: config.baseUrl, coupon: couponSettings(), scream: { ...screamSettings(), stt: hearEnabled() }, roast: { attemptsPerPerson: roastSettings().attemptsPerPerson }, claw: clawSettings() });
 });
 
 // QR as SVG
@@ -231,6 +234,7 @@ app.post("/api/kiosk/lookup", requirePin("kiosk"), (req, res) => {
     name: p.name, firstName: p.name.split(" ")[0], lang: p.lang, code: p.code,
     screamsUsed: isDemo(p) ? 0 : screams.length, screamsLeft: isDemo(p) ? 1 : Math.max(0, screamSettings().attemptsPerPerson - screams.length),
     roastsUsed: isDemo(p) ? 0 : roasts.length, roastsLeft: isDemo(p) ? 1 : Math.max(0, roastSettings().attemptsPerPerson - roasts.length),
+    clawsUsed: isDemo(p) ? 0 : clawsFor.all(p.id).length, clawsLeft: isDemo(p) ? 1 : Math.max(0, clawSettings().attemptsPerPerson - clawsFor.all(p.id).length),
     alreadyWon: !isDemo(p) && screams.some((s) => s.won), profileUrl: profileUrl(p),
   });
 });
@@ -303,6 +307,17 @@ app.post("/api/kiosk/scream", requirePin("kiosk"), async (req, res) => {
     coupon: coupon ? { code: coupon.code, label } : null, couponPoolEmpty: won && !coupon,
     profileUrl: profileUrl(p), attemptsLeft: isDemo(p) ? 1 : Math.max(0, s.attemptsPerPerson - used.length - 1),
   });
+});
+
+// Wendy's Claw: the kiosk reports how the round ended. Nothing is judged here (it is a memory game played on the screen); the result is kept for the numbers page.
+app.post("/api/kiosk/claw", requirePin("kiosk"), (req, res) => {
+  const { code, matched, won, msLeft, tookMs, station } = req.body || {};
+  const p = participantByCode.get(String(code || "").toUpperCase());
+  if (!p) return res.status(404).json({ error: "code not found" });
+  if (!isDemo(p) && clawsFor.all(p.id).length >= clawSettings().attemptsPerPerson) return res.status(409).json({ error: "This guest has already played" });
+  const m = clamp(Math.round(Number(matched) || 0), 0, 3), w = m === 3 && !!won;
+  const info = db.prepare("INSERT INTO claw_attempts(participant_id, matched, won, ms_left, took_ms, station) VALUES (?,?,?,?,?,?)").run(p.id, m, w ? 1 : 0, clamp(Math.round(Number(msLeft) || 0), 0, 600000), clamp(Math.round(Number(tookMs) || 0), 0, 600000), station ? String(station).slice(0, 40) : null);
+  res.json({ ok: true, id: info.lastInsertRowid, matched: m, won: w });
 });
 
 // Waiting-screen lines about this guest's photo, asked for alongside the roast. Stores nothing; always answers 200.
@@ -443,7 +458,8 @@ app.get("/api/admin/overview", requirePin("admin"), (req, res) => {
     games: { played, notPlayed: Math.max(0, registered - played), both, screamPeople, roastPeople, screamOnly: screamPeople - both, roastOnly: roastPeople - both,
       screams: n(`SELECT COUNT(*) n FROM scream_attempts WHERE 1=1${notA}`), wins: n(`SELECT COUNT(*) n FROM scream_attempts WHERE won = 1${notA}`), winners: n(`SELECT COUNT(DISTINCT participant_id) n FROM scream_attempts WHERE won = 1${notA}`),
       roasts: n(`SELECT COUNT(*) n FROM roasts WHERE 1=1${notA}`), roastFallbacks: n(`SELECT COUNT(*) n FROM roasts WHERE fallback = 1${notA}`),
-      couponsTotal: n("SELECT COUNT(*) n FROM coupons"), couponsLeft: n("SELECT COUNT(*) n FROM coupons WHERE claimed_by IS NULL"), couponsRedeemed: n("SELECT COUNT(*) n FROM coupons WHERE redeemed_at IS NOT NULL") },
+      couponsTotal: n("SELECT COUNT(*) n FROM coupons"), couponsLeft: n("SELECT COUNT(*) n FROM coupons WHERE claimed_by IS NULL"), couponsRedeemed: n("SELECT COUNT(*) n FROM coupons WHERE redeemed_at IS NOT NULL"),
+      clawPeople: n(`SELECT COUNT(DISTINCT participant_id) n FROM claw_attempts WHERE 1=1${notA}`), clawPlays: n(`SELECT COUNT(*) n FROM claw_attempts WHERE 1=1${notA}`), clawWins: n(`SELECT COUNT(*) n FROM claw_attempts WHERE won = 1${notA}`) },
     days: Object.values(days).sort((a, b) => (a.day < b.day ? 1 : -1)).slice(0, 60),
     sms: Object.values(sms),
     langs: all(`SELECT p.lang, COUNT(*) n FROM participants p WHERE 1=1${notP} GROUP BY p.lang ORDER BY n DESC`),

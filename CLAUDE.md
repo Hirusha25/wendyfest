@@ -160,3 +160,14 @@ The event kiosk is a 1080 x 1920 upright touch screen. `public/kiosk/roast.html`
 - Messages on the code screens must fit one line (a second line hides under the upright keypad): keep them under about 45 characters.
 - LED wall photo backdrops (owner, Nov 2026): the guest is cut out of their photo (`roastCard.cut`) and placed on a backdrop picture supplied by the owner, one or more per card colour, in `public/assets/wall-bg/` and listed in `BACKS` in `public/wall.html` (1600 x 1540, no people or text, bottom fifth plain). A card colour with no picture shows the photo as taken. `?bg=all` shows the first picture on every card colour; `?bg=a` to `f` are earlier drawn options kept for comparison.
 - Roast Me photo: captured at the camera's own sharpness up to 1600 wide (camera asked for full HD), with a light lift in contrast and colour applied in the same instant.
+
+## Game 3: Wendy's Claw, Grab the Order (Nov 2026)
+
+- `public/kiosk/claw.html` (`/kiosk/claw`): a memory match game inside a claw machine. Six slots are shown for 3 seconds, then closed; the guest matches the three pairs (burger, fries, Frosty) before the clock runs out. Each match makes the claw carry the item to the tray and gives 2 seconds back. Eight screens: welcome, code, code error (same screen), how to play, memorise, play, Order up, Time's up.
+- One fixed 1080 x 1920 canvas scaled to the screen by `fit()` (sizes are canvas pixels). On a wide screen the same upright canvas is shown centred; there is no separate wide layout.
+- It uses the same guest code as the other games (3 numbers, 2 letters, checked when the last letter is typed) and the same Wendy Fest header and logos. The big button under the cabinet belongs to whichever screen is showing (`CTA`).
+- Settings: `CLAW_DURATION_MS` (15000), `CLAW_BONUS_MS` (2000), `CLAW_MEMORISE_MS` (3000), `CLAW_ATTEMPTS` (1). Rounds are saved by `POST /api/kiosk/claw` in `claw_attempts`; a round is a win only with all three matched. There is no prize yet (owner to decide).
+- Pictures are in `public/assets/claw/`, made from the owner's artwork: the fries box and Frosty cup were recoloured white with the Wendy's logo, and the vanilla Frosty was made from the chocolate one. The Frosty flavour is picked at random each round.
+- Sounds are the existing ElevenLabs-made set in `public/assets/sfx/`, played from `<audio>` tags.
+- The big button pulses, so browser tests must tap it with `force: true`.
+- LED wall name tape: runs from behind Wendy's head to the photo's right edge, square-ended, at the photo's tilt, with a cream line above and below.

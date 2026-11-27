@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Wendy's Claw · Wendy Fest</title><link rel="icon" href="/assets/cameo.png"><meta name="theme-color" content="#8E1219"><meta name="mobile-web-app-capable" content="yes">
+<link rel="stylesheet" href="/css/brand.css">
+<style>
+  /* Wendy's Claw: Grab the Order (game 3). A memory match game inside a claw machine: remember six slots, match the three pairs before the clock runs out,
+     and the claw drops each matched item on the tray. One fixed 1080 x 1920 canvas, scaled to whatever screen it is on (upright kiosk first; a wide
+     screen shows the same canvas centred). All sizes below are canvas pixels. */
+  html, body { height: 100%; margin: 0; overflow: hidden; background: #2A0508; -webkit-user-select: none; user-select: none; touch-action: manipulation; }
+  body { font-family: Poppins, 'Noto Sans Sinhala', 'Noto Sans Tamil', sans-serif; color: #fff; }
+  #fit { position: fixed; left: 50%; top: 50%; width: 1080px; height: 1920px; transform-origin: 0 0; overflow: hidden;
+    background: radial-gradient(120% 70% at 50% 34%, #D8232D 0%, #A9161F 46%, #6E0C12 78%, #3D0609 100%); }
+  #fit::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle, rgba(255,255,255,.07) 2px, transparent 2.6px) 0 0 / 26px 26px; -webkit-mask: linear-gradient(180deg, #000 0, transparent 30%, transparent 70%, #000 100%); mask: linear-gradient(180deg, #000 0, transparent 30%, transparent 70%, #000 100%); pointer-events: none; }
+  .abs { position: absolute; }
+  .sway img, .rig img, .meal img { max-width: none; }   /* brand.css caps pictures at their parent's width, and the claw hangs from a zero-width point */
+  button { font-family: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+
+  /* header and footer: the same Wendy Fest frame as the other two games */
+  .hd { position: absolute; left: 0; right: 0; top: 0; height: 132px; background: linear-gradient(180deg, #23B4F0, #0A7FBC); display: flex; align-items: center; justify-content: space-between; padding: 0 44px; box-shadow: 0 12px 0 #F6F0E6, 0 24px 0 #D8232D, 0 32px 0 #F6F0E6, 0 46px 30px rgba(40,0,6,.5); z-index: 5; }
+  .hd .brand { display: flex; align-items: center; gap: 26px; } .hd .brand img.w { height: 66px; } .hd .brand i { width: 3px; height: 70px; background: rgba(255,255,255,.55); } .hd .brand img.f { height: 104px; }
+  .hd .stp { display: flex; align-items: center; gap: 16px; font: italic 800 24px/1 Poppins, sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+  .hd .stp b { width: 54px; height: 54px; border-radius: 50%; background: #fff; color: #0A7FBC; display: grid; place-items: center; font: 900 28px/1 Poppins, sans-serif; letter-spacing: 0; }
+  .ft { position: absolute; left: 0; right: 0; bottom: 0; height: 56px; background: #1A0507; display: flex; align-items: center; justify-content: space-between; padding: 0 44px; font: 800 17px/1 Poppins, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.75); z-index: 5; }
+  .ft img { height: 30px; vertical-align: middle; margin-right: 12px; }
+
+  /* the machine's sign: WENDY'S CLAW over a "Grab the order" plate */
+  .sign { position: absolute; left: 0; right: 0; top: 176px; text-align: center; z-index: 3; }
+  .sign .big { font: italic 900 118px/.92 Poppins, sans-serif; text-transform: uppercase; letter-spacing: -.02em; color: #FFF6E4; text-shadow: 0 5px 0 #F0D9A8, 0 10px 0 #8E1219, 0 16px 0 #5A080E, 0 30px 30px rgba(0,0,0,.55); }
+  .sign .plate { display: inline-flex; align-items: center; gap: 22px; margin-top: 14px; }
+  .sign .plate b { display: block; padding: 12px 34px 10px; border-radius: 14px; background: linear-gradient(180deg, #FFFBF3, #EADFCB); color: #B81B24; font: italic 900 38px/1 Poppins, sans-serif; letter-spacing: .06em; text-transform: uppercase; box-shadow: 0 6px 0 #B5A88F, 0 14px 20px rgba(0,0,0,.4); }
+  .sign .plate i, .cta-row i { display: block; width: 92px; height: 34px; background: linear-gradient(#18A6E8 0 34%, transparent 34% 66%, #18A6E8 66%); transform: skewX(-18deg); border-radius: 3px; filter: drop-shadow(0 4px 0 rgba(0,0,0,.25)); }
+
+  /* the cabinet: a thick glossy frame around the lit inside of the machine */
+  .cab { position: absolute; left: 44px; top: 430px; width: 992px; height: 1216px; border-radius: 56px; padding: 22px; box-sizing: border-box;
+    background: linear-gradient(160deg, #FF5A63 0%, #D8232D 22%, #8E1219 60%, #5A080E 100%); box-shadow: inset 0 4px 0 rgba(255,255,255,.45), inset 0 -8px 0 rgba(0,0,0,.35), 0 16px 0 #4A070B, 0 40px 60px rgba(0,0,0,.6); z-index: 2; }
+  .cab .in { position: relative; width: 100%; height: 100%; border-radius: 38px; overflow: hidden; background: #3D0609 url("/assets/claw/machine.jpg") center / 100% 100% no-repeat; box-shadow: inset 0 0 0 5px rgba(0,0,0,.45), inset 0 30px 60px rgba(0,0,0,.55), inset 0 -30px 60px rgba(0,0,0,.45); }
+  .cab .in::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(118deg, rgba(255,255,255,.14) 0 14%, transparent 14% 22%, rgba(255,255,255,.07) 22% 27%, transparent 27%); border-radius: 38px; z-index: 30; }   /* the glass */
+  .cab .lamp { position: absolute; top: 22px; width: 120px; height: 46px; border-radius: 50%; background: radial-gradient(closest-side, #FFF3C4, #FFB84D 60%, transparent); filter: blur(2px); animation: lamp 2.4s ease-in-out infinite; z-index: 1; }
+  .cab .lamp:nth-child(2) { animation-delay: .5s; } .cab .lamp:nth-child(3) { animation-delay: 1s; }
+  @keyframes lamp { 0%, 100% { opacity: .75; } 50% { opacity: 1; filter: blur(3px) brightness(1.25); } }
+
+  /* the big button under the cabinet */
+  .cta-row { position: absolute; left: 0; right: 0; top: 1682px; display: flex; align-items: center; justify-content: center; gap: 26px; z-index: 4; }
+  .cta { min-width: 620px; height: 132px; padding: 0 60px; border: 0; border-radius: 70px; background: linear-gradient(180deg, #FFFDF6 0%, #F6ECD8 55%, #E2D2B4 100%); color: #B81B24; font: italic 900 60px/1 Poppins, sans-serif; letter-spacing: .02em; text-transform: uppercase;
+    box-shadow: inset 0 4px 0 #fff, 0 12px 0 #A8956E, 0 14px 0 #5A080E, 0 30px 34px rgba(0,0,0,.5); transition: transform .08s, box-shadow .08s; }
+  .cta:active { transform: translateY(9px); box-shadow: inset 0 4px 0 #fff, 0 3px 0 #A8956E, 0 5px 0 #5A080E, 0 12px 16px rgba(0,0,0,.5); }
+  .cta.pulse { animation: ctaPulse 1.5s ease-in-out infinite; } @keyframes ctaPulse { 50% { scale: 1.045; filter: drop-shadow(0 0 22px rgba(255,236,170,.9)); } }
+  .cta[disabled] { opacity: .45; animation: none; }
+
+  /* screens live inside the cabinet's glass */
+  .screen { position: absolute; inset: 0; display: none; z-index: 2; } .screen.on { display: block; }
+  .h1 { position: absolute; left: 0; right: 0; text-align: center; font: italic 900 84px/.95 Poppins, sans-serif; text-transform: uppercase; color: #FFF6E4; text-shadow: 0 5px 0 #8E1219, 0 10px 0 #5A080E, 0 20px 24px rgba(0,0,0,.5); }
+  .h1 small { display: block; width: 380px; height: 30px; margin: 14px auto 0; background: linear-gradient(#18A6E8 0 36%, transparent 36% 64%, #18A6E8 64%); border-radius: 50% / 100% 100% 0 0; opacity: .95; }
+  .note { position: absolute; left: 70px; right: 70px; text-align: center; padding: 16px 20px; border-radius: 18px; background: linear-gradient(180deg, #FFFBF3, #EADFCB); color: #5A080E; font: 700 30px/1.25 Poppins, sans-serif; box-shadow: 0 6px 0 #B5A88F, 0 14px 20px rgba(0,0,0,.35); }
+  .note.err { color: #B81B24; animation: shk .4s; } @keyframes shk { 20%, 60% { transform: translateX(-14px); } 40%, 80% { transform: translateX(14px); } }
+
+  /* welcome: the claw sways over the meal */
+  #s-idle .meal { position: absolute; left: 0; right: 0; bottom: 60px; height: 520px; }
+  #s-idle .meal img { position: absolute; bottom: 0; filter: drop-shadow(0 26px 22px rgba(0,0,0,.55)); animation: bob 3.2s ease-in-out infinite; }
+  #s-idle .meal .m1 { left: 40px; width: 300px; animation-delay: .3s; } #s-idle .meal .m2 { left: 250px; width: 470px; z-index: 2; bottom: -8px; } #s-idle .meal .m3 { right: 40px; width: 270px; animation-delay: .7s; }
+  @keyframes bob { 50% { translate: 0 -12px; } }
+  #s-idle .glow { position: absolute; left: 140px; right: 140px; bottom: 20px; height: 160px; background: radial-gradient(closest-side, rgba(255,190,90,.55), transparent); filter: blur(10px); }
+  #s-idle .sway { position: absolute; left: 50%; top: 250px; width: 0; height: 0; transform-origin: 50% 0; animation: sway 3.6s ease-in-out infinite; z-index: 3; } @keyframes sway { 0%, 100% { rotate: -5deg; } 50% { rotate: 5deg; } }
+  #s-idle .sway .cable { position: absolute; left: -7px; top: -40px; width: 14px; height: 290px; background: linear-gradient(90deg, #6B7379, #F2F5F7 45%, #7C858D); }
+  #s-idle .sway img { position: absolute; left: -190px; top: 236px; width: 380px; filter: drop-shadow(0 20px 16px rgba(0,0,0,.5)); }
+  #s-idle .h1 { top: 64px; font-size: 100px; z-index: 5; }
+  #s-idle .qr { position: absolute; right: 30px; top: 330px; width: 150px; padding: 10px 10px 6px; border-radius: 16px; background: #FFFBF3; color: #5A080E; text-align: center; font: 800 13px/1.2 Poppins, sans-serif; letter-spacing: .08em; text-transform: uppercase; box-shadow: 0 6px 0 #B5A88F, 0 12px 18px rgba(0,0,0,.4); z-index: 4; } #s-idle .qr img { width: 100%; display: block; margin-bottom: 4px; }
+
+  /* code */
+  #s-code .h1 { top: 54px; } #s-code .note { top: 250px; }
+  .boxes { position: absolute; left: 0; right: 0; top: 372px; display: flex; justify-content: center; align-items: center; gap: 16px; }
+  .boxes b { width: 118px; height: 138px; border-radius: 20px; display: grid; place-items: center; font: 900 78px/1 Poppins, sans-serif; color: #1E1B1B; background: linear-gradient(180deg, #FFFDF6, #EADFCB); box-shadow: inset 0 0 0 4px #D8232D, 0 8px 0 #5A080E, 0 16px 20px rgba(0,0,0,.4); }
+  .boxes b.e { background: rgba(60,0,8,.55); box-shadow: inset 0 0 0 4px rgba(255,255,255,.55), 0 8px 0 rgba(0,0,0,.3); } .boxes b.a { box-shadow: inset 0 0 0 5px #FFE08A, 0 0 26px rgba(255,224,138,.8), 0 8px 0 rgba(0,0,0,.3); }
+  .boxes span { font: 900 60px/1 Poppins, sans-serif; color: #FFF6E4; } .boxes.err { animation: shk .4s; }
+  .pad { position: absolute; left: 70px; right: 70px; top: 548px; display: grid; gap: 14px; }
+  .pad[data-mode="num"] { grid-template-columns: repeat(3, 1fr); } .pad[data-mode="let"] { grid-template-columns: repeat(6, 1fr); }
+  .pad button { height: 104px; border: 0; border-radius: 20px; color: #fff; font: 900 50px/1 Poppins, sans-serif; background: linear-gradient(180deg, #F0434C, #B81B24); box-shadow: inset 0 3px 0 rgba(255,255,255,.4), 0 8px 0 #5A080E, 0 14px 16px rgba(0,0,0,.35); }
+  .pad button:active { transform: translateY(6px); box-shadow: inset 0 3px 0 rgba(255,255,255,.4), 0 2px 0 #5A080E; }
+  .pad[data-mode="num"] button.l, .pad[data-mode="let"] button.n { display: none; } .pad[data-mode="num"] button.z { grid-column: 2; } .pad[data-mode="let"] button { height: 96px; font-size: 42px; }
+  .minis { position: absolute; left: 70px; right: 70px; bottom: 34px; display: flex; justify-content: space-between; }
+  .mini { height: 78px; padding: 0 36px; border-radius: 40px; border: 4px solid rgba(255,255,255,.85); background: rgba(40,0,6,.55); color: #fff; font: italic 800 28px/1 Poppins, sans-serif; text-transform: uppercase; letter-spacing: .04em; }
+
+  /* how to play */
+  #s-how .h1 { top: 54px; }
+  .steps { position: absolute; left: 60px; right: 60px; top: 258px; display: grid; gap: 26px; }
+  .step { height: 262px; border-radius: 28px; background: linear-gradient(180deg, #FFFBF3, #EADFCB); box-shadow: 0 10px 0 #B5A88F, 0 22px 26px rgba(0,0,0,.4); display: flex; align-items: center; gap: 26px; padding: 0 34px; color: #5A080E; animation: stepIn .5s cubic-bezier(.2, 1.3, .4, 1) both; }
+  .step:nth-child(2) { animation-delay: .15s; } .step:nth-child(3) { animation-delay: .3s; } @keyframes stepIn { from { translate: 0 60px; opacity: 0; } }
+  .step > b { flex: none; width: 92px; height: 92px; border-radius: 22px; background: linear-gradient(180deg, #F0434C, #B81B24); color: #fff; display: grid; place-items: center; font: 900 58px/1 Poppins, sans-serif; box-shadow: 0 6px 0 #5A080E; }
+  .step > span { flex: none; width: 230px; font: 800 38px/1.12 Poppins, sans-serif; }
+  .step .pic { flex: 1; min-width: 0; height: 210px; display: flex; align-items: center; justify-content: center; gap: 14px; } .step:nth-child(3) .pic img { max-width: 31%; height: 150px; } .step .pic img { max-width: 46%; object-fit: contain; height: 132px; filter: drop-shadow(0 10px 8px rgba(0,0,0,.3)); }
+  .step .pic .q { display: grid; grid-template-columns: repeat(3, 88px); gap: 10px; } .step .pic .q i { height: 70px; border-radius: 14px; background: linear-gradient(180deg, #B81B24, #7E0F16); color: #FFE08A; display: grid; place-items: center; font: 900 44px/1 Poppins, sans-serif; font-style: normal; }
+
+  /* play: timer, order ticket, six slots, the claw and the tray */
+  .hud { position: absolute; left: 34px; right: 34px; top: 26px; height: 150px; display: flex; gap: 18px; z-index: 6; }
+  .clock { flex: none; width: 250px; border-radius: 24px; background: linear-gradient(180deg, #2A0A0C, #120405); box-shadow: inset 0 0 0 4px #F0434C, 0 8px 0 rgba(0,0,0,.4); display: grid; place-items: center; position: relative; overflow: hidden; }
+  .clock b { font: italic 900 86px/1 Poppins, sans-serif; color: #FFF6E4; text-shadow: 0 4px 0 #8E1219; position: relative; z-index: 1; } .clock b small { font-size: .5em; }
+  .clock i { position: absolute; left: 0; bottom: 0; height: 12px; width: 100%; background: linear-gradient(90deg, #FFE08A, #F6B93B); transform-origin: 0 50%; }
+  .clock.low { animation: lowPulse .5s ease-in-out infinite; } .clock.low b { color: #FFE08A; } @keyframes lowPulse { 50% { box-shadow: inset 0 0 0 4px #FFE08A, 0 0 30px rgba(255,224,138,.9), 0 8px 0 rgba(0,0,0,.4); } }
+  .bonus { position: absolute; left: 150px; top: 60px; font: italic 900 60px/1 Poppins, sans-serif; color: #7CFF9A; text-shadow: 0 4px 0 #0B4A1F; opacity: 0; pointer-events: none; z-index: 8; } .bonus.go { animation: bonus 1.1s ease-out both; } @keyframes bonus { 0% { opacity: 0; translate: 0 20px; scale: .6; } 20% { opacity: 1; scale: 1.2; } 100% { opacity: 0; translate: 0 -90px; scale: 1; } }
+  .ticket { flex: 1; border-radius: 24px; background: linear-gradient(180deg, #FFFBF3, #EADFCB); box-shadow: 0 8px 0 #B5A88F; display: flex; align-items: center; padding: 0 22px; gap: 10px; color: #5A080E; }
+  .ticket .it { flex: 1; height: 124px; position: relative; display: grid; place-items: center; } .ticket .it img { max-height: 96px; max-width: 120px; filter: grayscale(1) opacity(.45); transition: filter .3s, scale .3s; }
+  .ticket .it.ok img { filter: none; scale: 1.12; } .ticket .it::after { content: ""; position: absolute; right: 6px; bottom: 4px; width: 38px; height: 38px; border-radius: 10px; background: #fff; box-shadow: inset 0 0 0 4px #B5A88F; }
+  .ticket .it.ok::after { background: #1E9B4B url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5 9-10'/%3E%3C/svg%3E") center / 70% no-repeat; box-shadow: none; animation: tick .4s cubic-bezier(.2, 1.6, .4, 1); } @keyframes tick { from { scale: 0; } }
+  .ticket .n { flex: none; width: 150px; text-align: center; border-left: 4px dashed #C9BBA4; padding-left: 12px; font: 900 54px/.95 Poppins, sans-serif; } .ticket .n small { display: block; font: 800 20px/1 Poppins, sans-serif; letter-spacing: .1em; margin-top: 6px; }
+  .mem { position: absolute; left: 0; right: 0; top: 30px; text-align: center; z-index: 7; } .mem .h1 { position: static; font-size: 66px; }
+  .mem .cnt { display: inline-grid; place-items: center; width: 190px; height: 104px; margin-top: 10px; border-radius: 54px; background: linear-gradient(180deg, #FFFBF3, #EADFCB); color: #B81B24; font: 900 78px/1 Poppins, sans-serif; box-shadow: 0 8px 0 #B5A88F; } .mem .cnt.pop { animation: tick .35s cubic-bezier(.2, 1.6, .4, 1); }
+  .slots { position: absolute; left: 60px; right: 60px; top: 216px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; perspective: 1600px; z-index: 3; }
+  .slot { height: 218px; position: relative; transform-style: preserve-3d; transition: transform .45s cubic-bezier(.3, 1.2, .5, 1); cursor: pointer; }
+  .slot.up { transform: rotateY(180deg); } .slot.bad { animation: shk .4s; }
+  .slot .f { position: absolute; inset: 0; border-radius: 26px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: grid; place-items: center; }
+  .slot .back { background: linear-gradient(160deg, #C81C25, #7E0F16); box-shadow: inset 0 0 0 5px rgba(255,214,200,.75), inset 0 14px 20px rgba(255,255,255,.14), 0 10px 0 #3D0609, 0 20px 22px rgba(0,0,0,.45); font: 900 130px/1 Poppins, sans-serif; color: #FFF6E4; text-shadow: 0 6px 0 #5A080E; }
+  .slot .front { transform: rotateY(180deg); background: radial-gradient(circle at 50% 40%, #5A1216, #2A0608); box-shadow: inset 0 0 0 5px #FFB84D, inset 0 0 40px rgba(255,150,60,.5), 0 0 30px rgba(255,150,60,.55), 0 10px 0 #3D0609; }
+  .slot .front img { max-width: 62%; max-height: 84%; filter: drop-shadow(0 12px 10px rgba(0,0,0,.5)); }
+  .slot.gone { cursor: default; } .slot.gone .front { box-shadow: inset 0 0 0 5px rgba(255,255,255,.25), 0 10px 0 #3D0609; background: rgba(20,0,2,.55); } .slot.gone .front img { visibility: hidden; }
+  .slot.gone .front::after { content: ""; width: 86px; height: 86px; border-radius: 50%; background: #1E9B4B url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5 9-10'/%3E%3C/svg%3E") center / 60% no-repeat; position: absolute; opacity: .9; }
+  .rig { position: absolute; left: 0; top: 0; width: 0; height: 0; z-index: 20; pointer-events: none; transition: translate .42s cubic-bezier(.4, 0, .2, 1); translate: 474px -420px; }
+  .rig .cable { position: absolute; left: -6px; bottom: 0; width: 12px; height: 1400px; background: linear-gradient(90deg, #6B7379, #F2F5F7 45%, #7C858D); }
+  .rig img.c { position: absolute; left: -140px; top: -20px; width: 280px; filter: drop-shadow(0 16px 12px rgba(0,0,0,.5)); } .rig img.c.shut, .rig.grab img.c.open { display: none; } .rig.grab img.c.shut { display: block; }
+  .rig img.held { position: absolute; left: -95px; top: 96px; width: 190px; display: none; filter: drop-shadow(0 12px 10px rgba(0,0,0,.5)); } .rig.grab img.held { display: block; }
+  .trayrow { position: absolute; left: 60px; right: 60px; bottom: 18px; height: 250px; z-index: 4; }
+  .trayrow > img.t { position: absolute; left: 0; bottom: 0; width: 100%; filter: drop-shadow(0 16px 14px rgba(0,0,0,.55)); }
+  .trayrow .on { position: absolute; left: 90px; right: 90px; bottom: 74px; height: 200px; display: flex; justify-content: space-around; align-items: flex-end; }
+  .trayrow .on img { height: 176px; max-width: 220px; object-fit: contain; filter: drop-shadow(0 10px 8px rgba(0,0,0,.45)); animation: land .45s cubic-bezier(.3, 1.6, .5, 1); } @keyframes land { from { translate: 0 -80px; opacity: 0; } }
+  .trayrow .on img.miss { filter: grayscale(1) brightness(.75) opacity(.6); }
+
+  /* result */
+  .rays { position: absolute; left: 50%; top: 56%; width: 1500px; height: 1500px; translate: -50% -50%; background: repeating-conic-gradient(rgba(255,214,140,.2) 0 8deg, transparent 8deg 16deg); -webkit-mask: radial-gradient(circle, #000 0, transparent 62%); mask: radial-gradient(circle, #000 0, transparent 62%); animation: turn 30s linear infinite; } @keyframes turn { to { rotate: 360deg; } }
+  .res .h1 { top: 70px; font-size: 128px; } .res .h1 small { width: 480px; }
+  .res .chip { position: absolute; left: 50%; top: 330px; translate: -50% 0; padding: 16px 44px 12px; border-radius: 20px; background: linear-gradient(180deg, #FFFBF3, #EADFCB); color: #B81B24; font: italic 900 60px/1 Poppins, sans-serif; white-space: nowrap; box-shadow: 0 8px 0 #B5A88F, 0 18px 24px rgba(0,0,0,.4); animation: tick .5s cubic-bezier(.2, 1.6, .4, 1) .3s both; }
+  .res .sub { position: absolute; left: 60px; right: 60px; top: 458px; text-align: center; font: 700 34px/1.25 Poppins, sans-serif; color: #FFF6E4; text-shadow: 0 3px 0 rgba(60,0,8,.6); }
+  .res .trayrow { bottom: 120px; height: 420px; left: 30px; right: 30px; } .res .trayrow .on { bottom: 108px; height: 330px; left: 110px; right: 110px; } .res .trayrow .on img { height: 300px; max-width: 290px; }
+  #s-win .trayrow .on img { animation: land .5s cubic-bezier(.3, 1.6, .5, 1) both, bob 2.6s ease-in-out .6s infinite; } #s-win .trayrow .on img:nth-child(2) { animation-delay: .15s, .9s; } #s-win .trayrow .on img:nth-child(3) { animation-delay: .3s, 1.2s; }
+  .confetti { position: absolute; inset: 0; pointer-events: none; z-index: 40; overflow: hidden; } .confetti i { position: absolute; top: -40px; width: 18px; height: 30px; border-radius: 3px; animation: fall linear both; } @keyframes fall { to { translate: var(--dx) 2100px; rotate: var(--r); } }
+
+  /* staff PIN */
+  #s-pin { z-index: 60; background: rgba(26,5,7,.96); } #s-pin.on { display: grid; place-items: center; }
+  #s-pin .box { display: grid; gap: 30px; justify-items: center; } #s-pin .t { font: italic 900 70px/1 Poppins, sans-serif; text-transform: uppercase; }
+  #s-pin input { width: 520px; height: 120px; border-radius: 24px; border: 0; text-align: center; font: 900 64px/1 Poppins, sans-serif; letter-spacing: .3em; }
+</style>
+</head>
+<body>
+<div id="fit">
+  <header class="hd"><div class="brand"><img class="w" src="/assets/wendys-horiz-white.svg" alt="Wendy's"><i></i><img class="f" src="/assets/wendyfest-logo.svg" alt="Wendy Fest"></div><div class="stp"><b id="stp-n">1</b><span id="stp-l">Welcome</span></div></header>
+  <div class="sign"><div class="big">Wendy’s Claw</div><div class="plate"><i></i><b>Grab the order</b><i></i></div></div>
+
+  <div class="cab"><div class="in">
+    <i class="lamp" style="left:110px"></i><i class="lamp" style="left:414px"></i><i class="lamp" style="left:718px"></i>
+
+    <!-- 1 welcome -->
+    <section class="screen on" id="s-idle">
+      <div class="qr"><img id="qr" alt="">Scan to register</div>
+      <div class="h1">Grab<br>the order</div>
+      <div class="sway"><div class="cable"></div><img src="/assets/claw/claw-open.webp" alt=""></div>
+      <div class="glow"></div>
+      <div class="meal"><img class="m1" src="/assets/claw/fries.webp" alt=""><img class="m2" src="/assets/claw/burger.webp" alt=""><img class="m3" src="/assets/claw/frosty-choc.webp" alt=""></div>
+    </section>
+
+    <!-- 2 and 3 code, with the error shown on the same screen -->
+    <section class="screen" id="s-code">
+      <div class="h1">Enter your code<small></small></div>
+      <div class="note" id="code-msg">First, your 3 numbers.</div>
+      <div class="boxes" id="boxes"></div>
+      <div class="pad" id="pad" data-mode="num"></div>
+      <div class="minis"><button class="mini" id="code-back">← Back</button><button class="mini" id="code-del">⌫ Delete</button></div>
+    </section>
+
+    <!-- 4 how to play -->
+    <section class="screen" id="s-how">
+      <div class="h1">How to play<small></small></div>
+      <div class="steps">
+        <div class="step"><b>1</b><span>Remember the slots</span><div class="pic"><div class="q"><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i></div></div></div>
+        <div class="step"><b>2</b><span>Match two items</span><div class="pic"><img src="/assets/claw/burger.webp" alt=""><img src="/assets/claw/burger.webp" alt=""></div></div>
+        <div class="step"><b>3</b><span>Fill your tray</span><div class="pic"><img src="/assets/claw/fries.webp" alt=""><img src="/assets/claw/burger.webp" alt=""><img src="/assets/claw/frosty-vanilla.webp" alt=""></div></div>
+      </div>
+    </section>
+
+    <!-- 5 memorise and 6 play share one screen -->
+    <section class="screen" id="s-play">
+      <div class="mem" id="mem"><div class="h1">Remember the slots</div><div class="cnt" id="mem-n">3</div></div>
+      <div class="hud" id="hud"><div class="clock" id="clock"><b><span id="secs">15</span><small>s</small></b><i id="bar"></i></div><div class="ticket"><div class="it" data-k="burger"><img alt=""></div><div class="it" data-k="fries"><img alt=""></div><div class="it" data-k="frosty"><img alt=""></div><div class="n"><span id="got">0</span>/3<small>Matched</small></div></div></div>
+      <div class="bonus" id="bonus">+2s</div>
+      <div class="slots" id="slots"></div>
+      <div class="rig" id="rig"><div class="cable"></div><img class="c open" src="/assets/claw/claw-open.webp" alt=""><img class="c shut" src="/assets/claw/claw-closed.webp" alt=""><img class="held" id="held" alt=""></div>
+      <div class="trayrow"><img class="t" src="/assets/claw/tray.webp" alt=""><div class="on" id="tray"></div></div>
+    </section>
+
+    <!-- 7 order up -->
+    <section class="screen res" id="s-win"><div class="rays"></div>
+      <div class="h1">Order up!<small></small></div><div class="chip">3 / 3 matched</div><div class="sub" id="win-sub"></div>
+      <div class="trayrow"><img class="t" src="/assets/claw/tray.webp" alt=""><div class="on" id="win-tray"></div></div>
+    </section>
+
+    <!-- 8 time's up -->
+    <section class="screen res" id="s-lose">
+      <div class="h1">Time’s up!<small></small></div><div class="chip" id="lose-chip">0 / 3 matched</div><div class="sub" id="lose-sub"></div>
+      <div class="trayrow"><img class="t" src="/assets/claw/tray.webp" alt=""><div class="on" id="lose-tray"></div></div>
+    </section>
+  </div></div>
+
+  <div class="cta-row"><i></i><button class="cta pulse" id="cta">Tap to start</button><i></i></div>
+  <footer class="ft"><span><img src="/assets/cameo.png" alt="">© 2026 Wendy’s Sri Lanka</span><span id="ft-st">Station A · Claw</span></footer>
+
+  <section class="screen" id="s-pin"><div class="box"><div class="t">Staff PIN</div><input id="pin" type="password" inputmode="numeric" maxlength="8"><button class="cta" id="pin-go">Unlock</button></div></section>
+</div>
+
+<!-- sounds: the same ElevenLabs-made set as the other two games -->
+<audio id="a-tap" src="/assets/sfx/tap.mp3" preload="auto"></audio><audio id="a-key" src="/assets/sfx/key.mp3" preload="auto"></audio><audio id="a-delete" src="/assets/sfx/delete.mp3" preload="auto"></audio>
+<audio id="a-ding" src="/assets/sfx/ding.mp3" preload="auto"></audio><audio id="a-error" src="/assets/sfx/error.mp3" preload="auto"></audio><audio id="a-start" src="/assets/sfx/start.mp3" preload="auto"></audio>
+<audio id="a-beep" src="/assets/sfx/beep.mp3" preload="auto"></audio><audio id="a-go" src="/assets/sfx/go.mp3" preload="auto"></audio><audio id="a-pop" src="/assets/sfx/pop.mp3" preload="auto"></audio>
+<audio id="a-whoosh" src="/assets/sfx/whoosh.mp3" preload="auto"></audio><audio id="a-stamp" src="/assets/sfx/stamp.mp3" preload="auto"></audio><audio id="a-ticket" src="/assets/sfx/ticket.mp3" preload="auto"></audio>
+<audio id="a-party" src="/assets/sfx/party.mp3" preload="auto"></audio><audio id="a-win" src="/assets/sfx/win.mp3" preload="auto"></audio><audio id="a-aww" src="/assets/sfx/aww.mp3" preload="auto"></audio><audio id="a-coin" src="/assets/sfx/coin.mp3" preload="auto"></audio>
+
+<script src="/js/kiosk.js"></script>
+<script>
+  const $ = (id) => document.getElementById(id), wait = (ms) => new Promise((r) => setTimeout(r, ms));
+  // the 1080 x 1920 canvas is scaled to fit the screen and centred
+  function fit() { const k = Math.min(innerWidth / 1080, innerHeight / 1920), el = $("fit"); el.style.transform = `translate(${-540 * k}px, ${-960 * k}px) scale(${k})`; }
+  addEventListener("resize", fit); fit();
+  const sfx = (n, vol = .7) => { if (localStorage.getItem("wf_sfx") === "off") return; const a = $("a-" + n); if (!a) return; try { a.currentTime = 0; a.volume = vol; a.play().catch(() => {}); } catch {} };
+
+  let CFG = { durationMs: 15000, bonusMs: 2000, memoriseMs: 3000 }, guest = null;
+  fetch("/api/config").then((r) => r.json()).then((c) => { if (c.claw) CFG = { ...CFG, ...c.claw }; $("qr").src = `/api/qr?text=${encodeURIComponent((c.baseUrl || location.origin) + "/register")}`; }).catch(() => {});
+  $("ft-st").textContent = `Station ${K.station} · Claw`;
+  const ITEMS = { burger: "/assets/claw/burger.webp", fries: "/assets/claw/fries.webp", choc: "/assets/claw/frosty-choc.webp", vanilla: "/assets/claw/frosty-vanilla.webp" };
+  const STEPS = { "s-idle": ["1", "Welcome"], "s-code": ["2", "Your code"], "s-how": ["3", "How to play"], "s-play": ["4", "Play"], "s-win": ["5", "Order up"], "s-lose": ["5", "Time’s up"] };
+  // the big button under the cabinet belongs to whichever screen is showing
+  const CTA = { "s-idle": ["Tap to start", () => { sfx("start"); K.show("s-code"); }], "s-code": ["Continue", () => { if (code.length === 5) lookup(); else { sfx("error"); say(code.length < 3 ? "First, your 3 numbers." : "Now your 2 letters.", true); } }],
+    "s-how": ["Let’s play", () => { sfx("start"); startGame(); }], "s-play": ["Match the pairs", null], "s-win": ["Done", () => { sfx("coin"); goIdle(); }], "s-lose": ["Done", () => { sfx("coin"); goIdle(); }] };
+  let screen = "s-idle";
+  document.addEventListener("screen", (e) => { const id = e.detail; if (!CTA[id]) return; screen = id; const st = STEPS[id]; $("stp-n").textContent = st[0]; $("stp-l").textContent = st[1];
+    const b = $("cta"); b.textContent = CTA[id][0]; b.disabled = !CTA[id][1]; b.classList.toggle("pulse", !!CTA[id][1] && id !== "s-code"); if (id !== "s-idle") sfx("whoosh", .35); });
+  $("cta").onclick = () => { const f = CTA[screen] && CTA[screen][1]; if (f) f(); };
+  function goIdle() { stopClock(); guest = null; code = ""; paintCode(); K.resetIdle(0); K.show("s-idle"); }
+  document.addEventListener("kiosk-home", goIdle);
+
+  // ---- staff PIN
+  async function unlock() { if (await K.login($("pin").value)) { $("pin").value = ""; goIdle(); } else { $("pin").value = ""; sfx("error"); } }
+  $("pin-go").onclick = unlock; $("pin").addEventListener("keydown", (e) => e.key === "Enter" && unlock());
+  K.api("/api/kiosk/lookup", { code: "" }).catch((e) => { if (e.message !== "PIN required") K.show("s-idle"); });   // asks for the PIN straight away if this kiosk has not been unlocked
+
+  // ---- guest code: 3 numbers then 2 letters, checked the moment the last letter is typed (the same code as the other two games)
+  const LETTERS = "ABCDEFGHJKLMNPQRSTUVWXYZ"; let code = "", busy = false, bad = 0, lockUntil = 0;
+  function say(t, err) { const m = $("code-msg"); m.textContent = t; m.classList.remove("err"); if (err) { void m.offsetWidth; m.classList.add("err"); } }
+  function paintCode() { $("boxes").innerHTML = [0, 1, 2, 3, 4].map((i) => (i === 3 ? "<span>–</span>" : "") + (code[i] ? `<b>${code[i]}</b>` : `<b class="e${i === code.length ? " a" : ""}"></b>`)).join(""); $("pad").dataset.mode = code.length < 3 ? "num" : "let"; }
+  function key(k) { if (busy || code.length >= 5) return; if (code.length < 3 ? !/\d/.test(k) : !LETTERS.includes(k)) return; code += k; sfx("key", .5); paintCode(); K.resetIdle(60000, goIdle);
+    if (code.length === 5) { sfx("ding", .5); const v = code; setTimeout(() => { if (screen === "s-code" && code === v) lookup(); }, 220); } else say(code.length < 3 ? "First, your 3 numbers." : "Now your 2 letters."); }
+  for (const k of "1234567890" + LETTERS) { const b = document.createElement("button"); b.textContent = k; b.className = /\d/.test(k) ? (k === "0" ? "n z" : "n") : "l"; b.onclick = () => key(k); $("pad").appendChild(b); }
+  $("code-del").onclick = () => { if (busy) return; code = code.slice(0, -1); sfx("delete", .5); paintCode(); say(code.length < 3 ? "First, your 3 numbers." : "Now your 2 letters."); };
+  $("code-back").onclick = () => { sfx("tap"); goIdle(); };
+  document.addEventListener("screen", (e) => { if (e.detail === "s-code") { code = ""; paintCode(); say("First, your 3 numbers."); K.resetIdle(60000, goIdle); } });
+  async function lookup() {
+    if (busy) return; if (Date.now() < lockUntil) return say("Too many wrong codes. Please wait a moment.", true);
+    busy = true; say("Checking…");
+    try { guest = await K.api("/api/kiosk/lookup", { code }); bad = 0;
+      if ((guest.clawsLeft ?? 1) <= 0) { sfx("error"); say(`${guest.firstName} has already played. One go per guest.`, true); $("boxes").classList.add("err"); setTimeout(() => $("boxes").classList.remove("err"), 500); }
+      else { K.show("s-how"); K.resetIdle(60000, goIdle); } }
+    catch (e) { sfx("error"); say(e.message || "We can’t find that code.", true); $("boxes").classList.add("err"); setTimeout(() => $("boxes").classList.remove("err"), 500); if (++bad >= 3) { bad = 0; lockUntil = Date.now() + 30000; say("Too many wrong codes. Try again in 30 seconds.", true); } }
+    busy = false;
+  }
+
+  // ---- the game
+  let deck = [], open = [], matched = 0, lock = true, left = 0, tickT = null, lastT = 0, running = false, frosty = "choc", order = [], t0 = 0;
+  const srcOf = (k) => ITEMS[k === "frosty" ? frosty : k];
+  function startGame() {
+    frosty = Math.random() < .5 ? "choc" : "vanilla"; order = ["burger", "fries", "frosty"];
+    deck = [...order, ...order].sort(() => Math.random() - .5); for (let i = deck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [deck[i], deck[j]] = [deck[j], deck[i]]; }
+    open = []; matched = 0; lock = true; left = CFG.durationMs; $("got").textContent = "0"; $("tray").innerHTML = ""; $("clock").classList.remove("low");
+    document.querySelectorAll(".ticket .it").forEach((el) => { el.classList.remove("ok"); el.querySelector("img").src = srcOf(el.dataset.k); });
+    $("slots").innerHTML = deck.map((k, i) => `<div class="slot up" data-i="${i}"><div class="f back">?</div><div class="f front"><img src="${srcOf(k)}" alt=""></div></div>`).join("");
+    document.querySelectorAll(".slot").forEach((el) => (el.onclick = () => tapSlot(+el.dataset.i)));
+    const rig = $("rig"); rig.classList.remove("grab"); rig.style.transition = "none"; rig.style.translate = "474px -420px"; void rig.offsetWidth; rig.style.transition = "";
+    paintClock(); $("hud").style.visibility = "hidden"; $("mem").style.display = "block"; K.show("s-play"); K.resetIdle(0);
+    (async () => {   // everyone sees all six for a few seconds, then the doors close and the clock starts
+      const n = Math.max(1, Math.round(CFG.memoriseMs / 1000));
+      for (let s = n; s >= 1; s--) { if (screen !== "s-play") return; const c = $("mem-n"); c.textContent = s; c.classList.remove("pop"); void c.offsetWidth; c.classList.add("pop"); sfx("beep", .5); await wait(CFG.memoriseMs / n); }
+      if (screen !== "s-play") return;
+      document.querySelectorAll(".slot").forEach((el, i) => setTimeout(() => el.classList.remove("up"), i * 60)); sfx("go", .6);
+      $("mem").style.display = "none"; $("hud").style.visibility = "visible"; await wait(520); lock = false; t0 = performance.now(); startClock();
+    })();
+  }
+  function paintClock() { $("secs").textContent = Math.max(0, Math.ceil(left / 1000)); $("bar").style.transform = `scaleX(${Math.max(0, Math.min(1, left / CFG.durationMs))})`; $("clock").classList.toggle("low", left <= 5000 && left > 0); }
+  function startClock() { running = true; lastT = performance.now(); clearInterval(tickT); let lastSec = Math.ceil(left / 1000);
+    tickT = setInterval(() => { const now = performance.now(); if (running) left -= now - lastT; lastT = now; paintClock(); const s = Math.ceil(left / 1000); if (s !== lastSec && s <= 5 && s > 0) sfx("beep", .35); lastSec = s; if (left <= 0) finish(false); }, 80); }
+  function stopClock() { running = false; clearInterval(tickT); }
+  const slotEl = (i) => document.querySelector(`.slot[data-i="${i}"]`);
+  function tapSlot(i) {
+    if (lock || open.includes(i)) return; const el = slotEl(i); if (el.classList.contains("gone")) return;
+    el.classList.add("up"); sfx("pop", .55); open.push(i); if (open.length < 2) return;
+    const [a, b] = open; lock = true;
+    if (deck[a] === deck[b]) grab(a, b);
+    else setTimeout(() => { sfx("error", .4); [a, b].forEach((x) => { const s = slotEl(x); s.classList.add("bad"); setTimeout(() => s.classList.remove("bad", "up"), 380); }); setTimeout(() => { open = []; lock = false; }, 520); }, 520);
+  }
+  // A matched pair: the claw glides to the item, closes on it, carries it down and drops it on the tray. The clock waits while the claw works, and gives a few seconds back.
+  async function grab(a, b) {
+    running = false; const k = deck[a], rig = $("rig"), el = slotEl(b), box = $("slots"), sx = box.offsetLeft + el.offsetLeft + el.offsetWidth / 2, sy = box.offsetTop + el.offsetTop;
+    sfx("ding", .55); await wait(260);
+    rig.style.translate = `${sx}px ${sy - 150}px`; sfx("whoosh", .4); await wait(440); rig.style.translate = `${sx}px ${sy - 60}px`; await wait(300);
+    $("held").src = srcOf(k); rig.classList.add("grab"); sfx("stamp", .6); [a, b].forEach((x) => slotEl(x).classList.add("gone")); await wait(240);
+    const n = matched, tx = 190 + n * 290; rig.style.translate = `${sx}px ${sy - 240}px`; await wait(300); rig.style.translate = `${tx}px 640px`; await wait(460);
+    rig.classList.remove("grab"); const img = document.createElement("img"); img.src = srcOf(k); $("tray").appendChild(img); sfx("ticket", .6);
+    matched++; $("got").textContent = matched; document.querySelector(`.ticket .it[data-k="${k}"]`).classList.add("ok");
+    if (matched < 3 && CFG.bonusMs > 0) { left = Math.min(CFG.durationMs, left + CFG.bonusMs); const bn = $("bonus"); bn.textContent = `+${Math.round(CFG.bonusMs / 1000)}s`; bn.classList.remove("go"); void bn.offsetWidth; bn.classList.add("go"); paintClock(); }
+    await wait(260); rig.style.translate = "474px -420px"; open = [];
+    if (matched >= 3) return finish(true);
+    lock = false; lastT = performance.now(); running = true;
+  }
+  function confetti(n = 150) { const box = document.createElement("div"); box.className = "confetti"; $("fit").appendChild(box); const cols = ["#FFF6E4", "#18A6E8", "#FFE08A", "#F0434C", "#FFFFFF"];
+    for (let i = 0; i < n; i++) { const el = document.createElement("i"); el.style.left = Math.random() * 1080 + "px"; el.style.background = cols[i % cols.length]; el.style.setProperty("--dx", (Math.random() * 400 - 200) + "px"); el.style.setProperty("--r", (Math.random() * 1400 - 700) + "deg"); el.style.animationDuration = 2.2 + Math.random() * 2.2 + "s"; el.style.animationDelay = Math.random() * .9 + "s"; box.appendChild(el); }
+    setTimeout(() => box.remove(), 5600); }
+  let saving = false;
+  async function finish(won) {
+    if (screen !== "s-play") return; stopClock(); lock = true; const msLeft = Math.max(0, Math.round(left)), took = Math.round(performance.now() - t0);
+    const tray = $(won ? "win-tray" : "lose-tray"), have = [...$("tray").children].map((i) => i.getAttribute("src"));
+    tray.innerHTML = order.map((k) => `<img src="${srcOf(k)}" class="${have.includes(srcOf(k)) ? "" : "miss"}" alt="">`).join("");
+    const name = guest ? guest.firstName : "";
+    if (won) { $("win-sub").textContent = `${name ? name + ", you" : "You"} grabbed the whole order with ${(msLeft / 1000).toFixed(1)} seconds to spare.`; K.show("s-win"); sfx("party", .7); setTimeout(() => sfx("win", .6), 350); confetti(); }
+    else { $("lose-chip").textContent = `${matched} / 3 matched`; const miss = order.filter((k) => !have.includes(srcOf(k))).map((k) => ({ burger: "the burger", fries: "the fries", frosty: "the Frosty" }[k]));
+      $("lose-sub").textContent = matched ? `So close${name ? ", " + name : ""}. You missed ${miss.join(" and ")}.` : `The order got away${name ? ", " + name : ""}. Better luck next time.`; K.show("s-lose"); sfx("aww", .6); }
+    K.resetIdle(25000, goIdle);
+    if (guest && !saving) { saving = true; try { await K.api("/api/kiosk/claw", { code: guest.code, matched, won, msLeft, tookMs: took }); } catch (e) { console.warn("claw result not saved:", e.message); } saving = false; }
+  }
+  paintCode();
+</script>
+</body></html>

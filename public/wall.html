@@ -42,7 +42,7 @@
   .photo { position: absolute; left: 5.1em; top: 2.5em; width: 34.6em; height: 33.4em; rotate: -1.6deg; border-radius: 1.9em; padding: .5em; box-sizing: border-box; background: linear-gradient(160deg, #FFFBF3, #E4D9C5); box-shadow: 0 1.4em 2.6em rgba(0,0,0,.55), 0 .3em 0 rgba(0,0,0,.25); z-index: 2; }
   .photo .win { position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: 1.45em; background: #2A2626; }
   .photo img { position: absolute; display: block; max-width: none; }
-  .tape { position: absolute; left: 10.6em; top: 32.6em; width: 30.4em; height: 6.6em; rotate: -4.4deg; background: linear-gradient(180deg, #F2323C, #C81C25); box-shadow: 0 .6em 0 #8E1219, 0 1.4em 2em rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; z-index: 3; clip-path: polygon(1.5% 0, 100% 0, 98.5% 100%, 0 100%); }
+  .tape { position: absolute; left: 10.6em; top: 32.6em; width: 30.4em; height: 6.6em; rotate: -4.4deg; background: linear-gradient(180deg, #F2323C, #C81C25); box-shadow: 0 .6em 0 #8E1219, 0 1.4em 2em rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; z-index: 3; clip-path: polygon(1.5% 0, 100% 0, 98.5% 100%, 0 100%); box-sizing: border-box; border-top: .3em solid #F6F0E6; border-bottom: .3em solid #F6F0E6; }   /* two cream lines, along the top and the bottom of the name tape, on every card colour (owner) */
   .tape b { font: italic 900 4.5em/1 'Barlow Semi Condensed', 'Barlow Condensed', 'Noto Sans Sinhala', 'Noto Sans Tamil', sans-serif; text-transform: uppercase; letter-spacing: .02em; color: #FFF8EC; text-shadow: 0 .06em 0 rgba(90,0,10,.6); white-space: nowrap; }
   /* Wendy looks in from the bottom left corner. Her picture is a crop (cut flat at the top, the bottom and one side), so it is turned to put the cut side and the
      bottom under the card's edge, and the flat top of her hair is rounded off with a mask; the white outline is drawn after that, so it follows the smooth shape. */
@@ -92,6 +92,7 @@
   /* Backdrop pictures supplied by the owner (public/assets/wall-bg/): the picture fills the window and the cut-out guest stands on it with a soft glow. */
   .win .bk { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; }
   .win.bg-img .ph { filter: drop-shadow(0 0 .3em rgba(255,214,160,.9)) drop-shadow(0 0 1.3em rgba(255,110,40,.55)) drop-shadow(0 .5em .8em rgba(0,0,0,.4)); }
+  .win.bk-blue .ph { filter: drop-shadow(.22em .18em 0 #18A6E8) drop-shadow(0 0 .12em rgba(0,0,0,.9)) drop-shadow(0 .5em .7em rgba(0,0,0,.3)); }   /* the comic burst: a blue offset shadow and a thin dark edge, like the burst's own outline */
   .win.bg-a { background: radial-gradient(90% 70% at 50% 34%, #4A4242 0%, #262121 46%, #0C0A0A 100%); }
   .win.bg-a::before { background: radial-gradient(circle, #E3202B .16em, transparent .19em) 0 0 / .8em .8em; -webkit-mask: radial-gradient(70% 55% at 100% 100%, #000 0, transparent 75%), radial-gradient(60% 45% at 0 0, #000 0, transparent 75%); mask: radial-gradient(70% 55% at 100% 100%, #000 0, transparent 75%), radial-gradient(60% 45% at 0 0, #000 0, transparent 75%); opacity: .85; }
   .win.bg-b { background: radial-gradient(circle at 50% 42%, #FF5A63 0%, #E3202B 38%, #A9161F 100%); }
@@ -175,16 +176,16 @@
   // FOCUS holds where the head is (found by the same cut-out engine as the roast card). Without it the photo is simply centred, a little above the middle.
   // Backdrop pictures by card colour (files in public/assets/wall-bg/). When a card colour has one, the guest is cut out of their photo and placed on it;
   // with several, each roast keeps the same one. A card colour with no picture shows the photo as it was taken.
-  const BACKS = { dark: ["black.jpg"], blue: [], red: [], paper: [] }, HAS_BACKS = Object.values(BACKS).some((a) => a.length);
+  const BACKS = { dark: ["black.jpg"], blue: ["blue.jpg"], red: [], paper: [] }, HAS_BACKS = Object.values(BACKS).some((a) => a.length);
   const backFor = (theme, token) => { const a = BACKS[theme] || []; if (!a.length) return ""; let h = 0; for (const ch of String(token)) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return a[h % a.length]; };
   const FOCUS = new Map(), CUTS = new Map(), BG = (new URLSearchParams(location.search).get("bg") || "").toLowerCase();   // ?bg=a|b|c: cut the guest out and use that backdrop
   function frame(el, r) {
     const win = el.querySelector(".win"), img = win.querySelector(".ph"), fw = win.clientWidth, fh = win.clientHeight, iw = img.naturalWidth || 16, ih = img.naturalHeight || 9, F = FOCUS.get(r.token);
     const C = CUTS.get(r.token);
-    const back = C && !["a", "b", "c", "d", "e", "f"].includes(BG) ? backFor(BG === "all" ? "dark" : el.dataset.theme, r.token) : "";   // ?bg=all shows the first picture on every card colour, for checking
+    const back = C && !["a", "b", "c", "d", "e", "f"].includes(BG) ? backFor(BG.startsWith("all") ? (BG.slice(4) || "dark") : el.dataset.theme, r.token) : "";   // ?bg=all shows the first picture on every card colour, for checking
     if (back) { if (!win.querySelector(".bk")) win.insertAdjacentHTML("afterbegin", `<img class="bk" alt="" src="/assets/wall-bg/${back}">`); }
     if (C && (back || ["a", "b", "c", "d", "e", "f"].includes(BG))) {
-      win.classList.add("cut", back ? "bg-img" : "bg-" + BG); if (img.getAttribute("src") !== C.url) { img.onload = null; img.src = C.url; }
+      win.classList.add("cut", back ? "bg-img" : "bg-" + BG); if (back) win.classList.add("bk-" + back.replace(/\..*$/, "")); if (img.getAttribute("src") !== C.url) { img.onload = null; img.src = C.url; }
       const hh = C.hy1 - C.hy0, hw = C.hx1 - C.hx0, pad = hh * .12, headTop = BG === "c" ? -.07 : .1;   // c: the hair rises above the frame
       let s = Math.min((.46 * fh) / hh, (fw * .62) / hw); s = Math.max(s, (fh * (1 - headTop)) / (C.h - (C.hy0 - pad)));   // big enough that the body reaches the bottom edge
       let left = fw / 2 - ((C.hx0 + C.hx1) / 2) * s; if (C.cutLeft) left = Math.min(left, 0); if (C.cutRight) left = Math.max(left, fw - C.w * s);   // a side the camera cut off stays against the frame

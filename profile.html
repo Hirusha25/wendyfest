@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en">
-<head><script>fetch("./version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwz8m1e4" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<head><script>fetch("./version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwz9ebfz" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>[DEMO] My pass · Wendy Fest</title><meta name="theme-color" content="#CD2028"><link rel="icon" href="./assets/cameo.png"><link rel="stylesheet" href="./css/guest.css?v=mwz8m1e4">
+<title>[DEMO] My pass · Wendy Fest</title><meta name="theme-color" content="#CD2028"><link rel="icon" href="./assets/cameo.png"><link rel="stylesheet" href="./css/guest.css?v=mwz9ebfz">
 <svg width="0" height="0" style="position:absolute"><defs>
 <symbol id="i-mic" viewBox="0 0 24 24"><path d="M12 15a4 4 0 0 0 4-4V6a4 4 0 0 0-8 0v5a4 4 0 0 0 4 4zm6-4a6 6 0 0 1-12 0M12 17v4m-4 0h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
 <symbol id="i-cam" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.5" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
@@ -38,7 +38,7 @@
   </main>
   <div id="foot"></div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js?v=mwz8m1e4"></script><script src="./js/i18n.js?v=mwz8m1e4"></script><script src="./js/app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js?v=mwz9ebfz"></script><script src="./js/i18n.js?v=mwz9ebfz"></script><script src="./js/app.js"></script>
 <script>
   document.getElementById("langbox").innerHTML = langSwitcher(); document.getElementById("foot").outerHTML = brandFoot(); applyLang();
   const $ = (id) => document.getElementById(id);
@@ -59,7 +59,7 @@
       <div class="card2 red"><div class="top"><b>${t("scream")}</b>${ic("mic")}</div><div class="bot"><div class="v">${s ? s.score : "—"}<small>/100</small></div><div class="m">${s ? `${t("bWinnerD")}: ${s.loudness} · ${s.accuracy}` : t("scHint")}</div><span class="st ${s && s.won ? "win" : ""}">${s ? (s.won ? "🏆 " + t("won") : t("played")) : t("notPlayed")}</span></div></div>
       <div class="card2 blue"><div class="top"><b>${t("roast")}</b>${ic("cam")}</div><div class="bot"><div class="v">${r ? "🔥" : "—"}</div><div class="m">${r ? esc(r.title[window.lang] || r.title.en) : t("roHint")}</div><span class="st">${r ? t("roasted") : t("notRoasted")}</span></div></div>`;
     const win = p.screams.find((x) => x.won && x.coupon);
-    $("reward").innerHTML = win ? `<div class="reward on"><div><div class="l">${t("reward")}</div><div class="v">${win.coupon.code}</div></div><div class="m">${esc(win.coupon.label)}<br>${t("rewardHow")}</div></div>`
+    $("reward").innerHTML = win ? `<div class="reward on"><div><div class="l">${t("reward")}</div><div class="v">${win.coupon.code}</div></div><div class="m">${esc(win.coupon.label)}<br>${win.coupon.redeemed ? "<b>Redeemed ✓</b>" : t("rewardHow")}</div></div>`
       : `<div class="reward"><div><div class="l">${t("reward")}</div><div class="v">${t("locked")}</div></div><div class="m">${t("rewardHint")}<br>${esc(p.coupon.valueLabel)}</div></div>`;
     $("roast").innerHTML = r ? `<div class="lede">${t("yourRoast")}</div><div class="roastcard"><img src="${r.photo}" alt=""><div class="l">${esc(r.vibe || "")}</div><div class="t">${esc(r.title[window.lang] || r.title.en)}</div><p>${esc(r.roast[window.lang] || r.roast.en)}</p><a class="btn blue" style="height:48px;font-size:14px" href="${r.url}"><span>${t("viewRoast")}</span><svg class="arr" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>` : "";
   }

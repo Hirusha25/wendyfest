@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head><script>fetch("./version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwz9ebfz" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>[DEMO] Redeem coupons · Wendy Fest</title><link rel="icon" href="./assets/cameo.png">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="./css/brand.css?v=mwz9ebfz">
+<style>
+  /* For the Wendy's counter team: look up a winner's coupon code and mark it as redeemed. Made for a phone first. */
+  body { background: var(--cream); }
+  .head { background: var(--red); color: #fff; padding: 16px 0; }
+  .head b { letter-spacing: .1em; font-size: .85rem; }
+  main { padding: 18px 0 60px; }
+  .big { font-size: 1.5rem; letter-spacing: .12em; text-align: center; text-transform: uppercase; font-weight: 800; }
+  .res { border-radius: 18px; padding: 18px; display: grid; gap: 10px; border: 3px solid var(--gray-light); background: #fff; }
+  .res.ok { border-color: #1E6B3A; } .res.used { border-color: var(--red); background: #FFF5F5; } .res.no { border-color: #B58900; background: #FFF8E1; }
+  .res .state { font-weight: 900; font-size: 1.15rem; text-transform: uppercase; letter-spacing: .04em; }
+  .res.ok .state { color: #1E6B3A; } .res.used .state { color: var(--red); } .res.no .state { color: #7A5A00; }
+  .res .prize { font-weight: 800; font-size: 1.25rem; line-height: 1.2; }
+  .res dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; margin: 0; font-size: .9rem; } .res dt { color: var(--gray); } .res dd { margin: 0; font-weight: 600; }
+  .btn.green { background: #1E6B3A; box-shadow: 0 10px 26px -12px rgba(30,107,58,.8); } .btn.green:hover { background: #17552E; }
+  .counts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .counts div { background: #fff; border-radius: 14px; padding: 12px; text-align: center; } .counts b { display: block; font-size: 1.6rem; color: var(--red); font-weight: 900; } .counts small { font-size: .68rem; text-transform: uppercase; letter-spacing: .08em; color: var(--gray); font-weight: 700; }
+  table { width: 100%; border-collapse: collapse; font-size: .84rem; } td, th { text-align: left; padding: 9px 6px; border-bottom: 1px solid var(--gray-light); } th { font-size: .68rem; text-transform: uppercase; letter-spacing: .08em; color: var(--gray); }
+  tr.done td { color: var(--gray); } .scroll { overflow-x: auto; }
+  .pill { border: 0; background: var(--gray-light); color: var(--ink); border-radius: 999px; padding: 8px 14px; font-family: inherit; font-weight: 700; font-size: .76rem; cursor: pointer; } .pill.on { background: var(--red); color: #fff; }
+  a.cc { font-weight: 800; color: var(--ink); cursor: pointer; text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="head"><div class="wrap row between"><img src="./assets/wendys-horiz-white.svg" style="height:28px" alt="Wendy's"><b>REDEEM COUPONS</b></div></div>
+<main class="wrap stack" style="gap:16px">
+  <section id="login" class="card stack"><div class="eyebrow">Access code</div><input class="input big" id="pin" type="password" inputmode="numeric" autocomplete="off"><button class="btn block" id="pin-go">Open</button><div class="help" id="pin-msg">Ask the event team for the access code.</div></section>
+
+  <section id="app" class="hidden stack" style="gap:16px">
+    <div class="card stack">
+      <div class="eyebrow">Winner's coupon code</div>
+      <input class="input big" id="code" autocomplete="off" autocapitalize="characters" inputmode="text" placeholder="Type the code">
+      <button class="btn block" id="check">Check code</button>
+      <div class="help">The winner has the code in their SMS and on their Wendy Fest profile page.</div>
+    </div>
+    <div id="result"></div>
+    <div class="counts"><div><b id="c-won">0</b><small>Won</small></div><div><b id="c-red">0</b><small>Redeemed</small></div><div><b id="c-open">0</b><small>Not yet used</small></div></div>
+    <div class="card stack">
+      <div class="row between" style="flex-wrap:wrap"><div class="eyebrow">Coupons won</div><span id="flt"><button class="pill on" data-f="all">All</button> <button class="pill" data-f="open">Not yet used</button> <button class="pill" data-f="done">Redeemed</button></span></div>
+      <div class="scroll"><table id="list"></table></div>
+      <div class="help" id="stamp"></div>
+    </div>
+  </section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js?v=mwz9ebfz"></script><script src="./js/app.js?v=mwz9ebfz"></script>
+<script>
+  const $ = (id) => document.getElementById(id), esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  let ROWS = [], FLT = "all", CUR = null;
+  const open = () => { $("login").classList.add("hidden"); $("app").classList.remove("hidden"); loadList(); $("code").focus(); };
+  const lock = () => { $("login").classList.remove("hidden"); $("app").classList.add("hidden"); };
+  async function unlock() { try { await api("/api/redeem/login", { method: "POST", body: { pin: $("pin").value } }); $("pin").value = ""; open(); } catch (e) { $("pin").value = ""; $("pin-msg").textContent = e.message || "Wrong access code"; } }
+  $("pin-go").onclick = unlock; $("pin").addEventListener("keydown", (e) => e.key === "Enter" && unlock());
+
+  function show(c, state) {
+    CUR = c; const el = $("result");
+    if (!c) { el.innerHTML = `<div class="res no"><div class="state">Not a winning code</div><div>${esc(state)}</div></div>`; return; }
+    el.innerHTML = `<div class="res ${c.redeemed ? "used" : "ok"}"><div class="state">${c.redeemed ? "Already redeemed" : "Valid: not used yet"}</div><div class="prize">${esc(c.prize)}</div>
+      <dl><dt>Code</dt><dd>${esc(c.code)}</dd><dt>Winner</dt><dd>${esc(c.winner)} · ${esc(c.phone)}</dd><dt>Won</dt><dd>${esc(String(c.wonAt || "").slice(0, 16))}</dd>${c.redeemed ? `<dt>Redeemed</dt><dd>${esc(String(c.redeemedAt || "").slice(0, 16))}${c.note ? " · " + esc(c.note) : ""}</dd>` : ""}</dl>
+      ${c.redeemed ? `<button class="btn sm ghost" id="undo">Marked by mistake? Undo</button>` : `<input class="input" id="note" maxlength="80" placeholder="Note (optional), for example the outlet"><button class="btn block green" id="mark">Mark as redeemed</button>`}</div>`;
+    if ($("mark")) $("mark").onclick = () => mark(false); if ($("undo")) $("undo").onclick = () => { if (confirm("Undo: mark this coupon as NOT redeemed?")) mark(true); };
+  }
+  async function check(code) {
+    const v = String(code ?? $("code").value).trim(); if (!v) return;
+    try { show(await api("/api/redeem/find?code=" + encodeURIComponent(v))); } catch (e) { if (e.status === 401) return lock(); show(null, e.message); }
+    $("result").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+  async function mark(undo) {
+    if (!CUR) return;
+    try { show(await api("/api/redeem/mark", { method: "POST", body: { code: CUR.code, undo, note: $("note") ? $("note").value : "" } })); toast(undo ? "Marked as not redeemed" : "Marked as redeemed"); if (!undo) $("code").value = ""; }
+    catch (e) { if (e.status === 401) return lock(); if (e.status === 409 && e.data && e.data.cc) show(e.data); toast(e.message); }
+    loadList();
+  }
+  $("check").onclick = () => check(); $("code").addEventListener("keydown", (e) => e.key === "Enter" && check());
+
+  function draw() {
+    const rows = ROWS.filter((c) => FLT === "all" || (FLT === "done") === c.redeemed);
+    $("list").innerHTML = `<tr><th>Code</th><th>Prize</th><th>Winner</th><th>Won</th><th>Status</th></tr>` + (rows.map((c) => `<tr class="${c.redeemed ? "done" : ""}"><td><a class="cc" data-c="${esc(c.code)}">${esc(c.code)}</a></td><td>${esc(c.prize)}</td><td>${esc(c.winner)}</td><td>${esc(String(c.wonAt || "").slice(5, 16))}</td><td>${c.redeemed ? "Redeemed " + esc(String(c.redeemedAt || "").slice(5, 16)) : "<b>Not yet used</b>"}</td></tr>`).join("") || `<tr><td colspan="5" class="help">Nothing here yet.</td></tr>`);
+    document.querySelectorAll("a.cc").forEach((a) => (a.onclick = () => { $("code").value = a.dataset.c; check(a.dataset.c); }));
+  }
+  async function loadList() {
+    let r; try { r = await api("/api/redeem/list"); } catch (e) { if (e.status === 401) lock(); return; }
+    ROWS = r.rows; $("c-won").textContent = r.won; $("c-red").textContent = r.redeemed; $("c-open").textContent = r.won - r.redeemed; $("stamp").textContent = `Updated ${String(r.now).slice(11, 16)} Sri Lanka time. Only coupons that were won are listed.`; draw();
+  }
+  document.querySelectorAll("#flt .pill").forEach((b) => (b.onclick = () => { FLT = b.dataset.f; document.querySelectorAll("#flt .pill").forEach((x) => x.classList.toggle("on", x === b)); draw(); }));
+  setInterval(() => { if (!$("app").classList.contains("hidden")) loadList(); }, 20000);
+  if (document.cookie.includes("wf_redeem=")) open();
+</script>
+</body></html>

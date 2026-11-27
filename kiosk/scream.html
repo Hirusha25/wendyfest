@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
-<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwz8m1e4" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwz9ebfz" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Scream & Win · Wendy Fest</title><link rel="icon" href="../assets/cameo.png"><link rel="manifest" href="../assets/scream.webmanifest"><meta name="theme-color" content="#029CD4"><meta name="mobile-web-app-capable" content="yes">
-<link rel="stylesheet" href="../css/brand.css?v=mwz8m1e4">
+<link rel="stylesheet" href="../css/brand.css?v=mwz9ebfz">
 <style>
 /* ================= RETRO BLUE (formerly Studio Cream) · Scream & Win ================= */
 :root { --u:min(calc(100vw / 1440), calc(100vh / 760)); --v:var(--u); --blue:#029CD4; --red:#CD2028; --red2:#DA2A33; --red-dark:#8E141B; --ink:#1F1A1A; --cream:#F7F2EC; --blush:#F2D4D7; --cyan:#29C9E0; --line:rgba(205,32,40,.18); }
@@ -159,15 +159,25 @@ br.up, .up-only, .up-in { display:none; }
 #trans { display:none; }
 /* countdown title: a small white "Get ready to" over a big "Scream." in the cover-page lettering (owner) */
 #go-count .t .gr { font-size:.42em; color:#fff; letter-spacing:.01em; text-shadow:0 calc(3 * var(--u)) 0 rgba(0,50,90,.45); }
-/* landscape (LED) live screen: Hold it above We heard, in the same plain style as the time left (owner) */
+/* landscape (LED) live screen: the same three slanted ribbons as the upright screen (owner, Nov 2026): cream Hold it, blue We heard, red clock */
 @media (orientation: landscape) {
-  #go-meter .holdcard.up-only { display:block; left:calc(90 * var(--u)); top:calc(404 * var(--u)); width:calc(330 * var(--u)); height:auto; padding:0; background:none; border:0; box-shadow:none; }
-  #go-meter .holdcard .top { display:flex; align-items:baseline; gap:calc(14 * var(--u)); justify-content:flex-start; }
-  #go-meter .holdcard .top b { font:italic 800 calc(20 * var(--u))/1 Poppins, sans-serif; letter-spacing:.2em; color:#CDEBF7; }
-  #go-meter .holdcard .top > span { font:italic 900 calc(44 * var(--u))/1 Poppins, sans-serif; color:#F6F0E6; text-shadow:0 calc(3 * var(--u)) 0 #A5171F, 0 calc(6 * var(--u)) 0 #7A0F16; }
-  #go-meter .holdcard .hbar { width:calc(260 * var(--u)); height:calc(10 * var(--u)); margin-top:calc(10 * var(--u)); border:0; background:rgba(0,50,80,.35); } #go-meter .holdcard .hbar i { background:linear-gradient(90deg, #FF6A72, #D8232D); }
+  #go-meter .holdcard.up-only { display:block; left:calc(56 * var(--u)); top:calc(364 * var(--u)); width:calc(380 * var(--u)); height:calc(108 * var(--u)); box-sizing:border-box; padding:calc(14 * var(--u)) calc(40 * var(--u)) 0 calc(46 * var(--u)); border:0; border-radius:0; background:linear-gradient(180deg, #FFFBF3 0%, #EADFCB 86%, #B5A88F 86%); clip-path:polygon(4% 0, 100% 0, 96% 100%, 0 100%); box-shadow:none; }
+  #go-meter .holdcard .top { display:flex; align-items:baseline; justify-content:space-between; }
+  #go-meter .holdcard .top b { font:italic 800 calc(22 * var(--u))/1 Poppins, sans-serif; letter-spacing:.2em; text-transform:uppercase; color:#0A6FA6; }
+  #go-meter .holdcard .top > span { font:italic 900 calc(44 * var(--u))/1 Poppins, sans-serif; color:#D8232D; text-shadow:0 calc(3 * var(--u)) 0 rgba(126,15,22,.3); }
+  #go-meter .holdcard .hbar { width:auto; height:calc(18 * var(--u)); margin-top:calc(6 * var(--u)); border:0; border-radius:999px; overflow:hidden; background:#D9CDB6; box-shadow:inset 0 0 0 calc(1.5 * var(--u)) rgba(30,27,27,.18); }
+  #go-meter .holdcard .hbar i { display:block; height:100%; border-radius:999px; background:linear-gradient(90deg, #FF6A72, #D8232D); }
   #go-meter .holdcard .bot { display:none; }
-  #go-meter .heard { top:calc(486 * var(--u)); }
+  #go-meter .heard { left:calc(56 * var(--u)); top:calc(482 * var(--u)); width:calc(380 * var(--u)) !important; max-width:calc(380 * var(--u)); height:calc(84 * var(--u)); box-sizing:border-box; padding:0 calc(34 * var(--u)) 0 calc(46 * var(--u)); display:flex; align-items:center; gap:calc(16 * var(--u)); border:0; border-radius:0; background:linear-gradient(180deg, #23B4F0 0%, #0A7FBC 86%, #064A70 86%); clip-path:polygon(4% 0, 100% 0, 96% 100%, 0 100%); }
+  #go-meter .heard small { font-size:calc(17 * var(--u)); color:#FFE08A !important; white-space:nowrap; }
+  #go-meter .heard b { font-size:calc(30 * var(--u)); max-width:calc(210 * var(--u)); color:#fff !important; text-shadow:none !important; }
+  #go-meter .heard.got b::after { width:calc(24 * var(--u)); height:calc(24 * var(--u)); margin-left:calc(8 * var(--u)); }
+  #go-meter .tleft { left:calc(1004 * var(--u)); top:calc(436 * var(--u)); width:calc(380 * var(--u)); height:calc(108 * var(--u)); box-sizing:border-box; padding:calc(12 * var(--u)) calc(44 * var(--u)) 0 calc(50 * var(--u)); gap:calc(6 * var(--u)); align-items:stretch; background:linear-gradient(180deg, #F0434C 0%, #B81B24 86%, #7E0F16 86%); clip-path:polygon(5% 0, 100% 0, 95% 100%, 0 100%); }
+  #go-meter .tleft .v b { font-size:calc(50 * var(--u)); color:#F6F0E6 !important; text-shadow:0 calc(3 * var(--u)) 0 #7E0F16 !important; }
+  #go-meter .tleft .v small { font-size:calc(19 * var(--u)); color:#FFE08A !important; }
+  #go-meter .tleft .v small .up-in { display:inline; }
+  #go-meter .tbar { width:auto; height:calc(10 * var(--u)); background:rgba(0,0,0,.28); }
+  #go-meter .tbar i { background:linear-gradient(90deg, #FFE9A8, #F6B93B); }
 }
 /* result */
 /* upright winner's screen (owner's pick, Nov 2026): sassy one-line title, score badge, the meal in a medallion, the prize on a
@@ -772,7 +782,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
 <audio id="vo-nos-1" src="../assets/voice/nos-1.mp3" preload="auto"></audio><audio id="vo-nos-2" src="../assets/voice/nos-2.mp3" preload="auto"></audio><audio id="vo-nos-3" src="../assets/voice/nos-3.mp3" preload="auto"></audio><audio id="vo-nos-4" src="../assets/voice/nos-4.mp3" preload="auto"></audio><audio id="vo-nos-5" src="../assets/voice/nos-5.mp3" preload="auto"></audio><audio id="vo-nos-6" src="../assets/voice/nos-6.mp3" preload="auto"></audio>
 <audio id="vo-win-1" src="../assets/voice/win-1.mp3" preload="auto"></audio><audio id="vo-win-2" src="../assets/voice/win-2.mp3" preload="auto"></audio><audio id="vo-win-3" src="../assets/voice/win-3.mp3" preload="auto"></audio><audio id="vo-win-4" src="../assets/voice/win-4.mp3" preload="auto"></audio><audio id="vo-win-5" src="../assets/voice/win-5.mp3" preload="auto"></audio><audio id="vo-win-6" src="../assets/voice/win-6.mp3" preload="auto"></audio>
 <audio id="vo-quiet-1" src="../assets/voice/quiet-1.mp3" preload="auto"></audio><audio id="vo-quiet-2" src="../assets/voice/quiet-2.mp3" preload="auto"></audio><audio id="vo-quiet-3" src="../assets/voice/quiet-3.mp3" preload="auto"></audio><audio id="vo-quiet-4" src="../assets/voice/quiet-4.mp3" preload="auto"></audio><audio id="vo-quiet-5" src="../assets/voice/quiet-5.mp3" preload="auto"></audio><audio id="vo-quiet-6" src="../assets/voice/quiet-6.mp3" preload="auto"></audio>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwz8m1e4"></script><script src="../js/kiosk.js?v=mwz8m1e4"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwz9ebfz"></script><script src="../js/kiosk.js?v=mwz9ebfz"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let CFG = { scream: { threshold: 70, durationMs: 3000, dbFloor: -42, dbCeil: -6, loudWeight: .6, accWeight: .4 } };
@@ -1056,6 +1066,13 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   const holdKey = () => "wf_hold_" + new Date(Date.now() + 330 * 60000).toISOString().slice(0, 10),   /* the day is the Sri Lanka day */ holdDay = () => { try { return +(localStorage.getItem(holdKey()) || 0); } catch { return 0; } };
   $("hw-y").innerHTML = "<i>Y</i>".repeat(HW_N);
   function paintHold() { const s = Math.max(holdRun, 0); $("hold-s").textContent = s.toFixed(1); $("hold-bar").style.width = Math.min(100, s / HOLD_FULL * 100) + "%"; const n = Math.round(Math.min(1, s / HOLD_FULL) * HW_N); [...$("hw-y").children].forEach((el, i) => el.classList.toggle("f", i < n)); $("hold-best").textContent = Math.max(holdDay(), holdBest).toFixed(1); }
+  // Text in the Listening bubble. The bubble must stay clear of the meter's dotted rings (owner), so a long line is made smaller, and if it
+  // still would not fit, the shorter line without the guest's name is used.
+  function sayPill(text, short) {
+    const p = $("listen-pill"), l = $("listen-l"), up = matchMedia("(orientation: portrait)").matches, U = p.offsetHeight / (up ? 62 : 56), max = (up ? 330 : 350) * U;
+    const fit = (t) => { l.textContent = t; p.style.fontSize = ""; let fs = parseFloat(getComputedStyle(p).fontSize); const min = fs * .78; while (p.offsetWidth > max && fs > min) { fs -= .5; p.style.fontSize = fs + "px"; } return p.offsetWidth <= max + 1; };
+    if (!fit(text) && short) fit(short);
+  }
   function setBeat(n) { [...$("beats").children].forEach((el) => { const b = +el.dataset.b; el.classList.toggle("on", b === n); el.classList.toggle("done", b < n); }); }
   function resetHold() { holdRun = holdBest = holdGap = voiceTotal = 0; holdLast = performance.now(); paintHold(); setBeat(1); }
   function trackHold(pct) { const now = performance.now(), dt = Math.min(.2, (now - holdLast) / 1000); holdLast = now;
@@ -1136,7 +1153,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     if (STT.text && rank(STT.text) >= rank(transcript)) { transcript = STT.text; $("trans").textContent = "We heard: " + transcript; showHeard(); }
   }
   function startRecog() {
-    transcript = ""; $("trans").textContent = "…"; heardAt = 0; recogErr = ""; recogGot = false; Object.assign(SD, { starts: 0, ends: 0, results: 0, firstMs: null, errs: [], t0: performance.now() }); $("heard").classList.remove("got", "miss"); $("listen-pill").classList.remove("got", "miss"); $("listen-wendy").classList.remove("got"); $("listen-l").textContent = "Listening…"; $("heard-v").textContent = (window.SpeechRecognition || window.webkitSpeechRecognition) && $("judge-mode").value !== "host" ? "…" : "Host will judge";
+    transcript = ""; $("trans").textContent = "…"; heardAt = 0; recogErr = ""; recogGot = false; Object.assign(SD, { starts: 0, ends: 0, results: 0, firstMs: null, errs: [], t0: performance.now() }); $("heard").classList.remove("got", "miss"); $("listen-pill").classList.remove("got", "miss"); $("listen-wendy").classList.remove("got"); $("listen-pill").style.fontSize = ""; $("listen-l").textContent = "Listening…"; $("heard-v").textContent = (window.SpeechRecognition || window.webkitSpeechRecognition) && $("judge-mode").value !== "host" ? "…" : "Host will judge";
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition; if (!SR || $("judge-mode").value === "host") return;
     // Chrome on Android ends a recognition session after one phrase (or straight away if it cannot get the mic),
     // so keep restarting it while the scream window is open, and remember what went wrong for the host.
@@ -1213,8 +1230,8 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     // Wendy cheers the guest on by name in the Listening pill while they shout (on screen only: nothing is spoken while the mic is scoring)
     const nm = String((guest && guest.firstName) || "").trim().slice(0, 12), who = nm ? ", " + nm : "", goal = CFG.scream.minLoud || CFG.scream.threshold || 70; let cheerAt = 0, cheerN = 0;
     const cheer = () => { const el = performance.now() - t0; if (heardAt || el - cheerAt < 1100 && cheerN) return; cheerAt = el;
-      const L = el > dur - 1500 ? [`Last chance${who}!`] : gaugeShown < goal ? [`Come on${who}!`, "Louder!", `Is that all${who}?`, "Even louder!"] : [`Yes${who}!`, "That’s loud!", `Big one${who}!`];
-      $("listen-l").textContent = L[cheerN++ % L.length]; };
+      const L = el > dur - 1500 ? ["Last chance"] : gaugeShown < goal ? ["Come on", "Louder!", "Is that all", "Even louder!"] : ["Yes", "That’s loud!", "Big one"], line = L[cheerN++ % L.length], end = line === "Is that all" ? "?" : "!";
+      /[!?]$/.test(line) ? sayPill(line) : sayPill(line + who + end, line + end); };
     // One quick shout (owner, Nov 2026): no long hold. The round is over as soon as the guest has shouted and then gone quiet for a moment.
     // A guest still mid-shout when the clock reaches zero is allowed to finish (up to 1.5 s more), so the end of the word is never cut off.
     for (;;) { const el = performance.now() - t0; cheer();
@@ -1226,7 +1243,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     if (rec) fetch("/api/ping", { cache: "no-store" }).catch(() => {});   // opens the connection before the recording is sent
     await wait(350); windowOpen = false;                                   // a short tail, so the last sound of the word is in the recording and in the loudness
     holdRun = holdBest; paintHold(); if (holdBest > holdDay()) { try { localStorage.setItem(holdKey(), holdBest.toFixed(1)); } catch {} }
-    if (rec) { stopRecog(); $("listen-l").textContent = "Checking the word…"; await hearOnServer(); srStatus(); }
+    if (rec) { stopRecog(); $("listen-pill").style.fontSize = ""; $("listen-l").textContent = "Checking the word…"; $("heard-v").textContent = "Checking…"; await hearOnServer(); srStatus(); if (!STT.text) $("heard-v").textContent = "…"; else await wait(650); }   // the guest sees what was heard before the result
     else { await wait(550); stopRecog(); await wait(400); }                // Chrome's own speech check needs a moment to hand over its last words
     // Speech recognition broke, or it heard no words at all although the guest was clearly loud: let the host call it, never fail the guest for the tech.
     const srOK = !!(window.SpeechRecognition || window.webkitSpeechRecognition), sttOn = STT.used;

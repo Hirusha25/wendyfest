@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
-<head><script>fetch("./version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwz8m1e4" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<head><script>fetch("./version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwz9ebfz" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] LED wall · Wendy Fest</title><link rel="icon" href="./assets/cameo.png">
-<link rel="stylesheet" href="./css/brand.css?v=mwz8m1e4">
+<link rel="stylesheet" href="./css/brand.css?v=mwz9ebfz">
 <style>
   /* The LED wall: approved roasts, one at a time, shuffled. Landscape. Sizes follow the screen (vh / vw), so any wall size works. */
   html, body { height: 100%; margin: 0; overflow: hidden; background: #141111; cursor: none; }
@@ -50,7 +50,7 @@
   <div class="slide" id="s0"></div><div class="slide" id="s1"></div>
   <div id="hold"><img src="./assets/wendys-horiz-white.svg" alt="Wendy's"><div class="ttl">Roast Me</div><div class="body">Fresh roasts coming up on this screen.</div></div>
   <div id="pinbox"><div class="card stack" style="width:min(90vw,380px)"><div class="eyebrow">Kiosk PIN</div><input class="input" id="pin" type="password" inputmode="numeric"><button class="btn block" id="pin-go">Open the wall</button></div></div>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js?v=mwz8m1e4"></script><script src="./js/app.js?v=mwz8m1e4"></script><script src="./js/roast-card.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js?v=mwz9ebfz"></script><script src="./js/app.js?v=mwz9ebfz"></script><script src="./js/roast-card.js"></script>
 <script>
   const $ = (id) => document.getElementById(id), esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   let LIST = [], QUEUE = [], SECONDS = 12, cur = 0, last = "", timer = null, started = false;

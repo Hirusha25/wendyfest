@@ -114,6 +114,10 @@ async function route(method, url, body) {
       return json({ token: r.token, url: roastUrl(r), name: first(pt), lang: pt.lang, title: r.title, roast: r.roast, vibe: r.vibe, fallback: true, photo: r.photo });
     }
   }
+  // the LED wall: only roasts approved on the admin page
+  const wallS = () => Object.assign({ on: true, seconds: 12 }, DB.settings.wall || {});
+  const wallRow = (r) => { const pt = DB.participants.find((x) => x.id === r.participant_id) || { name: "Guest", lang: "en", code: "" }; return { token: r.token, name: first(pt), fullName: pt.name, code: pt.code, lang: pt.lang, title: r.title, roast: r.roast, photo: r.photo, keys: [], at: String(r.at || ""), onWall: !!r.wall, fallback: true, test: false }; };
+  if (p === "/api/wall") { if (!needPin("kiosk")) return json({ error: "PIN required", which: "kiosk" }, 401); const w = wallS(); return json({ on: !!w.on, seconds: w.seconds, roasts: w.on ? DB.roasts.filter((r) => r.wall && r.photo).map(wallRow) : [] }); }
   if (p.startsWith("/api/admin/")) {
     if (!needPin("admin")) return json({ error: "PIN required", which: "admin" }, 401);
     if (p.endsWith("stats")) { const q = (a) => a.length; return json({ participants: q(DB.participants), screams: q(DB.screams), wins: DB.screams.filter((s) => s.won).length, avgScore: DB.screams.length ? Math.round(DB.screams.reduce((a, s) => a + s.score, 0) / DB.screams.length * 10) / 10 : null, roasts: q(DB.roasts), roastFallbacks: q(DB.roasts), couponsTotal: q(DB.coupons), couponsLeft: DB.coupons.filter((c) => !c.claimed_by).length, smsFailed: 0, smsSent: q(DB.sms),
@@ -121,6 +125,9 @@ async function route(method, url, body) {
       recent: DB.screams.slice(-15).reverse().map((s) => { const pt = DB.participants.find((x) => x.id === s.participant_id); return { name: pt.name, code: pt.code, score: s.score, won: s.won, coupon: s.coupon_code, created_at: s.at }; }),
       recentRoasts: DB.roasts.slice(-15).reverse().map((r) => { const pt = DB.participants.find((x) => x.id === r.participant_id); return { name: pt.name, token: r.token, title_en: r.title.en, fallback: 1, created_at: r.at }; }),
       leaderboard: DB.participants.map((pt) => ({ name: pt.name, score: Math.max(0, ...DB.screams.filter((s) => s.participant_id === pt.id).map((s) => s.score)) })).filter((x) => x.score > 0).sort((a, b) => b.score - a.score).slice(0, 10) }); }
+    if (p.endsWith("/roasts")) { const f = u.searchParams.get("f") || "waiting", all = DB.roasts.filter((r) => r.photo), rows = all.filter((r) => f === "wall" ? r.wall : f === "all" ? true : !r.wall).reverse();
+      return json({ total: rows.length, waiting: all.filter((r) => !r.wall).length, onWall: all.filter((r) => r.wall).length, page: 1, per: Math.max(60, rows.length), wall: wallS(), rows: rows.map(wallRow) }); }
+    if (p.endsWith("/wall") && p.indexOf("/roasts/") > 0) { const r = DB.roasts.find((x) => x.token === p.split("/")[4]); if (!r) return json({ ok: false }, 404); r.wall = !!body.on; save(); return json({ ok: true, onWall: r.wall }); }
     if (p.endsWith("overview")) {   // the numbers page, worked out from the demo's own made-up data
       const P = DB.participants, ids = (a) => new Set(a.map((x) => x.participant_id)), sp = ids(DB.screams), rp = ids(DB.roasts), both = [...sp].filter((i) => rp.has(i)).length, played = sp.size + rp.size - both;
       const half = DB.pending && !P.some((x) => x.phone === DB.pending.phone) ? 1 : 0, wins = DB.screams.filter((s) => s.won).length, today = new Date(Date.now() + 330 * 60000).toISOString().slice(0, 10);
@@ -142,7 +149,7 @@ async function route(method, url, body) {
       return json({ total: rows.length, page: 1, per: Math.max(50, rows.length), rows });
     }
     if (p.endsWith("half")) { const d = DB.pending && !DB.participants.some((x) => x.phone === DB.pending.phone) ? DB.pending : null; return json({ rows: d ? [{ phone: "+" + d.phone.slice(0, 4) + " *** **" + d.phone.slice(-2), lang: d.payload.lang, sends: 1, wrong: 0, first: "", last: "", waiting: Date.now() < d.expires }] : [] }); }
-    if (p.endsWith("settings")) { DB.settings.scream = Object.assign(scream(), Object.fromEntries(Object.entries(body.scream || {}).map(([k, v]) => [k, Number(v)]))); if (body.coupon) DB.settings.coupon = Object.assign(coupon(), body.coupon); if (body.roast) DB.settings.roast = { attemptsPerPerson: Number(body.roast.attemptsPerPerson) }; save(); return json({ ok: true }); }
+    if (p.endsWith("settings")) { if (body.wall) DB.settings.wall = { on: !!body.wall.on, seconds: clamp(Number(body.wall.seconds) || 12, 5, 120) }; DB.settings.scream = Object.assign(scream(), Object.fromEntries(Object.entries(body.scream || {}).map(([k, v]) => [k, Number(v)]))); if (body.coupon) DB.settings.coupon = Object.assign(coupon(), body.coupon); if (body.roast) DB.settings.roast = { attemptsPerPerson: Number(body.roast.attemptsPerPerson) }; save(); return json({ ok: true }); }
     if (p.endsWith("coupons/import")) { let added = 0; for (const l of String(body.text || "").split(/\\r?\\n/)) { const [code, label] = l.split(/[,\\t;]/).map((s) => s.trim()); if (code && !/^code$/i.test(code) && !DB.coupons.some((c) => c.code === code)) { DB.coupons.push({ id: DB.coupons.length + 1, code, label: label || null, claimed_by: null }); added++; } } save(); return json({ ok: true, added, total: DB.coupons.length }); }
     if (p.endsWith("coupons/generate")) { const n = clamp(Number(body.count || 100), 1, 5000); for (let i = 0; i < n; i++) DB.coupons.push({ id: DB.coupons.length + 1, code: "WF-" + shortCode2(6), label: null, claimed_by: null }); save(); return json({ ok: true, added: n }); }
     if (p.endsWith("resend")) { const pt = byCode(body.code); if (!pt) return json({ error: "code not found" }, 404); sendSms(pt.phone, templates(pt.lang).welcome(first(pt), pt.code, profileUrl(pt))); return json({ ok: true }); }

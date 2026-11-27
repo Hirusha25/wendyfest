@@ -119,3 +119,12 @@ The event kiosk is a 1080 x 1920 upright touch screen. `public/kiosk/roast.html`
 - Every `sendSms()` call passes a kind (`otp`, `welcome`, `win`, `lose`, `roast`), saved in `sms_log.kind`. A new message type needs a kind and a label in `KIND` on the admin page.
 - All days and times on the page are Sri Lanka time (`SL_DAY_SQL`, `slTime`). Counts say "people" when they count guests and "screams" or "roasts" when they count tries.
 - The demo copy fakes the same routes in `scripts/build-demo.mjs`; add a stub there for any new admin route.
+
+## LED wall and the guest cut-out (Nov 2026)
+
+- `/wall` (`public/wall.html`, kiosk PIN) shows roasts on the LED wall: landscape, one at a time, shuffled, first name only. Owner's pick: red stage, tilted photo card, roast in a cream bubble. Sizes are in `vh` / `vw`, so any wall shape works; the title and roast are shrunk to fit by `fit()`.
+- Only roasts approved on the admin page's LED wall tab are shown (`roasts.wall`, `roasts.wall_at`; `/api/wall`, `/api/admin/roasts`, `POST /api/admin/roasts/:token/wall`). Nothing reaches the wall without approval. The tab also pauses the wall and sets seconds per roast (setting `wall`).
+- The wall asks `/api/wall` every 20 seconds: a newly approved roast is shown next, a removed one leaves. With nothing approved, or when paused, it shows the holding screen.
+- Cut-out (`cutout()` in `public/js/roast-card.js`): two looks with MediaPipe. The first finds the guest in the whole photo; the second looks closely at the head and shoulders, so hair is traced at about three times the detail. Only the main guest is kept (the biggest joined-up shape with a head): background people and a second person standing apart are left out. A head that the camera itself cut off cannot be brought back.
+- `roastCard.focus(src)` gives the head box; the wall uses it (`frame()`) to keep the whole head, hair included, inside its photo window.
+- Do not commit screenshots of the wall or the card made with real guest photos. Test pictures for docs use drawn placeholder faces.

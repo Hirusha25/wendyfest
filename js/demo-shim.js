@@ -10,6 +10,15 @@ function shortCode(len = 6) {
   for (let i = 0; i < len; i++) s += ALPHABET[bytes[i] % ALPHABET.length];
   return s;
 }
+// Guest code: 3 numbers then 2 letters, for example 482KT (owner, Nov 2026). The kiosk shows a number pad, then a letter pad.
+// To make it easy to type, the two letters are always next to each other on the kiosk's letter pad (6 letters a row), or the same letter twice.
+const CODE_LETTERS = "ABCDEFGHJKLMNPQRSTUVWXYZ";   // no I or O: they look like 1 and 0
+function guestCode() {
+  const b = crypto.randomBytes(6), d = (n) => String(b[n] % 10), i = b[3] % CODE_LETTERS.length, row = Math.floor(i / 6), col = i % 6;
+  const near = [i]; if (col > 0) near.push(i - 1); if (col < 5) near.push(i + 1); if (row > 0) near.push(i - 6); if (row < 3) near.push(i + 6);
+  return d(0) + d(1) + d(2) + CODE_LETTERS[i] + CODE_LETTERS[near[b[4] % near.length]];
+}
+const isGuestCode = (c) => new RegExp(`^\\d{3}[${CODE_LETTERS}]{2}$`).test(String(c || ""));
 function token(len = 24) {
   return crypto.randomBytes(len).toString("base64url");
 }
@@ -26,6 +35,16 @@ function normalisePhone(raw) {
 }
 
 function clamp(n, lo, hi) { return Math.max(lo, Math.min(hi, n)); }
+
+// Sri Lanka Standard Time (UTC+5:30, no daylight saving). The database stores every time in UTC, which never shifts with the
+// server's own clock or location; anything a person reads (admin lists, the export, "today") is turned into Sri Lanka time here.
+const SL_OFFSET_MIN = 330;
+function slTime(utc) {            // "2026-11-27 04:10:00" (UTC) -> "2026-11-27 09:40:00" (Sri Lanka)
+  if (!utc) return utc; const d = new Date(String(utc).replace(" ", "T") + "Z"); if (isNaN(d)) return utc;
+  return new Date(d.getTime() + SL_OFFSET_MIN * 60000).toISOString().slice(0, 19).replace("T", " ");
+}
+function slToday(now = Date.now()) { return new Date(now + SL_OFFSET_MIN * 60000).toISOString().slice(0, 10); }   // today's date in Sri Lanka
+const SL_DAY_SQL = (col) => `date(${col}, '+5 hours', '+30 minutes')`;   // the Sri Lanka calendar day of a stored UTC time, for SQL
 
 // Levenshtein similarity 0..1
 function similarity(a, b) {
@@ -262,7 +281,7 @@ const DB = Object.assign({ participants: [], coupons: [], screams: [], roasts: [
 const save = () => localStorage.setItem("wf_demo", JSON.stringify(DB));
 if (!DB.coupons.length) { for (let i = 0; i < 100; i++) DB.coupons.push({ id: i + 1, code: "WF-" + shortCode2(6), label: null, claimed_by: null }); save(); }
 const now = () => new Date().toISOString().slice(0, 19).replace("T", " ");
-if (!DB.participants.some((p) => p.code === "WENDYS")) { DB.participants.unshift({ id: 1000, code: "WENDYS", token: "demo-guest-token", name: "Demo Guest", phone: "94770000000", email: null, dob: null, lang: "en", created_at: now() }); save(); }
+if (!DB.participants.some((p) => p.code === "123AB")) { DB.participants.unshift({ id: 1000, code: "123AB", token: "demo-guest-token", name: "Demo Guest", phone: "94770000000", email: null, dob: null, lang: "en", created_at: now() }); save(); }
 const cookie = (n) => (document.cookie.match(new RegExp("(?:^|; )" + n + "=([^;]*)")) || [])[1];
 const setCookie = (n, v) => (document.cookie = n + "=" + v + "; path=/; max-age=31536000; SameSite=Lax");
 const scream = () => Object.assign({ threshold: 75, minLoud: 60, minAcc: 70, loudWeight: .6, accWeight: .4, dbFloor: -42, dbCeil: -6, attemptsPerPerson: 99, durationMs: 10000 }, DB.settings.scream || {});
@@ -278,7 +297,7 @@ function publicProfile(p) {
   return { name: p.name, code: p.code, lang: p.lang, number: DB.participants.indexOf(p) + 1, joined: p.created_at, phoneMasked: p.phone.replace(/^(94)(\d{2})\d{5}(\d{2})$/, "+$1 $2*****$3"), profileUrl: profileUrl(p), screams, roasts,
     badges: { screamer: screams.length > 0, winner: screams.some((s) => s.won), roasted: roasts.length > 0 }, coupon: coupon(), limits: { screamAttempts: scream().attemptsPerPerson, roastAttempts: roastS().attemptsPerPerson } };
 }
-const byCode = (c) => { let k = String(c || "").toUpperCase().replace(/[^A-Z0-9]/g, ""); if (k === "DEMO" || k === "DEMO01") k = "WENDYS"; return DB.participants.find((p) => p.code === k); };
+const byCode = (c) => { let k = String(c || "").toUpperCase().replace(/[^A-Z0-9]/g, ""); if (k === "DEMO" || k === "DEMO01" || k === "WENDYS") k = "123AB";   /* the demo guest: type 123 AB on the kiosk */ return DB.participants.find((p) => p.code === k); };
 const needPin = (which) => { const c = cookie("wf_" + which); return c === KIOSK_PIN || c === ADMIN_PIN; };
 
 async function route(method, url, body) {

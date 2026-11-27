@@ -88,7 +88,7 @@ window.renderProfileCard = async (p) => {
   ctx.fillStyle = C.mute; ctx.font = BODY(22, 800); ctx.fillText("ENTRY CODE", 130, fy + 405);
   ctx.font = DISPLAY(72); const cw = ctx.measureText(p.code).width + 50; rr(ctx, 130, fy + 420, cw, 86, 16); ctx.fillStyle = C.blush; ctx.fill(); ctx.fillStyle = C.redDark; ctx.fillText(p.code, 155, fy + 486);
   ctx.textAlign = "right"; ctx.fillStyle = C.mute; ctx.font = BODY(22, 800); ctx.fillText("COLOMBO", 950, fy + 440);
-  ctx.fillStyle = C.blueDark; ctx.font = "italic 800 38px Poppins, sans-serif"; ctx.fillText(new Date(p.joined + "Z").toLocaleDateString("en-GB", { day: "numeric", month: "short" }).toUpperCase(), 950, fy + 486); ctx.textAlign = "left";
+  ctx.fillStyle = C.blueDark; ctx.font = "italic 800 38px Poppins, sans-serif"; ctx.fillText(new Date(p.joined.replace(" ", "T") + "Z").toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "Asia/Colombo" }).toUpperCase(), 950, fy + 486); ctx.textAlign = "left";
   // badges
   const badges = [["ROOKIE", true], ["SCREAMER", p.badges.screamer], ["WINNER", p.badges.winner], ["ROASTED", p.badges.roasted]];
   badges.forEach(([label, on], i) => { const x = 70 + i * 240; rr(ctx, x, 1130, 220, 110, 24); ctx.fillStyle = on ? C.red : "#fff"; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = on ? C.redDark : C.line; ctx.stroke(); ctx.fillStyle = on ? "#fff" : "#B5B5B5"; ctx.font = BODY(26, 800); ctx.textAlign = "center"; ctx.fillText(label, x + 110, 1200); ctx.textAlign = "left"; });

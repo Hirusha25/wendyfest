@@ -48,6 +48,13 @@ STYLE EXAMPLES (for tone and shape only, never copy them):
 - Bright yellow shirt: "You brought the yellow shirt. We brought the Cheese Shaker Fries. We win."
 - Red cap: "Nice red cap, Nimal. Our Lankan Fire Burger wears red better."
 
+TONE (the owner wants more laughs, Nov 2026): every roast is told in ONE of four tones, named in the request. All four keep every rule in this brief: the joke is still about a thing the guest chose, the food still wins, and nobody is insulted. What changes is Wendy's attitude.
+- CLASSIC: the friendly one-up described above. Half joke, half compliment.
+- SASSY: the same, with a raised eyebrow. One dry word or two does the work ("Brave.", "Noted.", "Interesting plan.", "Sure."). Find a fresh one each time; do not lean on "Bold" or "Bold choice". Example: "A hoodie in this heat, Nuwan? Brave. Our fries came out crispy too."
+- SARCASTIC: deadpan. Wendy pretends to be very impressed, or states the obvious as if it were news, then lets the food win. Sarcasm about the THING, said with a straight face. Examples: "A hoodie in Colombo heat, Nuwan. Interesting plan. Our fries are the only thing here meant to be this crispy." / "Very important call, Usitha. Tell them the Lankan Fire Burger said it is getting cold."
+- SAVAGE: the biggest laugh in the room, still kind. Go further with the SITUATION the guest created (the hoodie in the heat, the phone call during a photo, the shirt that says silence at a booth for shouting), and let the food react to it or win by a mile. Savage means a bigger exaggeration, never a harder insult: the guest must laugh loudest. Examples: "Nuwan wore a hoodie to the equator. Even our Shaker Fries are asking if you are okay." / "Usitha took a call during a photo. Whoever it is, they are not hotter than our Lankan Fire Burger."
+In SARCASTIC and SAVAGE the set-up may be a plain statement instead of a compliment, and "half joke, half compliment" is relaxed: the warmth is in the wink and in Wendy being on the guest's side. The rules under DIPLOMATIC and HARD RULES are never relaxed, and the "mother and boss" test still applies: they must laugh, and the guest must not be embarrassed.
+
 HEAT: mild = the set-up is a compliment and Wendy only just wins. Medium = the default: a confident, cheeky one-up. Extra spicy = Wendy wins by a mile, still friendly. Even extra spicy must be safe to read in front of the guest's parents.
 
 HARD RULES (non-negotiable):
@@ -91,7 +98,12 @@ function getClient() {
 }
 
 const HEAT = { mild: "MILD: the set-up is a compliment and Wendy only just wins.", medium: "MEDIUM: a confident, cheeky one-up.", extra: "EXTRA SPICY: Wendy wins by a mile, still friendly, never about looks they cannot change." };
-export async function generateRoast({ imageBase64, mediaType = "image/jpeg", name, lang = "en", heat = "medium" }) {
+// The tone of each roast is drawn from a mix (owner: "a mix of the current one, A, B and C"), leaning on the heat the guest picked,
+// so a guest who asked for mild never gets the savage one.
+const TONES = { classic: "CLASSIC", sassy: "SASSY", sarcastic: "SARCASTIC", savage: "SAVAGE" };
+const TONE_MIX = { mild: ["classic", "classic", "sassy"], medium: ["classic", "sassy", "sarcastic", "sarcastic", "savage"], extra: ["sassy", "sarcastic", "savage", "savage"] };
+export const pickTone = (heat, rnd = Math.random()) => { const m = TONE_MIX[heat] || TONE_MIX.medium; return m[Math.min(m.length - 1, Math.floor(rnd * m.length))]; };
+export async function generateRoast({ imageBase64, mediaType = "image/jpeg", name, lang = "en", heat = "medium", tone = pickTone(heat) }) {
   const c = getClient();
   if (!c) return fallbackRoast({ name, reason: "no ANTHROPIC_API_KEY configured" });
   try {
@@ -106,14 +118,15 @@ export async function generateRoast({ imageBase64, mediaType = "image/jpeg", nam
         role: "user",
         content: [
           { type: "image", source: { type: "base64", media_type: mediaType, data: imageBase64 } },
-          { type: "text", text: `Guest first name: ${name || "friend"}. Their preferred language: ${lang}. Roast heat they picked: ${HEAT[heat] || HEAT.medium} Every rule above still applies at every heat. Roast them.` },
+          { type: "text", text: `Guest first name: ${name || "friend"}. Their preferred language: ${lang}. Roast heat they picked: ${HEAT[heat] || HEAT.medium} Tone for this roast: ${TONES[tone] || TONES.classic}. Every rule above still applies at every heat and in every tone. Roast them.` },
         ],
       }],
     });
     if (response.stop_reason === "refusal") return fallbackRoast({ name, reason: "model declined" });
     const text = response.content.filter((b) => b.type === "text").map((b) => b.text).join("");
     const parsed = JSON.parse(text);
-    return { ...parsed, model: response.model, fallback: false };
+    console.log(`Roast written: heat ${heat}, tone ${tone}`);
+    return { ...parsed, model: response.model, fallback: false, tone };
   } catch (e) {
     console.error("Roast generation failed:", e?.message || e);
     return fallbackRoast({ name, reason: String(e?.message || e) });

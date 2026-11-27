@@ -147,3 +147,8 @@ The event kiosk is a 1080 x 1920 upright touch screen. `public/kiosk/roast.html`
 - A winner sees the code in the win SMS and on their profile; once redeemed the profile says "Redeemed" (English only for now).
 - Wide Scream & Win live screen uses the upright screen's three slanted ribbons (cream Hold it, blue We heard, red clock). The Listening bubble is fitted by `sayPill()` so it never reaches the meter's rings: it shrinks, then drops the guest's name.
 - "We heard" cannot show words while the guest shouts on the kiosk (Chrome hears nothing there); it shows the word for 0.65 s once the word check answers, then the result.
+
+## Roast tone and code screens (Nov 2026)
+
+- Roast tone (owner: funnier, more sarcastic, "a mix of the current one, A, B and C"): each roast is written in one of four tones, CLASSIC, SASSY, SARCASTIC or SAVAGE, drawn by `pickTone(heat)` in `server/roast.js` (`TONE_MIX`): mild never gets savage, medium gets all four, extra leans savage. The tones are described in the TONE section of `SYSTEM`. Every safety rule (DIPLOMATIC, HARD RULES) applies in every tone: savage means a bigger exaggeration about the thing the guest chose, never a harder insult.
+- Both code screens check the code as soon as the fifth character is typed (`autoGo`): a right code moves on by itself, a wrong one shakes and shows why. The Continue / Go button stays.

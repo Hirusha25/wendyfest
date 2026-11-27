@@ -99,7 +99,9 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
 .kbd[data-mode="num"] button.l, .kbd[data-mode="let"] button.n { display:none; } .kbd button.z { grid-column:2; }
 .kbd button.n { background:linear-gradient(180deg, #FFFBF3, #EADFCB); color:#D8232D; box-shadow:0 calc(5 * var(--u)) 0 #B5A88F !important; }
 .boxes .dash { align-self:center; font:900 calc(60 * var(--u))/1 Poppins, sans-serif; color:#F6F0E6; }
-#code-del { left:calc(787 * var(--u)); top:calc(393 * var(--u)); width:calc(176 * var(--u)); height:calc(100 * var(--u)); font-size:calc(25 * var(--u)); justify-content:center; padding:0; background:linear-gradient(180deg, #3A3434, #141111) !important; box-shadow:0 calc(8 * var(--u)) 0 #000 !important; } #code-del::after { display:none; }
+#code-del { left:calc(787 * var(--u)); top:calc(393 * var(--u)); width:calc(176 * var(--u)); height:calc(100 * var(--u)); font-size:calc(25 * var(--u)); justify-content:center; padding:0; background:linear-gradient(180deg, #3A3434, #141111) !important; box-shadow:0 calc(8 * var(--u)) 0 #000 !important; } #code-del::after, #code-back::after { display:none; }
+#code-back { left:calc(57 * var(--u)); top:calc(470 * var(--u)); width:calc(170 * var(--u)); height:calc(62 * var(--u)); font-size:calc(24 * var(--u)); justify-content:center; padding:0; background:rgba(0,40,70,.28) !important; border:calc(3 * var(--u)) solid rgba(255,255,255,.9); box-shadow:none !important; color:#fff; }
+#s-code .ask { left:calc(255 * var(--u)) !important; width:calc(468 * var(--u)) !important; gap:calc(22 * var(--u)) !important; } #s-code .ask::before, #s-code .ask::after { width:calc(34 * var(--u)) !important; }
 .kbd button { font-size:calc(34 * var(--u)); }
 .kbd .krow { display:flex; gap:calc(5 * var(--u)); height:calc(60 * var(--u)); }
 .kbd .krow.r2 { padding:0 calc(22 * var(--u)) 0 calc(33 * var(--u)); }
@@ -109,8 +111,9 @@ body { margin:0; background:var(--cream); color:var(--ink); font-family:Poppins,
 .kbd .shift { flex:0 0 calc(81 * var(--u)); } .kbd .bksp { flex:0 0 calc(73 * var(--u)); } .kbd .num { flex:0 0 calc(124 * var(--u)); font-size:calc(24 * var(--u)); } .kbd .space { font-size:calc(24 * var(--u)); letter-spacing:.12em; }
 #code-go { left:calc(978 * var(--u)); top:calc(393 * var(--u)); width:calc(422 * var(--u)); height:calc(100 * var(--u)); font-size:calc(34 * var(--u)); }
 /* mic check */
-#s-ready .box { height:calc(490 * var(--u)); }
-#s-ready .sub2 { top:calc(137 * var(--u)); font:600 calc(34 * var(--u))/1 Poppins, sans-serif; color:#1F1A1A; }
+#s-ready .box, #s-miss .box { height:calc(490 * var(--u)); }
+#s-ready .sub2, #s-miss .sub2 { top:calc(137 * var(--u)); font:600 calc(34 * var(--u))/1 Poppins, sans-serif; color:#1F1A1A; }
+#s-miss .sub2 { top:calc(190 * var(--u)); line-height:1.3; }
 #s-ready .sub2 b { color:var(--red); font-style:italic; font-weight:900; }
 br.up, .up-only, .up-in { display:none; }
 .ribbon { position:absolute; text-align:center; white-space:nowrap; font:italic 900 calc(30 * var(--u))/1 Poppins, sans-serif; text-transform:uppercase; color:#F6F0E6; background:linear-gradient(180deg, #E0303A, #B51F28); border-top:calc(3 * var(--u)) solid rgba(255,255,255,.55); box-shadow:0 calc(8 * var(--u)) 0 #7A0F16, 0 calc(20 * var(--u)) calc(30 * var(--u)) rgba(0,40,70,.35); transform:skewX(-9deg) rotate(-1.2deg); }
@@ -125,7 +128,7 @@ br.up, .up-only, .up-in { display:none; }
 #wave-ready { left:calc(238 * var(--u)); top:calc(177 * var(--u)); width:calc(955 * var(--u)); height:calc(95 * var(--u)); }
 #mic-pill { left:calc(543 * var(--u)); top:calc(301 * var(--u)); width:calc(354 * var(--u)); height:calc(53 * var(--u)); border:calc(2 * var(--u)) solid rgba(205,32,40,.28); }
 #mic-pill .dot { background:var(--cyan); } #mic-pill:not(.ok) .dot { background:var(--red); animation:blink 1s steps(2) infinite; }
-#go { left:calc(435 * var(--u)); top:calc(380 * var(--u)); width:calc(594 * var(--u)); height:calc(93 * var(--u)); }
+#go, #miss-next { left:calc(435 * var(--u)); top:calc(380 * var(--u)); width:calc(594 * var(--u)); height:calc(93 * var(--u)); }
 /* countdown */
 #go-count { height:calc(500 * var(--u)); }
 #go-count .t { left:calc(104 * var(--u)); top:calc(108 * var(--u)); font-size:calc(75 * var(--u)); line-height:.88; }
@@ -536,16 +539,19 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   .kbd .space { font-size:calc(42 * var(--u)) !important; }
   #code-go { left:calc(380 * var(--u)) !important; top:calc(1300 * var(--u)) !important; width:calc(670 * var(--u)) !important; height:calc(150 * var(--u)) !important; }
   #code-del { left:calc(30 * var(--u)) !important; top:calc(1300 * var(--u)) !important; width:calc(330 * var(--u)) !important; height:calc(150 * var(--u)) !important; font-size:calc(40 * var(--u)) !important; }
-  #s-code .ask { left:0 !important; width:calc(1080 * var(--u)) !important; top:calc(1556 * var(--u)) !important; font-size:calc(38 * var(--u)) !important; }
-  #s-ready .box { height:calc(1560 * var(--u)) !important; }
-  #s-ready .crow:first-child { top:calc(40 * var(--u)) !important; line-height:.9 !important; text-align:center !important; }
-  #s-ready .rn { color:#E8323C !important; text-shadow:0 calc(3 * var(--u)) 0 #F6F0E6, 0 calc(7 * var(--u)) 0 #7A0F16, 0 calc(16 * var(--u)) calc(26 * var(--u)) rgba(0,40,70,.4) !important; }
-  #s-ready .crow:first-child .t { display:inline-block !important; text-align:center !important; }
+  #s-code .ask { left:calc(380 * var(--u)) !important; width:calc(670 * var(--u)) !important; top:calc(1500 * var(--u)) !important; font-size:calc(36 * var(--u)) !important; gap:calc(26 * var(--u)) !important; }
+  #s-code .ask::before, #s-code .ask::after { width:calc(44 * var(--u)) !important; }
+  #code-back { left:calc(30 * var(--u)) !important; top:calc(1476 * var(--u)) !important; width:calc(330 * var(--u)) !important; height:calc(88 * var(--u)) !important; font-size:calc(36 * var(--u)) !important; }
+  #s-ready .box, #s-miss .box { height:calc(1560 * var(--u)) !important; }
+  #s-ready .crow:first-child, #s-miss .crow:first-child { top:calc(40 * var(--u)) !important; line-height:.9 !important; text-align:center !important; }
+  #s-ready .rn, #s-miss .rn { color:#E8323C !important; text-shadow:0 calc(3 * var(--u)) 0 #F6F0E6, 0 calc(7 * var(--u)) 0 #7A0F16, 0 calc(16 * var(--u)) calc(26 * var(--u)) rgba(0,40,70,.4) !important; }
+  #s-ready .crow:first-child .t, #s-miss .crow:first-child .t { display:inline-block !important; text-align:center !important; }
   #s-ready .sub2 { top:calc(470 * var(--u)) !important; font-size:calc(64 * var(--u)) !important; line-height:1.25 !important; }
+  #s-miss .sub2 { top:calc(520 * var(--u)) !important; font-size:calc(58 * var(--u)) !important; line-height:1.3 !important; }
   #s-ready .sub2 span { max-width:calc(980 * var(--u)) !important; white-space:normal !important; }
   #wave-ready { left:calc(40 * var(--u)) !important; top:calc(700 * var(--u)) !important; width:calc(1000 * var(--u)) !important; height:calc(380 * var(--u)) !important; }
   #mic-pill { top:calc(1150 * var(--u)) !important; height:calc(96 * var(--u)) !important; padding:0 calc(48 * var(--u)) !important; font-size:calc(34 * var(--u)) !important; white-space:nowrap !important; }
-  #go { left:calc(90 * var(--u)) !important; top:calc(1320 * var(--u)) !important; width:calc(900 * var(--u)) !important; height:calc(156 * var(--u)) !important; }
+  #go, #miss-next { left:calc(90 * var(--u)) !important; top:calc(1320 * var(--u)) !important; width:calc(900 * var(--u)) !important; height:calc(156 * var(--u)) !important; }
   br.up { display:inline !important; }
   .up-only { display:block !important; }
   .beats { display:flex !important; }
@@ -666,6 +672,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     <div class="abs msg" id="code-msg"></div>
     <div class="abs ask lined">Ask your host for help.</div>
     <div class="kbd" id="kbd"></div>
+    <button class="btn ink" id="code-back">← Back</button>
     <button class="btn ink" id="code-del">← Delete</button>
     <button class="btn" id="code-go">Continue</button>
   </div></section>
@@ -677,6 +684,13 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     <canvas class="abs" id="wave-ready"></canvas>
     <div class="pillx ok" id="mic-pill"><span class="dot"></span><span id="mic-status">Checking microphone…</span></div>
     <button class="btn" id="go">Let’s go</button>
+  </div></section>
+
+  <!-- The word check failed twice for a technical reason: nothing saved, attempt not used -->
+  <section class="screen bx" id="s-miss"><div class="box">
+    <div class="crow" style="top:calc(31 * var(--u))"><span class="t" data-fit="859" data-fs="96" data-pfit="1000" data-pfs="170">Our ears <br class="up"><span class="rn">need a minute.</span></span></div>
+    <div class="crow sub2"><span style="display:inline-block" data-fit="900" data-fs="34" data-pfit="980" data-pfs="58">That one does not count. <br class="up">Please tell our team and try again.</span></div>
+    <button class="btn" id="miss-next">Next player</button>
   </div></section>
 
   <!-- GO: countdown then scream -->
@@ -1075,7 +1089,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   function speechDiag() {
     let mic = "", micDefault = null; try { const tr = stream && stream.getAudioTracks()[0]; if (tr) { mic = (tr.label || "").slice(0, 60); const id = (tr.getSettings() || {}).deviceId; micDefault = id === "default" || /^default/i.test(tr.label || "") || !localStorage.getItem("wf_mic_" + K.station); } } catch {}
     const ua = navigator.userAgent, os = /Android/.test(ua) ? "Android" : /Windows/.test(ua) ? "Windows" : /Mac/.test(ua) ? "Mac" : /Linux/.test(ua) ? "Linux" : "other", ch = (ua.match(/Chrome\/(\d+)/) || [])[1] || "";
-    return { route: judgeRoute, sr: !!(window.SpeechRecognition || window.webkitSpeechRecognition), got: recogGot, err: recogErr, errs: SD.errs.slice(0, 6), starts: SD.starts, ends: SD.ends, results: SD.results, firstMs: SD.firstMs, clipPct: clipPct(), mic, micDefault, os, chrome: ch, online: navigator.onLine, stt: STT.used || STT.err ? { ms: STT.ms, err: STT.err, text: STT.text.slice(0, 60), chrome: STT.chrome.slice(0, 60), kb: Math.round(STT.bytes / 1024) } : null };
+    return { route: judgeRoute, sr: !!(window.SpeechRecognition || window.webkitSpeechRecognition), got: recogGot, err: recogErr, errs: SD.errs.slice(0, 6), starts: SD.starts, ends: SD.ends, results: SD.results, firstMs: SD.firstMs, clipPct: clipPct(), mic, micDefault, os, chrome: ch, online: navigator.onLine, stt: STT.used || STT.err ? { ms: STT.ms, err: STT.err, text: STT.text.slice(0, 60), chrome: STT.chrome.slice(0, 60), kb: Math.round(STT.bytes / 1024), tries: STT.tries } : null };
   }
   const WITH_S_RE = /\b(w|v)h?[aei]nd(ys|ies|is|ees|eez|yz|es)\b|\bwhen ?these\b|\bwendy is\b/i;
   const NO_S_RE = /\b(w|v)h?[aei]nd(y|i|ee|ie)\b/i;
@@ -1092,11 +1106,11 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   // ---------- server hearing ----------
   // Chrome's speech recognition hears nothing on the Android kiosk (it cannot share the mic with the meter), so the scream is also
   // recorded here and sent to our server to be turned into words. Used only when the server says it can (CFG.scream.stt).
-  let rec = null, recChunks = [], STT = { used: false, ms: null, err: "", text: "", chrome: "", bytes: 0 };
+  let rec = null, recChunks = [], STT = { used: false, ms: null, err: "", text: "", chrome: "", bytes: 0, tries: [] };
   function startRec() {
-    rec = null; recChunks = []; STT = { used: false, ms: null, err: "", text: "", chrome: "", bytes: 0 };
+    rec = null; recChunks = []; STT = { used: false, ms: null, err: "", text: "", chrome: "", bytes: 0, tries: [] };
     if (!CFG.scream.stt || $("judge-mode").value === "host" || !stream || !window.MediaRecorder) return;
-    try { const type = ["audio/webm;codecs=opus", "audio/webm", "audio/mp4"].find((t) => MediaRecorder.isTypeSupported(t)); rec = new MediaRecorder(stream, type ? { mimeType: type, audioBitsPerSecond: 48000 } : undefined); rec.ondataavailable = (e) => { if (e.data && e.data.size) recChunks.push(e.data); }; rec.start(); }
+    try { const type = ["audio/webm;codecs=opus", "audio/webm", "audio/mp4"].find((t) => MediaRecorder.isTypeSupported(t)); rec = new MediaRecorder(stream, type ? { mimeType: type, audioBitsPerSecond: 24000 } : undefined); rec.ondataavailable = (e) => { if (e.data && e.data.size) recChunks.push(e.data); }; rec.start(); }
     catch (e) { rec = null; STT.err = "record-failed"; }
   }
   async function hearOnServer() {
@@ -1104,9 +1118,15 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     try {
       await new Promise((res) => { rec.onstop = res; try { rec.stop(); } catch { res(); } setTimeout(res, 1200); });
       const blob = new Blob(recChunks, { type: rec.mimeType || "audio/webm" }); STT.bytes = blob.size; if (blob.size < 800) throw new Error("empty");
-      const b64 = await new Promise((res, rej) => { const fr = new FileReader(); fr.onload = () => res(String(fr.result).split(",")[1] || ""); fr.onerror = rej; fr.readAsDataURL(blob); });
-      const r = await Promise.race([K.api("/api/kiosk/hear", { audio: b64, mime: blob.type }), new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), 9000))]);
-      STT.text = (r && r.text) || ""; STT.err = (r && r.error) || "";
+      // Sent as raw audio (small), up to two times: a stalled upload is cancelled and sent again as a fresh request.
+      for (const [n, limit] of [[1, 5000], [2, 6000]]) {
+        const ac = new AbortController(), timer = setTimeout(() => ac.abort(), limit), t1 = performance.now(); let err = "", r = null;
+        try { const res = await fetch("/api/kiosk/hear", { method: "POST", headers: { "Content-Type": blob.type || "audio/webm", "X-Try": String(n) }, body: blob, signal: ac.signal, cache: "no-store" });
+          if (!res.ok) throw new Error("http " + res.status); r = await res.json(); err = (r && r.error) || ""; }
+        catch (e) { err = e.name === "AbortError" ? "timeout" : String(e.message || "failed").slice(0, 30); }
+        clearTimeout(timer); STT.tries.push({ ms: Math.round(performance.now() - t1), err });
+        STT.text = (r && r.text) || ""; STT.err = err; if (!err) break;
+      }
     } catch (e) { STT.err = STT.err || String(e.message || "failed").slice(0, 40); }
     STT.ms = Math.round(performance.now() - t0); rec = null;
     // Keep whichever heard the word: a clear "Wendy's" from either wins, then a "Wendy", then whatever the server heard.
@@ -1144,6 +1164,8 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     [...$("boxes").querySelectorAll("i")].forEach((b, i) => { b.textContent = v[i] || ""; b.classList.toggle("cur", i === v.length); b.classList.remove("err"); if (i === v.length - 1 && v.length > lastLen) { b.classList.remove("pop"); void b.offsetWidth; b.classList.add("pop"); } }); lastLen = v.length; }
   codeEl.addEventListener("input", paintBoxes); codeEl.addEventListener("keydown", (e) => e.key === "Enter" && lookup(codeEl.value));
   $("code-go").onclick = () => lookup(codeEl.value);
+  $("code-back").onclick = () => goIdle();   // a guest without a code can go back to the start (and its QR to register)
+  $("miss-next").onclick = () => goIdle();
   paintBoxes();   // sets the pad to numbers before the first guest arrives
   async function lookup(code) {
     $("code-msg").textContent = "Looking up…";
@@ -1194,6 +1216,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
       if (heardAt || performance.now() - t0 > 1500) setBeat(2);
       if (heardAt && performance.now() - heardAt > 1300 && performance.now() - t0 > 1500 && holdGap > .7) break; const left = dur - (performance.now() - t0); $("tleft").textContent = (left / 1000).toFixed(1); $("tbar").style.transform = `scaleX(${left / dur})`; await wait(50); }
     $("tleft").textContent = "0.0"; $("tbar").style.transform = "scaleX(0)"; windowOpen = false; setBeat(3); holdRun = holdBest; paintHold(); if (holdBest > holdDay()) { try { localStorage.setItem(holdKey(), holdBest.toFixed(1)); } catch {} }
+    if (rec) fetch("/api/ping", { cache: "no-store" }).catch(() => {});   // opens the connection before the recording is sent
     await wait(900); stopRecog(); await wait(400);
     if (rec) { $("listen-l").textContent = "Checking the word…"; await hearOnServer(); srStatus(); }
     // Speech recognition broke, or it heard no words at all although the guest was clearly loud: let the host call it, never fail the guest for the tech.
@@ -1206,7 +1229,12 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     if (judgeRoute !== "auto" && missRetries < 1) {
       missRetries++; mode = "ready"; K.show("s-ready"); $("mic-pill").classList.remove("heard-ok"); $("mic-status").textContent = "We couldn’t hear you. Tap Let’s go and try again."; resetVoiceCheck(); SFX.error(); K.resetIdle(90000, goIdle); return;
     }
-    missRetries = 0; submitScream(null);
+    // Second miss. If the word check itself failed (the recording never got an answer, or this browser cannot hear at all), nothing is saved
+    // and the attempt is not used: the guest is asked to tell the team. A scream that was checked and simply had no words is scored as it stands.
+    const techFail = sttOn ? !!STT.err : judgeRoute !== "auto";
+    missRetries = 0;
+    if (judgeRoute !== "auto" && techFail) { K.api("/api/kiosk/miss", { speech: speechDiag() }).catch(() => {}); mode = "miss"; K.show("s-miss"); SFX.error(); K.resetIdle(25000, goIdle); return; }
+    submitScream(null);
   };
   let missRetries = 0;      // goes when the word could not be heard and the guest was sent back to try again
   let submitting = false;   // a double tap on a host button must not save the scream twice

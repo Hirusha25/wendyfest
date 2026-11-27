@@ -231,14 +231,25 @@ app.post("/api/kiosk/lookup", requirePin("kiosk"), (req, res) => {
 });
 
 // The kiosk sends the recorded scream; we answer with the words heard. Never fails the round: no words just means "ask Chrome or the host".
-app.post("/api/kiosk/hear", requirePin("kiosk"), async (req, res) => {
+// The kiosk sends the recording as raw audio (small and quick to upload); the older JSON form with base64 is still accepted for a cached page.
+app.post("/api/kiosk/hear", requirePin("kiosk"), express.raw({ type: ["audio/*", "video/*", "application/octet-stream"], limit: "4mb" }), async (req, res) => {
   if (!hearEnabled()) return res.json({ text: "", error: "off" });
-  const t0 = Date.now();
+  const t0 = Date.now(), raw = Buffer.isBuffer(req.body), n = String(req.headers["x-try"] || "1").slice(0, 2);
+  const audio = raw ? req.body : Buffer.from(String(req.body?.audio || ""), "base64"), mime = raw ? req.headers["content-type"] : req.body?.mime;
+  const note = (what) => console.log(`Scream hearing: ${Math.round(audio.length / 1024)} KB, try ${n}, ${Date.now() - t0} ms, ${what}`);
   try {
-    const audio = Buffer.from(String(req.body?.audio || ""), "base64");
-    if (audio.length < 800 || audio.length > 4_000_000) return res.json({ text: "", error: "bad-audio" });
-    res.json({ text: await hear(audio, req.body?.mime), ms: Date.now() - t0 });
-  } catch (e) { console.error("Scream speech-to-text failed:", e?.message || e); res.json({ text: "", error: String(e?.name === "TimeoutError" ? "timeout" : "failed"), ms: Date.now() - t0 }); }
+    if (audio.length < 800 || audio.length > 4_000_000) { note("bad audio"); return res.json({ text: "", error: "bad-audio" }); }
+    const text = await hear(audio, mime); note(text ? `heard ${text.length} characters` : "no words");
+    res.json({ text, ms: Date.now() - t0 });
+  } catch (e) { const error = e?.name === "TimeoutError" ? "timeout" : "failed"; note(`${error}: ${String(e?.message || e).slice(0, 120)}`); res.json({ text: "", error, ms: Date.now() - t0 }); }
+});
+// A tiny request the kiosk sends just before the recording, so the connection is already open.
+app.get("/api/ping", (req, res) => res.set("Cache-Control", "no-store").json({ ok: true }));
+// The word could not be checked twice (a technical fault): nothing is saved and the guest's attempt is not used. Kept in the log only.
+app.post("/api/kiosk/miss", requirePin("kiosk"), (req, res) => {
+  let s = ""; try { s = JSON.stringify(req.body?.speech || {}).slice(0, 800); } catch {}
+  console.log(`Scream not scored (word check failed twice), station ${String(req.body?.station || "").slice(0, 20)}: ${s}`);
+  res.json({ ok: true });
 });
 
 app.post("/api/kiosk/scream", requirePin("kiosk"), async (req, res) => {
@@ -413,7 +424,7 @@ app.use((req, res) => res.status(404).sendFile(page("404.html")));
 app.listen(config.port, () => {
   console.log(`\n🍔 Wendy Fest running on ${config.baseUrl}`);
   console.log(`   Guest QR  → ${config.baseUrl}/register`);
-  console.log(`   Kiosk     → ${config.baseUrl}/kiosk   (PIN ${config.kioskPin})`);
-  console.log(`   Admin     → ${config.baseUrl}/admin   (PIN ${config.adminPin})`);
+  console.log(`   Kiosk     → ${config.baseUrl}/kiosk   (PIN ${config.kioskPin === "2468" ? "2468, the default" : "set in the env file"})`);
+  console.log(`   Admin     → ${config.baseUrl}/admin   (PIN ${config.adminPin === "1357" ? "1357, the default" : "set in the env file"})`);
   console.log(`   SMS provider: ${config.sms.provider} · Roast model: ${config.roast.model} · API key: ${config.anthropicApiKey ? "set" : "MISSING (fallback roasts)"}\n`);
 });

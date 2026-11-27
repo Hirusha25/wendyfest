@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
-<head><script>fetch("./version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwzb3gfl" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<head><script>fetch("./version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwzc6dy4" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] LED wall · Wendy Fest</title><link rel="icon" href="./assets/cameo.png">
-<link rel="stylesheet" href="./css/brand.css?v=mwzb3gfl">
+<link rel="stylesheet" href="./css/brand.css?v=mwzc6dy4">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@900&family=Barlow+Semi+Condensed:ital,wght@1,900&family=Poppins:ital,wght@1,900&display=swap">
 <style>
   /* The LED wall: approved roasts, one at a time, shuffled. The look is the owner's landscape "ROASTED." pass (Nov 2026): a dark card hanging
@@ -20,8 +20,13 @@
 
   /* the pass hangs from the lanyard and sways a little */
   .pass { position: absolute; left: 3.8em; top: 7.9em; width: 92.4em; height: 45.6em; transform-origin: 50% -6em; }
-  .slide.on .pass { animation: swingIn 2.4s cubic-bezier(.3, .6, .35, 1) both, sway 6s ease-in-out 2.4s infinite alternate; }
-  @keyframes swingIn { 0% { rotate: -2.2deg; } 30% { rotate: 1.3deg; } 55% { rotate: -.8deg; } 78% { rotate: .4deg; } 100% { rotate: -.25deg; } }
+  /* Slideshow (owner, Nov 2026): the pass on screen unhooks and falls away, then the next one drops in on its lanyard, bounces, and settles into a slow sway. */
+  .slide.on .pass { animation: passIn 1.5s cubic-bezier(.3, .6, .35, 1) both, sway 6s ease-in-out 1.5s infinite alternate; }
+  @keyframes passIn { 0% { translate: 0 -64em; rotate: -4deg; } 38% { translate: 0 1.4em; rotate: 2deg; } 55% { translate: 0 -.6em; rotate: -1.3deg; } 72% { translate: 0 .2em; rotate: .7deg; } 88% { rotate: -.4deg; } 100% { translate: 0 0; rotate: -.25deg; } }
+  .slide.out { opacity: 1; z-index: 1; transition: none; }
+  .slide.out .pass { animation: passOut .75s cubic-bezier(.55, 0, .85, .35) both; }
+  @keyframes passOut { 0% { translate: 0 0; rotate: -.25deg; } 22% { translate: 0 -1.6em; rotate: 1.6deg; } 100% { translate: 3em 72em; rotate: 11deg; } }
+  #prog { position: fixed; left: 0; right: 0; bottom: 0; height: .6vh; z-index: 4; background: rgba(0,0,0,.18); } #prog i { display: block; height: 100%; background: #F6F0E6; opacity: .8; transform-origin: 0 50%; transform: scaleX(0); }
   @keyframes sway { from { rotate: -.25deg; } to { rotate: .25deg; } }
   .lany { position: absolute; left: 50%; top: -9.6em; width: 6em; height: 11em; translate: -50% 0; z-index: 5; overflow: visible; filter: drop-shadow(0 .5em .6em rgba(0,0,0,.4)); }
   .pcard { position: absolute; inset: 0; border-radius: 2.6em; overflow: hidden; background: linear-gradient(150deg, #262121 0%, #151212 45%, #0C0A0A 100%); border: .22em solid #F6F0E6;
@@ -29,7 +34,7 @@
   /* red halftone dots in two corners, and a red slanted band with a blue and a cream edge running behind the roast */
   .pcard::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle, #E3202B .17em, transparent .2em) 0 0 / .78em .78em;
     -webkit-mask: radial-gradient(34em 26em at 100% 4%, #000 0, transparent 70%), radial-gradient(40em 22em at 62% 108%, #000 0, transparent 72%); mask: radial-gradient(34em 26em at 100% 4%, #000 0, transparent 70%), radial-gradient(40em 22em at 62% 108%, #000 0, transparent 72%); opacity: .9; }
-  .band { position: absolute; left: -4em; top: 25.6em; width: 104em; height: 12.4em; rotate: -5.2deg; background: linear-gradient(180deg, #F02C36, #C81B24); box-shadow: 0 -.55em 0 #F6F0E6, 0 -1.2em 0 #18A6E8, 0 1em 2em rgba(0,0,0,.35); }
+  .band { position: absolute; left: -4em; top: 27em; width: 104em; height: 12em; rotate: -4.6deg; background: linear-gradient(180deg, #F02C36, #C81B24); box-shadow: 0 -.55em 0 #F6F0E6, 0 -1.2em 0 #18A6E8, 0 1em 2em rgba(0,0,0,.35); }
   .sheen { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; background: linear-gradient(112deg, transparent 40%, rgba(255,255,255,.06) 46%, rgba(255,255,255,.22) 50%, rgba(255,255,255,.06) 54%, transparent 60%) 0 0 / 280% 100% no-repeat; animation: sheen 7s ease-in-out infinite alternate; z-index: 6; border-radius: 2.6em; }
   @keyframes sheen { from { background-position: 115% 0; } to { background-position: -15% 0; } }
 
@@ -47,11 +52,11 @@
   /* right side: logos, ROASTED., the roast on strips, the hashtag */
   .logos { position: absolute; left: 44em; width: 44.5em; top: 1.5em; height: 7.2em; display: flex; align-items: center; justify-content: center; gap: 1.5em; z-index: 3; }
   .logos img.w { height: 4.9em; } .logos i { width: .14em; height: 4.6em; background: rgba(255,255,255,.5); } .logos img.f { height: 6.9em; }
-  .roasted { position: absolute; left: 43.4em; width: 47em; top: 9.4em; height: 17em; z-index: 3; display: flex; align-items: center; justify-content: center; rotate: -4.4deg; }   /* leans with the band and the strips: the right side rides up a little (owner) */
-  .roasted b { display: block; font: italic 900 12.3em/.86 'Barlow Semi Condensed', 'Barlow Condensed', sans-serif; letter-spacing: -.012em; transform: scaleY(1.32); white-space: nowrap; color: #E3202B;
+  .roasted { position: absolute; left: 43.4em; width: 47em; top: 8.5em; height: 14.6em; z-index: 3; display: flex; align-items: flex-end; justify-content: center; rotate: -4.6deg; }   /* ROASTED. stands on top of the band's two lines, at the same lean, and never crosses them; the roast is packed inside the red band only (owner) */
+  .roasted b { display: block; font: italic 900 11.6em/.8 'Barlow Semi Condensed', 'Barlow Condensed', sans-serif; letter-spacing: -.012em; transform: scaleY(1.3); transform-origin: 50% 100%; white-space: nowrap; color: #E3202B;
     background: linear-gradient(180deg, #FF4651 0%, #E3202B 52%, #BE1A23 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; -webkit-text-stroke: .012em rgba(255,255,255,.75);
     filter: drop-shadow(.022em .03em 0 #7E1016) drop-shadow(.022em .03em 0 #4E0A0E) drop-shadow(0 .09em .1em rgba(0,0,0,.5)); padding: 0 .08em; }
-  .strips { position: absolute; left: 44.6em; width: 44.6em; top: 24.2em; height: 13.2em; rotate: -4.2deg; z-index: 3; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .42em; }
+  .strips { position: absolute; left: 44.6em; width: 44.6em; top: 26.1em; height: 10.6em; rotate: -4.6deg; z-index: 3; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .34em; }
   .strips span { display: block; white-space: nowrap; font: 900 1em/1 'Barlow Condensed', 'Noto Sans Sinhala', 'Noto Sans Tamil', sans-serif; text-transform: uppercase; letter-spacing: .01em; color: #191616; background: linear-gradient(180deg, #FFFBF3, #EFE6D6); padding: .14em .5em .1em; box-shadow: .1em .12em 0 rgba(0,0,0,.35); }
   .strips span:nth-child(odd) { rotate: -.5deg; translate: -.3em 0; } .strips span:nth-child(even) { rotate: .45deg; translate: .35em 0; }
   .strips span.last { color: #fff; background: linear-gradient(180deg, #2BB6F2, #0C8FD3); box-shadow: .1em .12em 0 #06527E; }
@@ -81,8 +86,8 @@
   .t-paper .photo { background: linear-gradient(160deg, #2E2828, #141111); }
 
   /* everything arrives in order: photo, name, ROASTED. stamps in, then the roast line by line */
-  .slide.on .photo { animation: popIn .7s cubic-bezier(.2, 1.3, .4, 1) .15s both; } .slide.on .tape { animation: slideIn .5s ease .55s both; } .slide.on .wendy { animation: peek .7s cubic-bezier(.2, 1.4, .4, 1) .9s both; }
-  .slide.on .roasted b { animation: stamp .55s cubic-bezier(.2, 1.5, .4, 1) .45s both; } .slide.on .strips span { animation: stripIn .45s ease both; animation-delay: calc(.95s + var(--n) * .22s); } .slide.on .tag { animation: fadeUp .6s ease 1.9s both; }
+  .slide.on .photo { animation: popIn .7s cubic-bezier(.2, 1.3, .4, 1) .7s both; } .slide.on .tape { animation: slideIn .5s ease 1.1s both; } .slide.on .wendy { animation: peek .7s cubic-bezier(.2, 1.4, .4, 1) 1.45s both; }
+  .slide.on .roasted b { animation: stamp .55s cubic-bezier(.2, 1.5, .4, 1) 1s both; } .slide.on .strips span { animation: stripIn .45s ease both; animation-delay: calc(1.5s + var(--n) * .22s); } .slide.on .tag { animation: fadeUp .6s ease 2.5s both; }
   @keyframes popIn { from { scale: .86; opacity: 0; } to { scale: 1; opacity: 1; } }
   @keyframes slideIn { from { translate: -6em 0; opacity: 0; } to { translate: 0 0; opacity: 1; } }
   @keyframes peek { from { translate: -6em 6em; } to { translate: 0 0; } }
@@ -102,13 +107,14 @@
 <body>
   <div id="bg"></div><div id="bg2"></div><div id="top"></div>
   <div class="stage"><div class="slide" id="s0"></div><div class="slide" id="s1"></div></div>
+  <div id="prog"><i id="prog-i"></i></div>
   <div id="hold"><img src="./assets/wendys-horiz-white.svg" alt="Wendy's"><div class="ttl">Roast Me</div><div class="body">Fresh roasts coming up on this screen.</div></div>
   <div id="pinbox"><div class="card stack" style="width:min(90vw,380px)"><div class="eyebrow">Kiosk PIN</div><input class="input" id="pin" type="password" inputmode="numeric"><button class="btn block" id="pin-go">Open the wall</button></div></div>
   <template id="lany"><svg class="lany" viewBox="0 0 120 140" aria-hidden="true"><defs><linearGradient id="wlyS" x1="0" x2="1"><stop offset="0" stop-color="#1668AE"/><stop offset=".18" stop-color="#2F93DE"/><stop offset=".5" stop-color="#46A8EE"/><stop offset=".82" stop-color="#2F93DE"/><stop offset="1" stop-color="#1668AE"/></linearGradient><pattern id="wlyW" width="4" height="4" patternUnits="userSpaceOnUse"><path d="M0 4L4 0M-1 1L1 -1M3 5L5 3" stroke="#0E4F8A" stroke-width=".9" opacity=".5"/><path d="M0 0L4 4" stroke="#8FD0FF" stroke-width=".5" opacity=".35"/></pattern><linearGradient id="wlyM" x1="0" x2="1"><stop offset="0" stop-color="#8B949C"/><stop offset=".22" stop-color="#F7F9FA"/><stop offset=".5" stop-color="#B9C1C8"/><stop offset=".78" stop-color="#F2F5F7"/><stop offset="1" stop-color="#7C858D"/></linearGradient><linearGradient id="wlyB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FDFEFE"/><stop offset=".45" stop-color="#C3CAD0"/><stop offset="1" stop-color="#8A939B"/></linearGradient></defs><rect x="24" y="110" width="72" height="30" rx="9" fill="#F6F0E6" stroke="rgba(0,0,0,.2)" stroke-width="1"/><rect x="39" y="119" width="42" height="13" rx="6" fill="#211C1C"/><rect x="26" y="0" width="68" height="42" fill="url(#wlyS)"/><rect x="26" y="0" width="68" height="42" fill="url(#wlyW)"/><rect x="26" y="26" width="68" height="16" fill="#0E4F8A" opacity=".28"/><path d="M30 28H90M30 39H90" stroke="#BFE3FF" stroke-width="1.2" stroke-dasharray="3 2.4" opacity=".85"/><path d="M28 42H92A27 27 0 0 1 65 70H55A27 27 0 0 1 28 42Z" fill="none" stroke="#3E464D" stroke-width="11" stroke-linejoin="round" opacity=".3" transform="translate(0 3)"/><path d="M28 42H92A27 27 0 0 1 65 70H55A27 27 0 0 1 28 42Z" fill="none" stroke="url(#wlyM)" stroke-width="9" stroke-linejoin="round"/><rect x="26" y="33" width="68" height="13" fill="url(#wlyS)"/><rect x="26" y="33" width="68" height="13" fill="url(#wlyW)"/><rect x="49" y="70" width="22" height="12" rx="4" fill="url(#wlyM)" stroke="#6F7880" stroke-width=".8"/><ellipse cx="60" cy="72" rx="9" ry="3" fill="#EEF1F3" opacity=".9"/><path d="M41 84Q41 80 45 80H75Q79 80 79 84V120Q79 128 71 128H49Q41 128 41 120Z" fill="url(#wlyB)" stroke="#6F7880" stroke-width="1"/><path d="M46 85H60V123H50Q46 123 46 119Z" fill="#fff" opacity=".45"/><rect x="50" y="113" width="20" height="5" rx="2.5" fill="#7C858D" opacity=".55"/></svg></template>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js?v=mwzb3gfl"></script><script src="./js/app.js?v=mwzb3gfl"></script><script src="./js/roast-card.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="./js/demo-shim.js?v=mwzc6dy4"></script><script src="./js/app.js?v=mwzc6dy4"></script><script src="./js/roast-card.js"></script>
 <script>
   const $ = (id) => document.getElementById(id), esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-  let LIST = [], QUEUE = [], SECONDS = 12, cur = 0, last = "", timer = null, started = false;
+  let LIST = [], QUEUE = [], SECONDS = 15, cur = 0, last = "", timer = null, started = false;
   // The pass changes colour from roast to roast: all four are used once, in a random order, before any comes round again. ?theme=blue (or dark, red, paper) holds one colour, for checking.
   const THEMES = ["dark", "blue", "red", "paper"], HOLD = new URLSearchParams(location.search).get("theme"); let themeBag = [], lastTheme = "";
   function nextTheme() { if (THEMES.includes(HOLD)) return HOLD; if (!themeBag.length) { themeBag = THEMES.slice().sort(() => Math.random() - .5); if (themeBag[0] === lastTheme) themeBag.push(themeBag.shift()); } return (lastTheme = themeBag.shift()); }
@@ -130,7 +136,7 @@
     const wide = (l, px) => { cx.font = `900 ${px}px ${fam}`; return cx.measureText(l).width + px; };   // the strip's own side padding is about one letter height
     const wrap = (px) => { const lines = []; let ln = ""; for (const w of t.split(/\s+/)) { if (ln && wide(ln + " " + w, px) > maxW) { lines.push(ln); ln = w; } else ln = ln ? ln + " " + w : w; } lines.push(ln); return lines; };
     let size = local ? 3.1 : 4.3, lines;
-    for (; size > 1.3; size -= .1) { lines = wrap(size * E); const h = lines.length * size * E * 1.24 + (lines.length - 1) * .42 * E; if (h <= maxH && lines.length <= 5 && lines.every((l) => wide(l, size * E) <= maxW)) break; }
+    for (; size > 1.3; size -= .1) { lines = wrap(size * E); const h = lines.length * size * E * 1.22 + (lines.length - 1) * .34 * E; if (h <= maxH && lines.length <= 5 && lines.every((l) => wide(l, size * E) <= maxW)) break; }
     // a last line of one short word looks lost on its blue strip: pull a word down to it
     if (lines.length > 1 && lines.at(-1).split(" ").length === 1 && lines.at(-2).split(" ").length > 2) { const a = lines.at(-2).split(" "); lines[lines.length - 1] = a.pop() + " " + lines.at(-1); lines[lines.length - 2] = a.join(" "); }
     box.innerHTML = lines.map((l, i) => `<span class="${i === lines.length - 1 ? "last" : ""}" style="font-size:${size.toFixed(2)}em;--n:${i}">${esc(l)}</span>`).join("");
@@ -159,16 +165,22 @@
   }
   function show() {
     clearTimeout(timer);
-    if (!LIST.length) { started = false; $("hold").classList.add("on"); $("s0").classList.remove("on"); $("s1").classList.remove("on"); return; }
+    if (!LIST.length) { started = false; try { $("prog-i").getAnimations().forEach((a) => a.cancel()); } catch {} $("hold").classList.add("on"); $("s0").classList.remove("on"); $("s1").classList.remove("on"); return; }
+    if (started && LIST.length === 1 && LIST[0].token === last && document.querySelector(".slide.on")) { timer = setTimeout(show, SECONDS * 1000); return; }   // only one roast approved: it simply stays up
     const r = nextRoast(); if (!r) return; last = r.token;
-    const img = new Image(), go = () => { const el = $("s" + (cur ^= 1)), old = $("s" + (cur ^ 1)); draw(el, r); $("hold").classList.remove("on"); old.classList.remove("on"); el.classList.add("on"); document.body.dataset.theme = el.dataset.theme; started = true; timer = setTimeout(show, SECONDS * 1000); };
+    const img = new Image(), go = () => { const el = $("s" + (cur ^= 1)), old = $("s" + (cur ^ 1)), wasOn = old.classList.contains("on"); draw(el, r); $("hold").classList.remove("on");
+      // the pass on screen falls away first, then the new one drops in
+      old.classList.remove("on"); if (wasOn) { old.classList.add("out"); setTimeout(() => old.classList.remove("out"), 800); }
+      setTimeout(() => { el.classList.add("on"); document.body.dataset.theme = el.dataset.theme; }, wasOn ? 480 : 0);
+      try { $("prog-i").getAnimations().forEach((a) => a.cancel()); $("prog-i").animate([{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], { duration: SECONDS * 1000, fill: "forwards" }); } catch {}
+      started = true; timer = setTimeout(show, SECONDS * 1000); };
     img.onload = () => findFocus(r).then(go); img.onerror = () => { timer = setTimeout(show, 600); }; img.src = r.photo;   // a photo that will not load is skipped
   }
   async function refresh() {
     let res; try { res = await fetch("/api/wall", { cache: "no-store" }); } catch { return; }   // offline for a moment: keep showing what we have
     if (res.status === 401) { $("pinbox").classList.add("on"); document.body.style.cursor = "auto"; return; }
     if (!res.ok) return; const d = await res.json(); $("pinbox").classList.remove("on"); document.body.style.cursor = "";
-    SECONDS = Math.min(120, Math.max(5, Number(d.seconds) || 12));
+    SECONDS = Math.min(120, Math.max(8, Number(d.seconds) || 15));   // the card takes about 3 seconds to arrive, so under 8 nobody could read it
     const tokens = new Set(d.roasts.map((r) => r.token)); LIST = d.roasts; QUEUE = QUEUE.filter((r) => tokens.has(r.token));
     const fresh = d.roasts.filter((r) => !window.SEEN || !window.SEEN.has(r.token)); if (window.SEEN && fresh.length) QUEUE.unshift(...fresh);   // a newly approved roast is shown next
     window.SEEN = tokens;

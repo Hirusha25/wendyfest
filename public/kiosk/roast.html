@@ -139,7 +139,7 @@
   .cv .msg.onred { color:#fff; font:700 calc(18 * var(--p))/1.2 Poppins, sans-serif; }
   /* the pad shows one kind of key at a time: numbers (3 across, 0 in the middle of the last row), then letters (6 across) */
   .cv .kb[data-mode="num"] button.l, .cv .kb[data-mode="let"] button.n { display:none; }
-  .cv .kb[data-mode="num"] { grid-template-columns:repeat(3, 1fr); } .cv .kb[data-mode="let"] { grid-template-columns:repeat(6, 1fr); } .cv .kb button.z { grid-column:2; }
+  .cv .kb[data-mode="num"] { grid-template-columns:repeat(3, 1fr); } .cv .kb[data-mode="let"] { grid-template-columns:repeat(6, 1fr); } .cv .kb button.z { grid-column:2; } .cv .kb button.n { margin-top:0 !important; }   /* the number pad is four rows now: no extra gap above it, so the 0 key clears the Delete row on the wide layout */
   .cv .kb { display:grid; grid-template-columns:repeat(8, 1fr); gap:calc(18 * var(--p)) calc(12 * var(--p)); width:calc(747 * var(--p)); }
   .cv .kb button, .cv .act .del { border:0; padding:0; border-radius:calc(12 * var(--p)); color:#fff; cursor:pointer; background:linear-gradient(180deg, #403939 0%, #1E1B1B 100%); box-shadow:0 calc(6 * var(--p)) 0 #0A0909, 0 calc(12 * var(--p)) calc(16 * var(--p)) rgba(60,0,8,.3), inset 0 calc(2 * var(--p)) 0 rgba(255,255,255,.16); transition:transform .06s; }
   .cv .kb button { height:calc(78 * var(--p)); font:italic 900 calc(38 * var(--p))/1 Poppins, sans-serif; }

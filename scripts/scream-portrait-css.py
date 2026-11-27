@@ -56,7 +56,11 @@ rule(".boxes i", "width:156u; height:200u; font-size:120u; border-radius:18u; bo
 rule(".boxes i.cur:empty::after", "height:100u; width:6u")
 rule("#s-code .msg", "left:0; width:1080u; top:634u; font-size:32u")
 rule(".kbd", "left:30u; top:690u; width:1020u; gap:14u; grid-auto-rows:136u")   # the two-step pad: numbers, then letters
-rule(".kbd button.n", "box-shadow:0 8u 0 #B5A88F")
+# the raised, glossy keys at upright size (same look as the Roast Me keypad; this game's colours)
+rule(".kbd button", "border-width:3u; box-shadow:0 9u 0 #7A0F16, 0 18u 20u rgba(0,30,60,.4), inset 0 4.0u 0 rgba(255,255,255,.4), inset 0 -8.1u 11.7u rgba(126,15,22,.45); text-shadow:0 3u 0 rgba(0,0,0,.35)")
+rule(".kbd button.n", "box-shadow:0 9u 0 #B5A88F, 0 18u 20u rgba(0,30,60,.35), inset 0 4.0u 0 #fff, inset 0 -8.1u 11.7u rgba(181,168,143,.5); text-shadow:none")
+rule(".kbd button:active", "transform:translateY(7u); box-shadow:0 2u 0 #7A0F16")
+rule(".kbd button.n:active", "box-shadow:0 2u 0 #B5A88F")
 rule(".kbd .krow", "height:128u; gap:9u")
 rule(".kbd .krow.r2", "padding:0 52u")
 rule(".kbd button", "font-size:64u; border-radius:16u")

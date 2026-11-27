@@ -348,6 +348,10 @@
   .cv .swatch button[data-c="dark"] { background:linear-gradient(160deg, #3A3434, #0D0B0B); } .cv .swatch button[data-c="red"] { background:linear-gradient(160deg, #EA3640, #B01A22); }
   .cv .swatch button.on { transform:scale(1.18); box-shadow:0 0 0 calc(4 * var(--p)) #1E1B1B, 0 0 0 calc(8 * var(--p)) #fff, 0 calc(10 * var(--p)) calc(16 * var(--p)) rgba(0,0,0,.35); }
   .cv .swatch button:active { transform:scale(.94); }
+  /* until the guest picks a colour, the circles take turns to press in and pop, one after another, so it is clear they can be tapped (owner) */
+  .cv .swatch.hint button { animation:swTap 2.8s ease-in-out infinite; } .cv .swatch.hint button:nth-of-type(2) { animation-delay:.45s; } .cv .swatch.hint button:nth-of-type(3) { animation-delay:.9s; } .cv .swatch.hint button:nth-of-type(4) { animation-delay:1.35s; }
+  @keyframes swTap { 0%, 22%, 100% { scale:1; filter:none; } 6% { scale:.82; } 13% { scale:1.24; filter:brightness(1.15) drop-shadow(0 0 calc(10 * var(--p)) rgba(255,255,255,.9)); } }
+  @media (prefers-reduced-motion: reduce) { .cv .swatch.hint button { animation:none; } }
   /* the card swings in on its lanyard when the roast appears, settles, then keeps swaying gently. It turns about the top of the strap. */
   #s-reveal .pcard { transform-origin:50% -14%; }
   #s-reveal.on .pcard { animation:cardIn 2.8s cubic-bezier(.3, .6, .35, 1) both, cardSway 5.6s ease-in-out 2.8s infinite alternate, cardTurn 7.4s ease-in-out infinite alternate; }
@@ -685,7 +689,7 @@
     </div><img id="r-card" class="rcard" alt=""></div>
     <div class="rsave" style="left:calc(1340 * var(--p));top:calc(226 * var(--p))">Scan to<br>save</div>
     <div class="qrs" style="left:calc(1340 * var(--p));top:calc(376 * var(--p))"><img id="qr-roast" alt="QR"></div>
-    <div class="swatch" id="swatch" style="left:calc(1340 * var(--p));top:calc(772 * var(--p))"><span>Card colour</span><button data-c="paper" aria-label="Beige"></button><button data-c="blue" aria-label="Blue"></button><button data-c="dark" aria-label="Black"></button><button data-c="red" aria-label="Red"></button></div>
+    <div class="swatch hint" id="swatch" style="left:calc(1340 * var(--p));top:calc(772 * var(--p))"><span>Card colour</span><button data-c="paper" aria-label="Beige"></button><button data-c="blue" aria-label="Blue"></button><button data-c="dark" aria-label="Black"></button><button data-c="red" aria-label="Red"></button></div>
     <div class="qnote" style="left:calc(1340 * var(--p));top:calc(706 * var(--p));width:calc(480 * var(--p))">Download and share. Also sent to your phone by SMS.</div>
     <button class="nextb" style="left:calc(1340 * var(--p));top:calc(838 * var(--p));width:calc(487 * var(--p));height:calc(110 * var(--p))" onclick="goIdle()">Next guest<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg></button>
   </div></section>
@@ -752,15 +756,15 @@
     setTimeout(() => { if (voice === a) a.play().catch(() => {}); }, Math.max(0, (R.voiceAt || 0) - Date.now()));
   }
   // card colour picked with the circles; saved with the roast so the phone download matches
-  let cardTheme = "dark";
+  let cardTheme = "paper";   // the card starts beige (owner, Nov 2026); the guest can change it with the circles
   function setCardTheme(c, save) {
     cardTheme = c; document.body.dataset.card = c; document.querySelectorAll("#swatch button").forEach((b) => b.classList.toggle("on", b.dataset.c === c));
     if (!save || !R) return;
     const on = document.querySelector(".rtabs button.on"); paintReveal(on ? on.dataset.l : glang); K.resetIdle(75000, goIdle);
     fetch(`/api/roast/${R.token}/theme`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ theme: c }) }).catch(() => {});
   }
-  document.querySelectorAll("#swatch button").forEach((b) => b.onclick = () => setCardTheme(b.dataset.c, true)); setCardTheme("dark");
-  function goIdle() { setCardTheme("dark"); stopVoice(); stopTalk(); sizzleOn(false); K.resetIdle(0); setHeat("medium"); guest = null; R = null; $("code").value = ""; paintCode(); $("code-msg").textContent = ""; K.show("s-idle"); }
+  document.querySelectorAll("#swatch button").forEach((b) => b.onclick = () => { $("swatch").classList.remove("hint"); setCardTheme(b.dataset.c, true); }); setCardTheme("paper");
+  function goIdle() { setCardTheme("paper"); $("swatch").classList.add("hint"); stopVoice(); stopTalk(); sizzleOn(false); K.resetIdle(0); setHeat("medium"); guest = null; R = null; $("code").value = ""; paintCode(); $("code-msg").textContent = ""; K.show("s-idle"); }
   document.addEventListener("kiosk-home", goIdle);
   $("start").onclick = () => { K.show("s-code"); $("code").focus(); startCam(); };
   // code screen: 3 numbers then 2 letters (for example 482 KT). The pad shows numbers first and switches to letters by itself.

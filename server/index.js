@@ -190,7 +190,7 @@ app.get("/api/roast/:token", (req, res) => {
   res.json({
     token: r.token, name: r.name, lang: r.lang, vibe: r.vibe, at: r.created_at, fallback: !!r.fallback,
     title: { en: r.title_en, si: r.title_si, ta: r.title_ta }, roast: { en: r.roast_en, si: r.roast_si, ta: r.roast_ta },
-    photo: r.photo_file ? `/api/roast/${r.token}/photo` : null, url: roastUrl(r), theme: CARD_THEMES.includes(r.card_theme) ? r.card_theme : "dark", keys: roastKeys(r.observations),
+    photo: r.photo_file ? `/api/roast/${r.token}/photo` : null, url: roastUrl(r), theme: CARD_THEMES.includes(r.card_theme) ? r.card_theme : "paper", keys: roastKeys(r.observations),
   });
 });
 // Things Wendy noticed in the photo (short phrases), used to bold keywords in the roast text.

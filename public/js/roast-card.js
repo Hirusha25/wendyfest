@@ -113,7 +113,7 @@
     red: { top: ["#EA3640", "#B01A22"], dots: ["#FFFFFF", .26, .2], word: [255, 255, 255], rule: "rgba(255,255,255,.6)", head: ["#FFFFFF", "#FFFFFF", "#F1E9DD"], deep: ["#4E0A0E", "#7E1016"], edge: "rgba(255,255,255,0)" },
   };
   async function roastCard(r, lang, theme) {
-    const T = THEMES[theme] || THEMES[roastCard.theme] || THEMES.dark;   // dark is the card's colour; the others are kept as alternatives
+    const T = THEMES[theme] || THEMES[roastCard.theme] || THEMES.paper;   // beige is the card's starting colour (owner, Nov 2026); the guest can pick another
     const name = String(r.name || "").trim().split(/\s+/)[0].toUpperCase();
     const text = String((r.roast && (r.roast[lang] || r.roast.en)) || "").trim();
     const [, [logo, wendy, fest], img] = await Promise.all([fonts(), art(), r.photo ? load(r.photo).catch(() => null) : null]);

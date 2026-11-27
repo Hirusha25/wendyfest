@@ -39,12 +39,15 @@
   .photo img { position: absolute; display: block; max-width: none; }
   .tape { position: absolute; left: 10.6em; top: 32.6em; width: 30.4em; height: 6.6em; rotate: -4.4deg; background: linear-gradient(180deg, #F2323C, #C81C25); box-shadow: 0 .6em 0 #8E1219, 0 1.4em 2em rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; z-index: 3; clip-path: polygon(1.5% 0, 100% 0, 98.5% 100%, 0 100%); }
   .tape b { font: italic 900 4.5em/1 'Barlow Semi Condensed', 'Barlow Condensed', 'Noto Sans Sinhala', 'Noto Sans Tamil', sans-serif; text-transform: uppercase; letter-spacing: .02em; color: #FFF8EC; text-shadow: 0 .06em 0 rgba(90,0,10,.6); white-space: nowrap; }
-  .wendy { position: absolute; left: -2.2em; bottom: -3.4em; width: 15.5em; height: 15.5em; object-fit: contain; z-index: 4; filter: drop-shadow(.22em 0 0 #fff) drop-shadow(-.22em 0 0 #fff) drop-shadow(0 .22em 0 #fff) drop-shadow(0 -.22em 0 #fff); }
+  /* Wendy looks in from the bottom left corner. Her picture is a crop (cut flat at the top, the bottom and one side), so it is turned to put the cut side and the
+     bottom under the card's edge, and the flat top of her hair is rounded off with a mask; the white outline is drawn after that, so it follows the smooth shape. */
+  .wendy { position: absolute; left: -.5em; bottom: -4.6em; width: 16.5em; height: 16.5em; z-index: 4; filter: drop-shadow(.2em 0 0 #fff) drop-shadow(-.2em 0 0 #fff) drop-shadow(0 .2em 0 #fff) drop-shadow(0 -.2em 0 #fff) drop-shadow(.3em .5em .5em rgba(0,0,0,.35)); }
+  .wendy img { display: block; width: 100%; height: 100%; transform: scaleX(-1); -webkit-mask: radial-gradient(ellipse 43% 41% at 69% 49%, #000 99.2%, transparent 100%), linear-gradient(#000, #000) 0 100% / 100% 51% no-repeat; mask: radial-gradient(ellipse 43% 41% at 69% 49%, #000 99.2%, transparent 100%), linear-gradient(#000, #000) 0 100% / 100% 51% no-repeat; }
 
   /* right side: logos, ROASTED., the roast on strips, the hashtag */
   .logos { position: absolute; left: 44em; width: 44.5em; top: 1.5em; height: 7.2em; display: flex; align-items: center; justify-content: center; gap: 1.5em; z-index: 3; }
   .logos img.w { height: 4.9em; } .logos i { width: .14em; height: 4.6em; background: rgba(255,255,255,.5); } .logos img.f { height: 6.9em; }
-  .roasted { position: absolute; left: 43.4em; width: 47em; top: 8.6em; height: 17em; z-index: 3; display: flex; align-items: center; justify-content: center; }
+  .roasted { position: absolute; left: 43.4em; width: 47em; top: 9.4em; height: 17em; z-index: 3; display: flex; align-items: center; justify-content: center; rotate: -4.4deg; }   /* leans with the band and the strips: the right side rides up a little (owner) */
   .roasted b { display: block; font: italic 900 12.3em/.86 'Barlow Semi Condensed', 'Barlow Condensed', sans-serif; letter-spacing: -.012em; transform: scaleY(1.32); white-space: nowrap; color: #E3202B;
     background: linear-gradient(180deg, #FF4651 0%, #E3202B 52%, #BE1A23 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; -webkit-text-stroke: .012em rgba(255,255,255,.75);
     filter: drop-shadow(.022em .03em 0 #7E1016) drop-shadow(.022em .03em 0 #4E0A0E) drop-shadow(0 .09em .1em rgba(0,0,0,.5)); padding: 0 .08em; }
@@ -114,7 +117,7 @@
     const lang = r.roast[r.lang] ? r.lang : "en", theme = nextTheme();
     el.className = "slide t-" + theme + (el.classList.contains("on") ? " on" : ""); el.dataset.theme = theme;
     el.innerHTML = `<div class="pass">${$("lany").innerHTML}<div class="pcard"><div class="band"></div>
-      <div class="photo"><div class="win"><img src="${esc(r.photo)}" alt=""></div></div><div class="tape"><b>${esc(r.name)}</b></div><img class="wendy" src="/assets/roast-wendy.png" alt="">
+      <div class="photo"><div class="win"><img src="${esc(r.photo)}" alt=""></div></div><div class="tape"><b>${esc(r.name)}</b></div><div class="wendy"><img src="/assets/roast-wendy.png" alt=""></div>
       <div class="logos"><img class="w" src="/assets/${theme === "paper" ? "wendys-horiz.svg" : "wendys-horiz-white.svg"}" alt="Wendy's"><i></i><img class="f" src="/assets/wendyfest-logo.png" alt="Wendy Fest"></div>
       <div class="roasted"><b>ROASTED.</b></div><div class="strips"></div><div class="tag">#RoastedByWendy</div></div><div class="sheen"></div></div>`;
     el.querySelector(".win img").onload = () => frame(el, r);   // in case the picture was not ready yet

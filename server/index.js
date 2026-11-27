@@ -225,7 +225,7 @@ app.post("/api/kiosk/login", (req, res) => {
 app.post("/api/kiosk/lookup", requirePin("kiosk"), (req, res) => {
   const code = String(req.body?.code || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
   const p = participantByCode.get(code);
-  if (!p) return res.status(404).json({ error: "We can’t find that code. Check your SMS, or register at the QR code." });
+  if (!p) return res.status(404).json({ error: "We can’t find that code. Check your SMS." });
   const screams = screamsFor.all(p.id), roasts = roastsFor.all(p.id);
   res.json({
     name: p.name, firstName: p.name.split(" ")[0], lang: p.lang, code: p.code,

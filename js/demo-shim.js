@@ -366,6 +366,27 @@ async function route(method, url, body) {
       recent: DB.screams.slice(-15).reverse().map((s) => { const pt = DB.participants.find((x) => x.id === s.participant_id); return { name: pt.name, code: pt.code, score: s.score, won: s.won, coupon: s.coupon_code, created_at: s.at }; }),
       recentRoasts: DB.roasts.slice(-15).reverse().map((r) => { const pt = DB.participants.find((x) => x.id === r.participant_id); return { name: pt.name, token: r.token, title_en: r.title.en, fallback: 1, created_at: r.at }; }),
       leaderboard: DB.participants.map((pt) => ({ name: pt.name, score: Math.max(0, ...DB.screams.filter((s) => s.participant_id === pt.id).map((s) => s.score)) })).filter((x) => x.score > 0).sort((a, b) => b.score - a.score).slice(0, 10) }); }
+    if (p.endsWith("overview")) {   // the numbers page, worked out from the demo's own made-up data
+      const P = DB.participants, ids = (a) => new Set(a.map((x) => x.participant_id)), sp = ids(DB.screams), rp = ids(DB.roasts), both = [...sp].filter((i) => rp.has(i)).length, played = sp.size + rp.size - both;
+      const half = DB.pending && !P.some((x) => x.phone === DB.pending.phone) ? 1 : 0, wins = DB.screams.filter((s) => s.won).length, today = new Date(Date.now() + 330 * 60000).toISOString().slice(0, 10);
+      const kind = (b) => (b.indexOf("is your Wendy Fest code") > 0 ? "otp" : b.indexOf("roast.html") > 0 ? "roast" : b.indexOf("reward code") > 0 ? "win" : b.indexOf("close one") > 0 ? "lose" : "welcome"), sms = {};
+      for (const m of DB.sms) { const k = kind(String(m.body)); (sms[k] = sms[k] || { kind: k, sent: 0, failed: 0 }).sent++; }
+      const otp = (sms.otp || { sent: 0 }).sent, langs = {}; for (const x of P) langs[x.lang] = (langs[x.lang] || 0) + 1;
+      return json({ today, now: today + " " + new Date(Date.now() + 330 * 60000).toISOString().slice(11, 19), testCodes: [], real: false,
+        signup: { started: P.length + half, registered: P.length, half, otpSms: otp, otpFailed: 0, wrongCodes: 0, marketingYes: 0 },
+        games: { played, notPlayed: Math.max(0, P.length - played), both, screamPeople: sp.size, roastPeople: rp.size, screamOnly: sp.size - both, roastOnly: rp.size - both, screams: DB.screams.length, wins, winners: new Set(DB.screams.filter((s) => s.won).map((s) => s.participant_id)).size, roasts: DB.roasts.length, roastFallbacks: 0, couponsTotal: DB.coupons.length, couponsLeft: DB.coupons.filter((c) => !c.claimed_by).length },
+        days: [{ day: today, started: P.length + half, half, otpSms: otp, registered: P.length, screamPeople: sp.size, screams: DB.screams.length, wins, roastPeople: rp.size, roasts: DB.roasts.length }],
+        sms: Object.values(sms), langs: Object.entries(langs).map(([lang, n]) => ({ lang, n })), stations: { scream: [], roast: [] } });
+    }
+    if (p.endsWith("guests")) {
+      const q = (u.searchParams.get("q") || "").toLowerCase(), f = u.searchParams.get("f") || "all";
+      const rows = DB.participants.map((x) => { const sc = DB.screams.filter((s) => s.participant_id === x.id), ro = DB.roasts.filter((r) => r.participant_id === x.id), w = sc.filter((s) => s.won);
+        return { id: x.id, name: x.name, code: x.code, phone: "+" + x.phone, lang: x.lang, registered: String(x.created_at || ""), screams: sc.length, wins: w.length, roasts: ro.length, best: sc.length ? Math.max(...sc.map((s) => s.score)) : null, coupons: w.map((s) => s.coupon_code).filter(Boolean).join(", "), test: false, pass: profileUrl(x), roast: ro.length ? roastUrl(ro[ro.length - 1]) : null }; })
+        .filter((g) => !q || (g.name + " " + g.code + " " + g.phone).toLowerCase().includes(q))
+        .filter((g) => f === "scream" ? g.screams : f === "roast" ? g.roasts : f === "both" ? g.screams && g.roasts : f === "none" ? !g.screams && !g.roasts : f === "won" ? g.wins : true).reverse();
+      return json({ total: rows.length, page: 1, per: Math.max(50, rows.length), rows });
+    }
+    if (p.endsWith("half")) { const d = DB.pending && !DB.participants.some((x) => x.phone === DB.pending.phone) ? DB.pending : null; return json({ rows: d ? [{ phone: "+" + d.phone.slice(0, 4) + " *** **" + d.phone.slice(-2), lang: d.payload.lang, sends: 1, wrong: 0, first: "", last: "", waiting: Date.now() < d.expires }] : [] }); }
     if (p.endsWith("settings")) { DB.settings.scream = Object.assign(scream(), Object.fromEntries(Object.entries(body.scream || {}).map(([k, v]) => [k, Number(v)]))); if (body.coupon) DB.settings.coupon = Object.assign(coupon(), body.coupon); if (body.roast) DB.settings.roast = { attemptsPerPerson: Number(body.roast.attemptsPerPerson) }; save(); return json({ ok: true }); }
     if (p.endsWith("coupons/import")) { let added = 0; for (const l of String(body.text || "").split(/\r?\n/)) { const [code, label] = l.split(/[,\t;]/).map((s) => s.trim()); if (code && !/^code$/i.test(code) && !DB.coupons.some((c) => c.code === code)) { DB.coupons.push({ id: DB.coupons.length + 1, code, label: label || null, claimed_by: null }); added++; } } save(); return json({ ok: true, added, total: DB.coupons.length }); }
     if (p.endsWith("coupons/generate")) { const n = clamp(Number(body.count || 100), 1, 5000); for (let i = 0; i < n; i++) DB.coupons.push({ id: DB.coupons.length + 1, code: "WF-" + shortCode2(6), label: null, claimed_by: null }); save(); return json({ ok: true, added: n }); }

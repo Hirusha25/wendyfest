@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
-<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mx0j4zv8" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mx0muyix" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 <title>[DEMO] Wendy's Claw · Wendy Fest</title><link rel="icon" href="../assets/cameo.png"><link rel="manifest" href="../assets/claw.webmanifest"><link rel="apple-touch-icon" href="../assets/icon-claw-192.png"><meta name="theme-color" content="#8E1219"><meta name="mobile-web-app-capable" content="yes">
-<link rel="stylesheet" href="../css/brand.css?v=mx0j4zv8">
+<link rel="stylesheet" href="../css/brand.css?v=mx0muyix">
 <style>
   /* Wendy's Claw: Grab the Order (game 3). A memory match game inside a claw machine: remember six slots, match the three pairs before the clock runs out,
      and the claw drops each matched item on the tray. One fixed 1080 x 1920 canvas, scaled to whatever screen it is on (upright kiosk first; a wide
@@ -299,7 +299,7 @@
 <audio id="a-jackpot" src="../assets/sfx/jackpot.mp3" preload="auto"></audio><audio id="a-tension" src="../assets/sfx/tension.mp3" preload="auto" loop></audio><audio id="a-flip" src="../assets/sfx/flip.mp3" preload="auto"></audio>
 <!-- Wendy's lines for the claw game -->
 <audio id="v-claw-how" src="../assets/voice/claw-how.mp3" preload="auto"></audio><audio id="v-claw-order" src="../assets/voice/claw-order.mp3" preload="auto"></audio><audio id="v-claw-4" src="../assets/voice/claw-4.mp3" preload="auto"></audio><audio id="v-claw-3" src="../assets/voice/claw-3.mp3" preload="auto"></audio><audio id="v-claw-2" src="../assets/voice/claw-2.mp3" preload="auto"></audio><audio id="v-claw-1" src="../assets/voice/claw-1.mp3" preload="auto"></audio><audio id="v-claw-remember" src="../assets/voice/claw-remember.mp3" preload="auto"></audio><audio id="v-claw-go" src="../assets/voice/claw-go.mp3" preload="auto"></audio><audio id="v-claw-nice-1" src="../assets/voice/claw-nice-1.mp3" preload="auto"></audio><audio id="v-claw-nice-2" src="../assets/voice/claw-nice-2.mp3" preload="auto"></audio><audio id="v-claw-nice-3" src="../assets/voice/claw-nice-3.mp3" preload="auto"></audio><audio id="v-claw-win-1" src="../assets/voice/claw-win-1.mp3" preload="auto"></audio><audio id="v-claw-win-2" src="../assets/voice/claw-win-2.mp3" preload="auto"></audio><audio id="v-claw-lose-1" src="../assets/voice/claw-lose-1.mp3" preload="auto"></audio><audio id="v-claw-lose-2" src="../assets/voice/claw-lose-2.mp3" preload="auto"></audio><audio id="v-claw-hello" src="../assets/voice/claw-hello.mp3" preload="auto"></audio>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mx0j4zv8"></script><script src="../js/kiosk.js?v=mx0j4zv8"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mx0muyix"></script><script src="../js/kiosk.js?v=mx0muyix"></script>
 <script>
   const $ = (id) => document.getElementById(id), wait = (ms) => new Promise((r) => setTimeout(r, ms));
   // the 1080 x 1920 canvas is scaled to fit the screen and centred
@@ -313,7 +313,7 @@
   // the music under the round: it starts with the clock and stops when the round ends
   const music = (on) => { const a = $("a-tension"); if (!a) return; try { if (on && localStorage.getItem("wf_sfx") !== "off") { a.currentTime = 0; a.volume = .3; a.play().catch(() => {}); } else a.pause(); } catch {} };
   let CFG = { durationMs: 10000, bonusMs: 0, memoriseMs: 3000, chances: 0, orderMs: 5000, decoys: 3 }, guest = null;
-  fetch("/api/config").then((r) => r.json()).then((c) => { if (c.claw) { CFG = { ...CFG, ...c.claw }; $("how-secs").textContent = Math.round(CFG.durationMs / 1000); } $("qr").src = $("qr2").src = qrUrl((c.baseUrl || location.origin) + "/register"); }).catch(() => {});
+  let BASE = CFG; fetch("/api/config").then((r) => r.json()).then((c) => { if (c.claw) { CFG = BASE = { ...CFG, ...c.claw }; $("how-secs").textContent = Math.round(CFG.durationMs / 1000); } $("qr").src = $("qr2").src = qrUrl((c.baseUrl || location.origin) + "/register"); }).catch(() => {});
   $("ft-st").textContent = `Station ${K.station} · Claw`;
   const A = "/assets/claw/", ITEMS = { classic: A + "classic.webp", lankan: A + "lankan.webp", molten: A + "molten.webp", paneer: A + "paneer.webp", grilled: A + "grilled.webp", tendersb: A + "tendersb.webp", fries: A + "fries.webp", bbq: A + "fries-bbq.webp", cheese: A + "fries-cheese.webp", bites: A + "bites.webp", tenders: A + "tenders.webp", choc: A + "frosty-choc.webp", vanilla: A + "frosty-vanilla.webp", coke: A + "cup.webp", sprite: A + "cup.webp", zero: A + "cup.webp" };
   // Names exactly as on the Wendy's Sri Lanka menu board, pictures from the owner's product files (Nov 2026). Spicy Chicken Burger and Chickenator have no picture yet, so they are not in the game.
@@ -353,7 +353,9 @@
     if (busy) return; if (Date.now() < lockUntil) return say("Too many wrong codes. Please wait a moment.", true);
     busy = true; say("Checking…");
     try { guest = await K.api("/api/kiosk/lookup", { code }); bad = 0;
-      if ((guest.clawsLeft ?? 1) <= 0) { sfx("error"); say(`${guest.firstName} has already played. One go per guest.`, true); $("boxes").classList.add("err"); setTimeout(() => $("boxes").classList.remove("err"), 500); }
+      CFG = { ...BASE, ...(guest.tune || {}) }; $("how-secs").textContent = Math.round(CFG.durationMs / 1000);   // the clock for this round comes with the guest
+      if (guest.winner) { sfx("error"); say(`${guest.firstName}, you’re already a winner! One reward per guest.`, true); $("boxes").classList.add("err"); setTimeout(() => $("boxes").classList.remove("err"), 500); }
+      else if ((guest.clawsLeft ?? 1) <= 0) { sfx("error"); say(`${guest.firstName} has already played. One go per guest.`, true); $("boxes").classList.add("err"); setTimeout(() => $("boxes").classList.remove("err"), 500); }
       else { K.show("s-how"); setTimeout(() => { if (screen === "s-how") vo("claw-how"); }, 500); K.resetIdle(60000, goIdle); } }
     catch (e) { sfx("error"); say(e.message || "We can’t find that code.", true); $("boxes").classList.add("err"); setTimeout(() => $("boxes").classList.remove("err"), 500); if (++bad >= 3) { bad = 0; lockUntil = Date.now() + 30000; say("Too many wrong codes. Try again in 30 seconds.", true); } }
     busy = false;

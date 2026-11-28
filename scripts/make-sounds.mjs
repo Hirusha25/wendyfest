@@ -88,4 +88,15 @@ if (!only || only.includes("here")) await save(path.join(pub, "assets/voice", "h
 if (!only || only.includes("steps")) await save(path.join(pub, "assets/voice", "steps.mp3"), await say(STEPS));
 if (!only || only.includes("heat")) await save(path.join(pub, "assets/voice", "heat.mp3"), await say(HEAT));
 for (const [kind, list] of [["win", WIN], ["quiet", QUIET], ["nos", NOS]]) for (let i = 0; i < list.length; i++) { if (only && !only.includes("say-" + kind)) continue; await save(path.join(pub, "assets/voice", `${kind}-${i + 1}.mp3`), await say(list[i])); }
+// Wendy's Claw: Wendy explains the game, counts the order countdown down and cheers the guest on (owner, Nov 2026). Run with only=claw.
+const CLAW = {
+  "claw-hello": "[cheerfully] Hey! Are you excited? [teasing] Type in your code, and let's play!",
+  "claw-how": "[cheerfully] Okay, here is how it works. First, I show you your order. [teasing] Then you remember where it is. [cheerfully] Then match only your order. Easy, right?",
+  "claw-order": "[excited] Your order!", "claw-4": "[cheerfully] Four!", "claw-3": "[cheerfully] Three!", "claw-2": "[cheerfully] Two!", "claw-1": "[excited] One!",
+  "claw-remember": "[teasing] Now remember where it is!", "claw-go": "[excited] Go, go, go!",
+  "claw-nice-1": "[excited] Nice one!", "claw-nice-2": "[cheerfully] Yes! Keep going!", "claw-nice-3": "[teasing] Ooh, you are good!",
+  "claw-win-1": "[excited] Order up! [smug] You grabbed the whole thing. [cheerfully] You win!", "claw-win-2": "[mock impressed] Wow. Fast hands. [cheerfully] The whole order is yours. You win!",
+  "claw-lose-1": "[teasing] So close! [cheerfully] The order got away this time. Come and say hi at the counter.", "claw-lose-2": "[amused] Almost! [teasing] My claw was ready. [cheerfully] Better luck next time.",
+};
+for (const [name, text] of Object.entries(CLAW)) { if (only && !only.includes("claw")) continue; await save(path.join(pub, "assets/voice", name + ".mp3"), await say(text)); }
 console.log("WAIT TEXT", JSON.stringify(WAIT.map((w) => w[1])));

@@ -77,6 +77,10 @@
   .wb .qr { top: auto !important; bottom: 24px; right: 30px !important; width: 124px !important; rotate: 4deg; }
   .wb .how { position: absolute; left: 30px; right: 190px; bottom: 30px; height: 96px; border-radius: 22px; background: rgba(26,5,7,.82); box-shadow: inset 0 0 0 3px rgba(255,224,138,.8); display: flex; align-items: center; justify-content: space-around; font: italic 800 26px/1 Poppins, sans-serif; text-transform: uppercase; letter-spacing: .04em; color: #FFF6E4; z-index: 4; } .wb .how b { color: #FFE08A; margin-right: 8px; }
   .wa .only-b, .wb .only-a { display: none !important; }
+  /* welcome D (owner's finished picture): the whole cabinet scene is one image, with our real QR laid over the sample one */
+  .wa .only-d, .wb .only-d, .wd > :not(.only-d) { display: none !important; }
+  .wd .pic { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .wd .qrd { position: absolute; left: 691px; top: 300px; width: 186px; height: 176px; box-sizing: border-box; padding: 6px; background: #FBEFDD; border-radius: 10px; } .wd .qrd img { height: 100%; margin: 0 auto; display: block; mix-blend-mode: multiply; }
   /* welcome: the claw sways over the meal */
   #s-idle .meal { position: absolute; left: 0; right: 0; bottom: 60px; height: 520px; }
   #s-idle .meal img { position: absolute; bottom: 0; filter: drop-shadow(0 26px 22px rgba(0,0,0,.55)); animation: bob 3.2s ease-in-out infinite; }
@@ -198,8 +202,8 @@
     <i class="lamp" style="left:110px"></i><i class="lamp" style="left:414px"></i><i class="lamp" style="left:718px"></i>
 
     <!-- 1 welcome -->
-    <section class="screen on wa" id="s-idle">
-      <div class="halo only-b"></div>
+    <section class="screen on wd" id="s-idle">
+      <img class="pic only-d" src="/assets/claw/welcome.jpg" alt=""><div class="qrd only-d"><img id="qr2" alt=""></div><div class="halo only-b"></div>
       <div class="qr"><img id="qr" alt="">Scan to register</div>
       <div class="win only-a">Match all 3.<br>Win a coupon!</div>
       <div class="h1"><em class="only-b">Can you</em>Grab<br class="only-b"> the order<span class="only-b">?</span></div>
@@ -274,7 +278,7 @@
 <script>
   const $ = (id) => document.getElementById(id), wait = (ms) => new Promise((r) => setTimeout(r, ms));
   // the 1080 x 1920 canvas is scaled to fit the screen and centred
-  { const w = (new URLSearchParams(location.search).get("w") || "a").toLowerCase(); document.getElementById("s-idle").className = "screen on " + (w === "b" ? "wb" : "wa"); }   // the welcome look being chosen: ?w=a or ?w=b
+  { const w = (new URLSearchParams(location.search).get("w") || "d").toLowerCase(); document.getElementById("s-idle").className = "screen on " + (w === "a" ? "wa" : w === "b" ? "wb" : "wd"); }   // the welcome look being chosen: ?w=a or ?w=b
   { const k = (new URLSearchParams(location.search).get("k") || "").toLowerCase(); if (["red", "blue", "dark", "white"].includes(k)) document.getElementById("pad").classList.add("k-" + k); }
   function fit() { const k = Math.min(innerWidth / 1080, innerHeight / 1920), el = $("fit"); el.style.transform = `translate(${-540 * k}px, ${-960 * k}px) scale(${k})`; }
   addEventListener("resize", fit); fit();
@@ -283,7 +287,7 @@
   // the music under the round: it starts with the clock and stops when the round ends
   const music = (on) => { const a = $("a-tension"); if (!a) return; try { if (on && localStorage.getItem("wf_sfx") !== "off") { a.currentTime = 0; a.volume = .45; a.play().catch(() => {}); } else a.pause(); } catch {} };
   let CFG = { durationMs: 13000, bonusMs: 2000, memoriseMs: 3000, chances: 3 }, guest = null;
-  fetch("/api/config").then((r) => r.json()).then((c) => { if (c.claw) CFG = { ...CFG, ...c.claw }; $("qr").src = `/api/qr?text=${encodeURIComponent((c.baseUrl || location.origin) + "/register")}`; }).catch(() => {});
+  fetch("/api/config").then((r) => r.json()).then((c) => { if (c.claw) CFG = { ...CFG, ...c.claw }; $("qr").src = $("qr2").src = `/api/qr?text=${encodeURIComponent((c.baseUrl || location.origin) + "/register")}`; }).catch(() => {});
   $("ft-st").textContent = `Station ${K.station} · Claw`;
   const ITEMS = { chicken: "/assets/claw/burger.webp", beef: "/assets/claw/beef.webp", bacon: "/assets/claw/bacon.webp", crispy: "/assets/claw/crispy.webp", grilled: "/assets/claw/grilled.webp", fries: "/assets/claw/fries.webp", bites: "/assets/claw/bites.webp", choc: "/assets/claw/frosty-choc.webp", vanilla: "/assets/claw/frosty-vanilla.webp" };
   const BURGERS = ["chicken", "beef", "bacon", "crispy", "grilled"], SIDES = ["fries", "bites"], pick = (a) => a[Math.floor(Math.random() * a.length)];

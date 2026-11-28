@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
-<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwzroi3c" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwzs74vg" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Scream & Win · Wendy Fest</title><link rel="icon" href="../assets/cameo.png"><link rel="manifest" href="../assets/scream.webmanifest"><meta name="theme-color" content="#029CD4"><meta name="mobile-web-app-capable" content="yes">
-<link rel="stylesheet" href="../css/brand.css?v=mwzroi3c">
+<link rel="stylesheet" href="../css/brand.css?v=mwzs74vg">
 <style>
 /* ================= RETRO BLUE (formerly Studio Cream) · Scream & Win ================= */
 :root { --u:min(calc(100vw / 1440), calc(100vh / 760)); --v:var(--u); --blue:#029CD4; --red:#CD2028; --red2:#DA2A33; --red-dark:#8E141B; --ink:#1F1A1A; --cream:#F7F2EC; --blush:#F2D4D7; --cyan:#29C9E0; --line:rgba(205,32,40,.18); }
@@ -169,7 +169,9 @@ br.up, .up-only, .up-in { display:none; }
   #go-meter .holdcard .hbar i { display:block; height:100%; border-radius:999px; background:linear-gradient(90deg, #FF6A72, #D8232D); }
   #go-meter .holdcard .bot { display:none; }
   #go-meter .heard { left:calc(56 * var(--u)); top:calc(482 * var(--u)); width:calc(380 * var(--u)) !important; max-width:calc(380 * var(--u)); height:calc(84 * var(--u)); box-sizing:border-box; padding:0 calc(34 * var(--u)) 0 calc(46 * var(--u)); display:flex; align-items:center; gap:calc(16 * var(--u)); border:0; border-radius:0; background:linear-gradient(180deg, #23B4F0 0%, #0A7FBC 86%, #064A70 86%); clip-path:polygon(4% 0, 100% 0, 96% 100%, 0 100%); }
-  #go-meter .heard small { font-size:calc(17 * var(--u)); color:#FFE08A !important; white-space:nowrap; }
+  /* wide result screen: Wendy's comment is a slanted cream ribbon like Hold it, with clear space above the score box (owner, Nov 2026) */
+  #s-result #res-detail .quip { margin-bottom:calc(22 * var(--u)); padding:calc(15 * var(--u)) calc(40 * var(--u)) calc(23 * var(--u)) calc(38 * var(--u)); border-radius:0; color:#B81B24; background:linear-gradient(180deg, #FFFBF3 0, #EADFCB calc(100% - 9 * var(--u)), #B5A88F calc(100% - 9 * var(--u))); box-shadow:none; clip-path:polygon(3.5% 0, 100% 0, 96.5% 100%, 0 100%); }
+  #go-meter .heard small { font-size:calc(17 * var(--u)); color:#FFE08A !important; white-space:nowrap; } #go-meter .heard b { font-size:calc(21 * var(--u)) !important; line-height:1.12 !important; max-width:calc(196 * var(--u)) !important; min-width:0; overflow-wrap:anywhere; }   /* the words are sized to stay inside the ribbon */
   #go-meter .heard b { font-size:calc(30 * var(--u)); max-width:calc(210 * var(--u)); color:#fff !important; text-shadow:none !important; }
   #go-meter .heard.got b::after { width:calc(24 * var(--u)); height:calc(24 * var(--u)); margin-left:calc(8 * var(--u)); }
   #go-meter .tleft { left:calc(1004 * var(--u)); top:calc(436 * var(--u)); width:calc(380 * var(--u)); height:calc(108 * var(--u)); box-sizing:border-box; padding:calc(12 * var(--u)) calc(44 * var(--u)) 0 calc(50 * var(--u)); gap:calc(6 * var(--u)); align-items:stretch; background:linear-gradient(180deg, #F0434C 0%, #B81B24 86%, #7E0F16 86%); clip-path:polygon(5% 0, 100% 0, 95% 100%, 0 100%); }
@@ -426,8 +428,8 @@ body { color:#fff; }
   -webkit-mask:radial-gradient(circle at 0 100%, #000 0, rgba(0,0,0,.75) 28%, transparent 72%); mask:radial-gradient(circle at 0 100%, #000 0, rgba(0,0,0,.75) 28%, transparent 72%); }
 
 /* result breakdown: punchy line + loudness / clarity meters */
-#res-detail { top:calc(120 * var(--u)) !important; width:calc(520 * var(--u)) !important; display:grid; gap:calc(34 * var(--u)); }
-#res-detail .quip { font:italic 800 calc(28 * var(--u))/1.3 Poppins, sans-serif; color:#fff; text-transform:none; text-shadow:none; margin-bottom:calc(14 * var(--u)); }
+#res-detail { top:calc(84 * var(--u)) !important; width:calc(520 * var(--u)) !important; display:grid; gap:calc(22 * var(--u)); }
+#res-detail .quip { font:italic 800 calc(28 * var(--u))/1.3 Poppins, sans-serif; color:#fff; text-transform:none; text-shadow:none; margin-bottom:calc(16 * var(--u)); padding:calc(14 * var(--u)) calc(22 * var(--u)); border-radius:calc(18 * var(--u)); background:rgba(0,50,90,.22); box-shadow:inset 0 0 0 calc(2.5 * var(--u)) rgba(255,255,255,.75); }   /* a soft outlined box, so Wendy's comment stands out (owner) */
 #res-detail .stats { display:grid; gap:calc(14 * var(--u)); padding:calc(20 * var(--u)) calc(24 * var(--u)); border-radius:calc(18 * var(--u)); background:linear-gradient(160deg, rgba(255,255,255,.24), rgba(255,255,255,.08)); box-shadow:inset 0 0 0 calc(2.5 * var(--u)) rgba(255,255,255,.7), 0 calc(14 * var(--u)) calc(26 * var(--u)) rgba(0,30,60,.22); }   /* see-through glass with colour: red for loudness, yellow for clarity (owner) */
 #res-detail .st { display:grid; grid-template-columns:calc(150 * var(--u)) 1fr calc(64 * var(--u)); align-items:center; gap:calc(16 * var(--u)); }
 #res-detail .st small { font:italic 800 calc(18 * var(--u))/1 Poppins, sans-serif; letter-spacing:.18em; text-transform:uppercase; color:#fff; }
@@ -442,7 +444,7 @@ body { color:#fff; }
 #res-detail .wl { font-size:calc(15 * var(--u)); letter-spacing:.12em; white-space:nowrap; justify-content:center; padding:calc(9 * var(--u)) calc(14 * var(--u)); border-radius:999px; background:#F6F0E6; color:#0A6FA6; }
 #res-detail .wl b { color:#D8232D; }
 /* long lines (the wrong-restaurant comeback): tighter, so the stats stay clear of the Next player button */
-#res-detail.sassy { top:calc(104 * var(--u)) !important; gap:calc(14 * var(--u)); } #res-detail.sassy .quip { font-size:calc(23 * var(--u)); margin-bottom:0; }
+#res-detail.sassy { top:calc(70 * var(--u)) !important; gap:calc(16 * var(--u)); } #res-detail.sassy .quip { font-size:calc(23 * var(--u)); margin-bottom:calc(14 * var(--u)); }
 
 /* reward ticket, colourful: cream stub + red star, striped red body, cream inner edge, slow shine */
 #res-code { background:
@@ -590,7 +592,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   #live-burst { left:calc(735 * var(--u)) !important; top:calc(548 * var(--u)) !important; width:calc(90 * var(--u)) !important; height:calc(90 * var(--u)) !important; }
   #go-meter .heard { left:calc(40 * var(--u)) !important; top:calc(1388 * var(--u)) !important; width:calc(560 * var(--u)) !important; height:calc(130 * var(--u)) !important; box-sizing:border-box !important; padding:0 calc(40 * var(--u)) 0 calc(60 * var(--u)) !important; display:flex !important; align-items:center !important; gap:calc(24 * var(--u)) !important; border:0 !important; border-radius:0 !important; background:linear-gradient(180deg, #23B4F0 0%, #0A7FBC 86%, #064A70 86%) !important; clip-path:polygon(4% 0, 100% 0, 96% 100%, 0 100%) !important; }
   #go-meter .heard small { font-size:calc(24 * var(--u)) !important; color:#FFE08A !important; white-space:nowrap !important; }
-  #go-meter .heard b { font-size:calc(44 * var(--u)) !important; max-width:calc(330 * var(--u)) !important; color:#fff !important; }
+  #go-meter .heard b { font-size:calc(40 * var(--u)) !important; max-width:calc(330 * var(--u)) !important; color:#fff !important; }
   #go-meter .tleft { left:calc(580 * var(--u)) !important; top:calc(1388 * var(--u)) !important; width:calc(460 * var(--u)) !important; height:calc(130 * var(--u)) !important; box-sizing:border-box !important; padding:calc(14 * var(--u)) calc(50 * var(--u)) 0 calc(60 * var(--u)) !important; gap:calc(8 * var(--u)) !important; border:0 !important; border-radius:0 !important; background:linear-gradient(180deg, #F0434C 0%, #B81B24 86%, #7E0F16 86%) !important; clip-path:polygon(5% 0, 100% 0, 95% 100%, 0 100%) !important; align-items:stretch !important; }
   #go-meter .tleft .v b { font-size:calc(66 * var(--u)) !important; color:#F6F0E6 !important; text-shadow:0 calc(4 * var(--u)) 0 #7E0F16 !important; }
   #go-meter .tleft .v small { font-size:calc(24 * var(--u)) !important; color:#FFE08A !important; }
@@ -782,7 +784,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
 <audio id="vo-nos-1" src="../assets/voice/nos-1.mp3" preload="auto"></audio><audio id="vo-nos-2" src="../assets/voice/nos-2.mp3" preload="auto"></audio><audio id="vo-nos-3" src="../assets/voice/nos-3.mp3" preload="auto"></audio><audio id="vo-nos-4" src="../assets/voice/nos-4.mp3" preload="auto"></audio><audio id="vo-nos-5" src="../assets/voice/nos-5.mp3" preload="auto"></audio><audio id="vo-nos-6" src="../assets/voice/nos-6.mp3" preload="auto"></audio>
 <audio id="vo-win-1" src="../assets/voice/win-1.mp3" preload="auto"></audio><audio id="vo-win-2" src="../assets/voice/win-2.mp3" preload="auto"></audio><audio id="vo-win-3" src="../assets/voice/win-3.mp3" preload="auto"></audio><audio id="vo-win-4" src="../assets/voice/win-4.mp3" preload="auto"></audio><audio id="vo-win-5" src="../assets/voice/win-5.mp3" preload="auto"></audio><audio id="vo-win-6" src="../assets/voice/win-6.mp3" preload="auto"></audio>
 <audio id="vo-quiet-1" src="../assets/voice/quiet-1.mp3" preload="auto"></audio><audio id="vo-quiet-2" src="../assets/voice/quiet-2.mp3" preload="auto"></audio><audio id="vo-quiet-3" src="../assets/voice/quiet-3.mp3" preload="auto"></audio><audio id="vo-quiet-4" src="../assets/voice/quiet-4.mp3" preload="auto"></audio><audio id="vo-quiet-5" src="../assets/voice/quiet-5.mp3" preload="auto"></audio><audio id="vo-quiet-6" src="../assets/voice/quiet-6.mp3" preload="auto"></audio>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwzroi3c"></script><script src="../js/kiosk.js?v=mwzroi3c"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwzs74vg"></script><script src="../js/kiosk.js?v=mwzs74vg"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let CFG = { scream: { threshold: 70, durationMs: 3000, dbFloor: -42, dbCeil: -6, loudWeight: .6, accWeight: .4 } };
@@ -982,7 +984,10 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   function saySass(url, delay = 1700) { stopSass(); if (!url || (localStorage.getItem("wf_sfx") || "on") !== "on") return; const a = sassVoice = typeof url === "string" ? new Audio(url) : url; try { a.currentTime = 0; } catch {} setTimeout(() => { if (sassVoice === a && !windowOpen) a.play().catch(() => {}); }, delay); }
   // one of Wendy's recorded lines, picked at random (never the same one twice in a row): "win", "quiet" for the right word said too softly, "nos" for "Wendy" without the S
   const lastPreset = {};
-  function sayPreset(kind, delay) { let i; do { i = 1 + Math.floor(Math.random() * 6); } while (i === lastPreset[kind]); lastPreset[kind] = i; saySass($(`vo-${kind}-${i}`), delay); }
+  function sayPreset(kind, delay) { let i; do { i = 1 + Math.floor(Math.random() * 6); } while (i === lastPreset[kind]); lastPreset[kind] = i; saySass($(`vo-${kind}-${i}`), delay); return i; }
+  // The words of Wendy's recorded lines (scripts/make-sounds.mjs, QUIET and NOS, in the same order), so the result screen shows the same teasing line she says out loud (owner, Nov 2026).
+  const SAID = { quiet: ["I heard Wendy’s. Just about. Was that a shout, or a secret?", "Right word. Wrong volume. My grill is louder than that.", "Sorry, did somebody whisper? You said it right. Now say it louder!", "That was Wendy’s, in a classroom voice. Next time, let it out!", "Very polite. Very quiet. This is a scream booth, not a meeting.", "You got my name right. Now tell the people at the back."],
+    nos: ["So close. But my name has an S at the end. It is Wendy’s!", "Wendy? Who is Wendy? Around here, we say Wendy’s.", "Great shout. But you dropped something. An S. It is Wendy’s!", "Almost my name. You forgot the last letter. Wendy’s, with an S.", "Wendy is nice. Wendy’s is better. Do not forget the S!", "One letter short. And it was the important one. Wendy’s!"] };
   // a tap sound on every button outside the keypad (keypad keys have their own)
   // each kind of button has its own sound: Next player drops a coin, the big action buttons power up, small option buttons flick, the rest tap
   document.addEventListener("pointerdown", (e) => { const b = e.target.closest && e.target.closest("button"); if (!b || b.disabled || b.closest("#kbd") || b.id === "code-del") return;
@@ -1306,7 +1311,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   function renderDetail(quip, r) {
     const row = (k, v, min) => `<div class="st${v < min ? " low" : ""}"><small>${k}</small><i><em style="width:0%" data-w="${v}"></em></i><b>${v}</b></div>`;
     $("res-detail").innerHTML = `<div class="quip">${quip}</div><div class="stats">${row("Loudness", r.loudness, r.minLoud || 60)}${row("Clarity", r.accuracy, r.minAcc || 70)}<div class="wl"><span>To win: <b>${r.threshold}+</b> overall · loud <b>${r.minLoud || 60}+</b> · clear <b>${r.minAcc || 70}+</b></span></div></div>`;
-    $("res-detail").classList.toggle("sassy", String(quip).length > 70);
+    $("res-detail").classList.toggle("sassy", String(quip).length > 52);
     setTimeout(() => $("res-detail").querySelectorAll("em").forEach((e) => { e.style.width = e.dataset.w + "%"; }), 350);
   }
   function showResult(r) {
@@ -1327,8 +1332,8 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
       $("res-title").textContent = { no_s: "Don’t forget the S!", quiet: "Louder next time.", close: "So close!" }[r.reason] || (r.loudness < r.accuracy ? "Louder next time." : "We heard… something.");
       renderDetail({ no_s: "So close. It’s WENDY’S, with the S.", quiet: "Clear as day. Now say it LOUDER!", unclear: "The meter heard you. It just didn’t hear a clear “Wendy’s”.", close: "So close. Just a little more of both." }[r.reason] || (r.loudness < 40 ? "Louder! Colombo traffic is louder than that." : "The meter heard you. It just didn’t hear “Wendy’s”."), r);
       if (r.sass) { $("res-title").textContent = r.sass.title; renderDetail(r.sass.text, r); saySass(r.sassAudio); }
-      else if (r.reason === "quiet") sayPreset("quiet", 1700);
-      else if (r.reason === "no_s") sayPreset("nos", 1700);
+      else if (r.reason === "quiet") renderDetail(SAID.quiet[sayPreset("quiet", 1700) - 1], r);
+      else if (r.reason === "no_s") renderDetail(SAID.nos[sayPreset("nos", 1700) - 1], r);
       $("qr-label").innerHTML = "Scan for<br>your pass"; SFX.lose();
       winTimers.forEach(clearTimeout); winTimers = [setTimeout(() => { if (mode === "result") SFX.rise(); }, 380), setTimeout(() => { if (mode === "result" && !r.sass) SFX.aww(); }, 1500)];   // the bars fill with a rising sweep; a near miss gets a soft "aww" (not over Wendy's comeback)
     }

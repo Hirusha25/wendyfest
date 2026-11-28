@@ -265,8 +265,10 @@
     const T = THEMES[theme] || THEMES[roastCard.theme] || THEMES.paper;   // beige is the card's starting colour (owner, Nov 2026); the guest can pick another
     const name = String(r.name || "").trim().split(/\s+/)[0].toUpperCase();
     const text = String((r.roast && (r.roast[lang] || r.roast.en)) || "").trim();
-    const [, [logo, wendy, fest], img] = await Promise.all([fonts(), art(), r.photo ? load(r.photo).catch(() => null) : null]);
-    let P = null; if (img) { try { P = await cutout(img, r.photo); } catch (e) { console.warn("roast card: no cut-out,", e.message); } }
+    // On the kiosk the photo is already in hand (r.localPhoto), and its cut-out was started the moment it was taken, so the card does not wait for a download or cut the guest out a second time.
+    const src = r.localPhoto || r.photo;
+    const [, [logo, wendy, fest], img] = await Promise.all([fonts(), art(), src ? load(src).catch(() => null) : null]);
+    let P = null; if (img) { try { P = await cutout(img, src); } catch (e) { console.warn("roast card: no cut-out,", e.message); } }
     const out = document.createElement("canvas"); out.width = W; out.height = H; const o = out.getContext("2d"); o.imageSmoothingQuality = "high";
     const poly = (pts, fill) => { o.beginPath(); pts.forEach(([x, y], i) => i ? o.lineTo(x, y) : o.moveTo(x, y)); o.closePath(); o.fillStyle = fill; o.fill(); };
     const fitFont = (txt, tpl, size, maxW) => { let s = size; for (;;) { o.font = tpl.replace("SIZE", s); if (o.measureText(txt).width <= maxW || s < 20) return s; s -= 4; } };

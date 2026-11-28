@@ -843,8 +843,10 @@
     $("flash").classList.remove("go"); void $("flash").offsetWidth; $("flash").classList.add("go"); sfx("shutter", .7);
     const image = capture(); $("snap").disabled = false;
     $("ck-photo").src = image; paintHeatCap(); setCook(2); K.show("s-cooking"); cookLines(); personalLines(image);
+    // The guest is cut out of the photo NOW, while Wendy writes, instead of after the roast arrives (owner, 28 Nov 2026: "plating up" took too long). The card then finds the cut-out ready.
+    setTimeout(() => { try { if (window.roastCard && roastCard.focus) roastCard.focus(image).catch(() => {}); } catch {} }, 400);
     try {
-      R = await askRoast(image); prepCard();
+      R = await askRoast(image); R.localPhoto = image; prepCard();
       setCook(3); await talkDone(500); setCook(4);            // the roast is ready: Wendy stops within half a second
       await hereItComes();             // "Here comes the roast", then a drum roll, so heads turn before it appears
       reveal();

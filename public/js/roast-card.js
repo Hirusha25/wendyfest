@@ -51,21 +51,11 @@
       if (area >= 12) { const h = { area, x0, x1, y0, y1, seed: s0 }; heads.push(h); if (!H0 || area > H0.area) H0 = h; }
     }
     if (H0 && lab[H0.seed]) best = lab[H0.seed];
-    // A person behind who is joined to the guest's shape is cut away at the halfway line between the two heads. A guest standing alone is never trimmed,
-    // so arms held out or a wide pose stay whole.
-    let cutL = -1, cutR = mw;
-    // Only a real second head counts as another person: a good size next to the guest's own head, clear of it to the side, and up at head height.
-    // The guest's own neck, chest, hands or a patch of shirt the engine mistakes for skin or hair must never trigger a cut (that chopped the body on the wall, 28 Nov 2026).
-    if (H0) for (const h of heads) {
-      if (h === H0 || lab[h.seed] !== best) continue;
-      if (h.area < H0.area * .2) continue;                                  // too small to be a head beside this one
-      if (h.y0 > H0.y1 - (H0.y1 - H0.y0) * .15) continue;                  // starts below the guest's head: neck, chest or hands, not a person behind
-      const gap = Math.min(H0.x1 - H0.x0, h.x1 - h.x0) * .15;
-      if (h.x1 < H0.x0 - gap) cutL = Math.max(cutL, (h.x1 + H0.x0) / 2); else if (h.x0 > H0.x1 + gap) cutR = Math.min(cutR, (H0.x1 + h.x0) / 2);   // otherwise it overlaps the guest's head sideways: leave it
-    }
+    // The whole joined-up shape of the front person is kept, never sliced (owner, 28 Nov 2026: a guest peeking from behind a friend came out as a thin strip on the wall).
+    // Someone touching the guest stays in the picture with them, as on the card.
     const mk = document.createElement("canvas"); mk.width = mw; mk.height = mh; const mx = mk.getContext("2d"), im = mx.createImageData(mw, mh); let hx0 = mw, hx1 = 0, hy0 = mh, hy1 = 0;
     if (best) for (let y = 0; y < mh; y++) for (let x = 0; x < mw; x++) {
-      const i = y * mw + x; if (!al[i] || x < cutL || x > cutR) continue; let keep = lab[i] === best;
+      const i = y * mw + x; if (!al[i]) continue; let keep = lab[i] === best;
       if (!keep && !lab[i]) for (let dy = -3; dy <= 3 && !keep; dy++) { const yy = y + dy; if (yy < 0 || yy >= mh) continue; for (let dx = -3; dx <= 3; dx++) { const xx = x + dx; if (xx >= 0 && xx < mw && lab[yy * mw + xx] === best) { keep = true; break; } } }   // the soft edge (thin hair) around the guest
       if (!keep) continue; im.data[i * 4 + 3] = al[i];
       if (lab[i] === best && (hair[i] > .5 || face[i] > .5) && (!H0 || (x >= H0.x0 - 2 && x <= H0.x1 + 2 && y >= H0.y0 - 2 && y <= H0.y1 + 2))) { if (x < hx0) hx0 = x; if (x > hx1) hx1 = x; if (y < hy0) hy0 = y; if (y > hy1) hy1 = y; }

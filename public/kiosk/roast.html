@@ -743,10 +743,10 @@
   function capture() {
     // The photo is kept as sharp as the camera gives it, up to 1600 wide (it was always shrunk to 1024 before), with a light lift in contrast and colour.
     // Both happen in the same instant as the snap, so there is no extra wait (owner, Nov 2026).
-    const v = $("video"), c = $("shot"); const w = Math.min(1600, Math.max(1024, v.videoWidth || 1024)), h = Math.round(w * (v.videoHeight / v.videoWidth || .75));
+    const v = $("video"), c = $("shot"); const w = Math.min(1280, Math.max(1024, v.videoWidth || 1024)), h = Math.round(w * (v.videoHeight / v.videoWidth || .75));
     c.width = w; c.height = h; const ctx = c.getContext("2d"); ctx.imageSmoothingQuality = "high"; try { ctx.filter = "contrast(1.06) saturate(1.1) brightness(1.03)"; } catch {} ctx.drawImage(v, 0, 0, w, h); ctx.filter = "none";
     lookImg = null; try { const k = 720 / w, s2 = document.createElement("canvas"); s2.width = 720; s2.height = Math.round(h * k); const x2 = s2.getContext("2d"); x2.imageSmoothingQuality = "high"; x2.drawImage(c, 0, 0, s2.width, s2.height); lookImg = s2.toDataURL("image/jpeg", .8); } catch {}   // what Wendy reads: a 720-wide copy (owner, 28 Nov 2026: the wait was too long)
-    return c.toDataURL("image/jpeg", .85);
+    return c.toDataURL("image/jpeg", .82);   // 1280 wide: under half the upload of the 1600-wide photo, still sharper than the card needs
   }
   let lookImg = null;
 
@@ -820,6 +820,19 @@
   addEventListener("resize", () => { if ($("s-consent").classList.contains("on")) fitConsent(); });
   document.querySelectorAll(".lang-pick button").forEach((b) => b.onclick = () => setGLang(b.dataset.l));
   $("agree").onclick = async () => { K.show("s-cam"); await startCam(); K.resetIdle(120000, goIdle); };
+  // The venue's network sometimes stalls while the photo uploads, and the guest was left on "Adding the sass" for minutes (owner, 28 Nov 2026).
+  // If there is no answer in 35 seconds the kiosk says so and sends again with only the small photo, which is a quick upload; whichever answer comes first is used.
+  async function askRoast(image) {
+    const body = { code: guest.code, image, look: lookImg, consent: true, heat }, late = (ms) => new Promise((_, rej) => setTimeout(() => rej(new Error("slow")), ms));
+    const first = K.api("/api/kiosk/roast", body); first.catch(() => {});
+    try { return await Promise.race([first, late(35000)]); }
+    catch (e) {
+      if (e.message !== "slow") throw e;
+      $("cook-line").textContent = "The network is slow. Sending it again…";
+      const second = K.api("/api/kiosk/roast", { ...body, image: lookImg || image, look: null }); second.catch(() => {});
+      try { return await Promise.race([Promise.any([first, second]), late(40000)]); } catch { throw new Error("the network is too slow right now. Please try again."); }
+    }
+  }
   $("snap").onclick = async () => {
     K.resetIdle(0); $("snap").disabled = true;
     for (const n of [3, 2, 1]) { sfx("beep", .6); $("count").textContent = n; $("count").classList.remove("hidden", "pop"); void $("count").offsetWidth; $("count").classList.add("pop"); await wait(900); }
@@ -828,7 +841,7 @@
     const image = capture(); $("snap").disabled = false;
     $("ck-photo").src = image; paintHeatCap(); setCook(2); K.show("s-cooking"); cookLines(); personalLines(image);
     try {
-      R = await K.api("/api/kiosk/roast", { code: guest.code, image, look: lookImg, consent: true, heat }); prepCard();
+      R = await askRoast(image); prepCard();
       setCook(3); await talkDone(500); setCook(4);            // the roast is ready: Wendy stops within half a second
       await hereItComes();             // "Here comes the roast", then a drum roll, so heads turn before it appears
       reveal();

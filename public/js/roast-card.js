@@ -41,12 +41,26 @@
         if (i >= mw && al[i - mw] >= 110 && !lab[i - mw]) { lab[i - mw] = id; stack[top++] = i - mw; } if (i < n - mw && al[i + mw] >= 110 && !lab[i + mw]) { lab[i + mw] = id; stack[top++] = i + mw; } }
       const score = head >= 12 ? area : 0; if (score > bestScore) { bestScore = score; best = id; }
     }
+    // The guest is the person at the FRONT: the one with the biggest head in the photo (owner, 28 Nov 2026). People behind have smaller heads, even when
+    // the engine joins them to the guest in one shape, which used to widen the cut-out and push the guest to one side of the card.
+    const hl = new Uint8Array(n), heads = []; let H0 = null;
+    for (let s0 = 0; s0 < n; s0++) {
+      if (hl[s0] || al[s0] < 110 || !(hair[s0] > .5 || face[s0] > .5)) continue; let top = 0, area = 0, x0 = mw, x1 = 0, y0 = mh, y1 = 0; stack[top++] = s0; hl[s0] = 1;
+      while (top) { const i = stack[--top], x = i % mw, y = (i - x) / mw; area++; if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y;
+        for (const j of [x > 0 ? i - 1 : -1, x < mw - 1 ? i + 1 : -1, i >= mw ? i - mw : -1, i < n - mw ? i + mw : -1]) if (j >= 0 && !hl[j] && al[j] >= 110 && (hair[j] > .5 || face[j] > .5)) { hl[j] = 1; stack[top++] = j; } }
+      if (area >= 12) { const h = { area, x0, x1, y0, y1, seed: s0 }; heads.push(h); if (!H0 || area > H0.area) H0 = h; }
+    }
+    if (H0 && lab[H0.seed]) best = lab[H0.seed];
+    // A person behind who is joined to the guest's shape is cut away at the halfway line between the two heads. A guest standing alone is never trimmed,
+    // so arms held out or a wide pose stay whole.
+    let cutL = -1, cutR = mw;
+    if (H0) for (const h of heads) { if (h === H0 || lab[h.seed] !== best) continue; if ((h.x0 + h.x1) / 2 < (H0.x0 + H0.x1) / 2) cutL = Math.max(cutL, (h.x1 + H0.x0) / 2); else cutR = Math.min(cutR, (H0.x1 + h.x0) / 2); }
     const mk = document.createElement("canvas"); mk.width = mw; mk.height = mh; const mx = mk.getContext("2d"), im = mx.createImageData(mw, mh); let hx0 = mw, hx1 = 0, hy0 = mh, hy1 = 0;
     if (best) for (let y = 0; y < mh; y++) for (let x = 0; x < mw; x++) {
-      const i = y * mw + x; if (!al[i]) continue; let keep = lab[i] === best;
+      const i = y * mw + x; if (!al[i] || x < cutL || x > cutR) continue; let keep = lab[i] === best;
       if (!keep && !lab[i]) for (let dy = -3; dy <= 3 && !keep; dy++) { const yy = y + dy; if (yy < 0 || yy >= mh) continue; for (let dx = -3; dx <= 3; dx++) { const xx = x + dx; if (xx >= 0 && xx < mw && lab[yy * mw + xx] === best) { keep = true; break; } } }   // the soft edge (thin hair) around the guest
       if (!keep) continue; im.data[i * 4 + 3] = al[i];
-      if (lab[i] === best && (hair[i] > .5 || face[i] > .5)) { if (x < hx0) hx0 = x; if (x > hx1) hx1 = x; if (y < hy0) hy0 = y; if (y > hy1) hy1 = y; }
+      if (lab[i] === best && (hair[i] > .5 || face[i] > .5) && (!H0 || (x >= H0.x0 - 2 && x <= H0.x1 + 2 && y >= H0.y0 - 2 && y <= H0.y1 + 2))) { if (x < hx0) hx0 = x; if (x > hx1) hx1 = x; if (y < hy0) hy0 = y; if (y > hy1) hy1 = y; }
     }
     mx.putImageData(im, 0, 0); masks.forEach((m) => m.close && m.close());
     return { mk, mw, mh, head: hx1 > hx0 && hy1 - hy0 >= 8 ? { x0: hx0, x1: hx1 + 1, y0: hy0, y1: hy1 + 1 } : null };

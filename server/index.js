@@ -294,7 +294,8 @@ app.post("/api/kiosk/scream", requirePin("kiosk"), async (req, res) => {
   // Shouted another restaurant's name (or anything that was not Wendy's)? Wendy answers back on the result screen.
   const rival = rivalCheck(transcript);
   const offScript = !won && transcript && (accuracyOverride === undefined || accuracyOverride === null) && (rival || reason === "unclear");
-  const sass = offScript ? await screamSass({ transcript, name: first, rival, loud, acc }) : null;
+  // The result must show at once (owner, 28 Nov 2026): Wendy's written comeback gets 1.2 seconds; if it is not ready the screen shows its standard line instead of waiting.
+  const sass = offScript ? await Promise.race([screamSass({ transcript, name: first, rival, loud, acc }).catch(() => null), new Promise((r) => setTimeout(() => r(null), 1200))]) : null;
   // Wendy says the comeback out loud: one short voice clip, made in the background and kept for a few minutes only
   let sassAudio = null;
   if (sass && sass.title && voiceEnabled()) {

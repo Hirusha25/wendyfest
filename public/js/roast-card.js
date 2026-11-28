@@ -131,10 +131,10 @@
     const lh = 104, lw = Math.round(lh * logo.naturalWidth / logo.naturalHeight), lc = document.createElement("canvas"); lc.width = lw * 2; lc.height = lh * 2; const lx = lc.getContext("2d"); lx.drawImage(logo, 0, 0, lw * 2, lh * 2);
     try { const ld = lx.getImageData(0, 0, lc.width, lc.height), c0 = Math.round(lc.width * .665); for (let y = 0; y < lc.height; y++) for (let x = 0; x < c0; x++) { const i = (y * lc.width + x) * 4; ld.data[i] = T.word[0]; ld.data[i + 1] = T.word[1]; ld.data[i + 2] = T.word[2]; } lx.putImageData(ld, 0, 0); } catch {}
     const fh = 156, fw = Math.round(fh * fest.naturalWidth / fest.naturalHeight), hx = Math.round((W - (lw + 72 + fw)) / 2); o.drawImage(lc, hx, 50, lw, lh); o.fillStyle = T.rule; o.fillRect(hx + lw + 34, 58, 4, 90); o.drawImage(fest, hx + lw + 72, Math.round(50 + lh / 2 - fh / 2), fw, fh);   // the final Wendy Fest logo
-    // ROASTED. headline: straight, soft 3D
+    // ROASTED. headline: heavy italic capitals, soft 3D
     const tall = 350, depth = 13, baseY = 232 + tall;
     o.save(); o.translate(W / 2 - 6, baseY); o.textAlign = "center";
-    const fs = fitFont("ROASTED.", "900 SIZEpx 'Barlow Condensed', sans-serif", 700, W - 60); o.font = `900 ${fs}px 'Barlow Condensed', sans-serif`; const SY = tall / (fs * .7); o.scale(1, SY);
+    const fs = fitFont("ROASTED.", "italic 900 SIZEpx Poppins, sans-serif", 700, W - 96); o.font = `italic 900 ${fs}px Poppins, sans-serif`; const SY = 1.42; o.scale(1, SY);   // the same heavy italic as #RoastedByWendy, in capitals (owner, Nov 2026)
     for (let dd = depth; dd >= 1; dd--) { o.fillStyle = dd > depth * .6 ? T.deep[0] : T.deep[1]; o.fillText("ROASTED.", dd * .45, dd / SY); }
     const rg = o.createLinearGradient(0, -fs * .72, 0, 0); rg.addColorStop(0, T.head[0]); rg.addColorStop(.5, T.head[1]); rg.addColorStop(1, T.head[2]); o.fillStyle = rg;
     o.shadowColor = "rgba(60,0,8,.3)"; o.shadowBlur = 26; o.shadowOffsetY = 26; o.fillText("ROASTED.", 0, 0); o.shadowColor = "transparent";

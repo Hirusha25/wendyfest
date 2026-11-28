@@ -58,7 +58,7 @@ const needPin = (which) => { const c = cookie("wf_" + which); return c === KIOSK
 async function route(method, url, body) {
   const u = new URL(url, location.href); const p = u.pathname.replace(/^.*\\/api\\//, "/api/");
   const json = (data, status = 200) => ({ status, data });
-  if (p === "/api/config") return json({ baseUrl: BASE, coupon: coupon(), scream: scream(), roast: roastS(), claw: { durationMs: 15000, chances: 0, bonusMs: 0, memoriseMs: 3000, orderMs: 5000, decoys: 3, attemptsPerPerson: 99 } });
+  if (p === "/api/config") return json({ baseUrl: BASE, coupon: coupon(), scream: scream(), roast: roastS(), claw: { durationMs: 10000, chances: 0, bonusMs: 0, memoriseMs: 3000, orderMs: 5000, decoys: 3, attemptsPerPerson: 99 } });
   if (p === "/api/register") {
     const name = String(body.name || "").trim().slice(0, 60), phone = normalisePhone(body.phone);
     if (name.length < 2) return json({ error: "name" }, 400); if (!phone) return json({ error: "phone" }, 400);

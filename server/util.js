@@ -81,7 +81,11 @@ export function wendysCheck(transcript) {
     if (exact === 1) { accuracy = 100; reason = "ok"; }
     else if (noS >= Math.max(exact, near)) { accuracy = Math.round(20 + 20 * noS); reason = "no_s"; }  // said Wendy, missed the S: max 40
     else { accuracy = Math.round(60 + 30 * ((Math.max(exact, near) - 0.75) / 0.25)); reason = "ok"; }  // close spelling of Wendy's: 60–90
-    if (words.length > 4) accuracy = Math.max(0, accuracy - 10);              // lots of extra words: small penalty
+    // It must be the guest's own shout, not a sentence that happens to contain the word (owner, 28 Nov 2026: the stage announcer saying "...the most iconic Wendy's burgers..." was winning for whoever stood at the kiosk).
+    // Count the words that are NOT the target word; a real shout is "Wendy's", perhaps repeated, with at most two stray words.
+    const isW = (w) => Math.max(bestSim(w, WITH_S), bestSim(w, WITH_S_NEAR), bestSim(w, NO_S)) >= 0.75;
+    let extra = 0; words.forEach((w, i) => { if (isW(w)) return; if ((w === "is" || w === "s") && i > 0 && isW(words[i - 1])) return; extra++; });
+    if (extra > 2) return { accuracy: Math.min(accuracy, 30), reason: "unclear", heard: c, sentence: true };
     return { accuracy, reason, heard: c };
   }
   return { accuracy: Math.round(overall * 25), reason: "unclear", heard: "" };  // never got near the word: max 25

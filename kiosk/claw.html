@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
-<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwztddfg" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwztn6h4" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 <title>[DEMO] Wendy's Claw · Wendy Fest</title><link rel="icon" href="../assets/cameo.png"><meta name="theme-color" content="#8E1219"><meta name="mobile-web-app-capable" content="yes">
-<link rel="stylesheet" href="../css/brand.css?v=mwztddfg">
+<link rel="stylesheet" href="../css/brand.css?v=mwztn6h4">
 <style>
   /* Wendy's Claw: Grab the Order (game 3). A memory match game inside a claw machine: remember six slots, match the three pairs before the clock runs out,
      and the claw drops each matched item on the tray. One fixed 1080 x 1920 canvas, scaled to whatever screen it is on (upright kiosk first; a wide
@@ -123,14 +123,14 @@
   [class*="dz-"] .step { overflow: visible; } [class*="dz-"] .step::after { border-radius: 28px; }
   [class*="dz-"] .step .pic img { height: 196px !important; max-width: 48%; margin-top: -26px; filter: drop-shadow(0 3px 2px rgba(0,0,0,.35)) drop-shadow(0 26px 14px rgba(40,10,0,.55)); } [class*="dz-"] .step .pic.three img { max-width: 33% !important; height: 190px !important; }
   [class*="dz-"] .step .pic { background: radial-gradient(ellipse 44% 13% at 50% 92%, rgba(50,15,0,.42), transparent 72%); }
-  [class*="dz-"] .ord .row img { height: 280px; max-width: 300px; filter: drop-shadow(0 4px 3px rgba(0,0,0,.4)) drop-shadow(0 30px 18px rgba(0,0,0,.7)); }
+  [class*="dz-"] .ord .row img { height: 280px; max-width: 300px; object-fit: contain; object-position: 50% 100%; filter: drop-shadow(0 4px 3px rgba(0,0,0,.4)) drop-shadow(0 30px 18px rgba(0,0,0,.7)); }
   /* a red tab carries the step number; the pop-up is a cream order slip with the three products on it */
   .dz-b .step { padding-left: 156px; background: linear-gradient(125deg, #FFFDF6, #F3E6CB); box-shadow: 0 10px 0 #B5A88F, 0 28px 30px rgba(0,0,0,.5); }
   .dz-b .step > b { position: absolute; left: 0; top: 0; bottom: 0; width: 124px; height: auto; border-radius: 28px 0 0 28px; font-size: 92px; background: linear-gradient(180deg, #F0434C, #A5171F); box-shadow: inset -8px 0 0 #FFE08A; }
   .dz-b .step > span { width: 250px; font-size: 36px; }
   .dz-b .ord .row { width: auto; margin: 0 26px; padding: 44px 6px 30px; border-radius: 30px; background: linear-gradient(180deg, #FFFDF6, #EFE2C6); box-shadow: 0 12px 0 #B5A88F, 0 30px 40px rgba(0,0,0,.6); position: relative; }
   .dz-b .ord .row::before { content: "Your order"; position: absolute; left: 50%; top: -24px; translate: -50% 0; padding: 10px 30px 8px; border-radius: 30px; background: linear-gradient(180deg, #F0434C, #B81B24); color: #fff; font: italic 900 26px/1 Poppins, sans-serif; letter-spacing: .12em; text-transform: uppercase; box-shadow: 0 5px 0 #5A080E; }
-  .dz-b .ord .row div { width: 280px; color: #5A080E; font-size: 24px; } .dz-b .ord .row div + div { box-shadow: -4px 0 0 -1px transparent; border-left: 4px dashed #D9C9A8; } .dz-b .ord .row img { height: 240px; max-width: 262px; filter: drop-shadow(0 3px 2px rgba(0,0,0,.3)) drop-shadow(0 24px 12px rgba(60,20,0,.5)); }
+  .dz-b .ord .row div { width: 280px; color: #5A080E; font-size: 24px; } .dz-b .ord .row div + div { box-shadow: -4px 0 0 -1px transparent; border-left: 4px dashed #D9C9A8; } .dz-b .ord .row img { height: 230px; width: 262px; max-width: 262px; filter: drop-shadow(0 3px 2px rgba(0,0,0,.3)) drop-shadow(0 24px 12px rgba(60,20,0,.5)); }
   .dz-b .ord .h1 { display: none; } .dz-b .ord { gap: 44px; } .dz-b .ord p { font-size: 38px; color: #FFF6E4; }
 
   /* play: timer, order ticket, six slots, the claw and the tray */
@@ -165,21 +165,23 @@
   .slot .front { transform: rotateY(180deg); background: radial-gradient(circle at 50% 40%, #5A1216, #2A0608); box-shadow: inset 0 0 0 5px #FFB84D, inset 0 0 40px rgba(255,150,60,.5), 0 0 30px rgba(255,150,60,.55), 0 10px 0 #3D0609; }
   .slot .front span { position: absolute; left: 6px; right: 6px; bottom: 12px; text-align: center; font: 800 19px/1.05 Poppins, sans-serif; text-transform: uppercase; letter-spacing: .01em; color: #FFF6E4; text-shadow: 0 2px 0 #3D0609; z-index: 2; }
   .slot.gone .front span { opacity: .45; }
-  .slot .front img { height: 126px; width: auto; max-width: 230px; object-fit: contain; position: relative; z-index: 1; margin-top: -40px; filter: drop-shadow(0 14px 10px rgba(0,0,0,.55)); }
+  .slot .front img { height: 126px; width: 236px; object-fit: contain; object-position: 50% 100%; position: relative; z-index: 1; margin-top: -40px; filter: drop-shadow(0 14px 10px rgba(0,0,0,.55)); }
   .slot .front::before { content: ""; position: absolute; left: 22%; right: 22%; bottom: 46px; height: 24px; border-radius: 50%; background: radial-gradient(closest-side, rgba(0,0,0,.7), transparent); }   /* the item stands on the slot floor */
+  .slot.ok { cursor: default; } .slot.ok .front { box-shadow: inset 0 0 0 6px #5BE08A, inset 0 0 40px rgba(60,220,120,.35), 0 0 26px rgba(60,220,120,.5), 0 10px 0 #3D0609; }
+  .slot.ok .front::after { content: ""; position: absolute; right: 10px; top: 10px; width: 44px; height: 44px; border-radius: 50%; z-index: 3; background: #1E9B4B url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5 9-10'/%3E%3C/svg%3E") center / 60% no-repeat; animation: tick .4s cubic-bezier(.2, 1.6, .4, 1); }
   .slot.gone { cursor: default; } .slot.gone .front { box-shadow: inset 0 0 0 5px rgba(255,255,255,.25), 0 10px 0 #3D0609; background: rgba(20,0,2,.55); } .slot.gone .front img { visibility: hidden; }
   .slot.gone .front::after { content: ""; width: 86px; height: 86px; border-radius: 50%; background: #1E9B4B url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5 9-10'/%3E%3C/svg%3E") center / 60% no-repeat; position: absolute; opacity: .9; }
   .rig { position: absolute; left: 0; top: 0; width: 0; height: 0; z-index: 20; pointer-events: none; transition: translate .42s cubic-bezier(.4, 0, .2, 1); translate: 474px -420px; }
   .rig .cable { position: absolute; left: -6px; bottom: 0; width: 12px; height: 1400px; background: linear-gradient(90deg, #6B7379, #F2F5F7 45%, #7C858D); }
   .rig img.c { position: absolute; left: -140px; top: -20px; width: 280px; filter: drop-shadow(0 16px 12px rgba(0,0,0,.5)); } .rig img.c.shut, .rig.grab img.c.open { display: none; } .rig.grab img.c.shut { display: block; }
   .rig img.held { position: absolute; left: -125px; top: 172px; width: 250px; height: 230px; object-fit: contain; object-position: 50% 0; display: none; z-index: -1; filter: drop-shadow(0 12px 10px rgba(0,0,0,.5)); transition: clip-path .8s ease-out; clip-path: inset(0 0 0 0); } .rig.grab img.held { display: block; }
-  .rig .bundle { position: absolute; left: -330px; top: 172px; width: 660px; height: 230px; display: none; align-items: flex-end; justify-content: center; z-index: -1; transition: clip-path .8s ease-out; clip-path: inset(0 0 0 0); } .rig.grab .bundle { display: flex; } .rig .bundle.half { clip-path: inset(0 0 50% 0); }
-  .rig .bundle img { height: 210px; max-width: 250px; object-fit: contain; margin: 0 -16px; filter: drop-shadow(0 12px 10px rgba(0,0,0,.5)); }
+  .rig img.held { object-position: 50% 0; }
+
   .rig img.held.half { clip-path: inset(0 0 50% 0); }   /* in the slot only the top half of the product shows; it comes fully into view as the claw pulls it out (owner) */
   .trayrow { position: absolute; left: 60px; right: 60px; bottom: 18px; height: 250px; z-index: 4; }
   .trayrow > img.t { position: absolute; left: 0; bottom: 0; width: 100%; filter: drop-shadow(0 16px 14px rgba(0,0,0,.55)); }
   .trayrow .on { position: absolute; left: 90px; right: 90px; bottom: 74px; height: 200px; display: flex; justify-content: space-around; align-items: flex-end; }
-  .trayrow .on img { height: 176px; max-width: 220px; object-fit: contain; filter: drop-shadow(0 10px 8px rgba(0,0,0,.45)); animation: land .45s cubic-bezier(.3, 1.6, .5, 1); } @keyframes land { from { translate: 0 -80px; opacity: 0; } }
+  .trayrow .on img { height: 176px; max-width: 220px; object-fit: contain; object-position: 50% 100%; filter: drop-shadow(0 10px 8px rgba(0,0,0,.45)); animation: land .45s cubic-bezier(.3, 1.6, .5, 1); } @keyframes land { from { translate: 0 -80px; opacity: 0; } }
   .trayrow .on img.miss { filter: grayscale(1) brightness(.75) opacity(.6); }
 
   /* result */
@@ -204,6 +206,7 @@
   .res .trayrow { bottom: 120px; height: 420px; left: 30px; right: 30px; } .res .trayrow .on { bottom: 108px; height: 330px; left: 110px; right: 110px; } .res .trayrow .on { justify-content: center; } .res .trayrow .on img { height: 330px; max-width: 380px; margin: 0 -22px; }
   #s-win .sub { top: 800px; font-size: 26px; } #s-win .chip { top: 280px; font-size: 44px; padding: 12px 34px 9px; } #s-win .trayrow { bottom: 24px; height: 280px; left: 90px; right: 90px; } #s-win .trayrow .on { bottom: 70px; height: 210px; } #s-win .trayrow .on img { height: 215px; max-width: 250px; margin: 0 -14px; }
   #s-win .trayrow .on img { animation: land .5s cubic-bezier(.3, 1.6, .5, 1) both, bob 2.6s ease-in-out .6s infinite; } #s-win .trayrow .on img:nth-child(2) { animation-delay: .15s, .9s; } #s-win .trayrow .on img:nth-child(3) { animation-delay: .3s, 1.2s; }
+  #s-win .trayrow .on { left: 40px; right: 250px; } #s-win .trayrow .bag { position: absolute; right: -6px; bottom: 58px; height: 300px; z-index: 2; filter: drop-shadow(0 16px 12px rgba(0,0,0,.5)); animation: land .5s cubic-bezier(.3, 1.6, .5, 1) .45s both; }
   .confetti { position: absolute; inset: 0; pointer-events: none; z-index: 40; overflow: hidden; } .confetti i { position: absolute; top: -40px; width: 18px; height: 30px; border-radius: 3px; animation: fall linear both; } @keyframes fall { to { translate: var(--dx) 2100px; rotate: var(--r); } }
 
   /* staff PIN */
@@ -246,7 +249,7 @@
     <section class="screen" id="s-how">
       <div class="h1">How to play<small></small></div>
       <div class="steps">
-        <div class="step"><b>1</b><span>See your order</span><div class="pic three"><img src="../assets/claw/crispy.webp" alt=""><img src="../assets/claw/bites.webp" alt=""><img src="../assets/claw/frosty-choc.webp" alt=""></div></div>
+        <div class="step"><b>1</b><span>See your order</span><div class="pic three"><img src="../assets/claw/classic.webp" alt=""><img src="../assets/claw/bites.webp" alt=""><img src="../assets/claw/frosty-choc.webp" alt=""></div></div>
         <div class="step"><b>2</b><span>Remember where it is</span><div class="pic"><div class="q"><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i></div></div></div>
         <div class="step"><b>3</b><span>Match only your order</span><div class="pic"><img src="../assets/claw/grilled.webp" alt=""><img src="../assets/claw/grilled.webp" alt=""></div></div>
       </div>
@@ -259,7 +262,7 @@
       <div class="hud" id="hud"><div class="clock" id="clock"><b><span id="secs">15</span><small>s</small></b><i id="bar"></i></div><div class="tries"><small>Tries</small><div id="tries"></div></div><div class="ticket"><div class="it" data-k="burger"><img alt=""></div><div class="it" data-k="fries"><img alt=""></div><div class="it" data-k="frosty"><img alt=""></div><div class="n"><span id="got">0</span>/3<small>Matched</small></div></div></div>
       <div class="bonus" id="bonus">+2s</div>
       <div class="slots" id="slots"></div>
-      <div class="rig" id="rig"><div class="cable"></div><img class="c open" src="../assets/claw/claw-open.webp" alt=""><img class="c shut" src="../assets/claw/claw-closed.webp" alt=""><img class="held" id="held" alt="" style="display:none"><div class="bundle" id="bundle"></div></div>
+      <div class="rig" id="rig"><div class="cable"></div><img class="c open" src="../assets/claw/claw-open.webp" alt=""><img class="c shut" src="../assets/claw/claw-closed.webp" alt=""><img class="held" id="held" alt=""></div>
       <div class="trayrow"><img class="t" src="../assets/claw/tray.webp" alt=""><div class="on" id="tray"></div></div>
     </section>
 
@@ -269,7 +272,7 @@
       <div class="ribbon" id="cp-big"></div>
       <div class="coupon" id="coupon"><div class="tx"><small>Wendy Fest reward</small><div class="pz" id="cp-prize"></div><div class="lb">Your coupon code</div><span class="cd" id="cp-code"></span><div class="nt">Sent to your phone by SMS.</div></div><div class="stub"><img id="cp-qr" alt="">Scan to save</div></div>
       <div class="sub" id="win-sub"></div>
-      <div class="trayrow"><img class="t" src="../assets/claw/tray.webp" alt=""><div class="on" id="win-tray"></div></div>
+      <div class="trayrow"><img class="t" src="../assets/claw/tray.webp" alt=""><div class="on" id="win-tray"></div><img class="bag" src="../assets/claw/bag.webp" alt=""></div>
     </section>
 
     <!-- 8 time's up -->
@@ -294,7 +297,9 @@
 
 <audio id="a-clawmove" src="../assets/sfx/clawmove.mp3" preload="auto"></audio><audio id="a-clawgrab" src="../assets/sfx/clawgrab.mp3" preload="auto"></audio><audio id="a-clawdrop" src="../assets/sfx/clawdrop.mp3" preload="auto"></audio>
 <audio id="a-jackpot" src="../assets/sfx/jackpot.mp3" preload="auto"></audio><audio id="a-tension" src="../assets/sfx/tension.mp3" preload="auto" loop></audio><audio id="a-flip" src="../assets/sfx/flip.mp3" preload="auto"></audio>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwztddfg"></script><script src="../js/kiosk.js?v=mwztddfg"></script>
+<!-- Wendy's lines for the claw game -->
+<audio id="v-claw-how" src="../assets/voice/claw-how.mp3" preload="auto"></audio><audio id="v-claw-order" src="../assets/voice/claw-order.mp3" preload="auto"></audio><audio id="v-claw-4" src="../assets/voice/claw-4.mp3" preload="auto"></audio><audio id="v-claw-3" src="../assets/voice/claw-3.mp3" preload="auto"></audio><audio id="v-claw-2" src="../assets/voice/claw-2.mp3" preload="auto"></audio><audio id="v-claw-1" src="../assets/voice/claw-1.mp3" preload="auto"></audio><audio id="v-claw-remember" src="../assets/voice/claw-remember.mp3" preload="auto"></audio><audio id="v-claw-go" src="../assets/voice/claw-go.mp3" preload="auto"></audio><audio id="v-claw-nice-1" src="../assets/voice/claw-nice-1.mp3" preload="auto"></audio><audio id="v-claw-nice-2" src="../assets/voice/claw-nice-2.mp3" preload="auto"></audio><audio id="v-claw-nice-3" src="../assets/voice/claw-nice-3.mp3" preload="auto"></audio><audio id="v-claw-win-1" src="../assets/voice/claw-win-1.mp3" preload="auto"></audio><audio id="v-claw-win-2" src="../assets/voice/claw-win-2.mp3" preload="auto"></audio><audio id="v-claw-lose-1" src="../assets/voice/claw-lose-1.mp3" preload="auto"></audio><audio id="v-claw-lose-2" src="../assets/voice/claw-lose-2.mp3" preload="auto"></audio><audio id="v-claw-hello" src="../assets/voice/claw-hello.mp3" preload="auto"></audio>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwztn6h4"></script><script src="../js/kiosk.js?v=mwztn6h4"></script>
 <script>
   const $ = (id) => document.getElementById(id), wait = (ms) => new Promise((r) => setTimeout(r, ms));
   // the 1080 x 1920 canvas is scaled to fit the screen and centred
@@ -303,26 +308,28 @@
   addEventListener("resize", fit); fit();
   const sfx = (n, vol = .7) => { if (localStorage.getItem("wf_sfx") === "off") return; const a = $("a-" + n); if (!a) return; try { a.currentTime = 0; a.volume = vol; a.play().catch(() => {}); } catch {} };
 
+  // Wendy speaks one line at a time; a new line cuts the one before
+  let voNow = null; const vo = (n, vol = 1) => { if (localStorage.getItem("wf_sfx") === "off") return; const a = $("v-" + n); if (!a) return; try { if (voNow && voNow !== a) voNow.pause(); voNow = a; a.currentTime = 0; a.volume = vol; a.play().catch(() => {}); } catch {} }, voStop = () => { try { if (voNow) voNow.pause(); } catch {} };
   // the music under the round: it starts with the clock and stops when the round ends
-  const music = (on) => { const a = $("a-tension"); if (!a) return; try { if (on && localStorage.getItem("wf_sfx") !== "off") { a.currentTime = 0; a.volume = .45; a.play().catch(() => {}); } else a.pause(); } catch {} };
+  const music = (on) => { const a = $("a-tension"); if (!a) return; try { if (on && localStorage.getItem("wf_sfx") !== "off") { a.currentTime = 0; a.volume = .3; a.play().catch(() => {}); } else a.pause(); } catch {} };
   let CFG = { durationMs: 15000, bonusMs: 2000, memoriseMs: 3000, chances: 3, orderMs: 5000, decoys: 3 }, guest = null;
   fetch("/api/config").then((r) => r.json()).then((c) => { if (c.claw) CFG = { ...CFG, ...c.claw }; $("qr").src = $("qr2").src = qrUrl((c.baseUrl || location.origin) + "/register"); }).catch(() => {});
   $("ft-st").textContent = `Station ${K.station} · Claw`;
-  const ITEMS = { chicken: "/assets/claw/burger.webp", beef: "/assets/claw/beef.webp", bacon: "/assets/claw/bacon.webp", crispy: "/assets/claw/crispy.webp", grilled: "/assets/claw/grilled.webp", fries: "/assets/claw/fries.webp", bites: "/assets/claw/bites.webp", choc: "/assets/claw/frosty-choc.webp", vanilla: "/assets/claw/frosty-vanilla.webp", coke: "/assets/claw/cup.webp", sprite: "/assets/claw/cup.webp", zero: "/assets/claw/cup.webp" };
-  // Names as on the Wendy's Sri Lanka menu board (owner's photos, Nov 2026). The beef and bacon pictures match nothing on that board, so they are out of the game until the owner's product pictures arrive.
-  const NAMES = { chicken: "Spicy Chicken Burger", crispy: "Classic Chicken Burger", grilled: "Grilled Chicken Burger", fries: "Fries", bites: "Chicken Bites", choc: "Chocolate Frosty", vanilla: "Vanilla Frosty", coke: "Coca-Cola", sprite: "Sprite", zero: "Coca-Cola Zero" };
+  const A = "/assets/claw/", ITEMS = { classic: A + "classic.webp", lankan: A + "lankan.webp", molten: A + "molten.webp", paneer: A + "paneer.webp", grilled: A + "grilled.webp", tendersb: A + "tendersb.webp", fries: A + "fries.webp", bbq: A + "fries-bbq.webp", cheese: A + "fries-cheese.webp", bites: A + "bites.webp", tenders: A + "tenders.webp", choc: A + "frosty-choc.webp", vanilla: A + "frosty-vanilla.webp", coke: A + "cup.webp", sprite: A + "cup.webp", zero: A + "cup.webp" };
+  // Names exactly as on the Wendy's Sri Lanka menu board, pictures from the owner's product files (Nov 2026). Spicy Chicken Burger and Chickenator have no picture yet, so they are not in the game.
+  const NAMES = { classic: "Classic Chicken Burger", lankan: "Lankan Fire Burger", molten: "Molten Cheese Lava", paneer: "Paneer Double Decker", grilled: "Grilled Chicken Burger", tendersb: "Chicken Tenders Burger", fries: "Fries", bbq: "BBQ Shaker Fries", cheese: "Cheese Shaker Fries", bites: "Chicken Bites", tenders: "Chicken Tenders", choc: "Chocolate Frosty", vanilla: "Vanilla Frosty", coke: "Coca-Cola", sprite: "Sprite", zero: "Coca-Cola Zero" };
   // Drinks all come in the same Wendy's cup, so only the name tells them apart: the guest has to read (owner, Nov 2026).
-  const DRINKS = ["coke", "sprite", "zero"], FROSTYS = ["choc", "vanilla"];
-  const BURGERS = ["chicken", "crispy", "grilled"], SIDES = ["fries", "bites"], pick = (a) => a[Math.floor(Math.random() * a.length)];
+  const DRINKS = ["coke", "sprite", "zero"], FROSTYS = ["choc", "vanilla"], FRIES = ["fries", "bbq", "cheese"], CHICKEN = ["bites", "tenders"];
+  const BURGERS = ["classic", "lankan", "molten", "paneer", "grilled", "tendersb"], SIDES = [...FRIES, ...CHICKEN], pick = (a) => a[Math.floor(Math.random() * a.length)];
   const STEPS = { "s-idle": ["1", "Welcome"], "s-code": ["2", "Your code"], "s-how": ["3", "How to play"], "s-play": ["4", "Play"], "s-win": ["5", "Order up"], "s-lose": ["5", "Time’s up"] };
   // the big button under the cabinet belongs to whichever screen is showing
-  const CTA = { "s-idle": ["Tap to start", () => { sfx("start"); K.show("s-code"); }], "s-code": ["Continue", () => { if (code.length === 5) lookup(); else { sfx("error"); say(code.length < 3 ? "First, your 3 numbers." : "Now your 2 letters.", true); } }],
+  const CTA = { "s-idle": ["Tap to start", () => { sfx("start"); vo("claw-hello"); K.show("s-code"); }], "s-code": ["Continue", () => { if (code.length === 5) lookup(); else { sfx("error"); say(code.length < 3 ? "First, your 3 numbers." : "Now your 2 letters.", true); } }],
     "s-how": ["Let’s play", () => { sfx("start"); startGame(); }], "s-play": ["Match your order", null], "s-win": ["Done", () => { sfx("coin"); goIdle(); }], "s-lose": ["Done", () => { sfx("coin"); goIdle(); }] };
   let screen = "s-idle";
   document.addEventListener("screen", (e) => { const id = e.detail; if (!CTA[id]) return; screen = id; const st = STEPS[id]; $("stp-n").textContent = st[0]; $("stp-l").textContent = st[1];
     const b = $("cta"); b.textContent = CTA[id][0]; b.disabled = !CTA[id][1]; b.classList.toggle("pulse", !!CTA[id][1] && id !== "s-code"); if (id !== "s-idle") sfx("whoosh", .35); });
   $("cta").onclick = () => { const f = CTA[screen] && CTA[screen][1]; if (f) f(); };
-  function goIdle() { stopClock(); guest = null; code = ""; paintCode(); K.resetIdle(0); K.show("s-idle"); }
+  function goIdle() { stopClock(); voStop(); guest = null; code = ""; paintCode(); K.resetIdle(0); K.show("s-idle"); }
   document.addEventListener("kiosk-home", goIdle);
 
   // ---- staff PIN
@@ -345,7 +352,7 @@
     busy = true; say("Checking…");
     try { guest = await K.api("/api/kiosk/lookup", { code }); bad = 0;
       if ((guest.clawsLeft ?? 1) <= 0) { sfx("error"); say(`${guest.firstName} has already played. One go per guest.`, true); $("boxes").classList.add("err"); setTimeout(() => $("boxes").classList.remove("err"), 500); }
-      else { K.show("s-how"); K.resetIdle(60000, goIdle); } }
+      else { K.show("s-how"); setTimeout(() => { if (screen === "s-how") vo("claw-how"); }, 500); K.resetIdle(60000, goIdle); } }
     catch (e) { sfx("error"); say(e.message || "We can’t find that code.", true); $("boxes").classList.add("err"); setTimeout(() => $("boxes").classList.remove("err"), 500); if (++bad >= 3) { bad = 0; lockUntil = Date.now() + 30000; say("Too many wrong codes. Try again in 30 seconds.", true); } }
     busy = false;
   }
@@ -356,10 +363,10 @@
   // Tries (owner: "only 3 chances"): every pair the guest turns over uses one. With three pairs and three tries, a single wrong pair means the order cannot be completed.
   let tries = 3; function paintTries() { const n = Math.max(3, CFG.chances || 3); $("tries").innerHTML = Array.from({ length: n }, (_, i) => `<i class="${i < tries ? "" : "off"}"></i>`).join(""); }
   function startGame() {
-    frosty = Math.random() < .6 ? pick(DRINKS) : pick(FROSTYS); burger = pick(BURGERS); side = pick(SIDES); order = [burger, side, frosty];
-    // harder (owner): besides the three pairs of the order there are single items that are NOT in the order. Turning one over wastes a try.
-    const twin = pick((DRINKS.includes(frosty) ? DRINKS : FROSTYS).filter((x) => x !== frosty));   // always one look-alike of the drink or Frosty among the wrong items
-    const others = [...BURGERS.filter((b) => b !== burger), ...SIDES.filter((x) => x !== side), ...(DRINKS.includes(frosty) ? FROSTYS : DRINKS)]; for (let i = others.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [others[i], others[j]] = [others[j], others[i]]; } others.unshift(twin);
+    frosty = Math.random() < .6 ? pick(DRINKS) : pick(FROSTYS); burger = pick(BURGERS); side = Math.random() < .6 ? pick(FRIES) : pick(CHICKEN); order = [burger, side, frosty];
+    // harder (owner): besides the three pairs of the order there are three single items that are NOT in the order, each a look-alike: another burger, the other kind of fries (or of chicken), and another drink (or the other Frosty). Turning one over wastes a try.
+    const fam = (k, ...fs) => fs.find((x) => x.includes(k)).filter((x) => x !== k);
+    const others = [pick(fam(frosty, DRINKS, FROSTYS)), pick(fam(side, FRIES, CHICKEN)), pick(fam(burger, BURGERS))];
     deck = [...order, ...order, ...others.slice(0, Math.max(0, Math.min(3, CFG.decoys ?? 3)))]; for (let i = deck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [deck[i], deck[j]] = [deck[j], deck[i]]; }
     open = []; matched = 0; got = []; ending = false; lock = true; left = CFG.durationMs; tries = Math.max(3, CFG.chances || 3); paintTries(); $("got").textContent = "0"; $("tray").innerHTML = ""; $("clock").classList.remove("low");
     document.querySelectorAll(".ticket .it").forEach((el, i) => { el.dataset.k = order[i]; el.classList.remove("ok"); el.querySelector("img").src = srcOf(order[i]); });
@@ -369,14 +376,14 @@
     paintClock(); $("hud").style.visibility = "hidden"; $("mem").style.display = "none"; const ord = $("ord"); ord.classList.remove("away"); ord.classList.add("on"); $("ord-row").innerHTML = order.map((k) => `<div><img src="${srcOf(k)}" alt="">${NAMES[k]}</div>`).join(""); K.show("s-play"); K.resetIdle(0); music(true);
     (async () => {   // first the guest is told their order, then everyone sees all the slots for a few seconds, then the doors close and the clock starts
       const on = Math.max(1, Math.round((CFG.orderMs ?? 5000) / 1000));
-      for (let s = on; s >= 1; s--) { if (screen !== "s-play") return; const c = $("ord-n"); c.textContent = s; c.classList.remove("pop"); void c.offsetWidth; c.classList.add("pop"); sfx("beep", .4); await wait((CFG.orderMs ?? 5000) / on); }
+      for (let s = on; s >= 1; s--) { if (screen !== "s-play") return; const c = $("ord-n"); c.textContent = s; c.classList.remove("pop"); void c.offsetWidth; c.classList.add("pop"); sfx("beep", .3); vo(s >= 5 ? "claw-order" : "claw-" + s); await wait((CFG.orderMs ?? 5000) / on + (s === on ? 500 : 0)); }   // the first beat is a little longer so "Your order!" is not cut by "Four!"
       if (screen !== "s-play") return; sfx("whoosh", .5); $("hud").style.visibility = "visible"; ord.classList.add("away"); await wait(620); ord.classList.remove("on", "away"); $("hud").style.visibility = "hidden";
-      if (screen !== "s-play") return; $("mem").style.display = "flex"; document.querySelectorAll(".slot").forEach((el) => el.classList.add("up")); sfx("flip", .6);
+      if (screen !== "s-play") return; $("mem").style.display = "flex"; document.querySelectorAll(".slot").forEach((el) => el.classList.add("up")); sfx("flip", .6); vo("claw-remember");
       const n = Math.max(1, Math.round(CFG.memoriseMs / 1000));
       for (let s = n; s >= 1; s--) { if (screen !== "s-play") return; const c = $("mem-n"); c.textContent = s; c.classList.remove("pop"); void c.offsetWidth; c.classList.add("pop"); sfx("beep", .5); await wait(CFG.memoriseMs / n); }
       if (screen !== "s-play") return;
       document.querySelectorAll(".slot").forEach((el, i) => setTimeout(() => el.classList.remove("up"), i * 60)); sfx("go", .6);
-      $("mem").style.display = "none"; $("hud").style.visibility = "visible"; await wait(520); lock = false; t0 = performance.now(); startClock();
+      $("mem").style.display = "none"; $("hud").style.visibility = "visible"; await wait(520); lock = false; t0 = performance.now(); startClock(); vo("claw-go");
     })();
   }
   function paintClock() { $("secs").textContent = Math.max(0, Math.ceil(left / 1000)); $("bar").style.transform = `scaleX(${Math.max(0, Math.min(1, left / CFG.durationMs))})`; $("clock").classList.toggle("low", left <= 5000 && left > 0); }
@@ -385,7 +392,7 @@
   function stopClock() { running = false; clearInterval(tickT); music(false); }
   const slotEl = (i) => document.querySelector(`.slot[data-i="${i}"]`);
   function tapSlot(i) {
-    if (lock || open.includes(i)) return; const el = slotEl(i); if (el.classList.contains("gone")) return;
+    if (lock || open.includes(i)) return; const el = slotEl(i); if (el.classList.contains("gone") || el.classList.contains("ok")) return;
     el.classList.add("up"); sfx("flip", .6); open.push(i); if (open.length < 2) return;
     const [a, b] = open; lock = true; tries--; paintTries();
     if (deck[a] === deck[b]) pairOk(a, b);
@@ -394,24 +401,27 @@
   // A matched pair is ticked off straight away and gives a few seconds back; the clock keeps running. The claw comes once, when the round ends (owner, Nov 2026).
   let got = [], ending = false;
   function pairOk(a, b) {
-    const k = deck[a]; sfx("ding", .55); setTimeout(() => [a, b].forEach((x) => slotEl(x).classList.add("gone")), 260);
-    got.push(k); matched++; $("got").textContent = matched; document.querySelector(`.ticket .it[data-k="${k}"]`).classList.add("ok"); open = [];
+    const k = deck[a]; sfx("ding", .55); [a, b].forEach((x) => slotEl(x).classList.add("ok"));
+    got.push({ k, a, b }); matched++; $("got").textContent = matched; document.querySelector(`.ticket .it[data-k="${k}"]`).classList.add("ok"); open = [];
     if (matched < 3 && CFG.bonusMs > 0) { left = Math.min(CFG.durationMs, left + CFG.bonusMs); const bn = $("bonus"); bn.textContent = `+${Math.round(CFG.bonusMs / 1000)}s`; bn.classList.remove("go"); void bn.offsetWidth; bn.classList.add("go"); paintClock(); }
     if (matched >= 3) return finish(true);
     if (tries <= 0) return finish(false, "tries");
-    setTimeout(() => { if (!ending) lock = false; }, 300);
+    vo("claw-nice-" + (1 + Math.floor(Math.random() * 3)));
+    setTimeout(() => { if (!ending) lock = false; }, 250);
   }
-  // The round is over: the claw comes down, takes every matched item in one go (half hidden in the cabinet, in full once lifted out) and lowers them onto the tray.
+  // The round is over (all matched, out of tries, or out of time): only now the claw comes. It goes to each matched item in its own slot, lifts it out and sets it down on the tray, one after the other.
   async function collect() {
-    if (!got.length) return; const rig = $("rig"), box = $("slots"), x = 474, y = box.offsetTop + 218, bundle = $("bundle");
+    if (!got.length) return; const rig = $("rig"), box = $("slots"), held = $("held");
     const go = (gx, gy, ms, ease = "cubic-bezier(.4, 0, .2, 1)") => { rig.style.transition = `translate ${ms}ms ${ease}`; rig.style.translate = `${gx}px ${gy}px`; return wait(ms + 30); };
-    bundle.innerHTML = got.map((k) => `<img src="${srcOf(k)}" alt="">`).join(""); bundle.classList.add("half");
-    sfx("clawmove", .6); await go(x, y - 190, 440); await go(x, y - 105, 320);
-    rig.classList.add("grab"); sfx("clawgrab", .7); await wait(280);
-    bundle.classList.remove("half"); await go(x, y - 330, 820, "cubic-bezier(.3, 0, .3, 1)");
-    sfx("clawmove", .5); await go(x, 690, 1000, "cubic-bezier(.2, .7, .3, 1)");
-    rig.classList.remove("grab"); $("tray").innerHTML = got.map((k) => `<img src="${srcOf(k)}" alt="">`).join(""); sfx("clawdrop", .7);
-    await wait(320); go(474, -420, 420); await wait(520);
+    await wait(350);
+    for (const g of got) {
+      const el = slotEl(g.b), sx = box.offsetLeft + el.offsetLeft + el.offsetWidth / 2, sy = box.offsetTop + el.offsetTop, n = order.indexOf(g.k), tx = 190 + n * 290;
+      sfx("clawmove", .6); await go(sx, sy - 240, 380); await go(sx, sy - 162, 240);
+      held.src = srcOf(g.k); rig.classList.add("grab"); sfx("clawgrab", .7); [g.a, g.b].forEach((x) => { const s2 = slotEl(x); s2.classList.remove("ok"); s2.classList.add("gone"); }); await wait(220);
+      await go(sx, sy - 300, 300, "cubic-bezier(.3, 0, .3, 1)"); await go(tx, 440, 520); await go(tx, 690, 520, "cubic-bezier(.2, .7, .3, 1)");
+      rig.classList.remove("grab"); const img = document.createElement("img"); img.src = srcOf(g.k); img.style.order = n; $("tray").appendChild(img); sfx("clawdrop", .7); await wait(160);
+    }
+    go(474, -420, 420); await wait(560);
   }
   function confetti(n = 150) { const box = document.createElement("div"); box.className = "confetti"; $("fit").appendChild(box); const cols = ["#FFF6E4", "#18A6E8", "#FFE08A", "#F0434C", "#FFFFFF"];
     for (let i = 0; i < n; i++) { const el = document.createElement("i"); el.style.left = Math.random() * 1080 + "px"; el.style.background = cols[i % cols.length]; el.style.setProperty("--dx", (Math.random() * 400 - 200) + "px"); el.style.setProperty("--r", (Math.random() * 1400 - 700) + "deg"); el.style.animationDuration = 2.2 + Math.random() * 2.2 + "s"; el.style.animationDelay = Math.random() * .9 + "s"; box.appendChild(el); }
@@ -422,7 +432,7 @@
   async function finish(won, why) {
     if (screen !== "s-play" || ending) return; ending = true; stopClock(); lock = true; const msLeft = Math.max(0, Math.round(left)), took = Math.round(performance.now() - t0);
     await collect(); if (screen !== "s-play") return;
-    const tray = $(won ? "win-tray" : "lose-tray"), have = [...$("tray").children].map((i) => i.getAttribute("src"));
+    const tray = $(won ? "win-tray" : "lose-tray"), have = got.map((g) => srcOf(g.k));
     tray.innerHTML = order.map((k) => `<img src="${srcOf(k)}" class="${have.includes(srcOf(k)) ? "" : "miss"}" alt="">`).join("");
     const name = guest ? guest.firstName : "";
     // the result is saved first, so a win can show its coupon
@@ -430,9 +440,9 @@
     if (won) { const c = res && res.coupon;
       $("coupon").style.display = $("cp-big").style.display = c ? "" : "none"; if (c) { const pz = prizeText(c.label); $("cp-big").textContent = pz.big; $("cp-prize").textContent = pz.line; $("cp-code").textContent = c.code; $("cp-qr").src = qrUrl(res.profileUrl || ""); }
       $("win-sub").textContent = res && res.couponPoolEmpty ? "You won! Please show this screen to our team for your reward." : `${name ? name + ", you" : "You"} grabbed the whole order with ${(msLeft / 1000).toFixed(1)} seconds to spare.`;
-      K.show("s-win"); sfx("party", .7); setTimeout(() => sfx("jackpot", .7), 300); confetti(); }
+      K.show("s-win"); sfx("party", .7); setTimeout(() => vo("claw-win-" + (1 + Math.floor(Math.random() * 2))), 900); setTimeout(() => sfx("jackpot", .7), 300); confetti(); }
     else { $("lose-t").textContent = why === "tries" ? "Out of tries!" : "Time’s up!"; $("lose-chip").textContent = `${matched} / 3 matched`; const miss = order.filter((k) => !have.includes(srcOf(k))).map((k) => "the " + NAMES[k]);
-      $("lose-sub").textContent = matched ? `So close${name ? ", " + name : ""}. You missed ${miss.join(" and ")}.` : `The order got away${name ? ", " + name : ""}. Better luck next time.`; K.show("s-lose"); sfx("aww", .6); }
+      $("lose-sub").textContent = matched ? `So close${name ? ", " + name : ""}. You missed ${miss.join(" and ")}.` : `The order got away${name ? ", " + name : ""}. Better luck next time.`; K.show("s-lose"); sfx("aww", .6); setTimeout(() => vo("claw-lose-" + (1 + Math.floor(Math.random() * 2))), 900); }
     K.resetIdle(won ? 40000 : 25000, goIdle);
   }
   paintCode();

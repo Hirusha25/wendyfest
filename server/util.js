@@ -85,7 +85,10 @@ export function wendysCheck(transcript) {
     // Count the words that are NOT the target word; a real shout is "Wendy's", perhaps repeated, with at most two stray words.
     const isW = (w) => Math.max(bestSim(w, WITH_S), bestSim(w, WITH_S_NEAR), bestSim(w, NO_S)) >= 0.75;
     let extra = 0; words.forEach((w, i) => { if (isW(w)) return; if ((w === "is" || w === "s") && i > 0 && isW(words[i - 1])) return; extra++; });
-    if (extra > 2) return { accuracy: Math.min(accuracy, 30), reason: "unclear", heard: c, sentence: true };
+    // With an announcer talking the whole time, the kiosk hears their words too ("Game Wendy's. Yeah, I'm hungry. Wendy's! Come on..."). The guest's shout is the word
+    // standing on its own: a piece between full stops or exclamation marks that is just the word, with at most one stray word. A long sentence that contains it is not.
+    const alone = String(transcript || "").split(/[.!?\n]+/).some((seg) => { const ws = tokenise(seg).split(" ").filter(Boolean); if (!ws.length) return false; let w = 0, x = 0; ws.forEach((t, i) => { if (isW(t)) w++; else if (!((t === "is" || t === "s") && i > 0 && isW(ws[i - 1]))) x++; }); return w >= 1 && x <= 1; });
+    if (extra > 2 && !alone) return { accuracy: Math.min(accuracy, 30), reason: "unclear", heard: c, sentence: true };
     return { accuracy, reason, heard: c };
   }
   return { accuracy: Math.round(overall * 25), reason: "unclear", heard: "" };  // never got near the word: max 25

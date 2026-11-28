@@ -27,6 +27,20 @@ const screamSettings = () => ({ ...config.scream, ...getSetting("scream", {}) })
 const couponSettings = () => ({ ...config.coupon, ...getSetting("coupon", {}) });
 const roastSettings = () => ({ ...config.roast, ...getSetting("roast", {}) });
 const clawSettings = () => ({ ...config.claw, ...getSetting("claw", {}) });
+// Coupon pace (owner, 28 Nov 2026). The coupons must last to the end of the event, so only so many go out in one clock hour (Sri Lanka time).
+// Once the hour's share is won, or the pool is empty, the games get harder until the next hour: Scream & Win is marked on a tougher loudness scale
+// and Wendy's Claw gets a shorter clock. Nothing on the screens changes otherwise. Test codes are never affected.
+// One reward per guest (owner, 28 Nov 2026): a guest who holds a coupon from either game cannot play Scream & Win or Wendy's Claw again. Roast Me stays open.
+const hasReward = (p) => !isDemo(p) && !!db.prepare("SELECT 1 FROM coupons WHERE claimed_by = ? LIMIT 1").get(p.id);
+const WON_ALREADY = "You’re already a winner! One reward per guest.";
+const paceSettings = () => ({ ...config.pace, ...getSetting("pace", {}) });
+const hourStart = () => new Date(Math.floor((Date.now() + 19800000) / 3600000) * 3600000 - 19800000).toISOString().slice(0, 19).replace("T", " ");
+const paceState = () => {
+  const perHour = Number(paceSettings().perHour) || 0;
+  const left = db.prepare("SELECT COUNT(*) n FROM coupons WHERE claimed_by IS NULL").get().n;
+  const thisHour = db.prepare("SELECT COUNT(*) n FROM coupons WHERE claimed_by IS NOT NULL AND claimed_at >= ?").get(hourStart()).n;
+  return { perHour, left, thisHour, full: left <= 0 || (perHour > 0 && thisHour >= perHour) };
+};
 const clawsFor = db.prepare("SELECT * FROM claw_attempts WHERE participant_id = ? ORDER BY id DESC");
 const wallSettings = () => ({ on: true, seconds: 15, ...getSetting("wall", {}) });   // the LED wall: showing or paused, and seconds per roast
 
@@ -250,7 +264,8 @@ app.post("/api/kiosk/lookup", requirePin("kiosk"), (req, res) => {
     screamsUsed: isDemo(p) ? 0 : screams.length, screamsLeft: isDemo(p) ? 1 : Math.max(0, screamSettings().attemptsPerPerson - screams.length),
     roastsUsed: isDemo(p) ? 0 : roasts.length, roastsLeft: isDemo(p) ? 1 : Math.max(0, roastSettings().attemptsPerPerson - roasts.length),
     clawsUsed: isDemo(p) ? 0 : clawsFor.all(p.id).length, clawsLeft: isDemo(p) ? 1 : Math.max(0, clawSettings().attemptsPerPerson - clawsFor.all(p.id).length),
-    alreadyWon: !isDemo(p) && screams.some((s) => s.won), profileUrl: profileUrl(p),
+    alreadyWon: !isDemo(p) && screams.some((s) => s.won), winner: hasReward(p), profileUrl: profileUrl(p),
+    ...(!isDemo(p) && paceState().full ? { tune: { durationMs: Math.max(1000, Number(paceSettings().clawMs) || 2000) } } : {}),   // Wendy's Claw: this round's clock (coupon pace)
   });
 });
 
@@ -283,9 +298,16 @@ app.post("/api/kiosk/scream", requirePin("kiosk"), async (req, res) => {
   if (!p) return res.status(404).json({ error: "code not found" });
   const s = screamSettings();
   const used = screamsFor.all(p.id);
+  if (hasReward(p)) return res.status(409).json({ error: WON_ALREADY, winner: true });
   if (!isDemo(p) && used.length >= s.attemptsPerPerson) return res.status(409).json({ error: "No attempts left for this guest", attempts: used.length });
 
-  const { loud, acc, score, won, reason } = judgeScream({ peakDb, sustainedDb, transcript, accuracyOverride, ambientDb }, s);
+  let { loud, acc, score, won, reason } = judgeScream({ peakDb, sustainedDb, transcript, accuracyOverride, ambientDb }, s);
+  // The hour's coupons are all won (or none are left): the loudness is marked on the tougher scale, so this shout lands just under the line.
+  if (won && !isDemo(p) && paceState().full) {
+    loud = Math.max(0, (s.minLoud ?? 60) - 2 - Math.floor(Math.random() * 6)); score = Math.round(loud * s.loudWeight + acc * s.accWeight); won = false; reason = "quiet";
+    try { speechLog = JSON.stringify({ paced: 1, ...(speech && typeof speech === "object" ? speech : {}) }).slice(0, 800); } catch {}
+    console.log("Coupon pace: a scream was marked on the tougher scale");
+  }
 
   let coupon = null;
   if (won && isDemo(p)) {   // our test codes never take a real coupon from the pool: they get a made-up one with a real prize name
@@ -330,6 +352,7 @@ app.post("/api/kiosk/claw", requirePin("kiosk"), (req, res) => {
   const { code, matched, won, msLeft, tookMs, station } = req.body || {};
   const p = participantByCode.get(String(code || "").toUpperCase());
   if (!p) return res.status(404).json({ error: "code not found" });
+  if (hasReward(p)) return res.status(409).json({ error: WON_ALREADY, winner: true });
   if (!isDemo(p) && clawsFor.all(p.id).length >= clawSettings().attemptsPerPerson) return res.status(409).json({ error: "This guest has already played" });
   const m = clamp(Math.round(Number(matched) || 0), 0, 3), w = m === 3 && !!won;
   // A full order inside the time wins a coupon from the same pool as Scream & Win (owner, Nov 2026). Test codes get a made-up one.
@@ -554,12 +577,13 @@ app.get("/api/admin/scream-levels", requirePin("admin"), (req, res) => {
 });
 
 app.put("/api/admin/settings", requirePin("admin"), (req, res) => {
-  const { scream, coupon, roast, wall } = req.body || {};
+  const { scream, coupon, roast, wall, pace } = req.body || {};
+  if (pace) setSetting("pace", { ...getSetting("pace", {}), ...Object.fromEntries(Object.entries(pace).filter(([k]) => ["perHour", "clawMs"].includes(k)).map(([k, v]) => [k, clamp(Number(v) || 0, 0, 100000)])) });
   if (wall) setSetting("wall", { on: !!wall.on, seconds: clamp(Number(wall.seconds) || 15, 8, 120) });
   if (scream) setSetting("scream", { ...getSetting("scream", {}), ...Object.fromEntries(Object.entries(scream).map(([k, v]) => [k, Number(v)])) });
   if (coupon) setSetting("coupon", { ...getSetting("coupon", {}), ...coupon });
   if (roast) setSetting("roast", { ...getSetting("roast", {}), ...Object.fromEntries(Object.entries(roast).map(([k, v]) => [k, Number(v)])) });
-  res.json({ ok: true, scream: screamSettings(), coupon: couponSettings(), roast: roastSettings() });
+  res.json({ ok: true, scream: screamSettings(), coupon: couponSettings(), roast: roastSettings(), pace: paceState() });
 });
 app.post("/api/admin/coupons/import", requirePin("admin"), (req, res) => {
   // Accepts raw text: one code per line, optional ",label". Also accepts {codes:[...]}.

@@ -37,6 +37,8 @@ export const config = {
   adminPin: env("ADMIN_PIN", "1357"),
   redeemPin: env("REDEEM_PIN", "9753"),   // the access code for the page where the Wendy's team marks coupons as redeemed (/redeem)
   // Guest codes that never run out of turns (for demos on a test server). Leave empty at the event.
+  // Coupon pace (owner, 28 Nov 2026): at most this many coupons in one clock hour, so they last to the end of the event. 0 = no limit.
+  pace: { perHour: Number(env("COUPON_PER_HOUR", 10)), clawMs: Number(env("PACE_CLAW_MS", 2000)) },
   demoCodes: env("DEMO_CODES", "").toUpperCase().split(/[^A-Z0-9]+/).filter(Boolean),
 
   // Scream & Win scoring (editable live from /admin; these are the defaults)

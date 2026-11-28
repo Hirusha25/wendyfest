@@ -1229,6 +1229,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
       if (code === lookup.lastBad) { $("code-msg").textContent = lookup.lastMsg; shakeBoxes(); return; }   // the same wrong code tapped again counts once
       const g = await K.api("/api/kiosk/lookup", { code }, 12000); if (!$("s-code").classList.contains("on")) return;   // a late answer must not move a kiosk that has gone back to the start
       guest = g; lookup.bad = 0;
+      if (guest.winner) { $("code-msg").textContent = `${guest.firstName}, you’re already a winner! One reward per guest.`; shakeBoxes(); return; }
       if (guest.screamsLeft <= 0) { $("code-msg").textContent = `${guest.firstName} has already used their attempt${guest.alreadyWon ? " (and won!)" : ""}.`; shakeBoxes(); return; }
       $("r-name").textContent = guest.firstName; mode = "ready"; $("mic-pill").classList.remove("heard-ok"); K.show("s-ready"); if (await startAudio()) { $("mic-status").textContent = "Mic connected · say “Hello”"; SFX.mic(); } resetVoiceCheck(); K.resetIdle(90000, goIdle);
     } catch (e) { if (!$("s-code").classList.contains("on")) return; $("code-msg").textContent = e.message; shakeBoxes(); if (e.status !== 404) return;   // a slow network is not a wrong code

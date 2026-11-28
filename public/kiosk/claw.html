@@ -313,7 +313,7 @@
   // the music under the round: it starts with the clock and stops when the round ends
   const music = (on) => { const a = $("a-tension"); if (!a) return; try { if (on && localStorage.getItem("wf_sfx") !== "off") { a.currentTime = 0; a.volume = .3; a.play().catch(() => {}); } else a.pause(); } catch {} };
   let CFG = { durationMs: 10000, bonusMs: 0, memoriseMs: 3000, chances: 0, orderMs: 5000, decoys: 3 }, guest = null;
-  fetch("/api/config").then((r) => r.json()).then((c) => { if (c.claw) { CFG = { ...CFG, ...c.claw }; $("how-secs").textContent = Math.round(CFG.durationMs / 1000); } $("qr").src = $("qr2").src = `/api/qr?text=${encodeURIComponent((c.baseUrl || location.origin) + "/register")}`; }).catch(() => {});
+  let BASE = CFG; fetch("/api/config").then((r) => r.json()).then((c) => { if (c.claw) { CFG = BASE = { ...CFG, ...c.claw }; $("how-secs").textContent = Math.round(CFG.durationMs / 1000); } $("qr").src = $("qr2").src = `/api/qr?text=${encodeURIComponent((c.baseUrl || location.origin) + "/register")}`; }).catch(() => {});
   $("ft-st").textContent = `Station ${K.station} · Claw`;
   const A = "/assets/claw/", ITEMS = { classic: A + "classic.webp", lankan: A + "lankan.webp", molten: A + "molten.webp", paneer: A + "paneer.webp", grilled: A + "grilled.webp", tendersb: A + "tendersb.webp", fries: A + "fries.webp", bbq: A + "fries-bbq.webp", cheese: A + "fries-cheese.webp", bites: A + "bites.webp", tenders: A + "tenders.webp", choc: A + "frosty-choc.webp", vanilla: A + "frosty-vanilla.webp", coke: A + "cup.webp", sprite: A + "cup.webp", zero: A + "cup.webp" };
   // Names exactly as on the Wendy's Sri Lanka menu board, pictures from the owner's product files (Nov 2026). Spicy Chicken Burger and Chickenator have no picture yet, so they are not in the game.
@@ -353,7 +353,9 @@
     if (busy) return; if (Date.now() < lockUntil) return say("Too many wrong codes. Please wait a moment.", true);
     busy = true; say("Checking…");
     try { guest = await K.api("/api/kiosk/lookup", { code }); bad = 0;
-      if ((guest.clawsLeft ?? 1) <= 0) { sfx("error"); say(`${guest.firstName} has already played. One go per guest.`, true); $("boxes").classList.add("err"); setTimeout(() => $("boxes").classList.remove("err"), 500); }
+      CFG = { ...BASE, ...(guest.tune || {}) }; $("how-secs").textContent = Math.round(CFG.durationMs / 1000);   // the clock for this round comes with the guest
+      if (guest.winner) { sfx("error"); say(`${guest.firstName}, you’re already a winner! One reward per guest.`, true); $("boxes").classList.add("err"); setTimeout(() => $("boxes").classList.remove("err"), 500); }
+      else if ((guest.clawsLeft ?? 1) <= 0) { sfx("error"); say(`${guest.firstName} has already played. One go per guest.`, true); $("boxes").classList.add("err"); setTimeout(() => $("boxes").classList.remove("err"), 500); }
       else { K.show("s-how"); setTimeout(() => { if (screen === "s-how") vo("claw-how"); }, 500); K.resetIdle(60000, goIdle); } }
     catch (e) { sfx("error"); say(e.message || "We can’t find that code.", true); $("boxes").classList.add("err"); setTimeout(() => $("boxes").classList.remove("err"), 500); if (++bad >= 3) { bad = 0; lockUntil = Date.now() + 30000; say("Too many wrong codes. Try again in 30 seconds.", true); } }
     busy = false;

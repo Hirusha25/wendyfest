@@ -23,12 +23,12 @@
   .hd .stp { display: flex; align-items: center; gap: 16px; font: italic 800 24px/1 Poppins, sans-serif; letter-spacing: .16em; text-transform: uppercase; }
   .hd .stp b { width: 54px; height: 54px; border-radius: 50%; background: #fff; color: #0A7FBC; display: grid; place-items: center; font: 900 28px/1 Poppins, sans-serif; letter-spacing: 0; }
   .ft { position: absolute; left: 0; right: 0; bottom: 0; height: 56px; background: #1A0507; display: flex; align-items: center; justify-content: space-between; padding: 0 44px; font: 800 17px/1 Poppins, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.75); z-index: 5; }
-  .ft img { height: 30px; vertical-align: middle; margin-right: 12px; }
+  .ft span { display: flex; align-items: center; white-space: nowrap; } .ft img { display: block; height: 30px; width: auto; margin-right: 12px; }
 
   /* the machine's sign: WENDY'S CLAW over a "Grab the order" plate */
-  .sign { position: absolute; left: 0; right: 0; top: 208px; text-align: center; z-index: 3; }
+  .sign { position: absolute; left: 0; right: 0; top: 198px; text-align: center; z-index: 3; }
   .sign .big { font: italic 900 118px/.92 Poppins, sans-serif; text-transform: uppercase; letter-spacing: -.02em; color: #FFF6E4; text-shadow: 0 5px 0 #F0D9A8, 0 10px 0 #8E1219, 0 16px 0 #5A080E, 0 30px 30px rgba(0,0,0,.55); }
-  .sign .plate { display: inline-flex; align-items: center; gap: 22px; margin-top: 14px; }
+  .sign .plate { display: inline-flex; align-items: center; gap: 22px; margin-top: 32px; }
   .sign .plate b { display: block; padding: 12px 34px 10px; border-radius: 14px; background: linear-gradient(180deg, #FFFBF3, #EADFCB); color: #B81B24; font: italic 900 38px/1 Poppins, sans-serif; letter-spacing: .06em; text-transform: uppercase; box-shadow: 0 6px 0 #B5A88F, 0 14px 20px rgba(0,0,0,.4); }
   .sign .plate i, .cta-row i { display: block; width: 92px; height: 34px; background: linear-gradient(#18A6E8 0 34%, transparent 34% 66%, #18A6E8 66%); transform: skewX(-18deg); border-radius: 3px; filter: drop-shadow(0 4px 0 rgba(0,0,0,.25)); }
 
@@ -159,6 +159,8 @@
   .rig .cable { position: absolute; left: -6px; bottom: 0; width: 12px; height: 1400px; background: linear-gradient(90deg, #6B7379, #F2F5F7 45%, #7C858D); }
   .rig img.c { position: absolute; left: -140px; top: -20px; width: 280px; filter: drop-shadow(0 16px 12px rgba(0,0,0,.5)); } .rig img.c.shut, .rig.grab img.c.open { display: none; } .rig.grab img.c.shut { display: block; }
   .rig img.held { position: absolute; left: -125px; top: 172px; width: 250px; height: 230px; object-fit: contain; object-position: 50% 0; display: none; z-index: -1; filter: drop-shadow(0 12px 10px rgba(0,0,0,.5)); transition: clip-path .8s ease-out; clip-path: inset(0 0 0 0); } .rig.grab img.held { display: block; }
+  .rig .bundle { position: absolute; left: -330px; top: 172px; width: 660px; height: 230px; display: none; align-items: flex-end; justify-content: center; z-index: -1; transition: clip-path .8s ease-out; clip-path: inset(0 0 0 0); } .rig.grab .bundle { display: flex; } .rig .bundle.half { clip-path: inset(0 0 50% 0); }
+  .rig .bundle img { height: 210px; max-width: 250px; object-fit: contain; margin: 0 -16px; filter: drop-shadow(0 12px 10px rgba(0,0,0,.5)); }
   .rig img.held.half { clip-path: inset(0 0 50% 0); }   /* in the slot only the top half of the product shows; it comes fully into view as the claw pulls it out (owner) */
   .trayrow { position: absolute; left: 60px; right: 60px; bottom: 18px; height: 250px; z-index: 4; }
   .trayrow > img.t { position: absolute; left: 0; bottom: 0; width: 100%; filter: drop-shadow(0 16px 14px rgba(0,0,0,.55)); }
@@ -243,7 +245,7 @@
       <div class="hud" id="hud"><div class="clock" id="clock"><b><span id="secs">15</span><small>s</small></b><i id="bar"></i></div><div class="tries"><small>Tries</small><div id="tries"></div></div><div class="ticket"><div class="it" data-k="burger"><img alt=""></div><div class="it" data-k="fries"><img alt=""></div><div class="it" data-k="frosty"><img alt=""></div><div class="n"><span id="got">0</span>/3<small>Matched</small></div></div></div>
       <div class="bonus" id="bonus">+2s</div>
       <div class="slots" id="slots"></div>
-      <div class="rig" id="rig"><div class="cable"></div><img class="c open" src="/assets/claw/claw-open.webp" alt=""><img class="c shut" src="/assets/claw/claw-closed.webp" alt=""><img class="held" id="held" alt=""></div>
+      <div class="rig" id="rig"><div class="cable"></div><img class="c open" src="/assets/claw/claw-open.webp" alt=""><img class="c shut" src="/assets/claw/claw-closed.webp" alt=""><img class="held" id="held" alt="" style="display:none"><div class="bundle" id="bundle"></div></div>
       <div class="trayrow"><img class="t" src="/assets/claw/tray.webp" alt=""><div class="on" id="tray"></div></div>
     </section>
 
@@ -342,7 +344,7 @@
     // harder (owner): besides the three pairs of the order there are single items that are NOT in the order. Turning one over wastes a try.
     const others = [...BURGERS.filter((b) => b !== burger), ...SIDES.filter((x) => x !== side), frosty === "choc" ? "vanilla" : "choc"]; for (let i = others.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [others[i], others[j]] = [others[j], others[i]]; }
     deck = [...order, ...order, ...others.slice(0, Math.max(0, Math.min(3, CFG.decoys ?? 3)))]; for (let i = deck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [deck[i], deck[j]] = [deck[j], deck[i]]; }
-    open = []; matched = 0; lock = true; left = CFG.durationMs; tries = Math.max(3, CFG.chances || 3); paintTries(); $("got").textContent = "0"; $("tray").innerHTML = ""; $("clock").classList.remove("low");
+    open = []; matched = 0; got = []; ending = false; lock = true; left = CFG.durationMs; tries = Math.max(3, CFG.chances || 3); paintTries(); $("got").textContent = "0"; $("tray").innerHTML = ""; $("clock").classList.remove("low");
     document.querySelectorAll(".ticket .it").forEach((el, i) => { el.dataset.k = order[i]; el.classList.remove("ok"); el.querySelector("img").src = srcOf(order[i]); });
     $("slots").innerHTML = deck.map((k, i) => `<div class="slot" data-i="${i}"><div class="f back">?</div><div class="f front"><img src="${srcOf(k)}" alt=""><span>${NAMES[k]}</span></div></div>`).join("");
     document.querySelectorAll(".slot").forEach((el) => (el.onclick = () => tapSlot(+el.dataset.i)));
@@ -369,25 +371,30 @@
     if (lock || open.includes(i)) return; const el = slotEl(i); if (el.classList.contains("gone")) return;
     el.classList.add("up"); sfx("flip", .6); open.push(i); if (open.length < 2) return;
     const [a, b] = open; lock = true; tries--; paintTries();
-    if (deck[a] === deck[b]) grab(a, b);
+    if (deck[a] === deck[b]) pairOk(a, b);
     else setTimeout(() => { sfx("error", .4); [a, b].forEach((x) => { const s = slotEl(x); s.classList.add("bad"); setTimeout(() => s.classList.remove("bad", "up"), 380); }); setTimeout(() => { open = []; if (tries <= 0) return finish(false, "tries"); lock = false; }, 560); }, 520);
   }
-  // A matched pair: the claw glides to the item, closes on it, carries it down and drops it on the tray. The clock waits while the claw works, and gives a few seconds back.
-  async function grab(a, b) {
-    running = false; const k = deck[a], rig = $("rig"), el = slotEl(b), box = $("slots"), sx = box.offsetLeft + el.offsetLeft + el.offsetWidth / 2, sy = box.offsetTop + el.offsetTop;
-    sfx("ding", .55); await wait(260);
-    const go = (x, y, ms, ease = "cubic-bezier(.4, 0, .2, 1)") => { rig.style.transition = `translate ${ms}ms ${ease}`; rig.style.translate = `${x}px ${y}px`; return wait(ms + 30); };
-    sfx("clawmove", .6); await go(sx, sy - 190, 440); await go(sx, sy - 105, 320);
-    const held = $("held"); held.src = srcOf(k); held.classList.add("half"); rig.classList.add("grab"); sfx("clawgrab", .7); [a, b].forEach((x) => slotEl(x).classList.add("gone")); await wait(260);
-    const n = matched, tx = 190 + n * 290; held.classList.remove("half"); await go(sx, sy - 330, 820, "cubic-bezier(.3, 0, .3, 1)");   // lifted out of the slot: the whole item comes into view
-    sfx("clawmove", .5); await go(tx, 500, 620); await go(tx, 690, 900, "cubic-bezier(.2, .7, .3, 1)");   // across, then lowered slowly onto the tray
-    rig.classList.remove("grab"); const img = document.createElement("img"); img.src = srcOf(k); $("tray").appendChild(img); sfx("clawdrop", .7);
-    matched++; $("got").textContent = matched; document.querySelector(`.ticket .it[data-k="${k}"]`).classList.add("ok");
+  // A matched pair is ticked off straight away and gives a few seconds back; the clock keeps running. The claw comes once, when the round ends (owner, Nov 2026).
+  let got = [], ending = false;
+  function pairOk(a, b) {
+    const k = deck[a]; sfx("ding", .55); setTimeout(() => [a, b].forEach((x) => slotEl(x).classList.add("gone")), 260);
+    got.push(k); matched++; $("got").textContent = matched; document.querySelector(`.ticket .it[data-k="${k}"]`).classList.add("ok"); open = [];
     if (matched < 3 && CFG.bonusMs > 0) { left = Math.min(CFG.durationMs, left + CFG.bonusMs); const bn = $("bonus"); bn.textContent = `+${Math.round(CFG.bonusMs / 1000)}s`; bn.classList.remove("go"); void bn.offsetWidth; bn.classList.add("go"); paintClock(); }
-    await wait(260); go(474, -420, 420); open = [];
     if (matched >= 3) return finish(true);
     if (tries <= 0) return finish(false, "tries");
-    lock = false; lastT = performance.now(); running = true;
+    setTimeout(() => { if (!ending) lock = false; }, 300);
+  }
+  // The round is over: the claw comes down, takes every matched item in one go (half hidden in the cabinet, in full once lifted out) and lowers them onto the tray.
+  async function collect() {
+    if (!got.length) return; const rig = $("rig"), box = $("slots"), x = 474, y = box.offsetTop + 218, bundle = $("bundle");
+    const go = (gx, gy, ms, ease = "cubic-bezier(.4, 0, .2, 1)") => { rig.style.transition = `translate ${ms}ms ${ease}`; rig.style.translate = `${gx}px ${gy}px`; return wait(ms + 30); };
+    bundle.innerHTML = got.map((k) => `<img src="${srcOf(k)}" alt="">`).join(""); bundle.classList.add("half");
+    sfx("clawmove", .6); await go(x, y - 190, 440); await go(x, y - 105, 320);
+    rig.classList.add("grab"); sfx("clawgrab", .7); await wait(280);
+    bundle.classList.remove("half"); await go(x, y - 330, 820, "cubic-bezier(.3, 0, .3, 1)");
+    sfx("clawmove", .5); await go(x, 690, 1000, "cubic-bezier(.2, .7, .3, 1)");
+    rig.classList.remove("grab"); $("tray").innerHTML = got.map((k) => `<img src="${srcOf(k)}" alt="">`).join(""); sfx("clawdrop", .7);
+    await wait(320); go(474, -420, 420); await wait(520);
   }
   function confetti(n = 150) { const box = document.createElement("div"); box.className = "confetti"; $("fit").appendChild(box); const cols = ["#FFF6E4", "#18A6E8", "#FFE08A", "#F0434C", "#FFFFFF"];
     for (let i = 0; i < n; i++) { const el = document.createElement("i"); el.style.left = Math.random() * 1080 + "px"; el.style.background = cols[i % cols.length]; el.style.setProperty("--dx", (Math.random() * 400 - 200) + "px"); el.style.setProperty("--r", (Math.random() * 1400 - 700) + "deg"); el.style.animationDuration = 2.2 + Math.random() * 2.2 + "s"; el.style.animationDelay = Math.random() * .9 + "s"; box.appendChild(el); }
@@ -396,7 +403,8 @@
   function prizeText(label) { const t = String(label || "").trim(); let m; if ((m = t.match(/^free\s+(.+)$/i))) return { big: /meal/i.test(m[1]) ? "Free meal" : "Free", line: m[1] }; if ((m = t.match(/^(\d+\s*%\s*off)\s+(.+)$/i))) return { big: m[1], line: m[2] }; return { big: "You won", line: t }; }
   let saving = false;
   async function finish(won, why) {
-    if (screen !== "s-play") return; stopClock(); lock = true; const msLeft = Math.max(0, Math.round(left)), took = Math.round(performance.now() - t0);
+    if (screen !== "s-play" || ending) return; ending = true; stopClock(); lock = true; const msLeft = Math.max(0, Math.round(left)), took = Math.round(performance.now() - t0);
+    await collect(); if (screen !== "s-play") return;
     const tray = $(won ? "win-tray" : "lose-tray"), have = [...$("tray").children].map((i) => i.getAttribute("src"));
     tray.innerHTML = order.map((k) => `<img src="${srcOf(k)}" class="${have.includes(srcOf(k)) ? "" : "miss"}" alt="">`).join("");
     const name = guest ? guest.firstName : "";

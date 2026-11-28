@@ -119,6 +119,20 @@
   .step .pic { flex: 1; min-width: 0; height: 210px; display: flex; align-items: center; justify-content: center; gap: 14px; } .step .pic.three img { max-width: 31%; height: 160px; } .step .pic img { max-width: 46%; object-fit: contain; height: 150px; filter: drop-shadow(0 10px 8px rgba(0,0,0,.3)); }
   .step .pic .q { display: grid; grid-template-columns: repeat(3, 88px); gap: 10px; } .step .pic .q { gap: 8px; } .step .pic .q i { height: 58px; font-size: 36px !important; border-radius: 14px; background: linear-gradient(180deg, #B81B24, #7E0F16); color: #FFE08A; display: grid; place-items: center; font: 900 44px/1 Poppins, sans-serif; font-style: normal; }
 
+  /* ---- How to play and the order pop-up: bigger products with a heavy shadow, a red number tab, and the order on a cream slip (owner picked option B, Nov 2026) ---- */
+  [class*="dz-"] .step { overflow: visible; } [class*="dz-"] .step::after { border-radius: 28px; }
+  [class*="dz-"] .step .pic img { height: 196px !important; max-width: 48%; margin-top: -26px; filter: drop-shadow(0 3px 2px rgba(0,0,0,.35)) drop-shadow(0 26px 14px rgba(40,10,0,.55)); } [class*="dz-"] .step .pic.three img { max-width: 33% !important; height: 190px !important; }
+  [class*="dz-"] .step .pic { background: radial-gradient(ellipse 44% 13% at 50% 92%, rgba(50,15,0,.42), transparent 72%); }
+  [class*="dz-"] .ord .row img { height: 280px; max-width: 300px; filter: drop-shadow(0 4px 3px rgba(0,0,0,.4)) drop-shadow(0 30px 18px rgba(0,0,0,.7)); }
+  /* a red tab carries the step number; the pop-up is a cream order slip with the three products on it */
+  .dz-b .step { padding-left: 156px; background: linear-gradient(125deg, #FFFDF6, #F3E6CB); box-shadow: 0 10px 0 #B5A88F, 0 28px 30px rgba(0,0,0,.5); }
+  .dz-b .step > b { position: absolute; left: 0; top: 0; bottom: 0; width: 124px; height: auto; border-radius: 28px 0 0 28px; font-size: 92px; background: linear-gradient(180deg, #F0434C, #A5171F); box-shadow: inset -8px 0 0 #FFE08A; }
+  .dz-b .step > span { width: 250px; font-size: 36px; }
+  .dz-b .ord .row { width: auto; margin: 0 26px; padding: 44px 6px 30px; border-radius: 30px; background: linear-gradient(180deg, #FFFDF6, #EFE2C6); box-shadow: 0 12px 0 #B5A88F, 0 30px 40px rgba(0,0,0,.6); position: relative; }
+  .dz-b .ord .row::before { content: "Your order"; position: absolute; left: 50%; top: -24px; translate: -50% 0; padding: 10px 30px 8px; border-radius: 30px; background: linear-gradient(180deg, #F0434C, #B81B24); color: #fff; font: italic 900 26px/1 Poppins, sans-serif; letter-spacing: .12em; text-transform: uppercase; box-shadow: 0 5px 0 #5A080E; }
+  .dz-b .ord .row div { width: 280px; color: #5A080E; font-size: 24px; } .dz-b .ord .row div + div { box-shadow: -4px 0 0 -1px transparent; border-left: 4px dashed #D9C9A8; } .dz-b .ord .row img { height: 240px; max-width: 262px; filter: drop-shadow(0 3px 2px rgba(0,0,0,.3)) drop-shadow(0 24px 12px rgba(60,20,0,.5)); }
+  .dz-b .ord .h1 { display: none; } .dz-b .ord { gap: 44px; } .dz-b .ord p { font-size: 38px; color: #FFF6E4; }
+
   /* play: timer, order ticket, six slots, the claw and the tray */
   .hud { position: absolute; left: 34px; right: 34px; top: 26px; height: 150px; display: flex; gap: 18px; z-index: 6; }
   .clock { flex: none; width: 210px; border-radius: 24px; background: linear-gradient(180deg, #2A0A0C, #120405); box-shadow: inset 0 0 0 4px #F0434C, 0 8px 0 rgba(0,0,0,.4); display: grid; place-items: center; position: relative; overflow: hidden; }
@@ -199,7 +213,7 @@
 </style>
 </head>
 <body>
-<div id="fit">
+<div id="fit" class="dz-b">
   <header class="hd"><div class="brand"><img class="w" src="/assets/wendys-horiz-white.svg" alt="Wendy's"><i></i><img class="f" src="/assets/wendyfest-logo.svg" alt="Wendy Fest"></div><div class="stp"><b id="stp-n">1</b><span id="stp-l">Welcome</span></div></header>
   <div class="sign"><div class="big">Wendy’s Claw</div><div class="plate"><i></i><b>Grab the order</b><i></i></div></div>
 

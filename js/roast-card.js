@@ -175,5 +175,8 @@
   roastCard.warm = () => { fonts(); art().catch(() => {}); segmenter().catch(() => {}); };
   // Where the guest is in a photo (sizes in the photo's own pixels): the whole person and the head. Used by the LED wall to frame the photo.
   roastCard.focus = async (src) => { const img = await load(src), P = await cutout(img, src); return { w: img.naturalWidth, h: img.naturalHeight, x0: P.x0, x1: P.x1, y0: P.y0, y1: P.y1, hx0: P.hx0, hx1: P.hx1, hy0: P.hy0, hy1: P.hy1 }; };
+  // The guest cut out of their photo as a picture with a see-through background, trimmed to the person, plus where the head is inside it. Used by the LED wall.
+  roastCard.cut = async (src) => { const img = await load(src), P = await cutout(img, src), w = Math.round(P.x1 - P.x0), h = Math.round(P.y1 - P.y0), c = document.createElement("canvas"); c.width = w; c.height = h; c.getContext("2d").drawImage(P.cut, P.x0, P.y0, w, h, 0, 0, w, h);
+    return { url: c.toDataURL("image/png"), w, h, hx0: P.hx0 - P.x0, hx1: P.hx1 - P.x0, hy0: P.hy0 - P.y0, hy1: P.hy1 - P.y0, cutLeft: P.x0 <= 4, cutRight: P.x1 >= img.naturalWidth - 4 }; };
   window.roastCard = roastCard;
 })();

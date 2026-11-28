@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwzc6dy4" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>[DEMO] Wendy Fest · Kiosk</title><link rel="stylesheet" href="../css/brand.css?v=mwzc6dy4"><link rel="stylesheet" href="../css/kiosk.css?v=mwzc6dy4"><link rel="icon" href="../assets/cameo.png"><link rel="manifest" href="../assets/kiosk.webmanifest"><meta name="theme-color" content="#CD2028"><meta name="mobile-web-app-capable" content="yes">
+<!doctype html><html lang="en"><head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwzroi3c" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>[DEMO] Wendy Fest · Kiosk</title><link rel="stylesheet" href="../css/brand.css?v=mwzroi3c"><link rel="stylesheet" href="../css/kiosk.css?v=mwzroi3c"><link rel="icon" href="../assets/cameo.png"><link rel="manifest" href="../assets/kiosk.webmanifest"><meta name="theme-color" content="#CD2028"><meta name="mobile-web-app-capable" content="yes">
 <style>.pick { display: grid; grid-template-columns: 1fr 1fr; gap: 3vmin; width: min(90vw, 120vmin); } .pick a { text-decoration: none; padding: 5vmin; display: grid; gap: 1vmin; } .pick .display { font-size: 7vmin; }</style></head>
 <body class="kiosk on-red freckles"><div class="stage">
 <img class="k-logo" src="../assets/wendys-horiz-white.svg" alt="Wendy's"><img class="k-cameo" src="../assets/cameo.png" alt="">
@@ -13,13 +13,14 @@
   <div class="pick">
     <a class="ticket cream" href="../kiosk/scream.html"><div class="ticket-inner"></div><div class="k-eyebrow" style="color:var(--red)">GERRRRRRR!</div><div class="display" style="color:var(--red)">Scream & Win</div><div style="color:var(--ink)">LED wall / kiosk · needs a microphone</div></a>
     <a class="ticket ink" href="../kiosk/roast.html"><div class="ticket-inner"></div><div class="k-eyebrow" style="color:var(--blue)">Serving the sass</div><div class="display" style="color:var(--blue)">Roast Me</div><div>Kiosk · needs a webcam</div></a>
+    <a class="ticket cream" href="/kiosk/claw"><div class="ticket-inner"></div><div class="k-eyebrow" style="color:var(--red)">Grab the order</div><div class="display" style="color:var(--red)">Wendy’s Claw</div><div style="color:var(--ink)">Kiosk · touch screen only</div></a>
   </div>
   <div class="row" style="gap:2vmin;justify-content:center"><span class="k-eyebrow">Station label</span><input id="station" class="input" style="width:14vmin;text-align:center;font-weight:800" maxlength="12"><a class="btn ghost sm" href="../admin.html" style="color:#fff">Admin</a></div>
   <div class="k-sub" style="opacity:.75;font-size:2vmin">Tip: press <b>F</b> for fullscreen on any kiosk screen · <b>Esc</b> returns to the idle screen</div>
 </div></section>
 <footer class="k-foot"><span class="c"><img src="../assets/cameo.png" alt="">© 2026 Wendy’s Sri Lanka</span><span class="st" id="corner-l">Station A</span><span class="links"><span>Terms</span><span>Privacy</span></span></footer>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwzc6dy4"></script><script src="../js/i18n.js?v=mwzc6dy4"></script><script src="../js/kiosk.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwzroi3c"></script><script src="../js/i18n.js?v=mwzroi3c"></script><script src="../js/kiosk.js"></script>
 <script>
   const pin = document.getElementById("pin"); const st = document.getElementById("station"); st.value = K.station;
   st.oninput = () => localStorage.setItem("wf_station", st.value.trim() || "A");

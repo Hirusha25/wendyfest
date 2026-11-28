@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwzroi3c" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>[DEMO] Wendy's Claw · Wendy Fest</title><link rel="icon" href="../assets/cameo.png"><meta name="theme-color" content="#8E1219"><meta name="mobile-web-app-capable" content="yes">
+<link rel="stylesheet" href="../css/brand.css?v=mwzroi3c">
+<style>
+  /* Wendy's Claw: Grab the Order (game 3). A memory match game inside a claw machine: remember six slots, match the three pairs before the clock runs out,
+     and the claw drops each matched item on the tray. One fixed 1080 x 1920 canvas, scaled to whatever screen it is on (upright kiosk first; a wide
+     screen shows the same canvas centred). All sizes below are canvas pixels. */
+  html, body { height: 100%; margin: 0; overflow: hidden; background: #2A0508; -webkit-user-select: none; user-select: none; touch-action: manipulation; }
+  body { font-family: Poppins, 'Noto Sans Sinhala', 'Noto Sans Tamil', sans-serif; color: #fff; }
+  #fit { position: fixed; left: 50%; top: 50%; width: 1080px; height: 1920px; transform-origin: 0 0; overflow: hidden;
+    background: radial-gradient(120% 70% at 50% 34%, #D8232D 0%, #A9161F 46%, #6E0C12 78%, #3D0609 100%); }
+  #fit::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle, rgba(255,255,255,.07) 2px, transparent 2.6px) 0 0 / 26px 26px; -webkit-mask: linear-gradient(180deg, #000 0, transparent 30%, transparent 70%, #000 100%); mask: linear-gradient(180deg, #000 0, transparent 30%, transparent 70%, #000 100%); pointer-events: none; }
+  .abs { position: absolute; }
+  .sway img, .rig img, .meal img { max-width: none; }   /* brand.css caps pictures at their parent's width, and the claw hangs from a zero-width point */
+  button { font-family: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+
+  /* header and footer: the same Wendy Fest frame as the other two games */
+  .hd { position: absolute; left: 0; right: 0; top: 0; height: 132px; background: linear-gradient(180deg, #23B4F0, #0A7FBC); display: flex; align-items: center; justify-content: space-between; padding: 0 44px; box-shadow: 0 12px 0 #F6F0E6, 0 24px 0 #D8232D, 0 32px 0 #F6F0E6, 0 46px 30px rgba(40,0,6,.5); z-index: 5; }
+  .hd .brand { display: flex; align-items: center; gap: 26px; } .hd .brand img.w { height: 66px; } .hd .brand i { width: 3px; height: 70px; background: rgba(255,255,255,.55); } .hd .brand img.f { height: 104px; }
+  .hd .stp { display: flex; align-items: center; gap: 16px; font: italic 800 24px/1 Poppins, sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+  .hd .stp b { width: 54px; height: 54px; border-radius: 50%; background: #fff; color: #0A7FBC; display: grid; place-items: center; font: 900 28px/1 Poppins, sans-serif; letter-spacing: 0; }
+  .ft { position: absolute; left: 0; right: 0; bottom: 0; height: 56px; background: #1A0507; display: flex; align-items: center; justify-content: space-between; padding: 0 44px; font: 800 17px/1 Poppins, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.75); z-index: 5; }
+  .ft img { height: 30px; vertical-align: middle; margin-right: 12px; }
+
+  /* the machine's sign: WENDY'S CLAW over a "Grab the order" plate */
+  .sign { position: absolute; left: 0; right: 0; top: 208px; text-align: center; z-index: 3; }
+  .sign .big { font: italic 900 118px/.92 Poppins, sans-serif; text-transform: uppercase; letter-spacing: -.02em; color: #FFF6E4; text-shadow: 0 5px 0 #F0D9A8, 0 10px 0 #8E1219, 0 16px 0 #5A080E, 0 30px 30px rgba(0,0,0,.55); }
+  .sign .plate { display: inline-flex; align-items: center; gap: 22px; margin-top: 14px; }
+  .sign .plate b { display: block; padding: 12px 34px 10px; border-radius: 14px; background: linear-gradient(180deg, #FFFBF3, #EADFCB); color: #B81B24; font: italic 900 38px/1 Poppins, sans-serif; letter-spacing: .06em; text-transform: uppercase; box-shadow: 0 6px 0 #B5A88F, 0 14px 20px rgba(0,0,0,.4); }
+  .sign .plate i, .cta-row i { display: block; width: 92px; height: 34px; background: linear-gradient(#18A6E8 0 34%, transparent 34% 66%, #18A6E8 66%); transform: skewX(-18deg); border-radius: 3px; filter: drop-shadow(0 4px 0 rgba(0,0,0,.25)); }
+
+  /* the cabinet: a thick glossy frame around the lit inside of the machine */
+  .cab { position: absolute; left: 44px; top: 452px; width: 992px; height: 1200px; border-radius: 56px; padding: 22px; box-sizing: border-box;
+    background: linear-gradient(160deg, #FF5A63 0%, #D8232D 22%, #8E1219 60%, #5A080E 100%); box-shadow: inset 0 4px 0 rgba(255,255,255,.45), inset 0 -8px 0 rgba(0,0,0,.35), 0 16px 0 #4A070B, 0 40px 60px rgba(0,0,0,.6); z-index: 2; }
+  .cab .in { position: relative; width: 100%; height: 100%; border-radius: 38px; overflow: hidden; background: #3D0609 url("/assets/claw/machine.jpg") center / 100% 100% no-repeat; box-shadow: inset 0 0 0 5px rgba(0,0,0,.45), inset 0 30px 60px rgba(0,0,0,.55), inset 0 -30px 60px rgba(0,0,0,.45); }
+  .cab .in::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(118deg, rgba(255,255,255,.14) 0 14%, transparent 14% 22%, rgba(255,255,255,.07) 22% 27%, transparent 27%); border-radius: 38px; z-index: 30; }   /* the glass */
+  .cab .lamp { position: absolute; top: 22px; width: 120px; height: 46px; border-radius: 50%; background: radial-gradient(closest-side, #FFF3C4, #FFB84D 60%, transparent); filter: blur(2px); animation: lamp 2.4s ease-in-out infinite; z-index: 1; }
+  .cab .lamp:nth-child(2) { animation-delay: .5s; } .cab .lamp:nth-child(3) { animation-delay: 1s; }
+  @keyframes lamp { 0%, 100% { opacity: .75; } 50% { opacity: 1; filter: blur(3px) brightness(1.25); } }
+
+  /* the big button under the cabinet */
+  .cta-row { position: absolute; left: 0; right: 0; top: 1690px; display: flex; align-items: center; justify-content: center; gap: 26px; z-index: 4; }
+  .cta { min-width: 620px; height: 132px; padding: 0 60px; border: 0; border-radius: 70px; background: linear-gradient(180deg, #FFFDF6 0%, #F6ECD8 55%, #E2D2B4 100%); color: #B81B24; font: italic 900 60px/1 Poppins, sans-serif; letter-spacing: .02em; text-transform: uppercase;
+    box-shadow: inset 0 4px 0 #fff, 0 12px 0 #A8956E, 0 14px 0 #5A080E, 0 30px 34px rgba(0,0,0,.5); transition: transform .08s, box-shadow .08s; }
+  .cta:active { transform: translateY(9px); box-shadow: inset 0 4px 0 #fff, 0 3px 0 #A8956E, 0 5px 0 #5A080E, 0 12px 16px rgba(0,0,0,.5); }
+  .cta.pulse { animation: ctaPulse 1.5s ease-in-out infinite; } @keyframes ctaPulse { 50% { scale: 1.045; filter: drop-shadow(0 0 22px rgba(255,236,170,.9)); } }
+  .cta[disabled] { opacity: .45; animation: none; }
+
+  /* screens live inside the cabinet's glass */
+  .screen { position: absolute; inset: 0; display: none; z-index: 2; } .screen.on { display: block; }
+  .h1 { position: absolute; left: 0; right: 0; text-align: center; font: italic 900 84px/.95 Poppins, sans-serif; text-transform: uppercase; color: #FFF6E4; text-shadow: 0 5px 0 #8E1219, 0 10px 0 #5A080E, 0 20px 24px rgba(0,0,0,.5); }
+  .h1 small { display: block; width: 380px; height: 30px; margin: 14px auto 0; background: linear-gradient(#18A6E8 0 36%, transparent 36% 64%, #18A6E8 64%); border-radius: 50% / 100% 100% 0 0; opacity: .95; }
+  .note { position: absolute; left: 70px; right: 70px; text-align: center; padding: 16px 20px; border-radius: 18px; background: linear-gradient(180deg, #FFFBF3, #EADFCB); color: #5A080E; font: 700 30px/1.25 Poppins, sans-serif; box-shadow: 0 6px 0 #B5A88F, 0 14px 20px rgba(0,0,0,.35); }
+  .note.err { color: #B81B24; animation: shk .4s; } @keyframes shk { 20%, 60% { transform: translateX(-14px); } 40%, 80% { transform: translateX(14px); } }
+
+  /* welcome, look A "showcase": the title on a lit marquee plate, the claw over the meal on a glowing stage, the QR on a hanging tag.
+     look B "the grab": the claw holds the burger up in a burst of light, fries and Frosty wait on the tray, the QR sits on a slanted card with the three steps. */
+  .wa .h1 { top: 54px !important; left: 70px !important; right: 70px !important; padding: 26px 20px 20px; border-radius: 30px; font-size: 92px !important; color: #B81B24 !important; text-shadow: 0 4px 0 #F0D9A8 !important; background: linear-gradient(180deg, #FFFDF6, #F1E4C8); box-shadow: inset 0 0 0 6px #FFE08A, 0 10px 0 #A8956E, 0 0 50px rgba(255,214,120,.55), 0 26px 30px rgba(0,0,0,.45); }
+  .wa .h1::before, .wa .h1::after { content: ""; position: absolute; top: 50%; width: 26px; height: 26px; margin-top: -13px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff, #FFB84D 60%, #C97A12); box-shadow: 0 0 18px #FFB84D; animation: lamp 1.2s ease-in-out infinite; } .wa .h1::before { left: 22px; } .wa .h1::after { right: 22px; animation-delay: .6s; }
+  .wa .sway { top: 250px !important; } .wa .sway img { width: 290px !important; left: -145px !important; top: 200px !important; } .wa .sway .cable { height: 250px !important; }
+  .wa .meal { height: 700px !important; } .wa .meal img { animation-duration: 3.6s; }
+  .wa .meal .m4 { left: 70px; bottom: 420px; width: 230px; animation-delay: .9s; } .wa .meal .m5 { right: 70px; bottom: 430px; width: 250px; animation-delay: .2s; }
+  .wa .meal .m6 { left: 20px; bottom: 210px; width: 290px; animation-delay: .5s; z-index: 1; } .wa .meal .m7 { right: 20px; bottom: 210px; width: 300px; animation-delay: 1.1s; z-index: 1; }
+  .wa .meal .m1 { left: 250px !important; bottom: 250px !important; width: 170px !important; z-index: 1; } .wa .meal .m9 { right: 250px; bottom: 250px; width: 150px; z-index: 1; animation-delay: .8s; }
+  .wa .meal .m2 { left: 274px !important; width: 400px !important; z-index: 3 !important; bottom: -6px !important; } .wa .meal .m3 { right: 60px !important; width: 190px !important; z-index: 2; bottom: 0 !important; } .wa .meal .m8 { left: 40px; bottom: 0; width: 260px; z-index: 2; animation-delay: .4s; }
+  .wa .stage { position: absolute; left: 60px; right: 60px; bottom: 26px; height: 150px; border-radius: 50%; background: radial-gradient(closest-side, #FFE9B0 0%, #FFB84D 35%, rgba(216,35,45,.5) 70%, transparent 100%); filter: blur(4px); animation: lamp 2.6s ease-in-out infinite; }
+  .wa .meal { bottom: 70px !important; } .wa .qr { top: 322px !important; right: 34px !important; width: 132px !important; rotate: 5deg; } .wa .qr::before { content: ""; position: absolute; left: 50%; top: -74px; width: 6px; height: 78px; margin-left: -3px; background: #C9BBA4; }
+  .wa .win { position: absolute; left: 30px; top: 326px; width: 262px; padding: 18px 12px 14px; border-radius: 18px; rotate: -5deg; text-align: center; background: linear-gradient(180deg, #2BB6F2, #0C8FD3); color: #fff; font: italic 900 28px/1.1 Poppins, sans-serif; text-transform: uppercase; box-shadow: 0 8px 0 #06527E, 0 18px 22px rgba(0,0,0,.4); z-index: 4; }
+  .wb .h1 { top: 50px !important; font-size: 112px !important; } .wb .h1 em { display: block; font-style: italic; font-size: .5em; letter-spacing: .12em; color: #FFE08A; text-shadow: 0 4px 0 #5A080E; margin-bottom: 8px; }
+  .wb .halo { position: absolute; left: 50%; top: 610px; width: 1100px; height: 1100px; translate: -50% -50%; background: repeating-conic-gradient(rgba(255,214,140,.26) 0 7deg, transparent 7deg 14deg); -webkit-mask: radial-gradient(circle, #000 0, transparent 60%); mask: radial-gradient(circle, #000 0, transparent 60%); animation: turn 26s linear infinite; }
+  .wb .sway { top: 250px !important; animation-duration: 4.6s !important; } .wb .sway img.b { position: absolute; left: -200px !important; top: 330px !important; width: 400px !important; filter: drop-shadow(0 0 40px rgba(255,200,110,.9)) drop-shadow(0 24px 18px rgba(0,0,0,.5)); }
+  .wb .meal { height: 300px !important; bottom: 150px !important; } .wb .meal .m2 { display: none; } .wb .meal .m1 { left: 130px !important; width: 230px !important; } .wb .meal .m3 { right: 140px !important; width: 210px !important; }
+  .wb .trayb { position: absolute; left: 110px; right: 110px; bottom: 120px; filter: drop-shadow(0 16px 14px rgba(0,0,0,.55)); } .wb .trayb img { width: 100%; display: block; }
+  .wb .qr { top: auto !important; bottom: 24px; right: 30px !important; width: 124px !important; rotate: 4deg; }
+  .wb .how { position: absolute; left: 30px; right: 190px; bottom: 30px; height: 96px; border-radius: 22px; background: rgba(26,5,7,.82); box-shadow: inset 0 0 0 3px rgba(255,224,138,.8); display: flex; align-items: center; justify-content: space-around; font: italic 800 26px/1 Poppins, sans-serif; text-transform: uppercase; letter-spacing: .04em; color: #FFF6E4; z-index: 4; } .wb .how b { color: #FFE08A; margin-right: 8px; }
+  .wa .only-b, .wb .only-a { display: none !important; }
+  /* welcome D (owner's finished picture): the whole cabinet scene is one image, with our real QR laid over the sample one */
+  .wa .only-d, .wb .only-d, .wd > :not(.only-d) { display: none !important; }
+  .wd .pic { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .wd .qrd { position: absolute; left: 691px; top: 300px; width: 186px; height: 176px; box-sizing: border-box; padding: 6px; background: #FBEFDD; border-radius: 10px; } .wd .qrd img { height: 100%; margin: 0 auto; display: block; mix-blend-mode: multiply; }
+  /* welcome: the claw sways over the meal */
+  #s-idle .meal { position: absolute; left: 0; right: 0; bottom: 60px; height: 520px; }
+  #s-idle .meal img { position: absolute; bottom: 0; filter: drop-shadow(0 26px 22px rgba(0,0,0,.55)); animation: bob 3.2s ease-in-out infinite; }
+  #s-idle .meal .m1 { left: 40px; width: 300px; animation-delay: .3s; } #s-idle .meal .m2 { left: 250px; width: 470px; z-index: 2; bottom: -8px; } #s-idle .meal .m3 { right: 40px; width: 270px; animation-delay: .7s; }
+  @keyframes bob { 50% { translate: 0 -12px; } }
+  #s-idle .glow { position: absolute; left: 140px; right: 140px; bottom: 20px; height: 160px; background: radial-gradient(closest-side, rgba(255,190,90,.55), transparent); filter: blur(10px); }
+  #s-idle .sway { position: absolute; left: 50%; top: 250px; width: 0; height: 0; transform-origin: 50% 0; animation: sway 3.6s ease-in-out infinite; z-index: 3; } @keyframes sway { 0%, 100% { rotate: -5deg; } 50% { rotate: 5deg; } }
+  #s-idle .sway .cable { position: absolute; left: -7px; top: -40px; width: 14px; height: 290px; background: linear-gradient(90deg, #6B7379, #F2F5F7 45%, #7C858D); }
+  #s-idle .sway img { position: absolute; left: -190px; top: 236px; width: 380px; filter: drop-shadow(0 20px 16px rgba(0,0,0,.5)); }
+  #s-idle .h1 { top: 64px; font-size: 100px; z-index: 5; }
+  #s-idle .qr { position: absolute; right: 30px; top: 330px; width: 150px; padding: 10px 10px 6px; border-radius: 16px; background: #FFFBF3; color: #5A080E; text-align: center; font: 800 13px/1.2 Poppins, sans-serif; letter-spacing: .08em; text-transform: uppercase; box-shadow: 0 6px 0 #B5A88F, 0 12px 18px rgba(0,0,0,.4); z-index: 4; } #s-idle .qr img { width: 100%; display: block; margin-bottom: 4px; }
+
+  /* code */
+  #s-code .h1 { top: 92px; } #s-code .note { top: 268px; }
+  .boxes { position: absolute; left: 0; right: 0; top: 384px; display: flex; justify-content: center; align-items: center; gap: 16px; }
+  .boxes b { width: 118px; height: 138px; border-radius: 20px; display: grid; place-items: center; font: 900 78px/1 Poppins, sans-serif; color: #1E1B1B; background: linear-gradient(180deg, #FFFDF6, #EADFCB); box-shadow: inset 0 0 0 4px #D8232D, 0 8px 0 #5A080E, 0 16px 20px rgba(0,0,0,.4); }
+  .boxes b.e { background: rgba(60,0,8,.55); box-shadow: inset 0 0 0 4px rgba(255,255,255,.55), 0 8px 0 rgba(0,0,0,.3); } .boxes b.a { box-shadow: inset 0 0 0 5px #FFE08A, 0 0 26px rgba(255,224,138,.8), 0 8px 0 rgba(0,0,0,.3); }
+  .boxes span { font: 900 60px/1 Poppins, sans-serif; color: #FFF6E4; } .boxes.err { animation: shk .4s; }
+  .pad { position: absolute; left: 70px; right: 70px; top: 556px; display: grid; gap: 20px 18px; }
+  .pad[data-mode="num"] { grid-template-columns: repeat(3, 1fr); } .pad[data-mode="let"] { grid-template-columns: repeat(6, 1fr); }
+  .pad button { height: 100px; border: 0; border-radius: 20px; color: #fff; font: 900 50px/1 Poppins, sans-serif; background: linear-gradient(180deg, #33BDF5 0%, #0C8FD3 100%); box-shadow: inset 0 3px 0 rgba(255,255,255,.55), 0 0 0 4px #F0434C, 0 8px 0 4px #5A080E, 0 16px 16px rgba(0,0,0,.35); }   /* blue keys with a red border line (owner, Nov 2026) */
+  .pad button:active { transform: translateY(6px); box-shadow: inset 0 3px 0 rgba(255,255,255,.55), 0 0 0 4px #F0434C, 0 2px 0 4px #5A080E; }
+  .pad[data-mode="num"] button.l, .pad[data-mode="let"] button.n { display: none; } .pad[data-mode="num"] button.z { grid-column: 2; } .pad[data-mode="let"] button { height: 88px; font-size: 42px; }
+  .minis { position: absolute; left: 70px; right: 70px; bottom: 34px; display: flex; justify-content: space-between; }
+  .mini { height: 78px; padding: 0 36px; border-radius: 40px; border: 4px solid rgba(255,255,255,.85); background: rgba(40,0,6,.55); color: #fff; font: italic 800 28px/1 Poppins, sans-serif; text-transform: uppercase; letter-spacing: .04em; }
+
+  /* how to play */
+  #s-how .h1 { top: 92px; }
+  .steps { position: absolute; left: 60px; right: 60px; top: 290px; display: grid; gap: 24px; }
+  .step { height: 250px; position: relative; overflow: hidden; border-radius: 28px; background: linear-gradient(125deg, #FFFDF6 0%, #F6ECD8 55%, #EBD9B8 100%); box-shadow: 0 10px 0 #B5A88F, 0 22px 26px rgba(0,0,0,.4); display: flex; align-items: center; gap: 26px; padding: 0 34px; color: #5A080E; animation: stepIn .5s cubic-bezier(.2, 1.3, .4, 1) both; }
+  .step:nth-child(2) { animation-delay: .15s; } .step:nth-child(3) { animation-delay: .3s; } @keyframes stepIn { from { translate: 0 60px; opacity: 0; } }
+  .step::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle, rgba(216,35,45,.22) 3px, transparent 3.6px) 0 0 / 22px 22px; -webkit-mask: radial-gradient(70% 120% at 100% 100%, #000 0, transparent 70%); mask: radial-gradient(70% 120% at 100% 100%, #000 0, transparent 70%); }
+  .step > * { position: relative; z-index: 1; }
+  .step > b { flex: none; width: 92px; height: 92px; border-radius: 22px; background: linear-gradient(180deg, #F0434C, #B81B24); color: #fff; display: grid; place-items: center; font: 900 58px/1 Poppins, sans-serif; box-shadow: 0 6px 0 #5A080E; }
+  .step > span { flex: none; width: 230px; font: 800 38px/1.12 Poppins, sans-serif; }
+  .step .pic { flex: 1; min-width: 0; height: 210px; display: flex; align-items: center; justify-content: center; gap: 14px; } .step .pic.three img { max-width: 31%; height: 160px; } .step .pic img { max-width: 46%; object-fit: contain; height: 150px; filter: drop-shadow(0 10px 8px rgba(0,0,0,.3)); }
+  .step .pic .q { display: grid; grid-template-columns: repeat(3, 88px); gap: 10px; } .step .pic .q { gap: 8px; } .step .pic .q i { height: 58px; font-size: 36px !important; border-radius: 14px; background: linear-gradient(180deg, #B81B24, #7E0F16); color: #FFE08A; display: grid; place-items: center; font: 900 44px/1 Poppins, sans-serif; font-style: normal; }
+
+  /* play: timer, order ticket, six slots, the claw and the tray */
+  .hud { position: absolute; left: 34px; right: 34px; top: 26px; height: 150px; display: flex; gap: 18px; z-index: 6; }
+  .clock { flex: none; width: 210px; border-radius: 24px; background: linear-gradient(180deg, #2A0A0C, #120405); box-shadow: inset 0 0 0 4px #F0434C, 0 8px 0 rgba(0,0,0,.4); display: grid; place-items: center; position: relative; overflow: hidden; }
+  .clock b { font: italic 900 78px/1 Poppins, sans-serif; color: #FFF6E4; text-shadow: 0 4px 0 #8E1219; position: relative; z-index: 1; } .clock b small { font-size: .5em; }
+  .clock i { position: absolute; left: 0; bottom: 0; height: 12px; width: 100%; background: linear-gradient(90deg, #FFE08A, #F6B93B); transform-origin: 0 50%; }
+  .clock.low { animation: lowPulse .5s ease-in-out infinite; } .clock.low b { color: #FFE08A; } @keyframes lowPulse { 50% { box-shadow: inset 0 0 0 4px #FFE08A, 0 0 30px rgba(255,224,138,.9), 0 8px 0 rgba(0,0,0,.4); } }
+  .bonus { position: absolute; left: 150px; top: 60px; font: italic 900 60px/1 Poppins, sans-serif; color: #7CFF9A; text-shadow: 0 4px 0 #0B4A1F; opacity: 0; pointer-events: none; z-index: 8; } .bonus.go { animation: bonus 1.1s ease-out both; } @keyframes bonus { 0% { opacity: 0; translate: 0 20px; scale: .6; } 20% { opacity: 1; scale: 1.2; } 100% { opacity: 0; translate: 0 -90px; scale: 1; } }
+  .tries { flex: none; width: 150px; border-radius: 24px; background: linear-gradient(180deg, #2A0A0C, #120405); box-shadow: inset 0 0 0 4px #F0434C, 0 8px 0 rgba(0,0,0,.4); display: grid; place-items: center; align-content: center; gap: 10px; }
+  .tries small { font: 800 18px/1 Poppins, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #FFE08A; } .tries div { display: flex; gap: 8px; }
+  .tries i { width: 30px; height: 30px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #FFF6E4, #FFB84D 55%, #C97A12); box-shadow: 0 0 12px rgba(255,184,77,.8); transition: all .3s; } .tries i.off { background: #3D0609; box-shadow: inset 0 0 0 3px rgba(255,255,255,.2); scale: .8; }
+  .ticket { flex: 1; border-radius: 24px; background: linear-gradient(180deg, #FFFBF3, #EADFCB); box-shadow: 0 8px 0 #B5A88F; display: flex; align-items: center; padding: 0 22px; gap: 10px; color: #5A080E; }
+  .ticket .it { flex: 1; height: 124px; position: relative; display: grid; place-items: center; } .ticket .it img { max-height: 96px; max-width: 120px; filter: grayscale(1) opacity(.45); transition: filter .3s, scale .3s; }
+  .ticket .it.ok img { filter: none; scale: 1.12; } .ticket .it::after { content: ""; position: absolute; right: 6px; bottom: 4px; width: 38px; height: 38px; border-radius: 10px; background: #fff; box-shadow: inset 0 0 0 4px #B5A88F; }
+  .ticket .it.ok::after { background: #1E9B4B url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5 9-10'/%3E%3C/svg%3E") center / 70% no-repeat; box-shadow: none; animation: tick .4s cubic-bezier(.2, 1.6, .4, 1); } @keyframes tick { from { scale: 0; } }
+  .ticket .n { flex: none; width: 124px; text-align: center; border-left: 4px dashed #C9BBA4; padding-left: 10px; font: 900 46px/.95 Poppins, sans-serif; } .ticket .n small { display: block; font: 800 20px/1 Poppins, sans-serif; letter-spacing: .1em; margin-top: 6px; }
+  .mem { position: absolute; left: 34px; right: 34px; top: 26px; height: 150px; box-sizing: border-box; padding: 0 30px; display: flex; align-items: center; justify-content: space-between; border-radius: 24px; background: linear-gradient(180deg, #2A0A0C, #120405); box-shadow: inset 0 0 0 4px #F0434C, 0 8px 0 rgba(0,0,0,.4); z-index: 7; }
+  .mem .h1 { position: static; flex: 1; min-width: 0; font-size: 48px; text-align: left; white-space: nowrap; text-shadow: 0 4px 0 #8E1219; }
+  .mem .cnt, .ord .cnt { flex: none; display: grid; place-items: center; width: 170px; height: 104px; border-radius: 54px; background: linear-gradient(180deg, #FFFBF3, #EADFCB); color: #B81B24; font: 900 78px/1 Poppins, sans-serif; box-shadow: 0 8px 0 #B5A88F; } .mem .cnt.pop { animation: tick .35s cubic-bezier(.2, 1.6, .4, 1); }
+  .ord { position: absolute; inset: 0; z-index: 25; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 34px; background: rgba(26,5,7,.93); transform-origin: 62% 9%; transition: transform .6s cubic-bezier(.5, 0, .3, 1), opacity .6s; }
+  .ord.on { display: flex; } .ord.away { transform: scale(.22); opacity: 0; }
+  .ord .h1 { position: static; font-size: 86px; } .ord p { margin: 0; font: 700 34px/1.2 Poppins, sans-serif; color: #FFE08A; text-align: center; }
+  .ord .row { display: flex; align-items: flex-end; justify-content: center; gap: 14px; width: 100%; }
+  .ord .row div { width: 296px; text-align: center; font: 800 26px/1.1 Poppins, sans-serif; text-transform: uppercase; color: #FFF6E4; animation: land .5s cubic-bezier(.3, 1.6, .5, 1) both; } .ord .row div:nth-child(2) { animation-delay: .15s; } .ord .row div:nth-child(3) { animation-delay: .3s; }
+  .ord .row img { display: block; height: 250px; max-width: 286px; object-fit: contain; margin: 0 auto 18px; filter: drop-shadow(0 18px 14px rgba(0,0,0,.6)); }
+  .slots { position: absolute; left: 40px; right: 40px; top: 208px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; perspective: 1600px; z-index: 3; }
+  .slot { height: 200px; position: relative; transform-style: preserve-3d; transition: transform .45s cubic-bezier(.3, 1.2, .5, 1); cursor: pointer; }
+  .slot.up { transform: rotateY(180deg); } .slot.bad { animation: shk .4s; }
+  .slot .f { position: absolute; inset: 0; border-radius: 26px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: grid; place-items: center; }
+  .slot .back { background: linear-gradient(160deg, #C81C25, #7E0F16); box-shadow: inset 0 0 0 5px rgba(255,214,200,.75), inset 0 14px 20px rgba(255,255,255,.14), 0 10px 0 #3D0609, 0 20px 22px rgba(0,0,0,.45); font: 900 110px/1 Poppins, sans-serif; color: #FFF6E4; text-shadow: 0 6px 0 #5A080E; }
+  .slot .front { transform: rotateY(180deg); background: radial-gradient(circle at 50% 40%, #5A1216, #2A0608); box-shadow: inset 0 0 0 5px #FFB84D, inset 0 0 40px rgba(255,150,60,.5), 0 0 30px rgba(255,150,60,.55), 0 10px 0 #3D0609; }
+  .slot .front span { position: absolute; left: 6px; right: 6px; bottom: 12px; text-align: center; font: 800 17px/1.05 Poppins, sans-serif; text-transform: uppercase; letter-spacing: .01em; color: #FFF6E4; text-shadow: 0 2px 0 #3D0609; z-index: 2; }
+  .slot.gone .front span { opacity: .45; }
+  .slot .front img { height: 132px; width: auto; max-width: 230px; object-fit: contain; position: relative; z-index: 1; margin-top: -30px; filter: drop-shadow(0 14px 10px rgba(0,0,0,.55)); }
+  .slot .front::before { content: ""; position: absolute; left: 22%; right: 22%; bottom: 38px; height: 26px; border-radius: 50%; background: radial-gradient(closest-side, rgba(0,0,0,.7), transparent); }   /* the item stands on the slot floor */
+  .slot.gone { cursor: default; } .slot.gone .front { box-shadow: inset 0 0 0 5px rgba(255,255,255,.25), 0 10px 0 #3D0609; background: rgba(20,0,2,.55); } .slot.gone .front img { visibility: hidden; }
+  .slot.gone .front::after { content: ""; width: 86px; height: 86px; border-radius: 50%; background: #1E9B4B url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5 9-10'/%3E%3C/svg%3E") center / 60% no-repeat; position: absolute; opacity: .9; }
+  .rig { position: absolute; left: 0; top: 0; width: 0; height: 0; z-index: 20; pointer-events: none; transition: translate .42s cubic-bezier(.4, 0, .2, 1); translate: 474px -420px; }
+  .rig .cable { position: absolute; left: -6px; bottom: 0; width: 12px; height: 1400px; background: linear-gradient(90deg, #6B7379, #F2F5F7 45%, #7C858D); }
+  .rig img.c { position: absolute; left: -140px; top: -20px; width: 280px; filter: drop-shadow(0 16px 12px rgba(0,0,0,.5)); } .rig img.c.shut, .rig.grab img.c.open { display: none; } .rig.grab img.c.shut { display: block; }
+  .rig img.held { position: absolute; left: -125px; top: 172px; width: 250px; height: 230px; object-fit: contain; object-position: 50% 0; display: none; z-index: -1; filter: drop-shadow(0 12px 10px rgba(0,0,0,.5)); transition: clip-path .8s ease-out; clip-path: inset(0 0 0 0); } .rig.grab img.held { display: block; }
+  .rig img.held.half { clip-path: inset(0 0 50% 0); }   /* in the slot only the top half of the product shows; it comes fully into view as the claw pulls it out (owner) */
+  .trayrow { position: absolute; left: 60px; right: 60px; bottom: 18px; height: 250px; z-index: 4; }
+  .trayrow > img.t { position: absolute; left: 0; bottom: 0; width: 100%; filter: drop-shadow(0 16px 14px rgba(0,0,0,.55)); }
+  .trayrow .on { position: absolute; left: 90px; right: 90px; bottom: 74px; height: 200px; display: flex; justify-content: space-around; align-items: flex-end; }
+  .trayrow .on img { height: 176px; max-width: 220px; object-fit: contain; filter: drop-shadow(0 10px 8px rgba(0,0,0,.45)); animation: land .45s cubic-bezier(.3, 1.6, .5, 1); } @keyframes land { from { translate: 0 -80px; opacity: 0; } }
+  .trayrow .on img.miss { filter: grayscale(1) brightness(.75) opacity(.6); }
+
+  /* result */
+  .rays { position: absolute; left: 50%; top: 56%; width: 1500px; height: 1500px; translate: -50% -50%; background: repeating-conic-gradient(rgba(255,214,140,.2) 0 8deg, transparent 8deg 16deg); -webkit-mask: radial-gradient(circle, #000 0, transparent 62%); mask: radial-gradient(circle, #000 0, transparent 62%); animation: turn 30s linear infinite; } @keyframes turn { to { rotate: 360deg; } }
+  .res .h1 { top: 64px; font-size: 120px; } .res .h1 small { width: 480px; }
+  .burst { position: absolute; left: 50%; top: 150px; width: 0; height: 0; } .burst i { position: absolute; left: -300px; top: -300px; width: 600px; height: 600px; border-radius: 50%; border: 14px solid #FFE08A; box-sizing: border-box; opacity: 0; }
+  #s-win.on .burst i { animation: ring 1.6s ease-out infinite; } #s-win.on .burst i:nth-child(2) { animation-delay: .5s; border-color: #FFF6E4; } #s-win.on .burst i:nth-child(3) { animation-delay: 1s; border-color: #18A6E8; }
+  @keyframes ring { 0% { scale: .2; opacity: .95; } 100% { scale: 1.7; opacity: 0; } }
+  .ribbon { position: absolute; left: 50%; top: 392px; translate: -50% 0; rotate: -3deg; padding: 14px 54px 10px; background: linear-gradient(180deg, #F0434C, #B81B24); color: #FFF6E4; font: italic 900 78px/1 Poppins, sans-serif; text-transform: uppercase; white-space: nowrap; box-shadow: 0 10px 0 #5A080E, 0 22px 26px rgba(0,0,0,.45); clip-path: polygon(0 0, 100% 0, 96% 50%, 100% 100%, 0 100%, 4% 50%); animation: tick .5s cubic-bezier(.2, 1.6, .4, 1) .45s both; z-index: 3; }
+  .coupon { position: absolute; left: 60px; right: 60px; top: 524px; height: 250px; display: flex; filter: drop-shadow(0 10px 0 #A8956E) drop-shadow(0 24px 22px rgba(0,0,0,.45)); animation: tick .55s cubic-bezier(.2, 1.5, .4, 1) .7s both; z-index: 3; }
+  .coupon .tx { flex: 1; min-width: 0; padding: 22px 26px 0 34px; border-radius: 24px 0 0 24px; background: linear-gradient(125deg, #FFFDF6, #F1E4C8); color: #5A080E; position: relative;
+    -webkit-mask: radial-gradient(circle 20px at 100% 0, transparent 98%, #000) top / 100% 51% no-repeat, radial-gradient(circle 20px at 100% 100%, transparent 98%, #000) bottom / 100% 51% no-repeat; mask: radial-gradient(circle 20px at 100% 0, transparent 98%, #000) top / 100% 51% no-repeat, radial-gradient(circle 20px at 100% 100%, transparent 98%, #000) bottom / 100% 51% no-repeat; }
+  .coupon .tx::after { content: ""; position: absolute; right: 0; top: 22px; bottom: 22px; border-right: 5px dashed #C9BBA4; }
+  .coupon small { display: block; font: 800 19px/1 Poppins, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: #B81B24; } .coupon .pz { font: 800 26px/1.1 Poppins, sans-serif; text-transform: uppercase; margin: 8px 0 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .coupon .lb { font: 800 16px/1 Poppins, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #8A7A5C; margin-top: 8px; }
+  .coupon .cd { display: inline-block; margin-top: 6px; padding: 10px 24px 7px; border-radius: 12px; background: linear-gradient(180deg, #F0434C, #B81B24); color: #fff; font: 900 50px/1 Poppins, sans-serif; letter-spacing: .08em; box-shadow: 0 5px 0 #5A080E; } .coupon .nt { font: 600 17px/1.2 Poppins, sans-serif; margin-top: 12px; color: #6B5B44; }
+  .coupon .stub { flex: none; width: 236px; border-radius: 0 24px 24px 0; background: linear-gradient(180deg, #F0434C, #B81B24); display: grid; place-items: center; align-content: center; gap: 10px; color: #fff; font: 800 17px/1 Poppins, sans-serif; letter-spacing: .12em; text-transform: uppercase;
+    -webkit-mask: radial-gradient(circle 20px at 0 0, transparent 98%, #000) top / 100% 51% no-repeat, radial-gradient(circle 20px at 0 100%, transparent 98%, #000) bottom / 100% 51% no-repeat; mask: radial-gradient(circle 20px at 0 0, transparent 98%, #000) top / 100% 51% no-repeat, radial-gradient(circle 20px at 0 100%, transparent 98%, #000) bottom / 100% 51% no-repeat; }
+  .coupon .stub img { width: 168px; height: 168px; padding: 8px; background: #fff; border-radius: 14px; box-sizing: border-box; }
+  .res .chip { position: absolute; left: 50%; top: 296px; translate: -50% 0; padding: 16px 44px 12px; border-radius: 20px; background: linear-gradient(180deg, #FFFBF3, #EADFCB); color: #B81B24; font: italic 900 60px/1 Poppins, sans-serif; white-space: nowrap; box-shadow: 0 8px 0 #B5A88F, 0 18px 24px rgba(0,0,0,.4); animation: tick .5s cubic-bezier(.2, 1.6, .4, 1) .3s both; }
+  .res .sub { position: absolute; left: 60px; right: 60px; top: 424px; text-align: center; font: 700 34px/1.25 Poppins, sans-serif; color: #FFF6E4; text-shadow: 0 3px 0 rgba(60,0,8,.6); }
+  .res .trayrow { bottom: 120px; height: 420px; left: 30px; right: 30px; } .res .trayrow .on { bottom: 108px; height: 330px; left: 110px; right: 110px; } .res .trayrow .on { justify-content: center; } .res .trayrow .on img { height: 330px; max-width: 380px; margin: 0 -22px; }
+  #s-win .sub { top: 800px; font-size: 26px; } #s-win .chip { top: 280px; font-size: 44px; padding: 12px 34px 9px; } #s-win .trayrow { bottom: 24px; height: 280px; left: 90px; right: 90px; } #s-win .trayrow .on { bottom: 70px; height: 210px; } #s-win .trayrow .on img { height: 215px; max-width: 250px; margin: 0 -14px; }
+  #s-win .trayrow .on img { animation: land .5s cubic-bezier(.3, 1.6, .5, 1) both, bob 2.6s ease-in-out .6s infinite; } #s-win .trayrow .on img:nth-child(2) { animation-delay: .15s, .9s; } #s-win .trayrow .on img:nth-child(3) { animation-delay: .3s, 1.2s; }
+  .confetti { position: absolute; inset: 0; pointer-events: none; z-index: 40; overflow: hidden; } .confetti i { position: absolute; top: -40px; width: 18px; height: 30px; border-radius: 3px; animation: fall linear both; } @keyframes fall { to { translate: var(--dx) 2100px; rotate: var(--r); } }
+
+  /* staff PIN */
+  #s-pin { z-index: 60; background: rgba(26,5,7,.96); } #s-pin.on { display: grid; place-items: center; }
+  #s-pin .box { display: grid; gap: 30px; justify-items: center; } #s-pin .t { font: italic 900 70px/1 Poppins, sans-serif; text-transform: uppercase; }
+  #s-pin input { width: 520px; height: 120px; border-radius: 24px; border: 0; text-align: center; font: 900 64px/1 Poppins, sans-serif; letter-spacing: .3em; }
+</style>
+</head>
+<body>
+<div id="fit">
+  <header class="hd"><div class="brand"><img class="w" src="../assets/wendys-horiz-white.svg" alt="Wendy's"><i></i><img class="f" src="../assets/wendyfest-logo.svg" alt="Wendy Fest"></div><div class="stp"><b id="stp-n">1</b><span id="stp-l">Welcome</span></div></header>
+  <div class="sign"><div class="big">Wendy’s Claw</div><div class="plate"><i></i><b>Grab the order</b><i></i></div></div>
+
+  <div class="cab"><div class="in">
+    <i class="lamp" style="left:110px"></i><i class="lamp" style="left:414px"></i><i class="lamp" style="left:718px"></i>
+
+    <!-- 1 welcome -->
+    <section class="screen on wd" id="s-idle">
+      <img class="pic only-d" src="../assets/claw/welcome.jpg" alt=""><div class="qrd only-d"><img id="qr2" alt=""></div><div class="halo only-b"></div>
+      <div class="qr"><img id="qr" alt="">Scan to register</div>
+      <div class="win only-a">Match all 3.<br>Win a coupon!</div>
+      <div class="h1"><em class="only-b">Can you</em>Grab<br class="only-b"> the order<span class="only-b">?</span></div>
+      <div class="sway"><div class="cable"></div><img class="only-a" src="../assets/claw/claw-open.webp" alt=""><img class="only-b" src="../assets/claw/claw-closed.webp" alt=""><img class="b only-b" src="../assets/claw/burger.webp" alt=""></div>
+      <div class="glow only-b"></div><div class="stage only-a"></div>
+      <div class="trayb only-b"><img src="../assets/claw/tray.webp" alt=""></div>
+      <div class="meal"><img class="m4 only-a" src="../assets/claw/bacon.webp" alt=""><img class="m5 only-a" src="../assets/claw/grilled.webp" alt=""><img class="m6 only-a" src="../assets/claw/beef.webp" alt=""><img class="m7 only-a" src="../assets/claw/crispy.webp" alt=""><img class="m9 only-a" src="../assets/claw/frosty-vanilla.webp" alt=""><img class="m1" src="../assets/claw/fries.webp" alt=""><img class="m2" src="../assets/claw/burger.webp" alt=""><img class="m3" src="../assets/claw/frosty-choc.webp" alt=""><img class="m8 only-a" src="../assets/claw/bites.webp" alt=""></div>
+      <div class="how only-b"><span><b>1</b>Remember</span><span><b>2</b>Match</span><span><b>3</b>Win a coupon</span></div>
+    </section>
+
+    <!-- 2 and 3 code, with the error shown on the same screen -->
+    <section class="screen" id="s-code">
+      <div class="h1">Enter your code<small></small></div>
+      <div class="note" id="code-msg">First, your 3 numbers.</div>
+      <div class="boxes" id="boxes"></div>
+      <div class="pad" id="pad" data-mode="num"></div>
+      <div class="minis"><button class="mini" id="code-back">← Back</button><button class="mini" id="code-del">⌫ Delete</button></div>
+    </section>
+
+    <!-- 4 how to play -->
+    <section class="screen" id="s-how">
+      <div class="h1">How to play<small></small></div>
+      <div class="steps">
+        <div class="step"><b>1</b><span>See your order</span><div class="pic three"><img src="../assets/claw/burger.webp" alt=""><img src="../assets/claw/fries.webp" alt=""><img src="../assets/claw/frosty-vanilla.webp" alt=""></div></div>
+        <div class="step"><b>2</b><span>Remember where it is</span><div class="pic"><div class="q"><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i></div></div></div>
+        <div class="step"><b>3</b><span>Match only your order</span><div class="pic"><img src="../assets/claw/burger.webp" alt=""><img src="../assets/claw/burger.webp" alt=""></div></div>
+      </div>
+    </section>
+
+    <!-- 5 memorise and 6 play share one screen -->
+    <section class="screen" id="s-play">
+      <div class="ord" id="ord"><div class="h1">This is your order</div><div class="row" id="ord-row"></div><p>Find its pairs. Leave the rest.</p><div class="cnt" id="ord-n">5</div></div>
+      <div class="mem" id="mem"><div class="h1">Remember the slots</div><div class="cnt" id="mem-n">3</div></div>
+      <div class="hud" id="hud"><div class="clock" id="clock"><b><span id="secs">13</span><small>s</small></b><i id="bar"></i></div><div class="tries"><small>Tries</small><div id="tries"></div></div><div class="ticket"><div class="it" data-k="burger"><img alt=""></div><div class="it" data-k="fries"><img alt=""></div><div class="it" data-k="frosty"><img alt=""></div><div class="n"><span id="got">0</span>/3<small>Matched</small></div></div></div>
+      <div class="bonus" id="bonus">+2s</div>
+      <div class="slots" id="slots"></div>
+      <div class="rig" id="rig"><div class="cable"></div><img class="c open" src="../assets/claw/claw-open.webp" alt=""><img class="c shut" src="../assets/claw/claw-closed.webp" alt=""><img class="held" id="held" alt=""></div>
+      <div class="trayrow"><img class="t" src="../assets/claw/tray.webp" alt=""><div class="on" id="tray"></div></div>
+    </section>
+
+    <!-- 7 order up -->
+    <section class="screen res" id="s-win"><div class="rays"></div><div class="burst"><i></i><i></i><i></i></div>
+      <div class="h1">Order up!<small></small></div><div class="chip">You won!</div>
+      <div class="ribbon" id="cp-big"></div>
+      <div class="coupon" id="coupon"><div class="tx"><small>Wendy Fest reward</small><div class="pz" id="cp-prize"></div><div class="lb">Your coupon code</div><span class="cd" id="cp-code"></span><div class="nt">Sent to your phone by SMS.</div></div><div class="stub"><img id="cp-qr" alt="">Scan to save</div></div>
+      <div class="sub" id="win-sub"></div>
+      <div class="trayrow"><img class="t" src="../assets/claw/tray.webp" alt=""><div class="on" id="win-tray"></div></div>
+    </section>
+
+    <!-- 8 time's up -->
+    <section class="screen res" id="s-lose">
+      <div class="h1"><span id="lose-t">Time’s up!</span><small></small></div><div class="chip" id="lose-chip">0 / 3 matched</div><div class="sub" id="lose-sub"></div>
+      <div class="trayrow"><img class="t" src="../assets/claw/tray.webp" alt=""><div class="on" id="lose-tray"></div></div>
+    </section>
+  </div></div>
+
+  <div class="cta-row"><i></i><button class="cta pulse" id="cta">Tap to start</button><i></i></div>
+  <footer class="ft"><span><img src="../assets/cameo.png" alt="">© 2026 Wendy’s Sri Lanka</span><span id="ft-st">Station A · Claw</span></footer>
+
+  <section class="screen" id="s-pin"><div class="box"><div class="t">Staff PIN</div><input id="pin" type="password" inputmode="numeric" maxlength="8"><button class="cta" id="pin-go">Unlock</button></div></section>
+</div>
+
+<!-- sounds: the same ElevenLabs-made set as the other two games -->
+<audio id="a-tap" src="../assets/sfx/tap.mp3" preload="auto"></audio><audio id="a-key" src="../assets/sfx/key.mp3" preload="auto"></audio><audio id="a-delete" src="../assets/sfx/delete.mp3" preload="auto"></audio>
+<audio id="a-ding" src="../assets/sfx/ding.mp3" preload="auto"></audio><audio id="a-error" src="../assets/sfx/error.mp3" preload="auto"></audio><audio id="a-start" src="../assets/sfx/start.mp3" preload="auto"></audio>
+<audio id="a-beep" src="../assets/sfx/beep.mp3" preload="auto"></audio><audio id="a-go" src="../assets/sfx/go.mp3" preload="auto"></audio><audio id="a-pop" src="../assets/sfx/pop.mp3" preload="auto"></audio>
+<audio id="a-whoosh" src="../assets/sfx/whoosh.mp3" preload="auto"></audio><audio id="a-stamp" src="../assets/sfx/stamp.mp3" preload="auto"></audio><audio id="a-ticket" src="../assets/sfx/ticket.mp3" preload="auto"></audio>
+<audio id="a-party" src="../assets/sfx/party.mp3" preload="auto"></audio><audio id="a-win" src="../assets/sfx/win.mp3" preload="auto"></audio><audio id="a-aww" src="../assets/sfx/aww.mp3" preload="auto"></audio><audio id="a-coin" src="../assets/sfx/coin.mp3" preload="auto"></audio>
+
+<audio id="a-clawmove" src="../assets/sfx/clawmove.mp3" preload="auto"></audio><audio id="a-clawgrab" src="../assets/sfx/clawgrab.mp3" preload="auto"></audio><audio id="a-clawdrop" src="../assets/sfx/clawdrop.mp3" preload="auto"></audio>
+<audio id="a-jackpot" src="../assets/sfx/jackpot.mp3" preload="auto"></audio><audio id="a-tension" src="../assets/sfx/tension.mp3" preload="auto" loop></audio><audio id="a-flip" src="../assets/sfx/flip.mp3" preload="auto"></audio>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwzroi3c"></script><script src="../js/kiosk.js?v=mwzroi3c"></script>
+<script>
+  const $ = (id) => document.getElementById(id), wait = (ms) => new Promise((r) => setTimeout(r, ms));
+  // the 1080 x 1920 canvas is scaled to fit the screen and centred
+  { const w = (new URLSearchParams(location.search).get("w") || "d").toLowerCase(); document.getElementById("s-idle").className = "screen on " + (w === "a" ? "wa" : w === "b" ? "wb" : "wd"); }   // the welcome look being chosen: ?w=a or ?w=b
+  function fit() { const k = Math.min(innerWidth / 1080, innerHeight / 1920), el = $("fit"); el.style.transform = `translate(${-540 * k}px, ${-960 * k}px) scale(${k})`; }
+  addEventListener("resize", fit); fit();
+  const sfx = (n, vol = .7) => { if (localStorage.getItem("wf_sfx") === "off") return; const a = $("a-" + n); if (!a) return; try { a.currentTime = 0; a.volume = vol; a.play().catch(() => {}); } catch {} };
+
+  // the music under the round: it starts with the clock and stops when the round ends
+  const music = (on) => { const a = $("a-tension"); if (!a) return; try { if (on && localStorage.getItem("wf_sfx") !== "off") { a.currentTime = 0; a.volume = .45; a.play().catch(() => {}); } else a.pause(); } catch {} };
+  let CFG = { durationMs: 13000, bonusMs: 2000, memoriseMs: 3000, chances: 3, orderMs: 5000, decoys: 3 }, guest = null;
+  fetch("/api/config").then((r) => r.json()).then((c) => { if (c.claw) CFG = { ...CFG, ...c.claw }; $("qr").src = $("qr2").src = qrUrl((c.baseUrl || location.origin) + "/register"); }).catch(() => {});
+  $("ft-st").textContent = `Station ${K.station} · Claw`;
+  const ITEMS = { chicken: "/assets/claw/burger.webp", beef: "/assets/claw/beef.webp", bacon: "/assets/claw/bacon.webp", crispy: "/assets/claw/crispy.webp", grilled: "/assets/claw/grilled.webp", fries: "/assets/claw/fries.webp", bites: "/assets/claw/bites.webp", choc: "/assets/claw/frosty-choc.webp", vanilla: "/assets/claw/frosty-vanilla.webp" };
+  // Names as on the Wendy's Sri Lanka menu board (owner's photos, Nov 2026). The beef and bacon pictures match nothing on that board, so they are out of the game until the owner's product pictures arrive.
+  const NAMES = { chicken: "Spicy Chicken Burger", crispy: "Classic Chicken Burger", grilled: "Grilled Chicken Burger", fries: "Fries", bites: "Chicken Bites", choc: "Chocolate Frosty", vanilla: "Vanilla Frosty" };
+  const BURGERS = ["chicken", "crispy", "grilled"], SIDES = ["fries", "bites"], pick = (a) => a[Math.floor(Math.random() * a.length)];
+  const STEPS = { "s-idle": ["1", "Welcome"], "s-code": ["2", "Your code"], "s-how": ["3", "How to play"], "s-play": ["4", "Play"], "s-win": ["5", "Order up"], "s-lose": ["5", "Time’s up"] };
+  // the big button under the cabinet belongs to whichever screen is showing
+  const CTA = { "s-idle": ["Tap to start", () => { sfx("start"); K.show("s-code"); }], "s-code": ["Continue", () => { if (code.length === 5) lookup(); else { sfx("error"); say(code.length < 3 ? "First, your 3 numbers." : "Now your 2 letters.", true); } }],
+    "s-how": ["Let’s play", () => { sfx("start"); startGame(); }], "s-play": ["Match your order", null], "s-win": ["Done", () => { sfx("coin"); goIdle(); }], "s-lose": ["Done", () => { sfx("coin"); goIdle(); }] };
+  let screen = "s-idle";
+  document.addEventListener("screen", (e) => { const id = e.detail; if (!CTA[id]) return; screen = id; const st = STEPS[id]; $("stp-n").textContent = st[0]; $("stp-l").textContent = st[1];
+    const b = $("cta"); b.textContent = CTA[id][0]; b.disabled = !CTA[id][1]; b.classList.toggle("pulse", !!CTA[id][1] && id !== "s-code"); if (id !== "s-idle") sfx("whoosh", .35); });
+  $("cta").onclick = () => { const f = CTA[screen] && CTA[screen][1]; if (f) f(); };
+  function goIdle() { stopClock(); guest = null; code = ""; paintCode(); K.resetIdle(0); K.show("s-idle"); }
+  document.addEventListener("kiosk-home", goIdle);
+
+  // ---- staff PIN
+  async function unlock() { if (await K.login($("pin").value)) { $("pin").value = ""; goIdle(); } else { $("pin").value = ""; sfx("error"); } }
+  $("pin-go").onclick = unlock; $("pin").addEventListener("keydown", (e) => e.key === "Enter" && unlock());
+  K.api("/api/kiosk/lookup", { code: "" }).catch((e) => { if (e.message !== "PIN required") K.show("s-idle"); });   // asks for the PIN straight away if this kiosk has not been unlocked
+
+  // ---- guest code: 3 numbers then 2 letters, checked the moment the last letter is typed (the same code as the other two games)
+  const LETTERS = "ABCDEFGHJKLMNPQRSTUVWXYZ"; let code = "", busy = false, bad = 0, lockUntil = 0;
+  function say(t, err) { const m = $("code-msg"); m.textContent = t; m.classList.remove("err"); if (err) { void m.offsetWidth; m.classList.add("err"); } }
+  function paintCode() { $("boxes").innerHTML = [0, 1, 2, 3, 4].map((i) => (i === 3 ? "<span>–</span>" : "") + (code[i] ? `<b>${code[i]}</b>` : `<b class="e${i === code.length ? " a" : ""}"></b>`)).join(""); $("pad").dataset.mode = code.length < 3 ? "num" : "let"; }
+  function key(k) { if (busy || code.length >= 5) return; if (code.length < 3 ? !/\d/.test(k) : !LETTERS.includes(k)) return; code += k; sfx("key", .5); paintCode(); K.resetIdle(60000, goIdle);
+    if (code.length === 5) { sfx("ding", .5); const v = code; setTimeout(() => { if (screen === "s-code" && code === v) lookup(); }, 220); } else say(code.length < 3 ? "First, your 3 numbers." : "Now your 2 letters."); }
+  for (const k of "1234567890" + LETTERS) { const b = document.createElement("button"); b.textContent = k; b.className = /\d/.test(k) ? (k === "0" ? "n z" : "n") : "l"; b.onclick = () => key(k); $("pad").appendChild(b); }
+  $("code-del").onclick = () => { if (busy) return; code = code.slice(0, -1); sfx("delete", .5); paintCode(); say(code.length < 3 ? "First, your 3 numbers." : "Now your 2 letters."); };
+  $("code-back").onclick = () => { sfx("tap"); goIdle(); };
+  document.addEventListener("screen", (e) => { if (e.detail === "s-code") { code = ""; paintCode(); say("First, your 3 numbers."); K.resetIdle(60000, goIdle); } });
+  async function lookup() {
+    if (busy) return; if (Date.now() < lockUntil) return say("Too many wrong codes. Please wait a moment.", true);
+    busy = true; say("Checking…");
+    try { guest = await K.api("/api/kiosk/lookup", { code }); bad = 0;
+      if ((guest.clawsLeft ?? 1) <= 0) { sfx("error"); say(`${guest.firstName} has already played. One go per guest.`, true); $("boxes").classList.add("err"); setTimeout(() => $("boxes").classList.remove("err"), 500); }
+      else { K.show("s-how"); K.resetIdle(60000, goIdle); } }
+    catch (e) { sfx("error"); say(e.message || "We can’t find that code.", true); $("boxes").classList.add("err"); setTimeout(() => $("boxes").classList.remove("err"), 500); if (++bad >= 3) { bad = 0; lockUntil = Date.now() + 30000; say("Too many wrong codes. Try again in 30 seconds.", true); } }
+    busy = false;
+  }
+
+  // ---- the game
+  let deck = [], open = [], matched = 0, lock = true, left = 0, tickT = null, lastT = 0, running = false, frosty = "choc", burger = "chicken", side = "fries", order = [], t0 = 0;
+  const srcOf = (k) => ITEMS[k];
+  // Tries (owner: "only 3 chances"): every pair the guest turns over uses one. With three pairs and three tries, a single wrong pair means the order cannot be completed.
+  let tries = 3; function paintTries() { const n = Math.max(3, CFG.chances || 3); $("tries").innerHTML = Array.from({ length: n }, (_, i) => `<i class="${i < tries ? "" : "off"}"></i>`).join(""); }
+  function startGame() {
+    frosty = pick(["choc", "vanilla"]); burger = pick(BURGERS); side = pick(SIDES); order = [burger, side, frosty];
+    // harder (owner): besides the three pairs of the order there are single items that are NOT in the order. Turning one over wastes a try.
+    const others = [...BURGERS.filter((b) => b !== burger), ...SIDES.filter((x) => x !== side), frosty === "choc" ? "vanilla" : "choc"]; for (let i = others.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [others[i], others[j]] = [others[j], others[i]]; }
+    deck = [...order, ...order, ...others.slice(0, Math.max(0, Math.min(3, CFG.decoys ?? 3)))]; for (let i = deck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [deck[i], deck[j]] = [deck[j], deck[i]]; }
+    open = []; matched = 0; lock = true; left = CFG.durationMs; tries = Math.max(3, CFG.chances || 3); paintTries(); $("got").textContent = "0"; $("tray").innerHTML = ""; $("clock").classList.remove("low");
+    document.querySelectorAll(".ticket .it").forEach((el, i) => { el.dataset.k = order[i]; el.classList.remove("ok"); el.querySelector("img").src = srcOf(order[i]); });
+    $("slots").innerHTML = deck.map((k, i) => `<div class="slot" data-i="${i}"><div class="f back">?</div><div class="f front"><img src="${srcOf(k)}" alt=""><span>${NAMES[k]}</span></div></div>`).join("");
+    document.querySelectorAll(".slot").forEach((el) => (el.onclick = () => tapSlot(+el.dataset.i)));
+    const rig = $("rig"); rig.classList.remove("grab"); rig.style.transition = "none"; rig.style.translate = "474px -420px"; void rig.offsetWidth; rig.style.transition = "";
+    paintClock(); $("hud").style.visibility = "hidden"; $("mem").style.display = "none"; const ord = $("ord"); ord.classList.remove("away"); ord.classList.add("on"); $("ord-row").innerHTML = order.map((k) => `<div><img src="${srcOf(k)}" alt="">${NAMES[k]}</div>`).join(""); K.show("s-play"); K.resetIdle(0);
+    (async () => {   // first the guest is told their order, then everyone sees all the slots for a few seconds, then the doors close and the clock starts
+      const on = Math.max(1, Math.round((CFG.orderMs ?? 5000) / 1000));
+      for (let s = on; s >= 1; s--) { if (screen !== "s-play") return; const c = $("ord-n"); c.textContent = s; c.classList.remove("pop"); void c.offsetWidth; c.classList.add("pop"); await wait((CFG.orderMs ?? 5000) / on); }
+      if (screen !== "s-play") return; sfx("whoosh", .5); $("hud").style.visibility = "visible"; ord.classList.add("away"); await wait(620); ord.classList.remove("on", "away"); $("hud").style.visibility = "hidden";
+      if (screen !== "s-play") return; $("mem").style.display = "flex"; document.querySelectorAll(".slot").forEach((el) => el.classList.add("up")); sfx("flip", .6);
+      const n = Math.max(1, Math.round(CFG.memoriseMs / 1000));
+      for (let s = n; s >= 1; s--) { if (screen !== "s-play") return; const c = $("mem-n"); c.textContent = s; c.classList.remove("pop"); void c.offsetWidth; c.classList.add("pop"); sfx("beep", .5); await wait(CFG.memoriseMs / n); }
+      if (screen !== "s-play") return;
+      document.querySelectorAll(".slot").forEach((el, i) => setTimeout(() => el.classList.remove("up"), i * 60)); sfx("go", .6);
+      $("mem").style.display = "none"; $("hud").style.visibility = "visible"; await wait(520); lock = false; t0 = performance.now(); startClock(); music(true);
+    })();
+  }
+  function paintClock() { $("secs").textContent = Math.max(0, Math.ceil(left / 1000)); $("bar").style.transform = `scaleX(${Math.max(0, Math.min(1, left / CFG.durationMs))})`; $("clock").classList.toggle("low", left <= 5000 && left > 0); }
+  function startClock() { running = true; lastT = performance.now(); clearInterval(tickT); let lastSec = Math.ceil(left / 1000);
+    tickT = setInterval(() => { const now = performance.now(); if (running) left -= now - lastT; lastT = now; paintClock(); const s = Math.ceil(left / 1000); if (s !== lastSec && s <= 5 && s > 0) sfx("beep", .35); lastSec = s; if (left <= 0) finish(false); }, 80); }
+  function stopClock() { running = false; clearInterval(tickT); music(false); }
+  const slotEl = (i) => document.querySelector(`.slot[data-i="${i}"]`);
+  function tapSlot(i) {
+    if (lock || open.includes(i)) return; const el = slotEl(i); if (el.classList.contains("gone")) return;
+    el.classList.add("up"); sfx("flip", .6); open.push(i); if (open.length < 2) return;
+    const [a, b] = open; lock = true; tries--; paintTries();
+    if (deck[a] === deck[b]) grab(a, b);
+    else setTimeout(() => { sfx("error", .4); [a, b].forEach((x) => { const s = slotEl(x); s.classList.add("bad"); setTimeout(() => s.classList.remove("bad", "up"), 380); }); setTimeout(() => { open = []; if (tries <= 0) return finish(false, "tries"); lock = false; }, 560); }, 520);
+  }
+  // A matched pair: the claw glides to the item, closes on it, carries it down and drops it on the tray. The clock waits while the claw works, and gives a few seconds back.
+  async function grab(a, b) {
+    running = false; const k = deck[a], rig = $("rig"), el = slotEl(b), box = $("slots"), sx = box.offsetLeft + el.offsetLeft + el.offsetWidth / 2, sy = box.offsetTop + el.offsetTop;
+    sfx("ding", .55); await wait(260);
+    const go = (x, y, ms, ease = "cubic-bezier(.4, 0, .2, 1)") => { rig.style.transition = `translate ${ms}ms ${ease}`; rig.style.translate = `${x}px ${y}px`; return wait(ms + 30); };
+    sfx("clawmove", .6); await go(sx, sy - 190, 440); await go(sx, sy - 105, 320);
+    const held = $("held"); held.src = srcOf(k); held.classList.add("half"); rig.classList.add("grab"); sfx("clawgrab", .7); [a, b].forEach((x) => slotEl(x).classList.add("gone")); await wait(260);
+    const n = matched, tx = 190 + n * 290; held.classList.remove("half"); await go(sx, sy - 330, 820, "cubic-bezier(.3, 0, .3, 1)");   // lifted out of the slot: the whole item comes into view
+    sfx("clawmove", .5); await go(tx, 500, 620); await go(tx, 690, 900, "cubic-bezier(.2, .7, .3, 1)");   // across, then lowered slowly onto the tray
+    rig.classList.remove("grab"); const img = document.createElement("img"); img.src = srcOf(k); $("tray").appendChild(img); sfx("clawdrop", .7);
+    matched++; $("got").textContent = matched; document.querySelector(`.ticket .it[data-k="${k}"]`).classList.add("ok");
+    if (matched < 3 && CFG.bonusMs > 0) { left = Math.min(CFG.durationMs, left + CFG.bonusMs); const bn = $("bonus"); bn.textContent = `+${Math.round(CFG.bonusMs / 1000)}s`; bn.classList.remove("go"); void bn.offsetWidth; bn.classList.add("go"); paintClock(); }
+    await wait(260); go(474, -420, 420); open = [];
+    if (matched >= 3) return finish(true);
+    if (tries <= 0) return finish(false, "tries");
+    lock = false; lastT = performance.now(); running = true;
+  }
+  function confetti(n = 150) { const box = document.createElement("div"); box.className = "confetti"; $("fit").appendChild(box); const cols = ["#FFF6E4", "#18A6E8", "#FFE08A", "#F0434C", "#FFFFFF"];
+    for (let i = 0; i < n; i++) { const el = document.createElement("i"); el.style.left = Math.random() * 1080 + "px"; el.style.background = cols[i % cols.length]; el.style.setProperty("--dx", (Math.random() * 400 - 200) + "px"); el.style.setProperty("--r", (Math.random() * 1400 - 700) + "deg"); el.style.animationDuration = 2.2 + Math.random() * 2.2 + "s"; el.style.animationDelay = Math.random() * .9 + "s"; box.appendChild(el); }
+    setTimeout(() => box.remove(), 5600); }
+  // "Free Spicy Chicken Burger Meal" -> FREE MEAL + the rest; "50% off ..." -> 50% OFF + the rest (the same split as the Scream & Win winner's screen)
+  function prizeText(label) { const t = String(label || "").trim(); let m; if ((m = t.match(/^free\s+(.+)$/i))) return { big: /meal/i.test(m[1]) ? "Free meal" : "Free", line: m[1] }; if ((m = t.match(/^(\d+\s*%\s*off)\s+(.+)$/i))) return { big: m[1], line: m[2] }; return { big: "You won", line: t }; }
+  let saving = false;
+  async function finish(won, why) {
+    if (screen !== "s-play") return; stopClock(); lock = true; const msLeft = Math.max(0, Math.round(left)), took = Math.round(performance.now() - t0);
+    const tray = $(won ? "win-tray" : "lose-tray"), have = [...$("tray").children].map((i) => i.getAttribute("src"));
+    tray.innerHTML = order.map((k) => `<img src="${srcOf(k)}" class="${have.includes(srcOf(k)) ? "" : "miss"}" alt="">`).join("");
+    const name = guest ? guest.firstName : "";
+    // the result is saved first, so a win can show its coupon
+    let res = null; if (guest && !saving) { saving = true; try { res = await K.api("/api/kiosk/claw", { code: guest.code, matched, won, msLeft, tookMs: took, reason: why || (won ? "won" : "time") }); } catch (e) { console.warn("claw result not saved:", e.message); } saving = false; }
+    if (won) { const c = res && res.coupon;
+      $("coupon").style.display = $("cp-big").style.display = c ? "" : "none"; if (c) { const pz = prizeText(c.label); $("cp-big").textContent = pz.big; $("cp-prize").textContent = pz.line; $("cp-code").textContent = c.code; $("cp-qr").src = qrUrl(res.profileUrl || ""); }
+      $("win-sub").textContent = res && res.couponPoolEmpty ? "You won! Please show this screen to our team for your reward." : `${name ? name + ", you" : "You"} grabbed the whole order with ${(msLeft / 1000).toFixed(1)} seconds to spare.`;
+      K.show("s-win"); sfx("party", .7); setTimeout(() => sfx("jackpot", .7), 300); confetti(); }
+    else { $("lose-t").textContent = why === "tries" ? "Out of tries!" : "Time’s up!"; $("lose-chip").textContent = `${matched} / 3 matched`; const miss = order.filter((k) => !have.includes(srcOf(k))).map((k) => "the " + NAMES[k]);
+      $("lose-sub").textContent = matched ? `So close${name ? ", " + name : ""}. You missed ${miss.join(" and ")}.` : `The order got away${name ? ", " + name : ""}. Better luck next time.`; K.show("s-lose"); sfx("aww", .6); }
+    K.resetIdle(won ? 40000 : 25000, goIdle);
+  }
+  paintCode();
+</script>
+</body></html>

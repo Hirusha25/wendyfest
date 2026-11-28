@@ -303,7 +303,7 @@ const needPin = (which) => { const c = cookie("wf_" + which); return c === KIOSK
 async function route(method, url, body) {
   const u = new URL(url, location.href); const p = u.pathname.replace(/^.*\/api\//, "/api/");
   const json = (data, status = 200) => ({ status, data });
-  if (p === "/api/config") return json({ baseUrl: BASE, coupon: coupon(), scream: scream(), roast: roastS() });
+  if (p === "/api/config") return json({ baseUrl: BASE, coupon: coupon(), scream: scream(), roast: roastS(), claw: { durationMs: 13000, chances: 3, bonusMs: 2000, memoriseMs: 3000, orderMs: 5000, decoys: 3, attemptsPerPerson: 99 } });
   if (p === "/api/register") {
     const name = String(body.name || "").trim().slice(0, 60), phone = normalisePhone(body.phone);
     if (name.length < 2) return json({ error: "name" }, 400); if (!phone) return json({ error: "phone" }, 400);
@@ -338,7 +338,8 @@ async function route(method, url, body) {
     if (!needPin("kiosk") && !needPin("admin")) return json({ error: "PIN required", which: "kiosk" }, 401);
     const pt = byCode(body.code); if (!pt) return json({ error: "Code not found. Ask the guest to check their SMS or register at the QR code." }, 404);
     const used = DB.screams.filter((s) => s.participant_id === pt.id), roasts = DB.roasts.filter((r) => r.participant_id === pt.id);
-    if (p.endsWith("lookup")) return json({ name: pt.name, firstName: first(pt), lang: pt.lang, code: pt.code, screamsUsed: used.length, screamsLeft: Math.max(0, scream().attemptsPerPerson - used.length), roastsUsed: roasts.length, roastsLeft: Math.max(0, roastS().attemptsPerPerson - roasts.length), alreadyWon: used.some((s) => s.won), profileUrl: profileUrl(pt) });
+    if (p.endsWith("/claw")) return json({ ok: true, matched: body.matched, won: !!body.won, coupon: body.won ? { code: "DEMO12345", label: coupon().valueLabel } : null, profileUrl: profileUrl(pt) });
+    if (p.endsWith("lookup")) return json({ clawsUsed: 0, clawsLeft: 1, name: pt.name, firstName: first(pt), lang: pt.lang, code: pt.code, screamsUsed: used.length, screamsLeft: Math.max(0, scream().attemptsPerPerson - used.length), roastsUsed: roasts.length, roastsLeft: Math.max(0, roastS().attemptsPerPerson - roasts.length), alreadyWon: used.some((s) => s.won), profileUrl: profileUrl(pt) });
     if (p.endsWith("scream")) {
       const s = scream(); if (used.length >= s.attemptsPerPerson) return json({ error: "No attempts left for this guest" }, 409);
       const { loud, acc, score, won, reason } = judgeScream(body, s);

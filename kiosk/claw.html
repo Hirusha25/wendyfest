@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
-<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwzulvvd" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwzuxcsx" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 <title>[DEMO] Wendy's Claw · Wendy Fest</title><link rel="icon" href="../assets/cameo.png"><meta name="theme-color" content="#8E1219"><meta name="mobile-web-app-capable" content="yes">
-<link rel="stylesheet" href="../css/brand.css?v=mwzulvvd">
+<link rel="stylesheet" href="../css/brand.css?v=mwzuxcsx">
 <style>
   /* Wendy's Claw: Grab the Order (game 3). A memory match game inside a claw machine: remember six slots, match the three pairs before the clock runs out,
      and the claw drops each matched item on the tray. One fixed 1080 x 1920 canvas, scaled to whatever screen it is on (upright kiosk first; a wide
@@ -204,9 +204,9 @@
   .res .chip { position: absolute; left: 50%; top: 296px; translate: -50% 0; padding: 16px 44px 12px; border-radius: 20px; background: linear-gradient(180deg, #FFFBF3, #EADFCB); color: #B81B24; font: italic 900 60px/1 Poppins, sans-serif; white-space: nowrap; box-shadow: 0 8px 0 #B5A88F, 0 18px 24px rgba(0,0,0,.4); animation: tick .5s cubic-bezier(.2, 1.6, .4, 1) .3s both; }
   .res .sub { position: absolute; left: 60px; right: 60px; top: 424px; text-align: center; font: 700 34px/1.25 Poppins, sans-serif; color: #FFF6E4; text-shadow: 0 3px 0 rgba(60,0,8,.6); }
   .res .trayrow { bottom: 120px; height: 420px; left: 30px; right: 30px; } .res .trayrow .on { bottom: 108px; height: 330px; left: 110px; right: 110px; } .res .trayrow .on { justify-content: center; } .res .trayrow .on img { height: 330px; max-width: 380px; margin: 0 -22px; }
-  #s-win .sub { top: 800px; font-size: 26px; } #s-win .chip { top: 280px; font-size: 44px; padding: 12px 34px 9px; } #s-win .trayrow { bottom: 24px; height: 280px; left: 90px; right: 90px; } #s-win .trayrow .on { bottom: 70px; height: 210px; } #s-win .trayrow .on img { height: 215px; max-width: 250px; margin: 0 -14px; }
+  #s-win .sub { top: 796px; font-size: 26px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } #s-win .chip { top: 280px; font-size: 44px; padding: 12px 34px 9px; } #s-win .trayrow { bottom: 24px; height: 280px; left: 90px; right: 90px; } #s-win .trayrow .on { bottom: 70px; height: 210px; } #s-win .trayrow .on img { height: 215px; max-width: 250px; margin: 0 -14px; }
   #s-win .trayrow .on img { animation: land .5s cubic-bezier(.3, 1.6, .5, 1) both, bob 2.6s ease-in-out .6s infinite; } #s-win .trayrow .on img:nth-child(2) { animation-delay: .15s, .9s; } #s-win .trayrow .on img:nth-child(3) { animation-delay: .3s, 1.2s; }
-  #s-win .trayrow .on { left: 40px; right: 250px; } #s-win .trayrow .bag { position: absolute; right: -6px; bottom: 58px; height: 300px; z-index: 2; filter: drop-shadow(0 16px 12px rgba(0,0,0,.5)); animation: land .5s cubic-bezier(.3, 1.6, .5, 1) .45s both; }
+  #s-win .trayrow .on { left: 40px; right: 200px; } #s-win .trayrow .bag { position: absolute; right: -6px; bottom: 58px; height: 214px; z-index: 2; filter: drop-shadow(0 16px 12px rgba(0,0,0,.5)); animation: land .5s cubic-bezier(.3, 1.6, .5, 1) .45s both; }
   .confetti { position: absolute; inset: 0; pointer-events: none; z-index: 40; overflow: hidden; } .confetti i { position: absolute; top: -40px; width: 18px; height: 30px; border-radius: 3px; animation: fall linear both; } @keyframes fall { to { translate: var(--dx) 2100px; rotate: var(--r); } }
 
   /* staff PIN */
@@ -299,7 +299,7 @@
 <audio id="a-jackpot" src="../assets/sfx/jackpot.mp3" preload="auto"></audio><audio id="a-tension" src="../assets/sfx/tension.mp3" preload="auto" loop></audio><audio id="a-flip" src="../assets/sfx/flip.mp3" preload="auto"></audio>
 <!-- Wendy's lines for the claw game -->
 <audio id="v-claw-how" src="../assets/voice/claw-how.mp3" preload="auto"></audio><audio id="v-claw-order" src="../assets/voice/claw-order.mp3" preload="auto"></audio><audio id="v-claw-4" src="../assets/voice/claw-4.mp3" preload="auto"></audio><audio id="v-claw-3" src="../assets/voice/claw-3.mp3" preload="auto"></audio><audio id="v-claw-2" src="../assets/voice/claw-2.mp3" preload="auto"></audio><audio id="v-claw-1" src="../assets/voice/claw-1.mp3" preload="auto"></audio><audio id="v-claw-remember" src="../assets/voice/claw-remember.mp3" preload="auto"></audio><audio id="v-claw-go" src="../assets/voice/claw-go.mp3" preload="auto"></audio><audio id="v-claw-nice-1" src="../assets/voice/claw-nice-1.mp3" preload="auto"></audio><audio id="v-claw-nice-2" src="../assets/voice/claw-nice-2.mp3" preload="auto"></audio><audio id="v-claw-nice-3" src="../assets/voice/claw-nice-3.mp3" preload="auto"></audio><audio id="v-claw-win-1" src="../assets/voice/claw-win-1.mp3" preload="auto"></audio><audio id="v-claw-win-2" src="../assets/voice/claw-win-2.mp3" preload="auto"></audio><audio id="v-claw-lose-1" src="../assets/voice/claw-lose-1.mp3" preload="auto"></audio><audio id="v-claw-lose-2" src="../assets/voice/claw-lose-2.mp3" preload="auto"></audio><audio id="v-claw-hello" src="../assets/voice/claw-hello.mp3" preload="auto"></audio>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwzulvvd"></script><script src="../js/kiosk.js?v=mwzulvvd"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwzuxcsx"></script><script src="../js/kiosk.js?v=mwzuxcsx"></script>
 <script>
   const $ = (id) => document.getElementById(id), wait = (ms) => new Promise((r) => setTimeout(r, ms));
   // the 1080 x 1920 canvas is scaled to fit the screen and centred
@@ -439,7 +439,7 @@
     let res = null; if (guest && !saving) { saving = true; try { res = await K.api("/api/kiosk/claw", { code: guest.code, matched, won, msLeft, tookMs: took, reason: why || (won ? "won" : "time") }); } catch (e) { console.warn("claw result not saved:", e.message); } saving = false; }
     if (won) { const c = res && res.coupon;
       $("coupon").style.display = $("cp-big").style.display = c ? "" : "none"; if (c) { const pz = prizeText(c.label); $("cp-big").textContent = pz.big; $("cp-prize").textContent = pz.line; $("cp-code").textContent = c.code; $("cp-qr").src = qrUrl(res.profileUrl || ""); }
-      $("win-sub").textContent = res && res.couponPoolEmpty ? "You won! Please show this screen to our team for your reward." : `${name ? name + ", you" : "You"} grabbed the whole order with ${(msLeft / 1000).toFixed(1)} seconds to spare.`;
+      $("win-sub").textContent = res && res.couponPoolEmpty ? "You won! Please show this screen to our team for your reward." : `${name ? name + ", you" : "You"} grabbed the whole order!`;
       K.show("s-win"); sfx("party", .7); setTimeout(() => vo("claw-win-" + (1 + Math.floor(Math.random() * 2))), 900); setTimeout(() => sfx("jackpot", .7), 300); confetti(); }
     else { $("lose-t").textContent = why === "tries" ? "Out of tries!" : "Time’s up!"; $("lose-chip").textContent = `${matched} / 3 matched`; const miss = order.filter((k) => !have.includes(srcOf(k))).map((k) => "the " + NAMES[k]);
       $("lose-sub").textContent = matched ? `So close${name ? ", " + name : ""}. You missed ${miss.join(" and ")}.` : `The order got away${name ? ", " + name : ""}. Better luck next time.`; K.show("s-lose"); sfx("aww", .6); setTimeout(() => vo("claw-lose-" + (1 + Math.floor(Math.random() * 2))), 900); }

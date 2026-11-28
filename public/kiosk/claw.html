@@ -251,7 +251,7 @@
       <div class="steps">
         <div class="step"><b>1</b><span>See your order<small>A burger, a side and a drink or Frosty.</small></span><div class="pic three"><img src="/assets/claw/classic.webp" alt=""><img src="/assets/claw/bites.webp" alt=""><img src="/assets/claw/frosty-choc.webp" alt=""></div></div>
         <div class="step"><b>2</b><span>Remember where it is<small>You get 3 seconds. Read the names.</small></span><div class="pic"><div class="q"><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i></div></div></div>
-        <div class="step"><b>3</b><span>Match only your order<small>You have <span id="how-secs">8</span> seconds. Leave the wrong items alone.</small></span><div class="pic"><img src="/assets/claw/grilled.webp" alt=""><img src="/assets/claw/grilled.webp" alt=""></div></div>
+        <div class="step"><b>3</b><span>Match only your order<small>You have <span id="how-secs">10</span> seconds. Leave the wrong items alone.</small></span><div class="pic"><img src="/assets/claw/grilled.webp" alt=""><img src="/assets/claw/grilled.webp" alt=""></div></div>
       </div>
     </section>
 
@@ -259,7 +259,7 @@
     <section class="screen" id="s-play">
       <div class="ord" id="ord"><div class="h1">This is your order</div><div class="row" id="ord-row"></div><p>Find its pairs. Leave the rest.</p><div class="cnt" id="ord-n">5</div></div>
       <div class="mem" id="mem"><div class="h1">Remember the slots</div><div class="cnt" id="mem-n">3</div></div>
-      <div class="hud" id="hud"><div class="clock" id="clock"><b><span id="secs">8</span><small>s</small></b><i id="bar"></i></div><div class="tries"><small>Tries</small><div id="tries"></div></div><div class="ticket"><div class="it" data-k="burger"><img alt=""></div><div class="it" data-k="fries"><img alt=""></div><div class="it" data-k="frosty"><img alt=""></div><div class="n"><span id="got">0</span>/3<small>Matched</small></div></div></div>
+      <div class="hud" id="hud"><div class="clock" id="clock"><b><span id="secs">10</span><small>s</small></b><i id="bar"></i></div><div class="tries"><small>Tries</small><div id="tries"></div></div><div class="ticket"><div class="it" data-k="burger"><img alt=""></div><div class="it" data-k="fries"><img alt=""></div><div class="it" data-k="frosty"><img alt=""></div><div class="n"><span id="got">0</span>/3<small>Matched</small></div></div></div>
       <div class="bonus" id="bonus">+2s</div>
       <div class="slots" id="slots"></div>
       <div class="rig" id="rig"><div class="cable"></div><img class="c open" src="/assets/claw/claw-open.webp" alt=""><img class="c shut" src="/assets/claw/claw-closed.webp" alt=""><img class="held" id="held" alt=""></div>
@@ -312,13 +312,15 @@
   let voNow = null; const vo = (n, vol = 1) => { if (localStorage.getItem("wf_sfx") === "off") return; const a = $("v-" + n); if (!a) return; try { if (voNow && voNow !== a) voNow.pause(); voNow = a; a.currentTime = 0; a.volume = vol; a.play().catch(() => {}); } catch {} }, voStop = () => { try { if (voNow) voNow.pause(); } catch {} };
   // the music under the round: it starts with the clock and stops when the round ends
   const music = (on) => { const a = $("a-tension"); if (!a) return; try { if (on && localStorage.getItem("wf_sfx") !== "off") { a.currentTime = 0; a.volume = .3; a.play().catch(() => {}); } else a.pause(); } catch {} };
-  let CFG = { durationMs: 8000, bonusMs: 0, memoriseMs: 3000, chances: 0, orderMs: 5000, decoys: 3 }, guest = null;
+  let CFG = { durationMs: 10000, bonusMs: 0, memoriseMs: 3000, chances: 0, orderMs: 5000, decoys: 3 }, guest = null;
   fetch("/api/config").then((r) => r.json()).then((c) => { if (c.claw) { CFG = { ...CFG, ...c.claw }; $("how-secs").textContent = Math.round(CFG.durationMs / 1000); } $("qr").src = $("qr2").src = `/api/qr?text=${encodeURIComponent((c.baseUrl || location.origin) + "/register")}`; }).catch(() => {});
   $("ft-st").textContent = `Station ${K.station} · Claw`;
   const A = "/assets/claw/", ITEMS = { classic: A + "classic.webp", lankan: A + "lankan.webp", molten: A + "molten.webp", paneer: A + "paneer.webp", grilled: A + "grilled.webp", tendersb: A + "tendersb.webp", fries: A + "fries.webp", bbq: A + "fries-bbq.webp", cheese: A + "fries-cheese.webp", bites: A + "bites.webp", tenders: A + "tenders.webp", choc: A + "frosty-choc.webp", vanilla: A + "frosty-vanilla.webp", coke: A + "cup.webp", sprite: A + "cup.webp", zero: A + "cup.webp" };
   // Names exactly as on the Wendy's Sri Lanka menu board, pictures from the owner's product files (Nov 2026). Spicy Chicken Burger and Chickenator have no picture yet, so they are not in the game.
   const NAMES = { classic: "Classic Chicken Burger", lankan: "Lankan Fire Burger", molten: "Molten Cheese Lava", paneer: "Paneer Double Decker", grilled: "Grilled Chicken Burger", tendersb: "Chicken Tenders Burger", fries: "Fries", bbq: "BBQ Shaker Fries", cheese: "Cheese Shaker Fries", bites: "Chicken Bites", tenders: "Chicken Tenders", choc: "Chocolate Frosty", vanilla: "Vanilla Frosty", coke: "Coca-Cola", sprite: "Sprite", zero: "Coca-Cola Zero" };
   // Drinks all come in the same Wendy's cup, so only the name tells them apart: the guest has to read (owner, Nov 2026).
+  // every product picture is fetched and decoded as soon as the kiosk page opens, so the order pop-up and the slots show at once (owner, 28 Nov 2026)
+  const PRELOAD = [...new Set(Object.values(ITEMS)), A + "tray.webp", A + "bag.webp", A + "claw-open.webp", A + "claw-closed.webp"].map((src) => { const i = new Image(); i.decoding = "sync"; i.src = src; if (i.decode) i.decode().catch(() => {}); return i; });
   const DRINKS = ["coke", "sprite", "zero"], FROSTYS = ["choc", "vanilla"], FRIES = ["fries", "bbq", "cheese"], CHICKEN = ["bites", "tenders"];
   const BURGERS = ["classic", "lankan", "molten", "paneer", "grilled", "tendersb"], SIDES = [...FRIES, ...CHICKEN], pick = (a) => a[Math.floor(Math.random() * a.length)];
   const STEPS = { "s-idle": ["1", "Welcome"], "s-code": ["2", "Your code"], "s-how": ["3", "How to play"], "s-play": ["4", "Play"], "s-win": ["5", "Order up"], "s-lose": ["5", "Time’s up"] };

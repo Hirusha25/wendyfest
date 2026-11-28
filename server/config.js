@@ -51,7 +51,7 @@ export const config = {
     durationMs: Number(env("SCREAM_DURATION_MS", 5000)),   // one quick shout: the round ends as soon as the guest has shouted and gone quiet, 5 seconds at most
   },
   // Wendy's Claw (game 3): seconds on the clock, seconds given back for each matched pair, how long the six slots are shown first, and goes per guest
-  claw: { durationMs: Number(env("CLAW_DURATION_MS", 8000)), bonusMs: Number(env("CLAW_BONUS_MS", 0)), memoriseMs: Number(env("CLAW_MEMORISE_MS", 3000)), attemptsPerPerson: Number(env("CLAW_ATTEMPTS", 1)), chances: Number(env("CLAW_CHANCES", 0)), orderMs: Number(env("CLAW_ORDER_MS", 5000)), decoys: Number(env("CLAW_DECOYS", 3)) },   // chances = pairs the guest may turn over; 3 means no mistakes
+  claw: { durationMs: Number(env("CLAW_DURATION_MS", 10000)), bonusMs: Number(env("CLAW_BONUS_MS", 0)), memoriseMs: Number(env("CLAW_MEMORISE_MS", 3000)), attemptsPerPerson: Number(env("CLAW_ATTEMPTS", 1)), chances: Number(env("CLAW_CHANCES", 0)), orderMs: Number(env("CLAW_ORDER_MS", 5000)), decoys: Number(env("CLAW_DECOYS", 3)) },   // chances = pairs the guest may turn over; 3 means no mistakes
   roast: {
     attemptsPerPerson: Number(env("ROAST_ATTEMPTS", 1)),
     model: env("ROAST_MODEL", "claude-opus-5-5"),

@@ -87,7 +87,10 @@ function wendysCheck(transcript) {
     // Count the words that are NOT the target word; a real shout is "Wendy's", perhaps repeated, with at most two stray words.
     const isW = (w) => Math.max(bestSim(w, WITH_S), bestSim(w, WITH_S_NEAR), bestSim(w, NO_S)) >= 0.75;
     let extra = 0; words.forEach((w, i) => { if (isW(w)) return; if ((w === "is" || w === "s") && i > 0 && isW(words[i - 1])) return; extra++; });
-    if (extra > 2) return { accuracy: Math.min(accuracy, 30), reason: "unclear", heard: c, sentence: true };
+    // With an announcer talking the whole time, the kiosk hears their words too ("Game Wendy's. Yeah, I'm hungry. Wendy's! Come on..."). The guest's shout is the word
+    // standing on its own: a piece between full stops or exclamation marks that is just the word, with at most one stray word. A long sentence that contains it is not.
+    const alone = String(transcript || "").split(/[.!?\n]+/).some((seg) => { const ws = tokenise(seg).split(" ").filter(Boolean); if (!ws.length) return false; let w = 0, x = 0; ws.forEach((t, i) => { if (isW(t)) w++; else if (!((t === "is" || t === "s") && i > 0 && isW(ws[i - 1]))) x++; }); return w >= 1 && x <= 1; });
+    if (extra > 2 && !alone) return { accuracy: Math.min(accuracy, 30), reason: "unclear", heard: c, sentence: true };
     return { accuracy, reason, heard: c };
   }
   return { accuracy: Math.round(overall * 25), reason: "unclear", heard: "" };  // never got near the word: max 25
@@ -259,21 +262,21 @@ function templates(lang) {
     en: {
       otp: (code) => `${code} is your Wendy Fest code. It expires in 2 minutes. Never share it.`,
       welcome: (name, code, link) => `Hi ${name}, welcome to Wendy Fest! Your code is ${code}. Show it at the Scream & Win or Roast Me kiosk. Your profile: ${link}`,
-      win: (name, coupon, label, link) => `${name}, you screamed it right! Your Wendy's reward: ${label}. Code: ${coupon}. Show this code at the Wendy's counter, 5th floor, One Galle Face (OGF). Your pass: ${link}`,
+      win: (name, coupon, label, link) => `${name}, you screamed it right! Your Wendy's reward: ${label}. Code: ${coupon}. Show this code at the Wendy's counter, 5th floor, One Galle Face (OGF). Redeem today or tomorrow (by 29 Nov). Your pass: ${link}`,
       lose: (name, link) => `${name}, close one! Not quite loud enough this time. Your profile: ${link}`,
       roast: (name, link) => `${name}, you've been roasted by Wendy's. See it, save it, share it: ${link}`,
     },
     si: {
       otp: (code) => `${code} ඔබේ Wendy Fest කේතයයි. මිනිත්තු 2කින් කල් ඉකුත් වේ. කිසිවෙකුට දෙන්න එපා.`,
       welcome: (name, code, link) => `${name}, Wendy Fest වෙත සාදරයෙන් පිළිගනිමු! ඔබේ කේතය ${code}. Scream & Win / Roast Me කියෝස්ක් එකේදී පෙන්වන්න. ${link}`,
-      win: (name, coupon, label, link) => `${name}, ඔබ දිනුම්! Wendy's ත්‍යාග කේතය: ${coupon} (${label}). Show this code at the Wendy's counter, 5th floor, One Galle Face (OGF). ${link}`,
+      win: (name, coupon, label, link) => `${name}, ඔබ දිනුම්! Wendy's ත්‍යාග කේතය: ${coupon} (${label}). Show this code at the Wendy's counter, 5th floor, One Galle Face (OGF). Redeem today or tomorrow (by 29 Nov). ${link}`,
       lose: (name, link) => `${name}, ආසන්නයි! මේ පාර ටිකක් අඩුයි. ${link}`,
       roast: (name, link) => `${name}, Wendy's ඔබව roast කළා. බලන්න, බාගන්න, බෙදාගන්න: ${link}`,
     },
     ta: {
       otp: (code) => `${code} உங்கள் Wendy Fest குறியீடு. 2 நிமிடத்தில் காலாவதியாகும். யாருடனும் பகிர வேண்டாம்.`,
       welcome: (name, code, link) => `${name}, Wendy Fest-க்கு வரவேற்கிறோம்! உங்கள் குறியீடு ${code}. Scream & Win / Roast Me கியோஸ்கில் காட்டுங்கள். ${link}`,
-      win: (name, coupon, label, link) => `${name}, நீங்கள் வென்றீர்கள்! Wendy's பரிசு குறியீடு: ${coupon} (${label}). Show this code at the Wendy's counter, 5th floor, One Galle Face (OGF). ${link}`,
+      win: (name, coupon, label, link) => `${name}, நீங்கள் வென்றீர்கள்! Wendy's பரிசு குறியீடு: ${coupon} (${label}). Show this code at the Wendy's counter, 5th floor, One Galle Face (OGF). Redeem today or tomorrow (by 29 Nov). ${link}`,
       lose: (name, link) => `${name}, கிட்டத்தட்ட! இந்த முறை சற்று குறைவு. ${link}`,
       roast: (name, link) => `${name}, Wendy's உங்களை roast செய்தது. பாருங்கள், சேமியுங்கள், பகிருங்கள்: ${link}`,
     },

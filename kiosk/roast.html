@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
-<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mx00woxp" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mx07acan" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Roast Me · Wendy Fest</title><link rel="icon" href="../assets/cameo.png"><link rel="manifest" href="../assets/roast.webmanifest"><meta name="theme-color" content="#1593D6"><meta name="mobile-web-app-capable" content="yes">
-<link rel="stylesheet" href="../css/brand.css?v=mx00woxp"><link rel="stylesheet" href="../css/kiosk.css?v=mx00woxp">
+<link rel="stylesheet" href="../css/brand.css?v=mx07acan"><link rel="stylesheet" href="../css/kiosk.css?v=mx07acan">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@600;700&family=Barlow+Semi+Condensed:ital,wght@1,900&display=swap" rel="stylesheet">
 <style>
   body.kiosk { background: var(--ink); }
@@ -706,7 +706,7 @@
 <!-- sounds: effects and Wendy's pre-recorded waiting lines (made with ElevenLabs, in Wendy's voice) -->
 <audio id="sfx-start" src="../assets/sfx/start.mp3" preload="auto"></audio><audio id="sfx-coin" src="../assets/sfx/coin.mp3" preload="auto"></audio><audio id="sfx-spray" src="../assets/sfx/spray.mp3" preload="auto"></audio><audio id="sfx-switch" src="../assets/sfx/switch.mp3" preload="auto"></audio><audio id="sfx-card" src="../assets/sfx/card.mp3" preload="auto"></audio><audio id="sfx-pop" src="../assets/sfx/pop.mp3" preload="auto"></audio><audio id="sfx-ding" src="../assets/sfx/ding.mp3" preload="auto"></audio><audio id="sfx-tap" src="../assets/sfx/tap.mp3" preload="auto"></audio><audio id="sfx-key" src="../assets/sfx/key.mp3" preload="auto"></audio><audio id="sfx-delete" src="../assets/sfx/delete.mp3" preload="auto"></audio><audio id="sfx-go" src="../assets/sfx/go.mp3" preload="auto"></audio><audio id="sfx-error" src="../assets/sfx/error.mp3" preload="auto"></audio><audio id="sfx-whoosh" src="../assets/sfx/whoosh.mp3" preload="auto"></audio><audio id="sfx-beep" src="../assets/sfx/beep.mp3" preload="auto"></audio><audio id="sfx-shutter" src="../assets/sfx/shutter.mp3" preload="auto"></audio><audio id="sfx-sizzle" src="../assets/sfx/sizzle.mp3" preload="auto"></audio><audio id="sfx-reveal" src="../assets/sfx/reveal.mp3" preload="auto"></audio>
 <div id="lip-frames" hidden><img src="../assets/lip/mouth-0.webp" alt=""><img src="../assets/lip/mouth-1.webp" alt=""><img src="../assets/lip/mouth-2.webp" alt=""><img src="../assets/lip/mouth-3.webp" alt=""><img src="../assets/lip/mouth-4.webp" alt=""><img src="../assets/lip/mouth-5.webp" alt=""></div><audio id="vo-steps" src="../assets/voice/steps.mp3" preload="auto"></audio><audio id="vo-heat" src="../assets/voice/heat.mp3" preload="auto"></audio><audio id="vo-wait-1" src="../assets/voice/wait-1.mp3" preload="auto"></audio><audio id="vo-wait-2" src="../assets/voice/wait-2.mp3" preload="auto"></audio><audio id="vo-wait-3" src="../assets/voice/wait-3.mp3" preload="auto"></audio><audio id="vo-wait-4" src="../assets/voice/wait-4.mp3" preload="auto"></audio><audio id="vo-wait-5" src="../assets/voice/wait-5.mp3" preload="auto"></audio><audio id="vo-wait-6" src="../assets/voice/wait-6.mp3" preload="auto"></audio><audio id="vo-wait-7" src="../assets/voice/wait-7.mp3" preload="auto"></audio><audio id="vo-wait-8" src="../assets/voice/wait-8.mp3" preload="auto"></audio><audio id="vo-here" src="../assets/voice/here-it-comes.mp3" preload="auto"></audio>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mx00woxp"></script><script src="../js/i18n.js?v=mx00woxp"></script><script src="../js/kiosk.js"></script><script src="../js/roast-card.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mx07acan"></script><script src="../js/i18n.js?v=mx07acan"></script><script src="../js/kiosk.js"></script><script src="../js/roast-card.js"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let guest = null, stream = null, glang = "en", R = null, BASE = location.origin;
@@ -730,7 +730,7 @@
   $("mirror").onchange = () => { localStorage.setItem("wf_mirror", $("mirror").value); applyMirror(); };
   function applyMirror() { $("video").style.transform = $("mirror").value === "1" ? "scaleX(-1)" : "none"; }
   async function startCam(restart) {
-    if (stream && !restart) return true;
+    if (stream && !restart && stream.getVideoTracks().some((t) => t.readyState === "live")) return true;   // a camera that was unplugged is opened again
     if (stream) stream.getTracks().forEach((t) => t.stop());
     try {
       const id = localStorage.getItem("wf_cam_" + K.station);
@@ -743,10 +743,12 @@
   function capture() {
     // The photo is kept as sharp as the camera gives it, up to 1600 wide (it was always shrunk to 1024 before), with a light lift in contrast and colour.
     // Both happen in the same instant as the snap, so there is no extra wait (owner, Nov 2026).
-    const v = $("video"), c = $("shot"); const w = Math.min(1600, Math.max(1024, v.videoWidth || 1024)), h = Math.round(w * (v.videoHeight / v.videoWidth || .75));
+    const v = $("video"), c = $("shot"); const w = Math.min(1280, Math.max(1024, v.videoWidth || 1024)), h = Math.round(w * (v.videoHeight / v.videoWidth || .75));
     c.width = w; c.height = h; const ctx = c.getContext("2d"); ctx.imageSmoothingQuality = "high"; try { ctx.filter = "contrast(1.06) saturate(1.1) brightness(1.03)"; } catch {} ctx.drawImage(v, 0, 0, w, h); ctx.filter = "none";
-    return c.toDataURL("image/jpeg", .9);
+    lookImg = null; try { const k = 720 / w, s2 = document.createElement("canvas"); s2.width = 720; s2.height = Math.round(h * k); const x2 = s2.getContext("2d"); x2.imageSmoothingQuality = "high"; x2.drawImage(c, 0, 0, s2.width, s2.height); lookImg = s2.toDataURL("image/jpeg", .8); } catch {}   // what Wendy reads: a 720-wide copy (owner, 28 Nov 2026: the wait was too long)
+    return c.toDataURL("image/jpeg", .82);   // 1280 wide: under half the upload of the 1600-wide photo, still sharper than the card needs
   }
+  let lookImg = null;
 
   // ---------- flow ----------
   // voice-over of the English roast (when the server has a voice set up); it plays once, on the English tab
@@ -766,9 +768,9 @@
     fetch(`/api/roast/${R.token}/theme`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ theme: c }) }).catch(() => {});
   }
   document.querySelectorAll("#swatch button").forEach((b) => b.onclick = () => { $("swatch").classList.remove("hint"); setCardTheme(b.dataset.c, true); }); setCardTheme("paper");
-  function goIdle() { setCardTheme("paper"); $("swatch").classList.add("hint"); stopVoice(); stopTalk(); sizzleOn(false); K.resetIdle(0); setHeat("medium"); guest = null; R = null; $("code").value = ""; paintCode(); $("code-msg").textContent = ""; K.show("s-idle"); }
+  function goIdle() { lookup.lastBad = null; setCardTheme("paper"); $("swatch").classList.add("hint"); stopVoice(); stopTalk(); sizzleOn(false); K.resetIdle(0); setHeat("medium"); guest = null; R = null; $("code").value = ""; paintCode(); $("code-msg").textContent = ""; K.show("s-idle"); }
   document.addEventListener("kiosk-home", goIdle);
-  $("start").onclick = () => { K.show("s-code"); $("code").focus(); startCam(); };
+  $("start").onclick = () => { K.show("s-code"); $("code").focus(); startCam(); K.resetIdle(60000, goIdle); };
   // code screen: 3 numbers then 2 letters (for example 482 KT). The pad shows numbers first and switches to letters by itself.
   const CODE_LETTERS = "ABCDEFGHJKLMNPQRSTUVWXYZ", CODE_LEN = 5;   // no I or O: they look like 1 and 0
   const codeClean = (raw) => { let out = ""; for (const c of String(raw || "").toUpperCase()) { if (out.length >= CODE_LEN) break; if (out.length < 3 ? /\d/.test(c) : CODE_LETTERS.includes(c)) out += c; } return out; };
@@ -783,7 +785,7 @@
   // The moment the last letter is typed the code is checked, with no need to tap the button (owner): a right code moves on by itself,
   // a wrong one shakes the boxes and says why. The button stays for anyone who wants to tap it.
   function autoGo(v) { setTimeout(() => { if ($("s-code").classList.contains("on") && $("code").value === v && v.length === CODE_LEN) lookup(v); }, 220); }
-  function codeEdit(fn) { $("code").value = fn($("code").value); if (!/Looking/.test($("code-msg").textContent)) $("code-msg").textContent = ""; paintCode(); $("code").focus(); }
+  function codeEdit(fn) { $("code").value = fn($("code").value); if (!/Looking/.test($("code-msg").textContent)) $("code-msg").textContent = ""; paintCode(); $("code").focus(); K.resetIdle(60000, goIdle); }
   for (const k of "1234567890" + CODE_LETTERS) { const b = document.createElement("button"); b.textContent = k; b.className = /\d/.test(k) ? (k === "0" ? "n z" : "n") : "l"; b.onclick = () => codeEdit((v) => v + k); $("kb").appendChild(b); }
   $("code-del").onclick = () => codeEdit((v) => v.slice(0, -1));
   $("code-go").onclick = () => { if ($("code").value.length === CODE_LEN) lookup($("code").value); };
@@ -798,12 +800,14 @@
     $("code-msg").textContent = "Looking up…";
     if (Date.now() < lookup.lockUntil) { $("code-msg").textContent = "Too many wrong codes. Please wait a moment, or ask our crew."; return; }
     try {
-      guest = await K.api("/api/kiosk/lookup", { code }); lookup.bad = 0;
+      if (code === lookup.lastBad) { sfx("error"); $("code-msg").textContent = lookup.lastMsg; return; }   // the same wrong code tapped again counts once
+      const g = await K.api("/api/kiosk/lookup", { code }, 12000); if (!$("s-code").classList.contains("on")) return;   // a late answer must not move a kiosk that has gone back to the start
+      guest = g; lookup.bad = 0;
       if (guest.roastsLeft <= 0) { $("code-msg").textContent = `${guest.firstName} has already been roasted. One roast per guest.`; return; }
       glang = guest.lang || "en"; setGLang(glang);
       $("c-name").textContent = `${guest.firstName}!`;
       sfx("go"); K.show("s-consent"); fitConsent(); K.resetIdle(120000, goIdle);
-    } catch (e) { sfx("error"); $("code-msg").textContent = e.message; $("slots").classList.add("err"); setTimeout(() => $("slots").classList.remove("err"), 500); lookup.bad = (lookup.bad || 0) + 1; if (lookup.bad >= 3) { lookup.bad = 0; lookup.lockUntil = Date.now() + 30000; $("code-msg").textContent = "Too many wrong codes. Try again in 30 seconds, or ask our crew."; }   /* three wrong codes lock the pad for half a minute */ }
+    } catch (e) { if (!$("s-code").classList.contains("on")) return; sfx("error"); $("code-msg").textContent = e.message; $("slots").classList.add("err"); setTimeout(() => $("slots").classList.remove("err"), 500); if (e.status !== 404) return;   /* a slow network is not a wrong code */ lookup.lastBad = code; lookup.lastMsg = e.message; lookup.bad = (lookup.bad || 0) + 1; if (lookup.bad >= 3) { lookup.bad = 0; lookup.lockUntil = Date.now() + 30000; $("code-msg").textContent = "Too many wrong codes. Try again in 30 seconds, or ask our crew."; }   /* three wrong codes lock the pad for half a minute */ }
   }
   function setGLang(l) { glang = l; document.querySelectorAll(".lang-pick button").forEach((b) => b.classList.toggle("on", b.dataset.l === l)); document.querySelectorAll("#c-box [lang]").forEach((p) => p.style.display = p.lang === l ? "" : "none"); fitConsent(); }
   // keep the greeting on the charcoal side and the card above the footer, whatever the name or language
@@ -817,8 +821,22 @@
   }
   addEventListener("resize", () => { if ($("s-consent").classList.contains("on")) fitConsent(); });
   document.querySelectorAll(".lang-pick button").forEach((b) => b.onclick = () => setGLang(b.dataset.l));
-  $("agree").onclick = async () => { K.show("s-cam"); await startCam(); K.resetIdle(120000, goIdle); };
+  $("agree").onclick = async () => { if (K.fresh(1500)) return;   /* a tap meant for Go on the code screen must not agree to the photo */ K.show("s-cam"); await startCam(); K.resetIdle(120000, goIdle); };
+  // The venue's network sometimes stalls while the photo uploads, and the guest was left on "Adding the sass" for minutes (owner, 28 Nov 2026).
+  // If there is no answer in 35 seconds the kiosk says so and sends again with only the small photo, which is a quick upload; whichever answer comes first is used.
+  async function askRoast(image) {
+    const body = { code: guest.code, image, look: lookImg, consent: true, heat }, late = (ms) => new Promise((_, rej) => setTimeout(() => rej(new Error("slow")), ms));
+    const first = K.api("/api/kiosk/roast", body, 80000); first.catch(() => {});
+    try { return await Promise.race([first, late(35000)]); }
+    catch (e) {
+      if (e.message !== "slow") throw e;
+      $("cook-line").textContent = "The network is slow. Sending it again…";
+      const second = K.api("/api/kiosk/roast", { ...body, image: lookImg || image, look: null }, 80000); second.catch(() => {});
+      try { return await Promise.race([Promise.any([first, second]), late(40000)]); } catch { throw new Error("the network is too slow right now. Please try again."); }
+    }
+  }
   $("snap").onclick = async () => {
+    if (!(await startCam()) || !$("video").videoWidth) { $("cam-status").textContent = "The camera is not ready. Please tell our crew."; $("s-cam").classList.add("camerr"); return; }   // never spend a guest’s roast on a black photo
     K.resetIdle(0); $("snap").disabled = true;
     for (const n of [3, 2, 1]) { sfx("beep", .6); $("count").textContent = n; $("count").classList.remove("hidden", "pop"); void $("count").offsetWidth; $("count").classList.add("pop"); await wait(900); }
     $("count").classList.add("hidden");
@@ -826,11 +844,11 @@
     const image = capture(); $("snap").disabled = false;
     $("ck-photo").src = image; paintHeatCap(); setCook(2); K.show("s-cooking"); cookLines(); personalLines(image);
     try {
-      R = await K.api("/api/kiosk/roast", { code: guest.code, image, consent: true, heat }); prepCard();
-      setCook(3); await talkDone(1300); setCook(4);            // let Wendy finish the sentence she is on
+      R = await askRoast(image); prepCard();
+      setCook(3); await talkDone(500); setCook(4);            // the roast is ready: Wendy stops within half a second
       await hereItComes();             // "Here comes the roast", then a drum roll, so heads turn before it appears
       reveal();
-    } catch (e) { alert("Roast failed: " + e.message); goIdle(); }
+    } catch (e) { console.warn("roast", e); stopTalk(); sfx("error"); $("cook-line").textContent = "Sorry, that did not work. Please try again."; await wait(6000); goIdle(); }   // no browser pop-up: the guest is told, then the kiosk goes back to the start
   };
   // ---------- sound ----------
   // Short effects on taps, keys, screen changes, the countdown and the photo. Each one is a small sound file.
@@ -891,13 +909,13 @@
   // the build-up: Wendy announces the roast, then a drum roll; the roast screen appears on the fanfare
   async function hereItComes() {
     stopTalk(); sizzleOn(false);
-    await new Promise((r) => { const a = $("vo-here"); $("cook-line").textContent = "Okay. Here comes the roast!"; const t = setTimeout(r, 3500); say(a, () => { clearTimeout(t); r(); }); });
-    sfx("reveal", .8); await wait(1050); setTimeout(() => sfx("card", .6), 250);   // the card swings in on its lanyard
+    await new Promise((r) => { const a = $("vo-here"); $("cook-line").textContent = "Okay. Here comes the roast!"; const t = setTimeout(r, 1500); say(a, () => { clearTimeout(t); r(); }); });   // at most a second and a half of "Here comes the roast"
+    sfx("reveal", .8); await wait(700); setTimeout(() => sfx("card", .6), 250);   // the card swings in on its lanyard
   }
   // Lines about this guest's own photo: they take over the bubble as soon as they arrive; if they never do, the general lines stay.
   function personalLines(image) {
     const who = guest.code;
-    K.api("/api/kiosk/roast-lines", { code: who, image, consent: true }).then((r) => {
+    K.api("/api/kiosk/roast-lines", { code: who, image: lookImg || image, consent: true }).then((r) => {
       const mine = (r && Array.isArray(r.lines) ? r.lines : []).filter(Boolean);
       if (mine.length < 3 || !guest || guest.code !== who || !talkOn || !$("s-cooking").classList.contains("on")) return;
       personal = { lines: mine.slice(0, r.spoken || 3), audio: r.audio || null };   // said after the line she is on

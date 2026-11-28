@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
-<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwzs74vg" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwzsmaov" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 <title>[DEMO] Wendy's Claw · Wendy Fest</title><link rel="icon" href="../assets/cameo.png"><meta name="theme-color" content="#8E1219"><meta name="mobile-web-app-capable" content="yes">
-<link rel="stylesheet" href="../css/brand.css?v=mwzs74vg">
+<link rel="stylesheet" href="../css/brand.css?v=mwzsmaov">
 <style>
   /* Wendy's Claw: Grab the Order (game 3). A memory match game inside a claw machine: remember six slots, match the three pairs before the clock runs out,
      and the claw drops each matched item on the tray. One fixed 1080 x 1920 canvas, scaled to whatever screen it is on (upright kiosk first; a wide
@@ -23,12 +23,12 @@
   .hd .stp { display: flex; align-items: center; gap: 16px; font: italic 800 24px/1 Poppins, sans-serif; letter-spacing: .16em; text-transform: uppercase; }
   .hd .stp b { width: 54px; height: 54px; border-radius: 50%; background: #fff; color: #0A7FBC; display: grid; place-items: center; font: 900 28px/1 Poppins, sans-serif; letter-spacing: 0; }
   .ft { position: absolute; left: 0; right: 0; bottom: 0; height: 56px; background: #1A0507; display: flex; align-items: center; justify-content: space-between; padding: 0 44px; font: 800 17px/1 Poppins, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.75); z-index: 5; }
-  .ft img { height: 30px; vertical-align: middle; margin-right: 12px; }
+  .ft span { display: flex; align-items: center; white-space: nowrap; } .ft img { display: block; height: 30px; width: auto; margin-right: 12px; }
 
   /* the machine's sign: WENDY'S CLAW over a "Grab the order" plate */
-  .sign { position: absolute; left: 0; right: 0; top: 208px; text-align: center; z-index: 3; }
+  .sign { position: absolute; left: 0; right: 0; top: 198px; text-align: center; z-index: 3; }
   .sign .big { font: italic 900 118px/.92 Poppins, sans-serif; text-transform: uppercase; letter-spacing: -.02em; color: #FFF6E4; text-shadow: 0 5px 0 #F0D9A8, 0 10px 0 #8E1219, 0 16px 0 #5A080E, 0 30px 30px rgba(0,0,0,.55); }
-  .sign .plate { display: inline-flex; align-items: center; gap: 22px; margin-top: 14px; }
+  .sign .plate { display: inline-flex; align-items: center; gap: 22px; margin-top: 32px; }
   .sign .plate b { display: block; padding: 12px 34px 10px; border-radius: 14px; background: linear-gradient(180deg, #FFFBF3, #EADFCB); color: #B81B24; font: italic 900 38px/1 Poppins, sans-serif; letter-spacing: .06em; text-transform: uppercase; box-shadow: 0 6px 0 #B5A88F, 0 14px 20px rgba(0,0,0,.4); }
   .sign .plate i, .cta-row i { display: block; width: 92px; height: 34px; background: linear-gradient(#18A6E8 0 34%, transparent 34% 66%, #18A6E8 66%); transform: skewX(-18deg); border-radius: 3px; filter: drop-shadow(0 4px 0 rgba(0,0,0,.25)); }
 
@@ -119,6 +119,33 @@
   .step .pic { flex: 1; min-width: 0; height: 210px; display: flex; align-items: center; justify-content: center; gap: 14px; } .step .pic.three img { max-width: 31%; height: 160px; } .step .pic img { max-width: 46%; object-fit: contain; height: 150px; filter: drop-shadow(0 10px 8px rgba(0,0,0,.3)); }
   .step .pic .q { display: grid; grid-template-columns: repeat(3, 88px); gap: 10px; } .step .pic .q { gap: 8px; } .step .pic .q i { height: 58px; font-size: 36px !important; border-radius: 14px; background: linear-gradient(180deg, #B81B24, #7E0F16); color: #FFE08A; display: grid; place-items: center; font: 900 44px/1 Poppins, sans-serif; font-style: normal; }
 
+  /* ---- design options for How to play and the order pop-up, being chosen by the owner: ?d=a, ?d=b, ?d=c (nothing changes without ?d) ---- */
+  [class*="dz-"] .step { overflow: visible; } [class*="dz-"] .step::after { border-radius: 28px; }
+  [class*="dz-"] .step .pic img { height: 196px !important; max-width: 48%; margin-top: -26px; filter: drop-shadow(0 3px 2px rgba(0,0,0,.35)) drop-shadow(0 26px 14px rgba(40,10,0,.55)); } [class*="dz-"] .step .pic.three img { max-width: 33% !important; height: 190px !important; }
+  [class*="dz-"] .step .pic { background: radial-gradient(ellipse 44% 13% at 50% 92%, rgba(50,15,0,.42), transparent 72%); }
+  [class*="dz-"] .ord .row img { height: 280px; max-width: 300px; filter: drop-shadow(0 4px 3px rgba(0,0,0,.4)) drop-shadow(0 30px 18px rgba(0,0,0,.7)); }
+  /* A: warm showcase. Cream cards with a white rim and gold number; in the pop-up each product stands in its own spotlight on a soft plate */
+  .dz-a .step { background: linear-gradient(125deg, #FFFEF9 0%, #F8EDD6 55%, #EAD5AC 100%); box-shadow: inset 0 0 0 4px #fff, inset 0 -8px 18px rgba(180,140,70,.25), 0 10px 0 #B5A88F, 0 28px 30px rgba(0,0,0,.5); }
+  .dz-a .step > b { background: linear-gradient(180deg, #F0434C, #A5171F); box-shadow: 0 0 0 4px #FFE08A, 0 8px 0 #5A080E, 0 14px 14px rgba(0,0,0,.3); }
+  .dz-a .ord .row div { padding-bottom: 14px; background: radial-gradient(circle 190px at 50% 150px, rgba(255,196,96,.42), transparent 70%), radial-gradient(ellipse 130px 26px at 50% 286px, rgba(0,0,0,.75), transparent 75%); }
+  .dz-a .ord .h1 { color: #FFF6E4; } .dz-a .ord p { padding: 12px 34px; border-radius: 40px; background: rgba(255,224,138,.14); box-shadow: inset 0 0 0 3px rgba(255,224,138,.7); }
+  /* B: the order ticket. A red tab carries the step number; the pop-up is a cream order slip with the three products on it */
+  .dz-b .step { padding-left: 156px; background: linear-gradient(125deg, #FFFDF6, #F3E6CB); box-shadow: 0 10px 0 #B5A88F, 0 28px 30px rgba(0,0,0,.5); }
+  .dz-b .step > b { position: absolute; left: 0; top: 0; bottom: 0; width: 124px; height: auto; border-radius: 28px 0 0 28px; font-size: 92px; background: linear-gradient(180deg, #F0434C, #A5171F); box-shadow: inset -8px 0 0 #FFE08A; }
+  .dz-b .step > span { width: 220px; }
+  .dz-b .ord .row { width: auto; margin: 0 26px; padding: 44px 6px 30px; border-radius: 30px; background: linear-gradient(180deg, #FFFDF6, #EFE2C6); box-shadow: 0 12px 0 #B5A88F, 0 30px 40px rgba(0,0,0,.6); position: relative; }
+  .dz-b .ord .row::before { content: "Your order"; position: absolute; left: 50%; top: -24px; translate: -50% 0; padding: 10px 30px 8px; border-radius: 30px; background: linear-gradient(180deg, #F0434C, #B81B24); color: #fff; font: italic 900 26px/1 Poppins, sans-serif; letter-spacing: .12em; text-transform: uppercase; box-shadow: 0 5px 0 #5A080E; }
+  .dz-b .ord .row div { width: 280px; color: #5A080E; font-size: 24px; } .dz-b .ord .row div + div { box-shadow: -4px 0 0 -1px transparent; border-left: 4px dashed #D9C9A8; } .dz-b .ord .row img { height: 240px; max-width: 262px; filter: drop-shadow(0 3px 2px rgba(0,0,0,.3)) drop-shadow(0 24px 12px rgba(60,20,0,.5)); }
+  .dz-b .ord .h1 { display: none; } .dz-b .ord { gap: 44px; } .dz-b .ord p { font-size: 38px; color: #FFF6E4; }
+  /* C: night menu. Dark glossy cards with a gold line; products glow under a spotlight */
+  .dz-c .step { background: linear-gradient(135deg, #5A0E14 0%, #2A0608 60%, #1A0304 100%); color: #FFF6E4; box-shadow: inset 0 0 0 3px #E9B95A, inset 0 18px 30px rgba(255,255,255,.08), 0 10px 0 #120203, 0 28px 30px rgba(0,0,0,.6); }
+  .dz-c .step::after { background: radial-gradient(circle, rgba(233,185,90,.28) 3px, transparent 3.6px) 0 0 / 22px 22px; }
+  .dz-c .step > b { background: linear-gradient(180deg, #FFE9A8, #E9B95A); color: #5A080E; box-shadow: 0 6px 0 #8A6420; }
+  .dz-c .step .pic { background: radial-gradient(circle 150px at 50% 46%, rgba(255,200,110,.38), transparent 72%), radial-gradient(ellipse 44% 13% at 50% 92%, rgba(0,0,0,.7), transparent 72%); }
+  .dz-c .step .pic .q i { background: linear-gradient(180deg, #FFE9A8, #E9B95A); color: #5A080E; }
+  .dz-c .ord .row { gap: 16px; } .dz-c .ord .row div { width: 286px; padding: 26px 0 22px; border-radius: 26px; color: #FFE08A; background: radial-gradient(circle 170px at 50% 150px, rgba(255,200,110,.4), transparent 72%), linear-gradient(160deg, #5A0E14, #1A0304); box-shadow: inset 0 0 0 3px #E9B95A, 0 12px 0 #120203, 0 26px 30px rgba(0,0,0,.6); }
+  .dz-c .ord .row img { height: 250px; max-width: 262px; }
+
   /* play: timer, order ticket, six slots, the claw and the tray */
   .hud { position: absolute; left: 34px; right: 34px; top: 26px; height: 150px; display: flex; gap: 18px; z-index: 6; }
   .clock { flex: none; width: 210px; border-radius: 24px; background: linear-gradient(180deg, #2A0A0C, #120405); box-shadow: inset 0 0 0 4px #F0434C, 0 8px 0 rgba(0,0,0,.4); display: grid; place-items: center; position: relative; overflow: hidden; }
@@ -159,6 +186,8 @@
   .rig .cable { position: absolute; left: -6px; bottom: 0; width: 12px; height: 1400px; background: linear-gradient(90deg, #6B7379, #F2F5F7 45%, #7C858D); }
   .rig img.c { position: absolute; left: -140px; top: -20px; width: 280px; filter: drop-shadow(0 16px 12px rgba(0,0,0,.5)); } .rig img.c.shut, .rig.grab img.c.open { display: none; } .rig.grab img.c.shut { display: block; }
   .rig img.held { position: absolute; left: -125px; top: 172px; width: 250px; height: 230px; object-fit: contain; object-position: 50% 0; display: none; z-index: -1; filter: drop-shadow(0 12px 10px rgba(0,0,0,.5)); transition: clip-path .8s ease-out; clip-path: inset(0 0 0 0); } .rig.grab img.held { display: block; }
+  .rig .bundle { position: absolute; left: -330px; top: 172px; width: 660px; height: 230px; display: none; align-items: flex-end; justify-content: center; z-index: -1; transition: clip-path .8s ease-out; clip-path: inset(0 0 0 0); } .rig.grab .bundle { display: flex; } .rig .bundle.half { clip-path: inset(0 0 50% 0); }
+  .rig .bundle img { height: 210px; max-width: 250px; object-fit: contain; margin: 0 -16px; filter: drop-shadow(0 12px 10px rgba(0,0,0,.5)); }
   .rig img.held.half { clip-path: inset(0 0 50% 0); }   /* in the slot only the top half of the product shows; it comes fully into view as the claw pulls it out (owner) */
   .trayrow { position: absolute; left: 60px; right: 60px; bottom: 18px; height: 250px; z-index: 4; }
   .trayrow > img.t { position: absolute; left: 0; bottom: 0; width: 100%; filter: drop-shadow(0 16px 14px rgba(0,0,0,.55)); }
@@ -243,7 +272,7 @@
       <div class="hud" id="hud"><div class="clock" id="clock"><b><span id="secs">15</span><small>s</small></b><i id="bar"></i></div><div class="tries"><small>Tries</small><div id="tries"></div></div><div class="ticket"><div class="it" data-k="burger"><img alt=""></div><div class="it" data-k="fries"><img alt=""></div><div class="it" data-k="frosty"><img alt=""></div><div class="n"><span id="got">0</span>/3<small>Matched</small></div></div></div>
       <div class="bonus" id="bonus">+2s</div>
       <div class="slots" id="slots"></div>
-      <div class="rig" id="rig"><div class="cable"></div><img class="c open" src="../assets/claw/claw-open.webp" alt=""><img class="c shut" src="../assets/claw/claw-closed.webp" alt=""><img class="held" id="held" alt=""></div>
+      <div class="rig" id="rig"><div class="cable"></div><img class="c open" src="../assets/claw/claw-open.webp" alt=""><img class="c shut" src="../assets/claw/claw-closed.webp" alt=""><img class="held" id="held" alt="" style="display:none"><div class="bundle" id="bundle"></div></div>
       <div class="trayrow"><img class="t" src="../assets/claw/tray.webp" alt=""><div class="on" id="tray"></div></div>
     </section>
 
@@ -278,11 +307,12 @@
 
 <audio id="a-clawmove" src="../assets/sfx/clawmove.mp3" preload="auto"></audio><audio id="a-clawgrab" src="../assets/sfx/clawgrab.mp3" preload="auto"></audio><audio id="a-clawdrop" src="../assets/sfx/clawdrop.mp3" preload="auto"></audio>
 <audio id="a-jackpot" src="../assets/sfx/jackpot.mp3" preload="auto"></audio><audio id="a-tension" src="../assets/sfx/tension.mp3" preload="auto" loop></audio><audio id="a-flip" src="../assets/sfx/flip.mp3" preload="auto"></audio>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwzs74vg"></script><script src="../js/kiosk.js?v=mwzs74vg"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwzsmaov"></script><script src="../js/kiosk.js?v=mwzsmaov"></script>
 <script>
   const $ = (id) => document.getElementById(id), wait = (ms) => new Promise((r) => setTimeout(r, ms));
   // the 1080 x 1920 canvas is scaled to fit the screen and centred
   { const w = (new URLSearchParams(location.search).get("w") || "d").toLowerCase(); document.getElementById("s-idle").className = "screen on " + (w === "a" ? "wa" : w === "b" ? "wb" : "wd"); }   // the welcome look being chosen: ?w=a or ?w=b
+  { const d = (new URLSearchParams(location.search).get("d") || "").toLowerCase(); if (["a", "b", "c"].includes(d)) document.getElementById("fit").classList.add("dz-" + d); }   // design options being chosen by the owner
   function fit() { const k = Math.min(innerWidth / 1080, innerHeight / 1920), el = $("fit"); el.style.transform = `translate(${-540 * k}px, ${-960 * k}px) scale(${k})`; }
   addEventListener("resize", fit); fit();
   const sfx = (n, vol = .7) => { if (localStorage.getItem("wf_sfx") === "off") return; const a = $("a-" + n); if (!a) return; try { a.currentTime = 0; a.volume = vol; a.play().catch(() => {}); } catch {} };
@@ -342,7 +372,7 @@
     // harder (owner): besides the three pairs of the order there are single items that are NOT in the order. Turning one over wastes a try.
     const others = [...BURGERS.filter((b) => b !== burger), ...SIDES.filter((x) => x !== side), frosty === "choc" ? "vanilla" : "choc"]; for (let i = others.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [others[i], others[j]] = [others[j], others[i]]; }
     deck = [...order, ...order, ...others.slice(0, Math.max(0, Math.min(3, CFG.decoys ?? 3)))]; for (let i = deck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [deck[i], deck[j]] = [deck[j], deck[i]]; }
-    open = []; matched = 0; lock = true; left = CFG.durationMs; tries = Math.max(3, CFG.chances || 3); paintTries(); $("got").textContent = "0"; $("tray").innerHTML = ""; $("clock").classList.remove("low");
+    open = []; matched = 0; got = []; ending = false; lock = true; left = CFG.durationMs; tries = Math.max(3, CFG.chances || 3); paintTries(); $("got").textContent = "0"; $("tray").innerHTML = ""; $("clock").classList.remove("low");
     document.querySelectorAll(".ticket .it").forEach((el, i) => { el.dataset.k = order[i]; el.classList.remove("ok"); el.querySelector("img").src = srcOf(order[i]); });
     $("slots").innerHTML = deck.map((k, i) => `<div class="slot" data-i="${i}"><div class="f back">?</div><div class="f front"><img src="${srcOf(k)}" alt=""><span>${NAMES[k]}</span></div></div>`).join("");
     document.querySelectorAll(".slot").forEach((el) => (el.onclick = () => tapSlot(+el.dataset.i)));
@@ -369,25 +399,30 @@
     if (lock || open.includes(i)) return; const el = slotEl(i); if (el.classList.contains("gone")) return;
     el.classList.add("up"); sfx("flip", .6); open.push(i); if (open.length < 2) return;
     const [a, b] = open; lock = true; tries--; paintTries();
-    if (deck[a] === deck[b]) grab(a, b);
+    if (deck[a] === deck[b]) pairOk(a, b);
     else setTimeout(() => { sfx("error", .4); [a, b].forEach((x) => { const s = slotEl(x); s.classList.add("bad"); setTimeout(() => s.classList.remove("bad", "up"), 380); }); setTimeout(() => { open = []; if (tries <= 0) return finish(false, "tries"); lock = false; }, 560); }, 520);
   }
-  // A matched pair: the claw glides to the item, closes on it, carries it down and drops it on the tray. The clock waits while the claw works, and gives a few seconds back.
-  async function grab(a, b) {
-    running = false; const k = deck[a], rig = $("rig"), el = slotEl(b), box = $("slots"), sx = box.offsetLeft + el.offsetLeft + el.offsetWidth / 2, sy = box.offsetTop + el.offsetTop;
-    sfx("ding", .55); await wait(260);
-    const go = (x, y, ms, ease = "cubic-bezier(.4, 0, .2, 1)") => { rig.style.transition = `translate ${ms}ms ${ease}`; rig.style.translate = `${x}px ${y}px`; return wait(ms + 30); };
-    sfx("clawmove", .6); await go(sx, sy - 190, 440); await go(sx, sy - 105, 320);
-    const held = $("held"); held.src = srcOf(k); held.classList.add("half"); rig.classList.add("grab"); sfx("clawgrab", .7); [a, b].forEach((x) => slotEl(x).classList.add("gone")); await wait(260);
-    const n = matched, tx = 190 + n * 290; held.classList.remove("half"); await go(sx, sy - 330, 820, "cubic-bezier(.3, 0, .3, 1)");   // lifted out of the slot: the whole item comes into view
-    sfx("clawmove", .5); await go(tx, 500, 620); await go(tx, 690, 900, "cubic-bezier(.2, .7, .3, 1)");   // across, then lowered slowly onto the tray
-    rig.classList.remove("grab"); const img = document.createElement("img"); img.src = srcOf(k); $("tray").appendChild(img); sfx("clawdrop", .7);
-    matched++; $("got").textContent = matched; document.querySelector(`.ticket .it[data-k="${k}"]`).classList.add("ok");
+  // A matched pair is ticked off straight away and gives a few seconds back; the clock keeps running. The claw comes once, when the round ends (owner, Nov 2026).
+  let got = [], ending = false;
+  function pairOk(a, b) {
+    const k = deck[a]; sfx("ding", .55); setTimeout(() => [a, b].forEach((x) => slotEl(x).classList.add("gone")), 260);
+    got.push(k); matched++; $("got").textContent = matched; document.querySelector(`.ticket .it[data-k="${k}"]`).classList.add("ok"); open = [];
     if (matched < 3 && CFG.bonusMs > 0) { left = Math.min(CFG.durationMs, left + CFG.bonusMs); const bn = $("bonus"); bn.textContent = `+${Math.round(CFG.bonusMs / 1000)}s`; bn.classList.remove("go"); void bn.offsetWidth; bn.classList.add("go"); paintClock(); }
-    await wait(260); go(474, -420, 420); open = [];
     if (matched >= 3) return finish(true);
     if (tries <= 0) return finish(false, "tries");
-    lock = false; lastT = performance.now(); running = true;
+    setTimeout(() => { if (!ending) lock = false; }, 300);
+  }
+  // The round is over: the claw comes down, takes every matched item in one go (half hidden in the cabinet, in full once lifted out) and lowers them onto the tray.
+  async function collect() {
+    if (!got.length) return; const rig = $("rig"), box = $("slots"), x = 474, y = box.offsetTop + 218, bundle = $("bundle");
+    const go = (gx, gy, ms, ease = "cubic-bezier(.4, 0, .2, 1)") => { rig.style.transition = `translate ${ms}ms ${ease}`; rig.style.translate = `${gx}px ${gy}px`; return wait(ms + 30); };
+    bundle.innerHTML = got.map((k) => `<img src="${srcOf(k)}" alt="">`).join(""); bundle.classList.add("half");
+    sfx("clawmove", .6); await go(x, y - 190, 440); await go(x, y - 105, 320);
+    rig.classList.add("grab"); sfx("clawgrab", .7); await wait(280);
+    bundle.classList.remove("half"); await go(x, y - 330, 820, "cubic-bezier(.3, 0, .3, 1)");
+    sfx("clawmove", .5); await go(x, 690, 1000, "cubic-bezier(.2, .7, .3, 1)");
+    rig.classList.remove("grab"); $("tray").innerHTML = got.map((k) => `<img src="${srcOf(k)}" alt="">`).join(""); sfx("clawdrop", .7);
+    await wait(320); go(474, -420, 420); await wait(520);
   }
   function confetti(n = 150) { const box = document.createElement("div"); box.className = "confetti"; $("fit").appendChild(box); const cols = ["#FFF6E4", "#18A6E8", "#FFE08A", "#F0434C", "#FFFFFF"];
     for (let i = 0; i < n; i++) { const el = document.createElement("i"); el.style.left = Math.random() * 1080 + "px"; el.style.background = cols[i % cols.length]; el.style.setProperty("--dx", (Math.random() * 400 - 200) + "px"); el.style.setProperty("--r", (Math.random() * 1400 - 700) + "deg"); el.style.animationDuration = 2.2 + Math.random() * 2.2 + "s"; el.style.animationDelay = Math.random() * .9 + "s"; box.appendChild(el); }
@@ -396,7 +431,8 @@
   function prizeText(label) { const t = String(label || "").trim(); let m; if ((m = t.match(/^free\s+(.+)$/i))) return { big: /meal/i.test(m[1]) ? "Free meal" : "Free", line: m[1] }; if ((m = t.match(/^(\d+\s*%\s*off)\s+(.+)$/i))) return { big: m[1], line: m[2] }; return { big: "You won", line: t }; }
   let saving = false;
   async function finish(won, why) {
-    if (screen !== "s-play") return; stopClock(); lock = true; const msLeft = Math.max(0, Math.round(left)), took = Math.round(performance.now() - t0);
+    if (screen !== "s-play" || ending) return; ending = true; stopClock(); lock = true; const msLeft = Math.max(0, Math.round(left)), took = Math.round(performance.now() - t0);
+    await collect(); if (screen !== "s-play") return;
     const tray = $(won ? "win-tray" : "lose-tray"), have = [...$("tray").children].map((i) => i.getAttribute("src"));
     tray.innerHTML = order.map((k) => `<img src="${srcOf(k)}" class="${have.includes(srcOf(k)) ? "" : "miss"}" alt="">`).join("");
     const name = guest ? guest.firstName : "";

@@ -69,9 +69,17 @@
         while (h < t) { const i = stack[h++]; for (const j of nb(i)) if (j >= 0 && d[j] < 0 && lab[j] === best) { d[j] = d[i] + 1; stack[t++] = j; } } return d; };
       let cutAny = false;
       if (F0 && F0.area >= 40) {
+        // Sunglasses, a mask or a hand across the face split the guest's own face into pieces (28 Nov 2026: a guest in sunglasses lost their forehead, because
+        // the piece above the glasses was read as a second, smaller face). A piece in line with the guest's face, above or below it and close by, is the guest's.
+        const W0 = F0.x1 - F0.x0 + 1;
+        for (const fc of faces) {
+          if (fc === F0) continue; const ox = Math.min(fc.x1, F0.x1) - Math.max(fc.x0, F0.x0) + 1, gap = Math.max(0, F0.y0 - fc.y1, fc.y0 - F0.y1);
+          if (ox < (fc.x1 - fc.x0 + 1) * .5 || gap > W0 * .7) continue;
+          fc.own = true; for (let i = 0; i < n; i++) if (fl[i] === fc.k) fl[i] = F0.k;
+        }
         const d0 = geo(F0.k), z0 = Math.sqrt(F0.area);
         for (const fc of faces) {
-          if (fc === F0 || fc.area < 12 || fc.area < F0.area * .02 || fc.area > F0.area * .45 || fc.y0 > F0.y1) continue;
+          if (fc === F0 || fc.own || fc.area < 12 || fc.area < F0.area * .02 || fc.area > F0.area * .45 || fc.y0 > F0.y1) continue;
           const d = geo(fc.k), z = Math.sqrt(fc.area), reach = 3 * Math.max(fc.x1 - fc.x0, fc.y1 - fc.y0) + 4, mine = []; let hairN = 0;
           for (let i = 0; i < n; i++) if (lab[i] === best && fl[i] !== F0.k && d[i] >= 0 && d[i] <= reach && (d0[i] < 0 || d[i] / z < d0[i] / z0)) { mine.push(i); if (hair[i] > .5) hairN++; }
           if (hairN < fc.area * .4) continue;   // no hair of its own: the guest's ear or hand, not a person behind

@@ -982,7 +982,10 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   function saySass(url, delay = 1700) { stopSass(); if (!url || (localStorage.getItem("wf_sfx") || "on") !== "on") return; const a = sassVoice = typeof url === "string" ? new Audio(url) : url; try { a.currentTime = 0; } catch {} setTimeout(() => { if (sassVoice === a && !windowOpen) a.play().catch(() => {}); }, delay); }
   // one of Wendy's recorded lines, picked at random (never the same one twice in a row): "win", "quiet" for the right word said too softly, "nos" for "Wendy" without the S
   const lastPreset = {};
-  function sayPreset(kind, delay) { let i; do { i = 1 + Math.floor(Math.random() * 6); } while (i === lastPreset[kind]); lastPreset[kind] = i; saySass($(`vo-${kind}-${i}`), delay); }
+  function sayPreset(kind, delay) { let i; do { i = 1 + Math.floor(Math.random() * 6); } while (i === lastPreset[kind]); lastPreset[kind] = i; saySass($(`vo-${kind}-${i}`), delay); return i; }
+  // The words of Wendy's recorded lines (scripts/make-sounds.mjs, QUIET and NOS, in the same order), so the result screen shows the same teasing line she says out loud (owner, Nov 2026).
+  const SAID = { quiet: ["I heard Wendy’s. Just about. Was that a shout, or a secret?", "Right word. Wrong volume. My grill is louder than that.", "Sorry, did somebody whisper? You said it right. Now say it louder!", "That was Wendy’s, in a classroom voice. Next time, let it out!", "Very polite. Very quiet. This is a scream booth, not a meeting.", "You got my name right. Now tell the people at the back."],
+    nos: ["So close. But my name has an S at the end. It is Wendy’s!", "Wendy? Who is Wendy? Around here, we say Wendy’s.", "Great shout. But you dropped something. An S. It is Wendy’s!", "Almost my name. You forgot the last letter. Wendy’s, with an S.", "Wendy is nice. Wendy’s is better. Do not forget the S!", "One letter short. And it was the important one. Wendy’s!"] };
   // a tap sound on every button outside the keypad (keypad keys have their own)
   // each kind of button has its own sound: Next player drops a coin, the big action buttons power up, small option buttons flick, the rest tap
   document.addEventListener("pointerdown", (e) => { const b = e.target.closest && e.target.closest("button"); if (!b || b.disabled || b.closest("#kbd") || b.id === "code-del") return;
@@ -1327,8 +1330,8 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
       $("res-title").textContent = { no_s: "Don’t forget the S!", quiet: "Louder next time.", close: "So close!" }[r.reason] || (r.loudness < r.accuracy ? "Louder next time." : "We heard… something.");
       renderDetail({ no_s: "So close. It’s WENDY’S, with the S.", quiet: "Clear as day. Now say it LOUDER!", unclear: "The meter heard you. It just didn’t hear a clear “Wendy’s”.", close: "So close. Just a little more of both." }[r.reason] || (r.loudness < 40 ? "Louder! Colombo traffic is louder than that." : "The meter heard you. It just didn’t hear “Wendy’s”."), r);
       if (r.sass) { $("res-title").textContent = r.sass.title; renderDetail(r.sass.text, r); saySass(r.sassAudio); }
-      else if (r.reason === "quiet") sayPreset("quiet", 1700);
-      else if (r.reason === "no_s") sayPreset("nos", 1700);
+      else if (r.reason === "quiet") renderDetail(SAID.quiet[sayPreset("quiet", 1700) - 1], r);
+      else if (r.reason === "no_s") renderDetail(SAID.nos[sayPreset("nos", 1700) - 1], r);
       $("qr-label").innerHTML = "Scan for<br>your pass"; SFX.lose();
       winTimers.forEach(clearTimeout); winTimers = [setTimeout(() => { if (mode === "result") SFX.rise(); }, 380), setTimeout(() => { if (mode === "result" && !r.sass) SFX.aww(); }, 1500)];   // the bars fill with a rising sweep; a near miss gets a soft "aww" (not over Wendy's comeback)
     }

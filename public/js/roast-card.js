@@ -54,7 +54,15 @@
     // A person behind who is joined to the guest's shape is cut away at the halfway line between the two heads. A guest standing alone is never trimmed,
     // so arms held out or a wide pose stay whole.
     let cutL = -1, cutR = mw;
-    if (H0) for (const h of heads) { if (h === H0 || lab[h.seed] !== best) continue; if ((h.x0 + h.x1) / 2 < (H0.x0 + H0.x1) / 2) cutL = Math.max(cutL, (h.x1 + H0.x0) / 2); else cutR = Math.min(cutR, (H0.x1 + h.x0) / 2); }
+    // Only a real second head counts as another person: a good size next to the guest's own head, clear of it to the side, and up at head height.
+    // The guest's own neck, chest, hands or a patch of shirt the engine mistakes for skin or hair must never trigger a cut (that chopped the body on the wall, 28 Nov 2026).
+    if (H0) for (const h of heads) {
+      if (h === H0 || lab[h.seed] !== best) continue;
+      if (h.area < H0.area * .2) continue;                                  // too small to be a head beside this one
+      if (h.y0 > H0.y1 - (H0.y1 - H0.y0) * .15) continue;                  // starts below the guest's head: neck, chest or hands, not a person behind
+      const gap = Math.min(H0.x1 - H0.x0, h.x1 - h.x0) * .15;
+      if (h.x1 < H0.x0 - gap) cutL = Math.max(cutL, (h.x1 + H0.x0) / 2); else if (h.x0 > H0.x1 + gap) cutR = Math.min(cutR, (H0.x1 + h.x0) / 2);   // otherwise it overlaps the guest's head sideways: leave it
+    }
     const mk = document.createElement("canvas"); mk.width = mw; mk.height = mh; const mx = mk.getContext("2d"), im = mx.createImageData(mw, mh); let hx0 = mw, hx1 = 0, hy0 = mh, hy1 = 0;
     if (best) for (let y = 0; y < mh; y++) for (let x = 0; x < mw; x++) {
       const i = y * mw + x; if (!al[i] || x < cutL || x > cutR) continue; let keep = lab[i] === best;

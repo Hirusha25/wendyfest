@@ -1084,9 +1084,13 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     if (!fit(text) && short) fit(short);
   }
   function setBeat(n) { [...$("beats").children].forEach((el) => { const b = +el.dataset.b; el.classList.toggle("on", b === n); el.classList.toggle("done", b < n); }); }
+  // The line that counts as "the guest is shouting" sits 6 dB above the room measured in the countdown (owner, 28 Nov 2026: loud music at the venue).
+  // With a fixed line the music alone was always over it, so the round never ended when the guest stopped, always ran 1.5 s past the clock,
+  // and every recording was full length. Never lower than the old line, never above 85 so a loud guest can always reach it.
+  const holdLine = () => (ambDb === null || ambDb < -60 ? HOLD_LINE : Math.min(85, Math.max(HOLD_LINE, dbToPct(ambDb + 6))));
   function resetHold() { holdRun = holdBest = holdGap = voiceTotal = 0; holdLast = performance.now(); paintHold(); setBeat(1); }
   function trackHold(pct) { const now = performance.now(), dt = Math.min(.2, (now - holdLast) / 1000); holdLast = now;
-    if (pct >= HOLD_LINE) { holdRun += dt; voiceTotal += dt; holdGap = 0; } else { holdGap += dt; if (holdGap > .35) holdRun = 0; }
+    if (pct >= holdLine()) { holdRun += dt; voiceTotal += dt; holdGap = 0; } else { holdGap += dt; if (holdGap > .35) holdRun = 0; }
     if (holdRun > holdBest) holdBest = holdRun; paintHold(); }
   function loop(t) {
     rafId = requestAnimationFrame(loop);

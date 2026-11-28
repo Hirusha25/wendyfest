@@ -251,7 +251,7 @@
       <div class="steps">
         <div class="step"><b>1</b><span>See your order<small>A burger, a side and a drink or Frosty.</small></span><div class="pic three"><img src="/assets/claw/classic.webp" alt=""><img src="/assets/claw/bites.webp" alt=""><img src="/assets/claw/frosty-choc.webp" alt=""></div></div>
         <div class="step"><b>2</b><span>Remember where it is<small>You get 3 seconds. Read the names.</small></span><div class="pic"><div class="q"><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i></div></div></div>
-        <div class="step"><b>3</b><span>Match only your order<small>3 tries, 15 seconds. Wrong items cost a try.</small></span><div class="pic"><img src="/assets/claw/grilled.webp" alt=""><img src="/assets/claw/grilled.webp" alt=""></div></div>
+        <div class="step"><b>3</b><span>Match only your order<small>You have 15 seconds. Leave the wrong items alone.</small></span><div class="pic"><img src="/assets/claw/grilled.webp" alt=""><img src="/assets/claw/grilled.webp" alt=""></div></div>
       </div>
     </section>
 
@@ -312,7 +312,7 @@
   let voNow = null; const vo = (n, vol = 1) => { if (localStorage.getItem("wf_sfx") === "off") return; const a = $("v-" + n); if (!a) return; try { if (voNow && voNow !== a) voNow.pause(); voNow = a; a.currentTime = 0; a.volume = vol; a.play().catch(() => {}); } catch {} }, voStop = () => { try { if (voNow) voNow.pause(); } catch {} };
   // the music under the round: it starts with the clock and stops when the round ends
   const music = (on) => { const a = $("a-tension"); if (!a) return; try { if (on && localStorage.getItem("wf_sfx") !== "off") { a.currentTime = 0; a.volume = .3; a.play().catch(() => {}); } else a.pause(); } catch {} };
-  let CFG = { durationMs: 15000, bonusMs: 2000, memoriseMs: 3000, chances: 3, orderMs: 5000, decoys: 3 }, guest = null;
+  let CFG = { durationMs: 15000, bonusMs: 0, memoriseMs: 3000, chances: 0, orderMs: 5000, decoys: 3 }, guest = null;
   fetch("/api/config").then((r) => r.json()).then((c) => { if (c.claw) CFG = { ...CFG, ...c.claw }; $("qr").src = $("qr2").src = `/api/qr?text=${encodeURIComponent((c.baseUrl || location.origin) + "/register")}`; }).catch(() => {});
   $("ft-st").textContent = `Station ${K.station} · Claw`;
   const A = "/assets/claw/", ITEMS = { classic: A + "classic.webp", lankan: A + "lankan.webp", molten: A + "molten.webp", paneer: A + "paneer.webp", grilled: A + "grilled.webp", tendersb: A + "tendersb.webp", fries: A + "fries.webp", bbq: A + "fries-bbq.webp", cheese: A + "fries-cheese.webp", bites: A + "bites.webp", tenders: A + "tenders.webp", choc: A + "frosty-choc.webp", vanilla: A + "frosty-vanilla.webp", coke: A + "cup.webp", sprite: A + "cup.webp", zero: A + "cup.webp" };
@@ -360,15 +360,15 @@
   // ---- the game
   let deck = [], open = [], matched = 0, lock = true, left = 0, tickT = null, lastT = 0, running = false, frosty = "choc", burger = "chicken", side = "fries", order = [], t0 = 0;
   const srcOf = (k) => ITEMS[k];
-  // Tries (owner: "only 3 chances"): every pair the guest turns over uses one. With three pairs and three tries, a single wrong pair means the order cannot be completed.
-  let tries = 3; function paintTries() { const n = Math.max(3, CFG.chances || 3); $("tries").innerHTML = Array.from({ length: n }, (_, i) => `<i class="${i < tries ? "" : "off"}"></i>`).join(""); }
+  // No limit on tries (owner, Nov 2026: "within your 15 seconds, do not stop"): the round ends only when all three pairs are matched or the clock runs out. CLAW_CHANCES above 0 brings a limit back.
+  let tries = 0; const LIM = () => (CFG.chances || 0) > 0; function paintTries() { const n = CFG.chances || 0; document.querySelector(".tries").style.display = LIM() ? "" : "none"; $("tries").innerHTML = Array.from({ length: n }, (_, i) => `<i class="${i < tries ? "" : "off"}"></i>`).join(""); }
   function startGame() {
     frosty = Math.random() < .6 ? pick(DRINKS) : pick(FROSTYS); burger = pick(BURGERS); side = Math.random() < .6 ? pick(FRIES) : pick(CHICKEN); order = [burger, side, frosty];
     // harder (owner): besides the three pairs of the order there are three single items that are NOT in the order, each a look-alike: another burger, the other kind of fries (or of chicken), and another drink (or the other Frosty). Turning one over wastes a try.
     const fam = (k, ...fs) => fs.find((x) => x.includes(k)).filter((x) => x !== k);
     const others = [pick(fam(frosty, DRINKS, FROSTYS)), pick(fam(side, FRIES, CHICKEN)), pick(fam(burger, BURGERS))];
     deck = [...order, ...order, ...others.slice(0, Math.max(0, Math.min(3, CFG.decoys ?? 3)))]; for (let i = deck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [deck[i], deck[j]] = [deck[j], deck[i]]; }
-    open = []; matched = 0; got = []; ending = false; lock = true; left = CFG.durationMs; tries = Math.max(3, CFG.chances || 3); paintTries(); $("got").textContent = "0"; $("tray").innerHTML = ""; $("clock").classList.remove("low");
+    open = []; matched = 0; got = []; ending = false; lock = true; left = CFG.durationMs; tries = CFG.chances || 0; paintTries(); $("got").textContent = "0"; $("tray").innerHTML = ""; $("clock").classList.remove("low");
     document.querySelectorAll(".ticket .it").forEach((el, i) => { el.dataset.k = order[i]; el.classList.remove("ok"); el.querySelector("img").src = srcOf(order[i]); });
     $("slots").innerHTML = deck.map((k, i) => `<div class="slot" data-i="${i}"><div class="f back">?</div><div class="f front"><img src="${srcOf(k)}" alt=""><span>${NAMES[k]}</span></div></div>`).join("");
     document.querySelectorAll(".slot").forEach((el) => (el.onclick = () => tapSlot(+el.dataset.i)));
@@ -394,9 +394,9 @@
   function tapSlot(i) {
     if (lock || open.includes(i)) return; const el = slotEl(i); if (el.classList.contains("gone") || el.classList.contains("ok")) return;
     el.classList.add("up"); sfx("flip", .6); open.push(i); if (open.length < 2) return;
-    const [a, b] = open; lock = true; tries--; paintTries();
+    const [a, b] = open; lock = true; if (LIM()) { tries--; paintTries(); }
     if (deck[a] === deck[b]) pairOk(a, b);
-    else setTimeout(() => { sfx("error", .4); [a, b].forEach((x) => { const s = slotEl(x); s.classList.add("bad"); setTimeout(() => s.classList.remove("bad", "up"), 380); }); setTimeout(() => { open = []; if (tries <= 0) return finish(false, "tries"); lock = false; }, 560); }, 520);
+    else setTimeout(() => { sfx("error", .4); [a, b].forEach((x) => { const s = slotEl(x); s.classList.add("bad"); setTimeout(() => s.classList.remove("bad", "up"), 380); }); setTimeout(() => { open = []; if (LIM() && tries <= 0) return finish(false, "tries"); if (!ending) lock = false; }, 420); }, 420);
   }
   // A matched pair is ticked off straight away and gives a few seconds back; the clock keeps running. The claw comes once, when the round ends (owner, Nov 2026).
   let got = [], ending = false;
@@ -405,7 +405,7 @@
     got.push({ k, a, b }); matched++; $("got").textContent = matched; document.querySelector(`.ticket .it[data-k="${k}"]`).classList.add("ok"); open = [];
     if (matched < 3 && CFG.bonusMs > 0) { left = Math.min(CFG.durationMs, left + CFG.bonusMs); const bn = $("bonus"); bn.textContent = `+${Math.round(CFG.bonusMs / 1000)}s`; bn.classList.remove("go"); void bn.offsetWidth; bn.classList.add("go"); paintClock(); }
     if (matched >= 3) return finish(true);
-    if (tries <= 0) return finish(false, "tries");
+    if (LIM() && tries <= 0) return finish(false, "tries");
     vo("claw-nice-" + (1 + Math.floor(Math.random() * 3)));
     setTimeout(() => { if (!ending) lock = false; }, 250);
   }

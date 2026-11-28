@@ -1137,7 +1137,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   function startRec() {
     rec = null; recChunks = []; STT = { used: false, ms: null, err: "", text: "", chrome: "", bytes: 0, tries: [] };
     if (!CFG.scream.stt || $("judge-mode").value === "host" || !stream || !window.MediaRecorder) return;
-    try { const type = ["audio/webm;codecs=opus", "audio/webm", "audio/mp4"].find((t) => MediaRecorder.isTypeSupported(t)); rec = new MediaRecorder(stream, type ? { mimeType: type, audioBitsPerSecond: 24000 } : undefined); rec.ondataavailable = (e) => { if (e.data && e.data.size) recChunks.push(e.data); }; rec.start(); }
+    try { const type = ["audio/webm;codecs=opus", "audio/webm", "audio/mp4"].find((t) => MediaRecorder.isTypeSupported(t)); rec = new MediaRecorder(stream, type ? { mimeType: type, audioBitsPerSecond: 8000 } : undefined); rec.ondataavailable = (e) => { if (e.data && e.data.size) recChunks.push(e.data); }; rec.start(); }
     catch (e) { rec = null; STT.err = "record-failed"; }
   }
   // Link watch (owner, 28 Nov 2026: "it stays on checking for a while, then try again"). The venue connection keeps switching networks, which silently
@@ -1162,12 +1162,15 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
           .catch((e) => { note.err = e.name === "AbortError" ? "timeout" : String(e.message || "failed").slice(0, 30); throw e; })
           .finally(() => { clearTimeout(timer); note.ms = Math.round(performance.now() - t1); }); };
       // The second copy always goes on the other connection; when the link watch already says the link is dead, the first copy does too and the second follows at once.
-      const dead = LINK.bad >= 2, first = send(1, 6000, dead), second = new Promise((res) => setTimeout(res, dead ? 400 : 1500)).then(() => (settled ? Promise.reject(new Error("not needed")) : send(2, 5500, !dead))); let settled = false;
+      // The venue uplink is slow (a 24 KB recording often needed more than 6 seconds, and starting again from nothing only made it worse), so the recording
+      // is now about a third of the size (8 kbps: the word check hears it just as well) and each copy is given time to arrive instead of being restarted.
+      const dead = LINK.bad >= 2, first = send(1, 12000, dead), second = new Promise((res) => setTimeout(res, dead ? 400 : 2500)).then(() => (settled ? Promise.reject(new Error("not needed")) : send(2, 10000, !dead))); let settled = false;
       first.then(() => { settled = true; }, () => {});
       try { STT.text = await Promise.any([first, second]); STT.err = ""; }
       catch {   // both uploads stalled (the venue network does this for a few seconds at a time): one more patient go before the guest is sent back
-        settled = true; $("listen-l").textContent = "Still checking…";
-        try { STT.text = await send(3, 8000, true); STT.err = ""; } catch { STT.text = ""; STT.err = (STT.tries.find((x) => x.err) || { err: "failed" }).err; } }
+        settled = true; const quick = performance.now() - t0 < 7000;   // a third copy only when the first two failed fast (no link at all); after two long waits the guest is not kept longer
+        if (quick) $("listen-l").textContent = "Still checking…";
+        try { if (!quick) throw new Error("slow"); STT.text = await send(3, 8000, true); STT.err = ""; } catch { STT.text = ""; STT.err = (STT.tries.find((x) => x.err) || { err: "failed" }).err; } }
       settled = true;
     } catch (e) { STT.err = STT.err || String(e.message || "failed").slice(0, 40); }
     STT.ms = Math.round(performance.now() - t0); rec = null;

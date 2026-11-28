@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
-<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mx0cl29j" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mx0j4zv8" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>[DEMO] Roast Me · Wendy Fest</title><link rel="icon" href="../assets/cameo.png"><link rel="manifest" href="../assets/roast.webmanifest"><meta name="theme-color" content="#1593D6"><meta name="mobile-web-app-capable" content="yes">
-<link rel="stylesheet" href="../css/brand.css?v=mx0cl29j"><link rel="stylesheet" href="../css/kiosk.css?v=mx0cl29j">
+<link rel="stylesheet" href="../css/brand.css?v=mx0j4zv8"><link rel="stylesheet" href="../css/kiosk.css?v=mx0j4zv8">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@600;700&family=Barlow+Semi+Condensed:ital,wght@1,900&display=swap" rel="stylesheet">
 <style>
   body.kiosk { background: var(--ink); }
@@ -706,7 +706,7 @@
 <!-- sounds: effects and Wendy's pre-recorded waiting lines (made with ElevenLabs, in Wendy's voice) -->
 <audio id="sfx-start" src="../assets/sfx/start.mp3" preload="auto"></audio><audio id="sfx-coin" src="../assets/sfx/coin.mp3" preload="auto"></audio><audio id="sfx-spray" src="../assets/sfx/spray.mp3" preload="auto"></audio><audio id="sfx-switch" src="../assets/sfx/switch.mp3" preload="auto"></audio><audio id="sfx-card" src="../assets/sfx/card.mp3" preload="auto"></audio><audio id="sfx-pop" src="../assets/sfx/pop.mp3" preload="auto"></audio><audio id="sfx-ding" src="../assets/sfx/ding.mp3" preload="auto"></audio><audio id="sfx-tap" src="../assets/sfx/tap.mp3" preload="auto"></audio><audio id="sfx-key" src="../assets/sfx/key.mp3" preload="auto"></audio><audio id="sfx-delete" src="../assets/sfx/delete.mp3" preload="auto"></audio><audio id="sfx-go" src="../assets/sfx/go.mp3" preload="auto"></audio><audio id="sfx-error" src="../assets/sfx/error.mp3" preload="auto"></audio><audio id="sfx-whoosh" src="../assets/sfx/whoosh.mp3" preload="auto"></audio><audio id="sfx-beep" src="../assets/sfx/beep.mp3" preload="auto"></audio><audio id="sfx-shutter" src="../assets/sfx/shutter.mp3" preload="auto"></audio><audio id="sfx-sizzle" src="../assets/sfx/sizzle.mp3" preload="auto"></audio><audio id="sfx-reveal" src="../assets/sfx/reveal.mp3" preload="auto"></audio>
 <div id="lip-frames" hidden><img src="../assets/lip/mouth-0.webp" alt=""><img src="../assets/lip/mouth-1.webp" alt=""><img src="../assets/lip/mouth-2.webp" alt=""><img src="../assets/lip/mouth-3.webp" alt=""><img src="../assets/lip/mouth-4.webp" alt=""><img src="../assets/lip/mouth-5.webp" alt=""></div><audio id="vo-steps" src="../assets/voice/steps.mp3" preload="auto"></audio><audio id="vo-heat" src="../assets/voice/heat.mp3" preload="auto"></audio><audio id="vo-wait-1" src="../assets/voice/wait-1.mp3" preload="auto"></audio><audio id="vo-wait-2" src="../assets/voice/wait-2.mp3" preload="auto"></audio><audio id="vo-wait-3" src="../assets/voice/wait-3.mp3" preload="auto"></audio><audio id="vo-wait-4" src="../assets/voice/wait-4.mp3" preload="auto"></audio><audio id="vo-wait-5" src="../assets/voice/wait-5.mp3" preload="auto"></audio><audio id="vo-wait-6" src="../assets/voice/wait-6.mp3" preload="auto"></audio><audio id="vo-wait-7" src="../assets/voice/wait-7.mp3" preload="auto"></audio><audio id="vo-wait-8" src="../assets/voice/wait-8.mp3" preload="auto"></audio><audio id="vo-here" src="../assets/voice/here-it-comes.mp3" preload="auto"></audio>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mx0cl29j"></script><script src="../js/i18n.js?v=mx0cl29j"></script><script src="../js/kiosk.js"></script><script src="../js/roast-card.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mx0j4zv8"></script><script src="../js/i18n.js?v=mx0j4zv8"></script><script src="../js/kiosk.js"></script><script src="../js/roast-card.js"></script>
 <script>
   const $ = (id) => document.getElementById(id);
   let guest = null, stream = null, glang = "en", R = null, BASE = location.origin;
@@ -843,10 +843,13 @@
     $("flash").classList.remove("go"); void $("flash").offsetWidth; $("flash").classList.add("go"); sfx("shutter", .7);
     const image = capture(); $("snap").disabled = false;
     $("ck-photo").src = image; paintHeatCap(); setCook(2); K.show("s-cooking"); cookLines(); personalLines(image);
+    // The guest is cut out of the photo NOW, while Wendy writes, instead of after the roast arrives (owner, 28 Nov 2026: "plating up" took too long). The card then finds the cut-out ready.
+    setTimeout(() => { try { if (window.roastCard && roastCard.focus) roastCard.focus(image).catch(() => {}); } catch {} }, 400);
     try {
-      R = await askRoast(image); prepCard();
+      R = await askRoast(image); R.localPhoto = image; prepCard();
       setCook(3); await talkDone(500); setCook(4);            // the roast is ready: Wendy stops within half a second
       await hereItComes();             // "Here comes the roast", then a drum roll, so heads turn before it appears
+      if (cardPre) await Promise.race([cardPre.url.catch(() => {}), wait(2500)]);   // the card is on the screen the moment it appears (owner, 28 Nov 2026: no "Plating your card" wait); never held longer than this
       reveal();
     } catch (e) { console.warn("roast", e); stopTalk(); sfx("error"); $("cook-line").textContent = "Sorry, that did not work. Please try again."; await wait(6000); goIdle(); }   // no browser pop-up: the guest is told, then the kiosk goes back to the start
   };

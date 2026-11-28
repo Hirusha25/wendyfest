@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
-<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwzsrp77" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwztddfg" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 <title>[DEMO] Wendy's Claw · Wendy Fest</title><link rel="icon" href="../assets/cameo.png"><meta name="theme-color" content="#8E1219"><meta name="mobile-web-app-capable" content="yes">
-<link rel="stylesheet" href="../css/brand.css?v=mwzsrp77">
+<link rel="stylesheet" href="../css/brand.css?v=mwztddfg">
 <style>
   /* Wendy's Claw: Grab the Order (game 3). A memory match game inside a claw machine: remember six slots, match the three pairs before the clock runs out,
      and the claw drops each matched item on the tray. One fixed 1080 x 1920 canvas, scaled to whatever screen it is on (upright kiosk first; a wide
@@ -163,10 +163,10 @@
   .slot .f { position: absolute; inset: 0; border-radius: 26px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: grid; place-items: center; }
   .slot .back { background: linear-gradient(160deg, #C81C25, #7E0F16); box-shadow: inset 0 0 0 5px rgba(255,214,200,.75), inset 0 14px 20px rgba(255,255,255,.14), 0 10px 0 #3D0609, 0 20px 22px rgba(0,0,0,.45); font: 900 110px/1 Poppins, sans-serif; color: #FFF6E4; text-shadow: 0 6px 0 #5A080E; }
   .slot .front { transform: rotateY(180deg); background: radial-gradient(circle at 50% 40%, #5A1216, #2A0608); box-shadow: inset 0 0 0 5px #FFB84D, inset 0 0 40px rgba(255,150,60,.5), 0 0 30px rgba(255,150,60,.55), 0 10px 0 #3D0609; }
-  .slot .front span { position: absolute; left: 6px; right: 6px; bottom: 12px; text-align: center; font: 800 17px/1.05 Poppins, sans-serif; text-transform: uppercase; letter-spacing: .01em; color: #FFF6E4; text-shadow: 0 2px 0 #3D0609; z-index: 2; }
+  .slot .front span { position: absolute; left: 6px; right: 6px; bottom: 12px; text-align: center; font: 800 19px/1.05 Poppins, sans-serif; text-transform: uppercase; letter-spacing: .01em; color: #FFF6E4; text-shadow: 0 2px 0 #3D0609; z-index: 2; }
   .slot.gone .front span { opacity: .45; }
-  .slot .front img { height: 132px; width: auto; max-width: 230px; object-fit: contain; position: relative; z-index: 1; margin-top: -30px; filter: drop-shadow(0 14px 10px rgba(0,0,0,.55)); }
-  .slot .front::before { content: ""; position: absolute; left: 22%; right: 22%; bottom: 38px; height: 26px; border-radius: 50%; background: radial-gradient(closest-side, rgba(0,0,0,.7), transparent); }   /* the item stands on the slot floor */
+  .slot .front img { height: 126px; width: auto; max-width: 230px; object-fit: contain; position: relative; z-index: 1; margin-top: -40px; filter: drop-shadow(0 14px 10px rgba(0,0,0,.55)); }
+  .slot .front::before { content: ""; position: absolute; left: 22%; right: 22%; bottom: 46px; height: 24px; border-radius: 50%; background: radial-gradient(closest-side, rgba(0,0,0,.7), transparent); }   /* the item stands on the slot floor */
   .slot.gone { cursor: default; } .slot.gone .front { box-shadow: inset 0 0 0 5px rgba(255,255,255,.25), 0 10px 0 #3D0609; background: rgba(20,0,2,.55); } .slot.gone .front img { visibility: hidden; }
   .slot.gone .front::after { content: ""; width: 86px; height: 86px; border-radius: 50%; background: #1E9B4B url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5 9-10'/%3E%3C/svg%3E") center / 60% no-repeat; position: absolute; opacity: .9; }
   .rig { position: absolute; left: 0; top: 0; width: 0; height: 0; z-index: 20; pointer-events: none; transition: translate .42s cubic-bezier(.4, 0, .2, 1); translate: 474px -420px; }
@@ -294,7 +294,7 @@
 
 <audio id="a-clawmove" src="../assets/sfx/clawmove.mp3" preload="auto"></audio><audio id="a-clawgrab" src="../assets/sfx/clawgrab.mp3" preload="auto"></audio><audio id="a-clawdrop" src="../assets/sfx/clawdrop.mp3" preload="auto"></audio>
 <audio id="a-jackpot" src="../assets/sfx/jackpot.mp3" preload="auto"></audio><audio id="a-tension" src="../assets/sfx/tension.mp3" preload="auto" loop></audio><audio id="a-flip" src="../assets/sfx/flip.mp3" preload="auto"></audio>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwzsrp77"></script><script src="../js/kiosk.js?v=mwzsrp77"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwztddfg"></script><script src="../js/kiosk.js?v=mwztddfg"></script>
 <script>
   const $ = (id) => document.getElementById(id), wait = (ms) => new Promise((r) => setTimeout(r, ms));
   // the 1080 x 1920 canvas is scaled to fit the screen and centred
@@ -308,9 +308,11 @@
   let CFG = { durationMs: 15000, bonusMs: 2000, memoriseMs: 3000, chances: 3, orderMs: 5000, decoys: 3 }, guest = null;
   fetch("/api/config").then((r) => r.json()).then((c) => { if (c.claw) CFG = { ...CFG, ...c.claw }; $("qr").src = $("qr2").src = qrUrl((c.baseUrl || location.origin) + "/register"); }).catch(() => {});
   $("ft-st").textContent = `Station ${K.station} · Claw`;
-  const ITEMS = { chicken: "/assets/claw/burger.webp", beef: "/assets/claw/beef.webp", bacon: "/assets/claw/bacon.webp", crispy: "/assets/claw/crispy.webp", grilled: "/assets/claw/grilled.webp", fries: "/assets/claw/fries.webp", bites: "/assets/claw/bites.webp", choc: "/assets/claw/frosty-choc.webp", vanilla: "/assets/claw/frosty-vanilla.webp" };
+  const ITEMS = { chicken: "/assets/claw/burger.webp", beef: "/assets/claw/beef.webp", bacon: "/assets/claw/bacon.webp", crispy: "/assets/claw/crispy.webp", grilled: "/assets/claw/grilled.webp", fries: "/assets/claw/fries.webp", bites: "/assets/claw/bites.webp", choc: "/assets/claw/frosty-choc.webp", vanilla: "/assets/claw/frosty-vanilla.webp", coke: "/assets/claw/cup.webp", sprite: "/assets/claw/cup.webp", zero: "/assets/claw/cup.webp" };
   // Names as on the Wendy's Sri Lanka menu board (owner's photos, Nov 2026). The beef and bacon pictures match nothing on that board, so they are out of the game until the owner's product pictures arrive.
-  const NAMES = { chicken: "Spicy Chicken Burger", crispy: "Classic Chicken Burger", grilled: "Grilled Chicken Burger", fries: "Fries", bites: "Chicken Bites", choc: "Chocolate Frosty", vanilla: "Vanilla Frosty" };
+  const NAMES = { chicken: "Spicy Chicken Burger", crispy: "Classic Chicken Burger", grilled: "Grilled Chicken Burger", fries: "Fries", bites: "Chicken Bites", choc: "Chocolate Frosty", vanilla: "Vanilla Frosty", coke: "Coca-Cola", sprite: "Sprite", zero: "Coca-Cola Zero" };
+  // Drinks all come in the same Wendy's cup, so only the name tells them apart: the guest has to read (owner, Nov 2026).
+  const DRINKS = ["coke", "sprite", "zero"], FROSTYS = ["choc", "vanilla"];
   const BURGERS = ["chicken", "crispy", "grilled"], SIDES = ["fries", "bites"], pick = (a) => a[Math.floor(Math.random() * a.length)];
   const STEPS = { "s-idle": ["1", "Welcome"], "s-code": ["2", "Your code"], "s-how": ["3", "How to play"], "s-play": ["4", "Play"], "s-win": ["5", "Order up"], "s-lose": ["5", "Time’s up"] };
   // the big button under the cabinet belongs to whichever screen is showing
@@ -354,9 +356,10 @@
   // Tries (owner: "only 3 chances"): every pair the guest turns over uses one. With three pairs and three tries, a single wrong pair means the order cannot be completed.
   let tries = 3; function paintTries() { const n = Math.max(3, CFG.chances || 3); $("tries").innerHTML = Array.from({ length: n }, (_, i) => `<i class="${i < tries ? "" : "off"}"></i>`).join(""); }
   function startGame() {
-    frosty = pick(["choc", "vanilla"]); burger = pick(BURGERS); side = pick(SIDES); order = [burger, side, frosty];
+    frosty = Math.random() < .6 ? pick(DRINKS) : pick(FROSTYS); burger = pick(BURGERS); side = pick(SIDES); order = [burger, side, frosty];
     // harder (owner): besides the three pairs of the order there are single items that are NOT in the order. Turning one over wastes a try.
-    const others = [...BURGERS.filter((b) => b !== burger), ...SIDES.filter((x) => x !== side), frosty === "choc" ? "vanilla" : "choc"]; for (let i = others.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [others[i], others[j]] = [others[j], others[i]]; }
+    const twin = pick((DRINKS.includes(frosty) ? DRINKS : FROSTYS).filter((x) => x !== frosty));   // always one look-alike of the drink or Frosty among the wrong items
+    const others = [...BURGERS.filter((b) => b !== burger), ...SIDES.filter((x) => x !== side), ...(DRINKS.includes(frosty) ? FROSTYS : DRINKS)]; for (let i = others.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [others[i], others[j]] = [others[j], others[i]]; } others.unshift(twin);
     deck = [...order, ...order, ...others.slice(0, Math.max(0, Math.min(3, CFG.decoys ?? 3)))]; for (let i = deck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [deck[i], deck[j]] = [deck[j], deck[i]]; }
     open = []; matched = 0; got = []; ending = false; lock = true; left = CFG.durationMs; tries = Math.max(3, CFG.chances || 3); paintTries(); $("got").textContent = "0"; $("tray").innerHTML = ""; $("clock").classList.remove("low");
     document.querySelectorAll(".ticket .it").forEach((el, i) => { el.dataset.k = order[i]; el.classList.remove("ok"); el.querySelector("img").src = srcOf(order[i]); });

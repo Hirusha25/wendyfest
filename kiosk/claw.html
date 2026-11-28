@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
-<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwzsmaov" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
+<head><script>fetch("../version.txt?" + Date.now(), { cache: "no-store" }).then((r) => r.text()).then((v) => { v = v.trim(); const u = new URL(location.href); if (v && v !== "mwzsrp77" && u.searchParams.get("v") !== v) { u.searchParams.set("v", v); location.replace(u); } }).catch(() => {});</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 <title>[DEMO] Wendy's Claw · Wendy Fest</title><link rel="icon" href="../assets/cameo.png"><meta name="theme-color" content="#8E1219"><meta name="mobile-web-app-capable" content="yes">
-<link rel="stylesheet" href="../css/brand.css?v=mwzsmaov">
+<link rel="stylesheet" href="../css/brand.css?v=mwzsrp77">
 <style>
   /* Wendy's Claw: Grab the Order (game 3). A memory match game inside a claw machine: remember six slots, match the three pairs before the clock runs out,
      and the claw drops each matched item on the tray. One fixed 1080 x 1920 canvas, scaled to whatever screen it is on (upright kiosk first; a wide
@@ -119,32 +119,19 @@
   .step .pic { flex: 1; min-width: 0; height: 210px; display: flex; align-items: center; justify-content: center; gap: 14px; } .step .pic.three img { max-width: 31%; height: 160px; } .step .pic img { max-width: 46%; object-fit: contain; height: 150px; filter: drop-shadow(0 10px 8px rgba(0,0,0,.3)); }
   .step .pic .q { display: grid; grid-template-columns: repeat(3, 88px); gap: 10px; } .step .pic .q { gap: 8px; } .step .pic .q i { height: 58px; font-size: 36px !important; border-radius: 14px; background: linear-gradient(180deg, #B81B24, #7E0F16); color: #FFE08A; display: grid; place-items: center; font: 900 44px/1 Poppins, sans-serif; font-style: normal; }
 
-  /* ---- design options for How to play and the order pop-up, being chosen by the owner: ?d=a, ?d=b, ?d=c (nothing changes without ?d) ---- */
+  /* ---- How to play and the order pop-up: bigger products with a heavy shadow, a red number tab, and the order on a cream slip (owner picked option B, Nov 2026) ---- */
   [class*="dz-"] .step { overflow: visible; } [class*="dz-"] .step::after { border-radius: 28px; }
   [class*="dz-"] .step .pic img { height: 196px !important; max-width: 48%; margin-top: -26px; filter: drop-shadow(0 3px 2px rgba(0,0,0,.35)) drop-shadow(0 26px 14px rgba(40,10,0,.55)); } [class*="dz-"] .step .pic.three img { max-width: 33% !important; height: 190px !important; }
   [class*="dz-"] .step .pic { background: radial-gradient(ellipse 44% 13% at 50% 92%, rgba(50,15,0,.42), transparent 72%); }
   [class*="dz-"] .ord .row img { height: 280px; max-width: 300px; filter: drop-shadow(0 4px 3px rgba(0,0,0,.4)) drop-shadow(0 30px 18px rgba(0,0,0,.7)); }
-  /* A: warm showcase. Cream cards with a white rim and gold number; in the pop-up each product stands in its own spotlight on a soft plate */
-  .dz-a .step { background: linear-gradient(125deg, #FFFEF9 0%, #F8EDD6 55%, #EAD5AC 100%); box-shadow: inset 0 0 0 4px #fff, inset 0 -8px 18px rgba(180,140,70,.25), 0 10px 0 #B5A88F, 0 28px 30px rgba(0,0,0,.5); }
-  .dz-a .step > b { background: linear-gradient(180deg, #F0434C, #A5171F); box-shadow: 0 0 0 4px #FFE08A, 0 8px 0 #5A080E, 0 14px 14px rgba(0,0,0,.3); }
-  .dz-a .ord .row div { padding-bottom: 14px; background: radial-gradient(circle 190px at 50% 150px, rgba(255,196,96,.42), transparent 70%), radial-gradient(ellipse 130px 26px at 50% 286px, rgba(0,0,0,.75), transparent 75%); }
-  .dz-a .ord .h1 { color: #FFF6E4; } .dz-a .ord p { padding: 12px 34px; border-radius: 40px; background: rgba(255,224,138,.14); box-shadow: inset 0 0 0 3px rgba(255,224,138,.7); }
-  /* B: the order ticket. A red tab carries the step number; the pop-up is a cream order slip with the three products on it */
+  /* a red tab carries the step number; the pop-up is a cream order slip with the three products on it */
   .dz-b .step { padding-left: 156px; background: linear-gradient(125deg, #FFFDF6, #F3E6CB); box-shadow: 0 10px 0 #B5A88F, 0 28px 30px rgba(0,0,0,.5); }
   .dz-b .step > b { position: absolute; left: 0; top: 0; bottom: 0; width: 124px; height: auto; border-radius: 28px 0 0 28px; font-size: 92px; background: linear-gradient(180deg, #F0434C, #A5171F); box-shadow: inset -8px 0 0 #FFE08A; }
-  .dz-b .step > span { width: 220px; }
+  .dz-b .step > span { width: 250px; font-size: 36px; }
   .dz-b .ord .row { width: auto; margin: 0 26px; padding: 44px 6px 30px; border-radius: 30px; background: linear-gradient(180deg, #FFFDF6, #EFE2C6); box-shadow: 0 12px 0 #B5A88F, 0 30px 40px rgba(0,0,0,.6); position: relative; }
   .dz-b .ord .row::before { content: "Your order"; position: absolute; left: 50%; top: -24px; translate: -50% 0; padding: 10px 30px 8px; border-radius: 30px; background: linear-gradient(180deg, #F0434C, #B81B24); color: #fff; font: italic 900 26px/1 Poppins, sans-serif; letter-spacing: .12em; text-transform: uppercase; box-shadow: 0 5px 0 #5A080E; }
   .dz-b .ord .row div { width: 280px; color: #5A080E; font-size: 24px; } .dz-b .ord .row div + div { box-shadow: -4px 0 0 -1px transparent; border-left: 4px dashed #D9C9A8; } .dz-b .ord .row img { height: 240px; max-width: 262px; filter: drop-shadow(0 3px 2px rgba(0,0,0,.3)) drop-shadow(0 24px 12px rgba(60,20,0,.5)); }
   .dz-b .ord .h1 { display: none; } .dz-b .ord { gap: 44px; } .dz-b .ord p { font-size: 38px; color: #FFF6E4; }
-  /* C: night menu. Dark glossy cards with a gold line; products glow under a spotlight */
-  .dz-c .step { background: linear-gradient(135deg, #5A0E14 0%, #2A0608 60%, #1A0304 100%); color: #FFF6E4; box-shadow: inset 0 0 0 3px #E9B95A, inset 0 18px 30px rgba(255,255,255,.08), 0 10px 0 #120203, 0 28px 30px rgba(0,0,0,.6); }
-  .dz-c .step::after { background: radial-gradient(circle, rgba(233,185,90,.28) 3px, transparent 3.6px) 0 0 / 22px 22px; }
-  .dz-c .step > b { background: linear-gradient(180deg, #FFE9A8, #E9B95A); color: #5A080E; box-shadow: 0 6px 0 #8A6420; }
-  .dz-c .step .pic { background: radial-gradient(circle 150px at 50% 46%, rgba(255,200,110,.38), transparent 72%), radial-gradient(ellipse 44% 13% at 50% 92%, rgba(0,0,0,.7), transparent 72%); }
-  .dz-c .step .pic .q i { background: linear-gradient(180deg, #FFE9A8, #E9B95A); color: #5A080E; }
-  .dz-c .ord .row { gap: 16px; } .dz-c .ord .row div { width: 286px; padding: 26px 0 22px; border-radius: 26px; color: #FFE08A; background: radial-gradient(circle 170px at 50% 150px, rgba(255,200,110,.4), transparent 72%), linear-gradient(160deg, #5A0E14, #1A0304); box-shadow: inset 0 0 0 3px #E9B95A, 0 12px 0 #120203, 0 26px 30px rgba(0,0,0,.6); }
-  .dz-c .ord .row img { height: 250px; max-width: 262px; }
 
   /* play: timer, order ticket, six slots, the claw and the tray */
   .hud { position: absolute; left: 34px; right: 34px; top: 26px; height: 150px; display: flex; gap: 18px; z-index: 6; }
@@ -226,7 +213,7 @@
 </style>
 </head>
 <body>
-<div id="fit">
+<div id="fit" class="dz-b">
   <header class="hd"><div class="brand"><img class="w" src="../assets/wendys-horiz-white.svg" alt="Wendy's"><i></i><img class="f" src="../assets/wendyfest-logo.svg" alt="Wendy Fest"></div><div class="stp"><b id="stp-n">1</b><span id="stp-l">Welcome</span></div></header>
   <div class="sign"><div class="big">Wendy’s Claw</div><div class="plate"><i></i><b>Grab the order</b><i></i></div></div>
 
@@ -307,12 +294,11 @@
 
 <audio id="a-clawmove" src="../assets/sfx/clawmove.mp3" preload="auto"></audio><audio id="a-clawgrab" src="../assets/sfx/clawgrab.mp3" preload="auto"></audio><audio id="a-clawdrop" src="../assets/sfx/clawdrop.mp3" preload="auto"></audio>
 <audio id="a-jackpot" src="../assets/sfx/jackpot.mp3" preload="auto"></audio><audio id="a-tension" src="../assets/sfx/tension.mp3" preload="auto" loop></audio><audio id="a-flip" src="../assets/sfx/flip.mp3" preload="auto"></audio>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwzsmaov"></script><script src="../js/kiosk.js?v=mwzsmaov"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="../js/demo-shim.js?v=mwzsrp77"></script><script src="../js/kiosk.js?v=mwzsrp77"></script>
 <script>
   const $ = (id) => document.getElementById(id), wait = (ms) => new Promise((r) => setTimeout(r, ms));
   // the 1080 x 1920 canvas is scaled to fit the screen and centred
   { const w = (new URLSearchParams(location.search).get("w") || "d").toLowerCase(); document.getElementById("s-idle").className = "screen on " + (w === "a" ? "wa" : w === "b" ? "wb" : "wd"); }   // the welcome look being chosen: ?w=a or ?w=b
-  { const d = (new URLSearchParams(location.search).get("d") || "").toLowerCase(); if (["a", "b", "c"].includes(d)) document.getElementById("fit").classList.add("dz-" + d); }   // design options being chosen by the owner
   function fit() { const k = Math.min(innerWidth / 1080, innerHeight / 1920), el = $("fit"); el.style.transform = `translate(${-540 * k}px, ${-960 * k}px) scale(${k})`; }
   addEventListener("resize", fit); fit();
   const sfx = (n, vol = .7) => { if (localStorage.getItem("wf_sfx") === "off") return; const a = $("a-" + n); if (!a) return; try { a.currentTime = 0; a.volume = vol; a.play().catch(() => {}); } catch {} };

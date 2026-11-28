@@ -1140,6 +1140,14 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     try { const type = ["audio/webm;codecs=opus", "audio/webm", "audio/mp4"].find((t) => MediaRecorder.isTypeSupported(t)); rec = new MediaRecorder(stream, type ? { mimeType: type, audioBitsPerSecond: 24000 } : undefined); rec.ondataavailable = (e) => { if (e.data && e.data.size) recChunks.push(e.data); }; rec.start(); }
     catch (e) { rec = null; STT.err = "record-failed"; }
   }
+  // Link watch (owner, 28 Nov 2026: "it stays on checking for a while, then try again"). The venue connection keeps switching networks, which silently
+  // kills the open link to the server; the browser needs 10 to 20 seconds to notice, and everything sent meanwhile goes nowhere. A tiny request every
+  // three seconds makes the browser find a dead link while the guest is still getting ready, and tells us when the link is dead (two misses in a row).
+  const LINK = { bad: 0, okAt: 0 };
+  setInterval(() => { if (document.hidden) return; fetch("/api/ping", { cache: "no-store", signal: AbortSignal.timeout(2500) }).then((r) => { if (r.ok) { LINK.bad = 0; LINK.okAt = Date.now(); } else LINK.bad++; }).catch(() => { LINK.bad++; }); }, 3000);
+  // A request sent without the cookie travels on its own, separate connection (the browser keeps the two apart), so a copy of the recording sent that way
+  // does not hang on the dead link with the first one. It carries the kiosk PIN in a header instead.
+  const pinNow = () => { const m = document.cookie.match(/(?:^|; )wf_kiosk=([^;]*)/); try { return m ? decodeURIComponent(m[1]) : ""; } catch { return ""; } };
   async function hearOnServer() {
     if (!rec) return; STT.used = true; STT.chrome = transcript; const t0 = performance.now();
     try {
@@ -1147,17 +1155,19 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
       const blob = new Blob(recChunks, { type: rec.mimeType || "audio/webm" }); STT.bytes = blob.size; if (blob.size < 800) throw new Error("empty");
       // Sent as raw audio (a quick shout is about 10 KB). The first upload on a connection sometimes stalls, so if no answer has come after
       // 1.5 s the same recording is sent again alongside it, and the first good answer is used. A guest who shouted loud and clear is not sent back to try again.
-      const send = (n, limit) => { const ac = new AbortController(), timer = setTimeout(() => ac.abort(), limit), t1 = performance.now(), note = { ms: 0, err: "" }; STT.tries.push(note);
-        return fetch("/api/kiosk/hear", { method: "POST", headers: { "Content-Type": blob.type || "audio/webm", "X-Try": String(n) }, body: blob, signal: ac.signal, cache: "no-store" })
+      const send = (n, limit, other) => { const ac = new AbortController(), timer = setTimeout(() => ac.abort(), limit), t1 = performance.now(), note = { ms: 0, err: "" }; STT.tries.push(note);
+        const pin = other ? pinNow() : "", head = { "Content-Type": blob.type || "audio/webm", "X-Try": String(n) }; if (pin) { head["X-Pin"] = pin; note.other = 1; } if (n === 1) note.link = LINK.bad;
+        return fetch("/api/kiosk/hear", { method: "POST", headers: head, body: blob, signal: ac.signal, cache: "no-store", credentials: pin ? "omit" : "same-origin" })
           .then(async (res) => { if (!res.ok) throw new Error("http " + res.status); const r = await res.json(); if (r && r.error) throw new Error(r.error); return (r && r.text) || ""; })
           .catch((e) => { note.err = e.name === "AbortError" ? "timeout" : String(e.message || "failed").slice(0, 30); throw e; })
           .finally(() => { clearTimeout(timer); note.ms = Math.round(performance.now() - t1); }); };
-      const first = send(1, 6000), second = new Promise((res) => setTimeout(res, 1500)).then(() => (settled ? Promise.reject(new Error("not needed")) : send(2, 5500))); let settled = false;
+      // The second copy always goes on the other connection; when the link watch already says the link is dead, the first copy does too and the second follows at once.
+      const dead = LINK.bad >= 2, first = send(1, 6000, dead), second = new Promise((res) => setTimeout(res, dead ? 400 : 1500)).then(() => (settled ? Promise.reject(new Error("not needed")) : send(2, 5500, !dead))); let settled = false;
       first.then(() => { settled = true; }, () => {});
       try { STT.text = await Promise.any([first, second]); STT.err = ""; }
       catch {   // both uploads stalled (the venue network does this for a few seconds at a time): one more patient go before the guest is sent back
         settled = true; $("listen-l").textContent = "Still checking…";
-        try { STT.text = await send(3, 8000); STT.err = ""; } catch { STT.text = ""; STT.err = (STT.tries.find((x) => x.err) || { err: "failed" }).err; } }
+        try { STT.text = await send(3, 8000, true); STT.err = ""; } catch { STT.text = ""; STT.err = (STT.tries.find((x) => x.err) || { err: "failed" }).err; } }
       settled = true;
     } catch (e) { STT.err = STT.err || String(e.message || "failed").slice(0, 40); }
     STT.ms = Math.round(performance.now() - t0); rec = null;

@@ -134,7 +134,7 @@
     // ROASTED. headline: heavy italic capitals, soft 3D
     const tall = 350, depth = 13, baseY = 232 + tall;
     o.save(); o.translate(W / 2 - 6, baseY); o.textAlign = "center";
-    const fs = fitFont("ROASTED.", "italic 900 SIZEpx Poppins, sans-serif", 700, W - 96); o.font = `italic 900 ${fs}px Poppins, sans-serif`; const SY = 1.42; o.scale(1, SY);   // the same heavy italic as #RoastedByWendy, in capitals (owner, Nov 2026)
+    const fs = fitFont("ROASTED.", "italic 900 SIZEpx Poppins, sans-serif", 700, W - 96); o.font = `italic 900 ${fs}px Poppins, sans-serif`; const SY = tall / (fs * .7); o.scale(1, SY);   // the same heavy italic as #RoastedByWendy, in capitals (owner, Nov 2026)
     for (let dd = depth; dd >= 1; dd--) { o.fillStyle = dd > depth * .6 ? T.deep[0] : T.deep[1]; o.fillText("ROASTED.", dd * .45, dd / SY); }
     const rg = o.createLinearGradient(0, -fs * .72, 0, 0); rg.addColorStop(0, T.head[0]); rg.addColorStop(.5, T.head[1]); rg.addColorStop(1, T.head[2]); o.fillStyle = rg;
     o.shadowColor = "rgba(60,0,8,.3)"; o.shadowBlur = 26; o.shadowOffsetY = 26; o.fillText("ROASTED.", 0, 0); o.shadowColor = "transparent";

@@ -230,9 +230,9 @@
     <section class="screen" id="s-how">
       <div class="h1">How to play<small></small></div>
       <div class="steps">
-        <div class="step"><b>1</b><span>See your order</span><div class="pic three"><img src="/assets/claw/burger.webp" alt=""><img src="/assets/claw/fries.webp" alt=""><img src="/assets/claw/frosty-vanilla.webp" alt=""></div></div>
+        <div class="step"><b>1</b><span>See your order</span><div class="pic three"><img src="/assets/claw/crispy.webp" alt=""><img src="/assets/claw/bites.webp" alt=""><img src="/assets/claw/frosty-choc.webp" alt=""></div></div>
         <div class="step"><b>2</b><span>Remember where it is</span><div class="pic"><div class="q"><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i></div></div></div>
-        <div class="step"><b>3</b><span>Match only your order</span><div class="pic"><img src="/assets/claw/burger.webp" alt=""><img src="/assets/claw/burger.webp" alt=""></div></div>
+        <div class="step"><b>3</b><span>Match only your order</span><div class="pic"><img src="/assets/claw/grilled.webp" alt=""><img src="/assets/claw/grilled.webp" alt=""></div></div>
       </div>
     </section>
 
@@ -240,7 +240,7 @@
     <section class="screen" id="s-play">
       <div class="ord" id="ord"><div class="h1">This is your order</div><div class="row" id="ord-row"></div><p>Find its pairs. Leave the rest.</p><div class="cnt" id="ord-n">5</div></div>
       <div class="mem" id="mem"><div class="h1">Remember the slots</div><div class="cnt" id="mem-n">3</div></div>
-      <div class="hud" id="hud"><div class="clock" id="clock"><b><span id="secs">13</span><small>s</small></b><i id="bar"></i></div><div class="tries"><small>Tries</small><div id="tries"></div></div><div class="ticket"><div class="it" data-k="burger"><img alt=""></div><div class="it" data-k="fries"><img alt=""></div><div class="it" data-k="frosty"><img alt=""></div><div class="n"><span id="got">0</span>/3<small>Matched</small></div></div></div>
+      <div class="hud" id="hud"><div class="clock" id="clock"><b><span id="secs">15</span><small>s</small></b><i id="bar"></i></div><div class="tries"><small>Tries</small><div id="tries"></div></div><div class="ticket"><div class="it" data-k="burger"><img alt=""></div><div class="it" data-k="fries"><img alt=""></div><div class="it" data-k="frosty"><img alt=""></div><div class="n"><span id="got">0</span>/3<small>Matched</small></div></div></div>
       <div class="bonus" id="bonus">+2s</div>
       <div class="slots" id="slots"></div>
       <div class="rig" id="rig"><div class="cable"></div><img class="c open" src="/assets/claw/claw-open.webp" alt=""><img class="c shut" src="/assets/claw/claw-closed.webp" alt=""><img class="held" id="held" alt=""></div>
@@ -289,7 +289,7 @@
 
   // the music under the round: it starts with the clock and stops when the round ends
   const music = (on) => { const a = $("a-tension"); if (!a) return; try { if (on && localStorage.getItem("wf_sfx") !== "off") { a.currentTime = 0; a.volume = .45; a.play().catch(() => {}); } else a.pause(); } catch {} };
-  let CFG = { durationMs: 13000, bonusMs: 2000, memoriseMs: 3000, chances: 3, orderMs: 5000, decoys: 3 }, guest = null;
+  let CFG = { durationMs: 15000, bonusMs: 2000, memoriseMs: 3000, chances: 3, orderMs: 5000, decoys: 3 }, guest = null;
   fetch("/api/config").then((r) => r.json()).then((c) => { if (c.claw) CFG = { ...CFG, ...c.claw }; $("qr").src = $("qr2").src = `/api/qr?text=${encodeURIComponent((c.baseUrl || location.origin) + "/register")}`; }).catch(() => {});
   $("ft-st").textContent = `Station ${K.station} · Claw`;
   const ITEMS = { chicken: "/assets/claw/burger.webp", beef: "/assets/claw/beef.webp", bacon: "/assets/claw/bacon.webp", crispy: "/assets/claw/crispy.webp", grilled: "/assets/claw/grilled.webp", fries: "/assets/claw/fries.webp", bites: "/assets/claw/bites.webp", choc: "/assets/claw/frosty-choc.webp", vanilla: "/assets/claw/frosty-vanilla.webp" };
@@ -347,17 +347,17 @@
     $("slots").innerHTML = deck.map((k, i) => `<div class="slot" data-i="${i}"><div class="f back">?</div><div class="f front"><img src="${srcOf(k)}" alt=""><span>${NAMES[k]}</span></div></div>`).join("");
     document.querySelectorAll(".slot").forEach((el) => (el.onclick = () => tapSlot(+el.dataset.i)));
     const rig = $("rig"); rig.classList.remove("grab"); rig.style.transition = "none"; rig.style.translate = "474px -420px"; void rig.offsetWidth; rig.style.transition = "";
-    paintClock(); $("hud").style.visibility = "hidden"; $("mem").style.display = "none"; const ord = $("ord"); ord.classList.remove("away"); ord.classList.add("on"); $("ord-row").innerHTML = order.map((k) => `<div><img src="${srcOf(k)}" alt="">${NAMES[k]}</div>`).join(""); K.show("s-play"); K.resetIdle(0);
+    paintClock(); $("hud").style.visibility = "hidden"; $("mem").style.display = "none"; const ord = $("ord"); ord.classList.remove("away"); ord.classList.add("on"); $("ord-row").innerHTML = order.map((k) => `<div><img src="${srcOf(k)}" alt="">${NAMES[k]}</div>`).join(""); K.show("s-play"); K.resetIdle(0); music(true);
     (async () => {   // first the guest is told their order, then everyone sees all the slots for a few seconds, then the doors close and the clock starts
       const on = Math.max(1, Math.round((CFG.orderMs ?? 5000) / 1000));
-      for (let s = on; s >= 1; s--) { if (screen !== "s-play") return; const c = $("ord-n"); c.textContent = s; c.classList.remove("pop"); void c.offsetWidth; c.classList.add("pop"); await wait((CFG.orderMs ?? 5000) / on); }
+      for (let s = on; s >= 1; s--) { if (screen !== "s-play") return; const c = $("ord-n"); c.textContent = s; c.classList.remove("pop"); void c.offsetWidth; c.classList.add("pop"); sfx("beep", .4); await wait((CFG.orderMs ?? 5000) / on); }
       if (screen !== "s-play") return; sfx("whoosh", .5); $("hud").style.visibility = "visible"; ord.classList.add("away"); await wait(620); ord.classList.remove("on", "away"); $("hud").style.visibility = "hidden";
       if (screen !== "s-play") return; $("mem").style.display = "flex"; document.querySelectorAll(".slot").forEach((el) => el.classList.add("up")); sfx("flip", .6);
       const n = Math.max(1, Math.round(CFG.memoriseMs / 1000));
       for (let s = n; s >= 1; s--) { if (screen !== "s-play") return; const c = $("mem-n"); c.textContent = s; c.classList.remove("pop"); void c.offsetWidth; c.classList.add("pop"); sfx("beep", .5); await wait(CFG.memoriseMs / n); }
       if (screen !== "s-play") return;
       document.querySelectorAll(".slot").forEach((el, i) => setTimeout(() => el.classList.remove("up"), i * 60)); sfx("go", .6);
-      $("mem").style.display = "none"; $("hud").style.visibility = "visible"; await wait(520); lock = false; t0 = performance.now(); startClock(); music(true);
+      $("mem").style.display = "none"; $("hud").style.visibility = "visible"; await wait(520); lock = false; t0 = performance.now(); startClock();
     })();
   }
   function paintClock() { $("secs").textContent = Math.max(0, Math.ceil(left / 1000)); $("bar").style.transform = `scaleX(${Math.max(0, Math.min(1, left / CFG.durationMs))})`; $("clock").classList.toggle("low", left <= 5000 && left > 0); }

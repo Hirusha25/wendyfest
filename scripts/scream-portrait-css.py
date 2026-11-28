@@ -118,7 +118,7 @@ rule("#live-burst", "left:735u; top:548u; width:90u; height:90u")
 # the bottom of the live screen is three slanted ribbons, like the countdown ribbon (owner picked option J): cream Hold it, blue We heard, red clock
 rule("#go-meter .heard", "left:40u; top:1388u; width:560u; height:130u; box-sizing:border-box; padding:0 40u 0 60u; display:flex; align-items:center; gap:24u; border:0; border-radius:0; background:linear-gradient(180deg, #23B4F0 0%, #0A7FBC 86%, #064A70 86%); clip-path:polygon(4% 0, 100% 0, 96% 100%, 0 100%)")
 rule("#go-meter .heard small", "font-size:24u; color:#FFE08A; white-space:nowrap")
-rule("#go-meter .heard b", "font-size:44u; max-width:330u; color:#fff")
+rule("#go-meter .heard b", "font-size:40u; max-width:330u; color:#fff")
 rule("#go-meter .tleft", "left:580u; top:1388u; width:460u; height:130u; box-sizing:border-box; padding:14u 50u 0 60u; gap:8u; border:0; border-radius:0; background:linear-gradient(180deg, #F0434C 0%, #B81B24 86%, #7E0F16 86%); clip-path:polygon(5% 0, 100% 0, 95% 100%, 0 100%); align-items:stretch")
 rule("#go-meter .tleft .v b", "font-size:66u; color:#F6F0E6; text-shadow:0 4u 0 #7E0F16")
 rule("#go-meter .tleft .v small", "font-size:24u; color:#FFE08A")

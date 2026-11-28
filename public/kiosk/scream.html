@@ -169,7 +169,9 @@ br.up, .up-only, .up-in { display:none; }
   #go-meter .holdcard .hbar i { display:block; height:100%; border-radius:999px; background:linear-gradient(90deg, #FF6A72, #D8232D); }
   #go-meter .holdcard .bot { display:none; }
   #go-meter .heard { left:calc(56 * var(--u)); top:calc(482 * var(--u)); width:calc(380 * var(--u)) !important; max-width:calc(380 * var(--u)); height:calc(84 * var(--u)); box-sizing:border-box; padding:0 calc(34 * var(--u)) 0 calc(46 * var(--u)); display:flex; align-items:center; gap:calc(16 * var(--u)); border:0; border-radius:0; background:linear-gradient(180deg, #23B4F0 0%, #0A7FBC 86%, #064A70 86%); clip-path:polygon(4% 0, 100% 0, 96% 100%, 0 100%); }
-  #go-meter .heard small { font-size:calc(17 * var(--u)); color:#FFE08A !important; white-space:nowrap; }
+  /* wide result screen: Wendy's comment is a slanted cream ribbon like Hold it, with clear space above the score box (owner, Nov 2026) */
+  #s-result #res-detail .quip { margin-bottom:calc(22 * var(--u)); padding:calc(15 * var(--u)) calc(40 * var(--u)) calc(23 * var(--u)) calc(38 * var(--u)); border-radius:0; color:#B81B24; background:linear-gradient(180deg, #FFFBF3 0, #EADFCB calc(100% - 9 * var(--u)), #B5A88F calc(100% - 9 * var(--u))); box-shadow:none; clip-path:polygon(3.5% 0, 100% 0, 96.5% 100%, 0 100%); }
+  #go-meter .heard small { font-size:calc(17 * var(--u)); color:#FFE08A !important; white-space:nowrap; } #go-meter .heard b { font-size:calc(21 * var(--u)) !important; line-height:1.12 !important; max-width:calc(196 * var(--u)) !important; min-width:0; overflow-wrap:anywhere; }   /* the words are sized to stay inside the ribbon */
   #go-meter .heard b { font-size:calc(30 * var(--u)); max-width:calc(210 * var(--u)); color:#fff !important; text-shadow:none !important; }
   #go-meter .heard.got b::after { width:calc(24 * var(--u)); height:calc(24 * var(--u)); margin-left:calc(8 * var(--u)); }
   #go-meter .tleft { left:calc(1004 * var(--u)); top:calc(436 * var(--u)); width:calc(380 * var(--u)); height:calc(108 * var(--u)); box-sizing:border-box; padding:calc(12 * var(--u)) calc(44 * var(--u)) 0 calc(50 * var(--u)); gap:calc(6 * var(--u)); align-items:stretch; background:linear-gradient(180deg, #F0434C 0%, #B81B24 86%, #7E0F16 86%); clip-path:polygon(5% 0, 100% 0, 95% 100%, 0 100%); }
@@ -426,8 +428,8 @@ body { color:#fff; }
   -webkit-mask:radial-gradient(circle at 0 100%, #000 0, rgba(0,0,0,.75) 28%, transparent 72%); mask:radial-gradient(circle at 0 100%, #000 0, rgba(0,0,0,.75) 28%, transparent 72%); }
 
 /* result breakdown: punchy line + loudness / clarity meters */
-#res-detail { top:calc(120 * var(--u)) !important; width:calc(520 * var(--u)) !important; display:grid; gap:calc(34 * var(--u)); }
-#res-detail .quip { font:italic 800 calc(28 * var(--u))/1.3 Poppins, sans-serif; color:#fff; text-transform:none; text-shadow:none; margin-bottom:calc(14 * var(--u)); }
+#res-detail { top:calc(84 * var(--u)) !important; width:calc(520 * var(--u)) !important; display:grid; gap:calc(22 * var(--u)); }
+#res-detail .quip { font:italic 800 calc(28 * var(--u))/1.3 Poppins, sans-serif; color:#fff; text-transform:none; text-shadow:none; margin-bottom:calc(16 * var(--u)); padding:calc(14 * var(--u)) calc(22 * var(--u)); border-radius:calc(18 * var(--u)); background:rgba(0,50,90,.22); box-shadow:inset 0 0 0 calc(2.5 * var(--u)) rgba(255,255,255,.75); }   /* a soft outlined box, so Wendy's comment stands out (owner) */
 #res-detail .stats { display:grid; gap:calc(14 * var(--u)); padding:calc(20 * var(--u)) calc(24 * var(--u)); border-radius:calc(18 * var(--u)); background:linear-gradient(160deg, rgba(255,255,255,.24), rgba(255,255,255,.08)); box-shadow:inset 0 0 0 calc(2.5 * var(--u)) rgba(255,255,255,.7), 0 calc(14 * var(--u)) calc(26 * var(--u)) rgba(0,30,60,.22); }   /* see-through glass with colour: red for loudness, yellow for clarity (owner) */
 #res-detail .st { display:grid; grid-template-columns:calc(150 * var(--u)) 1fr calc(64 * var(--u)); align-items:center; gap:calc(16 * var(--u)); }
 #res-detail .st small { font:italic 800 calc(18 * var(--u))/1 Poppins, sans-serif; letter-spacing:.18em; text-transform:uppercase; color:#fff; }
@@ -442,7 +444,7 @@ body { color:#fff; }
 #res-detail .wl { font-size:calc(15 * var(--u)); letter-spacing:.12em; white-space:nowrap; justify-content:center; padding:calc(9 * var(--u)) calc(14 * var(--u)); border-radius:999px; background:#F6F0E6; color:#0A6FA6; }
 #res-detail .wl b { color:#D8232D; }
 /* long lines (the wrong-restaurant comeback): tighter, so the stats stay clear of the Next player button */
-#res-detail.sassy { top:calc(104 * var(--u)) !important; gap:calc(14 * var(--u)); } #res-detail.sassy .quip { font-size:calc(23 * var(--u)); margin-bottom:0; }
+#res-detail.sassy { top:calc(70 * var(--u)) !important; gap:calc(16 * var(--u)); } #res-detail.sassy .quip { font-size:calc(23 * var(--u)); margin-bottom:calc(14 * var(--u)); }
 
 /* reward ticket, colourful: cream stub + red star, striped red body, cream inner edge, slow shine */
 #res-code { background:
@@ -590,7 +592,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   #live-burst { left:calc(735 * var(--u)) !important; top:calc(548 * var(--u)) !important; width:calc(90 * var(--u)) !important; height:calc(90 * var(--u)) !important; }
   #go-meter .heard { left:calc(40 * var(--u)) !important; top:calc(1388 * var(--u)) !important; width:calc(560 * var(--u)) !important; height:calc(130 * var(--u)) !important; box-sizing:border-box !important; padding:0 calc(40 * var(--u)) 0 calc(60 * var(--u)) !important; display:flex !important; align-items:center !important; gap:calc(24 * var(--u)) !important; border:0 !important; border-radius:0 !important; background:linear-gradient(180deg, #23B4F0 0%, #0A7FBC 86%, #064A70 86%) !important; clip-path:polygon(4% 0, 100% 0, 96% 100%, 0 100%) !important; }
   #go-meter .heard small { font-size:calc(24 * var(--u)) !important; color:#FFE08A !important; white-space:nowrap !important; }
-  #go-meter .heard b { font-size:calc(44 * var(--u)) !important; max-width:calc(330 * var(--u)) !important; color:#fff !important; }
+  #go-meter .heard b { font-size:calc(40 * var(--u)) !important; max-width:calc(330 * var(--u)) !important; color:#fff !important; }
   #go-meter .tleft { left:calc(580 * var(--u)) !important; top:calc(1388 * var(--u)) !important; width:calc(460 * var(--u)) !important; height:calc(130 * var(--u)) !important; box-sizing:border-box !important; padding:calc(14 * var(--u)) calc(50 * var(--u)) 0 calc(60 * var(--u)) !important; gap:calc(8 * var(--u)) !important; border:0 !important; border-radius:0 !important; background:linear-gradient(180deg, #F0434C 0%, #B81B24 86%, #7E0F16 86%) !important; clip-path:polygon(5% 0, 100% 0, 95% 100%, 0 100%) !important; align-items:stretch !important; }
   #go-meter .tleft .v b { font-size:calc(66 * var(--u)) !important; color:#F6F0E6 !important; text-shadow:0 calc(4 * var(--u)) 0 #7E0F16 !important; }
   #go-meter .tleft .v small { font-size:calc(24 * var(--u)) !important; color:#FFE08A !important; }
@@ -1309,7 +1311,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   function renderDetail(quip, r) {
     const row = (k, v, min) => `<div class="st${v < min ? " low" : ""}"><small>${k}</small><i><em style="width:0%" data-w="${v}"></em></i><b>${v}</b></div>`;
     $("res-detail").innerHTML = `<div class="quip">${quip}</div><div class="stats">${row("Loudness", r.loudness, r.minLoud || 60)}${row("Clarity", r.accuracy, r.minAcc || 70)}<div class="wl"><span>To win: <b>${r.threshold}+</b> overall · loud <b>${r.minLoud || 60}+</b> · clear <b>${r.minAcc || 70}+</b></span></div></div>`;
-    $("res-detail").classList.toggle("sassy", String(quip).length > 70);
+    $("res-detail").classList.toggle("sassy", String(quip).length > 52);
     setTimeout(() => $("res-detail").querySelectorAll("em").forEach((e) => { e.style.width = e.dataset.w + "%"; }), 350);
   }
   function showResult(r) {

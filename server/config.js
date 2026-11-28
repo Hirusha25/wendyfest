@@ -31,7 +31,8 @@ export const config = {
   dbPath: env("DB_PATH", path.join(root, "data", "wendyfest.sqlite")),
   photoDir: env("PHOTO_DIR", path.join(root, "data", "photos")),
 
-  otp: { digits: Number(env("OTP_DIGITS", 4)), ttlSec: Number(env("OTP_TTL_SEC", 120)), resendSec: Number(env("OTP_RESEND_SEC", 30)), maxAttempts: 5 },
+  otp: { digits: Number(env("OTP_DIGITS", 4)), ttlSec: Number(env("OTP_TTL_SEC", 120)), resendSec: Number(env("OTP_RESEND_SEC", 30)), maxAttempts: 5,
+    bypass: String(env("OTP_BYPASS", "")).replace(/\D/g, "") },   // a staff sign-up code that is accepted for any number (owner's decision, 28 Nov 2026). Set only in the server's settings file; empty = off
   kioskPin: env("KIOSK_PIN", "2468"),
   adminPin: env("ADMIN_PIN", "1357"),
   redeemPin: env("REDEEM_PIN", "9753"),   // the access code for the page where the Wendy's team marks coupons as redeemed (/redeem)

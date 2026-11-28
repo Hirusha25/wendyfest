@@ -99,16 +99,11 @@
   .boxes b { width: 118px; height: 138px; border-radius: 20px; display: grid; place-items: center; font: 900 78px/1 Poppins, sans-serif; color: #1E1B1B; background: linear-gradient(180deg, #FFFDF6, #EADFCB); box-shadow: inset 0 0 0 4px #D8232D, 0 8px 0 #5A080E, 0 16px 20px rgba(0,0,0,.4); }
   .boxes b.e { background: rgba(60,0,8,.55); box-shadow: inset 0 0 0 4px rgba(255,255,255,.55), 0 8px 0 rgba(0,0,0,.3); } .boxes b.a { box-shadow: inset 0 0 0 5px #FFE08A, 0 0 26px rgba(255,224,138,.8), 0 8px 0 rgba(0,0,0,.3); }
   .boxes span { font: 900 60px/1 Poppins, sans-serif; color: #FFF6E4; } .boxes.err { animation: shk .4s; }
-  .pad { position: absolute; left: 70px; right: 70px; top: 556px; display: grid; gap: 14px; }
+  .pad { position: absolute; left: 70px; right: 70px; top: 556px; display: grid; gap: 20px 18px; }
   .pad[data-mode="num"] { grid-template-columns: repeat(3, 1fr); } .pad[data-mode="let"] { grid-template-columns: repeat(6, 1fr); }
-  .pad button { height: 100px; border: 0; border-radius: 20px; color: #B81B24; font: 900 50px/1 Poppins, sans-serif; background: linear-gradient(180deg, #FFFDF6 0%, #F6ECD8 60%, #E6D8BC 100%); box-shadow: inset 0 3px 0 #fff, 0 7px 0 #A8956E, 0 10px 0 #5A080E, 0 16px 16px rgba(0,0,0,.35); }   /* beige keys, like Scream & Win (owner) */
-  /* key colours being chosen by the owner (?k=red, blue, dark, white; beige is the base above) */
-  .pad.k-red button { color: #fff; background: linear-gradient(180deg, #F0434C, #B81B24); box-shadow: inset 0 3px 0 rgba(255,255,255,.4), 0 7px 0 #5A080E, 0 16px 16px rgba(0,0,0,.35); }
-  .pad.k-blue button { color: #fff; background: linear-gradient(180deg, #33BDF5, #0C8FD3); box-shadow: inset 0 3px 0 rgba(255,255,255,.5), 0 7px 0 #06527E, 0 16px 16px rgba(0,0,0,.35); }
-  .pad.k-dark button { color: #FFF6E4; background: linear-gradient(180deg, #3A3030, #141010); box-shadow: inset 0 0 0 3px #F0434C, inset 0 4px 0 rgba(255,255,255,.12), 0 7px 0 #000, 0 16px 16px rgba(0,0,0,.4); }
-  .pad.k-white button { color: #0A7FBC; background: linear-gradient(180deg, #FFFFFF, #E9EEF2); box-shadow: inset 0 3px 0 #fff, 0 7px 0 #9FB2BF, 0 10px 0 #06527E, 0 16px 16px rgba(0,0,0,.35); }
-  .pad button:active { transform: translateY(6px); box-shadow: inset 0 3px 0 #fff, 0 2px 0 #A8956E, 0 4px 0 #5A080E; }
-  .pad[data-mode="num"] button.l, .pad[data-mode="let"] button.n { display: none; } .pad[data-mode="num"] button.z { grid-column: 2; } .pad[data-mode="let"] button { height: 92px; font-size: 42px; }
+  .pad button { height: 100px; border: 0; border-radius: 20px; color: #fff; font: 900 50px/1 Poppins, sans-serif; background: linear-gradient(180deg, #33BDF5 0%, #0C8FD3 100%); box-shadow: inset 0 3px 0 rgba(255,255,255,.55), 0 0 0 4px #F0434C, 0 8px 0 4px #5A080E, 0 16px 16px rgba(0,0,0,.35); }   /* blue keys with a red border line (owner, Nov 2026) */
+  .pad button:active { transform: translateY(6px); box-shadow: inset 0 3px 0 rgba(255,255,255,.55), 0 0 0 4px #F0434C, 0 2px 0 4px #5A080E; }
+  .pad[data-mode="num"] button.l, .pad[data-mode="let"] button.n { display: none; } .pad[data-mode="num"] button.z { grid-column: 2; } .pad[data-mode="let"] button { height: 88px; font-size: 42px; }
   .minis { position: absolute; left: 70px; right: 70px; bottom: 34px; display: flex; justify-content: space-between; }
   .mini { height: 78px; padding: 0 36px; border-radius: 40px; border: 4px solid rgba(255,255,255,.85); background: rgba(40,0,6,.55); color: #fff; font: italic 800 28px/1 Poppins, sans-serif; text-transform: uppercase; letter-spacing: .04em; }
 
@@ -121,8 +116,8 @@
   .step > * { position: relative; z-index: 1; }
   .step > b { flex: none; width: 92px; height: 92px; border-radius: 22px; background: linear-gradient(180deg, #F0434C, #B81B24); color: #fff; display: grid; place-items: center; font: 900 58px/1 Poppins, sans-serif; box-shadow: 0 6px 0 #5A080E; }
   .step > span { flex: none; width: 230px; font: 800 38px/1.12 Poppins, sans-serif; }
-  .step .pic { flex: 1; min-width: 0; height: 210px; display: flex; align-items: center; justify-content: center; gap: 14px; } .step:nth-child(3) .pic img { max-width: 31%; height: 160px; } .step .pic img { max-width: 46%; object-fit: contain; height: 150px; filter: drop-shadow(0 10px 8px rgba(0,0,0,.3)); }
-  .step .pic .q { display: grid; grid-template-columns: repeat(3, 88px); gap: 10px; } .step .pic .q i { height: 70px; border-radius: 14px; background: linear-gradient(180deg, #B81B24, #7E0F16); color: #FFE08A; display: grid; place-items: center; font: 900 44px/1 Poppins, sans-serif; font-style: normal; }
+  .step .pic { flex: 1; min-width: 0; height: 210px; display: flex; align-items: center; justify-content: center; gap: 14px; } .step .pic.three img { max-width: 31%; height: 160px; } .step .pic img { max-width: 46%; object-fit: contain; height: 150px; filter: drop-shadow(0 10px 8px rgba(0,0,0,.3)); }
+  .step .pic .q { display: grid; grid-template-columns: repeat(3, 88px); gap: 10px; } .step .pic .q { gap: 8px; } .step .pic .q i { height: 58px; font-size: 36px !important; border-radius: 14px; background: linear-gradient(180deg, #B81B24, #7E0F16); color: #FFE08A; display: grid; place-items: center; font: 900 44px/1 Poppins, sans-serif; font-style: normal; }
 
   /* play: timer, order ticket, six slots, the claw and the tray */
   .hud { position: absolute; left: 34px; right: 34px; top: 26px; height: 150px; display: flex; gap: 18px; z-index: 6; }
@@ -140,22 +135,30 @@
   .ticket .it.ok::after { background: #1E9B4B url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5 9-10'/%3E%3C/svg%3E") center / 70% no-repeat; box-shadow: none; animation: tick .4s cubic-bezier(.2, 1.6, .4, 1); } @keyframes tick { from { scale: 0; } }
   .ticket .n { flex: none; width: 124px; text-align: center; border-left: 4px dashed #C9BBA4; padding-left: 10px; font: 900 46px/.95 Poppins, sans-serif; } .ticket .n small { display: block; font: 800 20px/1 Poppins, sans-serif; letter-spacing: .1em; margin-top: 6px; }
   .mem { position: absolute; left: 34px; right: 34px; top: 26px; height: 150px; box-sizing: border-box; padding: 0 30px; display: flex; align-items: center; justify-content: space-between; border-radius: 24px; background: linear-gradient(180deg, #2A0A0C, #120405); box-shadow: inset 0 0 0 4px #F0434C, 0 8px 0 rgba(0,0,0,.4); z-index: 7; }
-  .mem .h1 { position: static; font-size: 58px; text-align: left; text-shadow: 0 4px 0 #8E1219; }
-  .mem .cnt { flex: none; display: grid; place-items: center; width: 170px; height: 104px; border-radius: 54px; background: linear-gradient(180deg, #FFFBF3, #EADFCB); color: #B81B24; font: 900 78px/1 Poppins, sans-serif; box-shadow: 0 8px 0 #B5A88F; } .mem .cnt.pop { animation: tick .35s cubic-bezier(.2, 1.6, .4, 1); }
-  .slots { position: absolute; left: 60px; right: 60px; top: 216px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; perspective: 1600px; z-index: 3; }
-  .slot { height: 218px; position: relative; transform-style: preserve-3d; transition: transform .45s cubic-bezier(.3, 1.2, .5, 1); cursor: pointer; }
+  .mem .h1 { position: static; flex: 1; min-width: 0; font-size: 48px; text-align: left; white-space: nowrap; text-shadow: 0 4px 0 #8E1219; }
+  .mem .cnt, .ord .cnt { flex: none; display: grid; place-items: center; width: 170px; height: 104px; border-radius: 54px; background: linear-gradient(180deg, #FFFBF3, #EADFCB); color: #B81B24; font: 900 78px/1 Poppins, sans-serif; box-shadow: 0 8px 0 #B5A88F; } .mem .cnt.pop { animation: tick .35s cubic-bezier(.2, 1.6, .4, 1); }
+  .ord { position: absolute; inset: 0; z-index: 25; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 34px; background: rgba(26,5,7,.93); transform-origin: 62% 9%; transition: transform .6s cubic-bezier(.5, 0, .3, 1), opacity .6s; }
+  .ord.on { display: flex; } .ord.away { transform: scale(.22); opacity: 0; }
+  .ord .h1 { position: static; font-size: 86px; } .ord p { margin: 0; font: 700 34px/1.2 Poppins, sans-serif; color: #FFE08A; text-align: center; }
+  .ord .row { display: flex; align-items: flex-end; justify-content: center; gap: 14px; width: 100%; }
+  .ord .row div { width: 296px; text-align: center; font: 800 26px/1.1 Poppins, sans-serif; text-transform: uppercase; color: #FFF6E4; animation: land .5s cubic-bezier(.3, 1.6, .5, 1) both; } .ord .row div:nth-child(2) { animation-delay: .15s; } .ord .row div:nth-child(3) { animation-delay: .3s; }
+  .ord .row img { display: block; height: 250px; max-width: 286px; object-fit: contain; margin: 0 auto 18px; filter: drop-shadow(0 18px 14px rgba(0,0,0,.6)); }
+  .slots { position: absolute; left: 40px; right: 40px; top: 208px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; perspective: 1600px; z-index: 3; }
+  .slot { height: 200px; position: relative; transform-style: preserve-3d; transition: transform .45s cubic-bezier(.3, 1.2, .5, 1); cursor: pointer; }
   .slot.up { transform: rotateY(180deg); } .slot.bad { animation: shk .4s; }
   .slot .f { position: absolute; inset: 0; border-radius: 26px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: grid; place-items: center; }
-  .slot .back { background: linear-gradient(160deg, #C81C25, #7E0F16); box-shadow: inset 0 0 0 5px rgba(255,214,200,.75), inset 0 14px 20px rgba(255,255,255,.14), 0 10px 0 #3D0609, 0 20px 22px rgba(0,0,0,.45); font: 900 130px/1 Poppins, sans-serif; color: #FFF6E4; text-shadow: 0 6px 0 #5A080E; }
+  .slot .back { background: linear-gradient(160deg, #C81C25, #7E0F16); box-shadow: inset 0 0 0 5px rgba(255,214,200,.75), inset 0 14px 20px rgba(255,255,255,.14), 0 10px 0 #3D0609, 0 20px 22px rgba(0,0,0,.45); font: 900 110px/1 Poppins, sans-serif; color: #FFF6E4; text-shadow: 0 6px 0 #5A080E; }
   .slot .front { transform: rotateY(180deg); background: radial-gradient(circle at 50% 40%, #5A1216, #2A0608); box-shadow: inset 0 0 0 5px #FFB84D, inset 0 0 40px rgba(255,150,60,.5), 0 0 30px rgba(255,150,60,.55), 0 10px 0 #3D0609; }
-  .slot .front img { height: 172px; width: auto; max-width: 250px; object-fit: contain; position: relative; z-index: 1; margin-top: -8px; filter: drop-shadow(0 14px 10px rgba(0,0,0,.55)); }
-  .slot .front::before { content: ""; position: absolute; left: 22%; right: 22%; bottom: 14px; height: 30px; border-radius: 50%; background: radial-gradient(closest-side, rgba(0,0,0,.7), transparent); }   /* the item stands on the slot floor */
+  .slot .front span { position: absolute; left: 6px; right: 6px; bottom: 12px; text-align: center; font: 800 17px/1.05 Poppins, sans-serif; text-transform: uppercase; letter-spacing: .01em; color: #FFF6E4; text-shadow: 0 2px 0 #3D0609; z-index: 2; }
+  .slot.gone .front span { opacity: .45; }
+  .slot .front img { height: 132px; width: auto; max-width: 230px; object-fit: contain; position: relative; z-index: 1; margin-top: -30px; filter: drop-shadow(0 14px 10px rgba(0,0,0,.55)); }
+  .slot .front::before { content: ""; position: absolute; left: 22%; right: 22%; bottom: 38px; height: 26px; border-radius: 50%; background: radial-gradient(closest-side, rgba(0,0,0,.7), transparent); }   /* the item stands on the slot floor */
   .slot.gone { cursor: default; } .slot.gone .front { box-shadow: inset 0 0 0 5px rgba(255,255,255,.25), 0 10px 0 #3D0609; background: rgba(20,0,2,.55); } .slot.gone .front img { visibility: hidden; }
   .slot.gone .front::after { content: ""; width: 86px; height: 86px; border-radius: 50%; background: #1E9B4B url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5 9-10'/%3E%3C/svg%3E") center / 60% no-repeat; position: absolute; opacity: .9; }
   .rig { position: absolute; left: 0; top: 0; width: 0; height: 0; z-index: 20; pointer-events: none; transition: translate .42s cubic-bezier(.4, 0, .2, 1); translate: 474px -420px; }
   .rig .cable { position: absolute; left: -6px; bottom: 0; width: 12px; height: 1400px; background: linear-gradient(90deg, #6B7379, #F2F5F7 45%, #7C858D); }
   .rig img.c { position: absolute; left: -140px; top: -20px; width: 280px; filter: drop-shadow(0 16px 12px rgba(0,0,0,.5)); } .rig img.c.shut, .rig.grab img.c.open { display: none; } .rig.grab img.c.shut { display: block; }
-  .rig img.held { position: absolute; left: -115px; top: 128px; width: 230px; height: 220px; object-fit: contain; object-position: 50% 0; display: none; z-index: -1; filter: drop-shadow(0 12px 10px rgba(0,0,0,.5)); transition: clip-path .8s ease-out; clip-path: inset(0 0 0 0); } .rig.grab img.held { display: block; }
+  .rig img.held { position: absolute; left: -125px; top: 172px; width: 250px; height: 230px; object-fit: contain; object-position: 50% 0; display: none; z-index: -1; filter: drop-shadow(0 12px 10px rgba(0,0,0,.5)); transition: clip-path .8s ease-out; clip-path: inset(0 0 0 0); } .rig.grab img.held { display: block; }
   .rig img.held.half { clip-path: inset(0 0 50% 0); }   /* in the slot only the top half of the product shows; it comes fully into view as the claw pulls it out (owner) */
   .trayrow { position: absolute; left: 60px; right: 60px; bottom: 18px; height: 250px; z-index: 4; }
   .trayrow > img.t { position: absolute; left: 0; bottom: 0; width: 100%; filter: drop-shadow(0 16px 14px rgba(0,0,0,.55)); }
@@ -182,8 +185,8 @@
   .coupon .stub img { width: 168px; height: 168px; padding: 8px; background: #fff; border-radius: 14px; box-sizing: border-box; }
   .res .chip { position: absolute; left: 50%; top: 296px; translate: -50% 0; padding: 16px 44px 12px; border-radius: 20px; background: linear-gradient(180deg, #FFFBF3, #EADFCB); color: #B81B24; font: italic 900 60px/1 Poppins, sans-serif; white-space: nowrap; box-shadow: 0 8px 0 #B5A88F, 0 18px 24px rgba(0,0,0,.4); animation: tick .5s cubic-bezier(.2, 1.6, .4, 1) .3s both; }
   .res .sub { position: absolute; left: 60px; right: 60px; top: 424px; text-align: center; font: 700 34px/1.25 Poppins, sans-serif; color: #FFF6E4; text-shadow: 0 3px 0 rgba(60,0,8,.6); }
-  .res .trayrow { bottom: 120px; height: 420px; left: 30px; right: 30px; } .res .trayrow .on { bottom: 108px; height: 330px; left: 110px; right: 110px; } .res .trayrow .on img { height: 300px; max-width: 290px; }
-  #s-win .sub { top: 800px; font-size: 26px; } #s-win .chip { top: 280px; font-size: 44px; padding: 12px 34px 9px; } #s-win .trayrow { bottom: 24px; height: 280px; left: 90px; right: 90px; } #s-win .trayrow .on { bottom: 70px; height: 210px; } #s-win .trayrow .on img { height: 190px; max-width: 210px; }
+  .res .trayrow { bottom: 120px; height: 420px; left: 30px; right: 30px; } .res .trayrow .on { bottom: 108px; height: 330px; left: 110px; right: 110px; } .res .trayrow .on { justify-content: center; } .res .trayrow .on img { height: 330px; max-width: 380px; margin: 0 -22px; }
+  #s-win .sub { top: 800px; font-size: 26px; } #s-win .chip { top: 280px; font-size: 44px; padding: 12px 34px 9px; } #s-win .trayrow { bottom: 24px; height: 280px; left: 90px; right: 90px; } #s-win .trayrow .on { bottom: 70px; height: 210px; } #s-win .trayrow .on img { height: 215px; max-width: 250px; margin: 0 -14px; }
   #s-win .trayrow .on img { animation: land .5s cubic-bezier(.3, 1.6, .5, 1) both, bob 2.6s ease-in-out .6s infinite; } #s-win .trayrow .on img:nth-child(2) { animation-delay: .15s, .9s; } #s-win .trayrow .on img:nth-child(3) { animation-delay: .3s, 1.2s; }
   .confetti { position: absolute; inset: 0; pointer-events: none; z-index: 40; overflow: hidden; } .confetti i { position: absolute; top: -40px; width: 18px; height: 30px; border-radius: 3px; animation: fall linear both; } @keyframes fall { to { translate: var(--dx) 2100px; rotate: var(--r); } }
 
@@ -227,14 +230,15 @@
     <section class="screen" id="s-how">
       <div class="h1">How to play<small></small></div>
       <div class="steps">
-        <div class="step"><b>1</b><span>Remember the slots</span><div class="pic"><div class="q"><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i></div></div></div>
-        <div class="step"><b>2</b><span>Match two items</span><div class="pic"><img src="/assets/claw/burger.webp" alt=""><img src="/assets/claw/burger.webp" alt=""></div></div>
-        <div class="step"><b>3</b><span>Fill your tray</span><div class="pic"><img src="/assets/claw/fries.webp" alt=""><img src="/assets/claw/burger.webp" alt=""><img src="/assets/claw/frosty-vanilla.webp" alt=""></div></div>
+        <div class="step"><b>1</b><span>See your order</span><div class="pic three"><img src="/assets/claw/burger.webp" alt=""><img src="/assets/claw/fries.webp" alt=""><img src="/assets/claw/frosty-vanilla.webp" alt=""></div></div>
+        <div class="step"><b>2</b><span>Remember where it is</span><div class="pic"><div class="q"><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i><i>?</i></div></div></div>
+        <div class="step"><b>3</b><span>Match only your order</span><div class="pic"><img src="/assets/claw/burger.webp" alt=""><img src="/assets/claw/burger.webp" alt=""></div></div>
       </div>
     </section>
 
     <!-- 5 memorise and 6 play share one screen -->
     <section class="screen" id="s-play">
+      <div class="ord" id="ord"><div class="h1">This is your order</div><div class="row" id="ord-row"></div><p>Find its pairs. Leave the rest.</p><div class="cnt" id="ord-n">5</div></div>
       <div class="mem" id="mem"><div class="h1">Remember the slots</div><div class="cnt" id="mem-n">3</div></div>
       <div class="hud" id="hud"><div class="clock" id="clock"><b><span id="secs">13</span><small>s</small></b><i id="bar"></i></div><div class="tries"><small>Tries</small><div id="tries"></div></div><div class="ticket"><div class="it" data-k="burger"><img alt=""></div><div class="it" data-k="fries"><img alt=""></div><div class="it" data-k="frosty"><img alt=""></div><div class="n"><span id="got">0</span>/3<small>Matched</small></div></div></div>
       <div class="bonus" id="bonus">+2s</div>
@@ -279,22 +283,23 @@
   const $ = (id) => document.getElementById(id), wait = (ms) => new Promise((r) => setTimeout(r, ms));
   // the 1080 x 1920 canvas is scaled to fit the screen and centred
   { const w = (new URLSearchParams(location.search).get("w") || "d").toLowerCase(); document.getElementById("s-idle").className = "screen on " + (w === "a" ? "wa" : w === "b" ? "wb" : "wd"); }   // the welcome look being chosen: ?w=a or ?w=b
-  { const k = (new URLSearchParams(location.search).get("k") || "").toLowerCase(); if (["red", "blue", "dark", "white"].includes(k)) document.getElementById("pad").classList.add("k-" + k); }
   function fit() { const k = Math.min(innerWidth / 1080, innerHeight / 1920), el = $("fit"); el.style.transform = `translate(${-540 * k}px, ${-960 * k}px) scale(${k})`; }
   addEventListener("resize", fit); fit();
   const sfx = (n, vol = .7) => { if (localStorage.getItem("wf_sfx") === "off") return; const a = $("a-" + n); if (!a) return; try { a.currentTime = 0; a.volume = vol; a.play().catch(() => {}); } catch {} };
 
   // the music under the round: it starts with the clock and stops when the round ends
   const music = (on) => { const a = $("a-tension"); if (!a) return; try { if (on && localStorage.getItem("wf_sfx") !== "off") { a.currentTime = 0; a.volume = .45; a.play().catch(() => {}); } else a.pause(); } catch {} };
-  let CFG = { durationMs: 13000, bonusMs: 2000, memoriseMs: 3000, chances: 3 }, guest = null;
+  let CFG = { durationMs: 13000, bonusMs: 2000, memoriseMs: 3000, chances: 3, orderMs: 5000, decoys: 3 }, guest = null;
   fetch("/api/config").then((r) => r.json()).then((c) => { if (c.claw) CFG = { ...CFG, ...c.claw }; $("qr").src = $("qr2").src = `/api/qr?text=${encodeURIComponent((c.baseUrl || location.origin) + "/register")}`; }).catch(() => {});
   $("ft-st").textContent = `Station ${K.station} · Claw`;
   const ITEMS = { chicken: "/assets/claw/burger.webp", beef: "/assets/claw/beef.webp", bacon: "/assets/claw/bacon.webp", crispy: "/assets/claw/crispy.webp", grilled: "/assets/claw/grilled.webp", fries: "/assets/claw/fries.webp", bites: "/assets/claw/bites.webp", choc: "/assets/claw/frosty-choc.webp", vanilla: "/assets/claw/frosty-vanilla.webp" };
-  const BURGERS = ["chicken", "beef", "bacon", "crispy", "grilled"], SIDES = ["fries", "bites"], pick = (a) => a[Math.floor(Math.random() * a.length)];
+  // Names as on the Wendy's Sri Lanka menu board (owner's photos, Nov 2026). The beef and bacon pictures match nothing on that board, so they are out of the game until the owner's product pictures arrive.
+  const NAMES = { chicken: "Spicy Chicken Burger", crispy: "Classic Chicken Burger", grilled: "Grilled Chicken Burger", fries: "Fries", bites: "Chicken Bites", choc: "Chocolate Frosty", vanilla: "Vanilla Frosty" };
+  const BURGERS = ["chicken", "crispy", "grilled"], SIDES = ["fries", "bites"], pick = (a) => a[Math.floor(Math.random() * a.length)];
   const STEPS = { "s-idle": ["1", "Welcome"], "s-code": ["2", "Your code"], "s-how": ["3", "How to play"], "s-play": ["4", "Play"], "s-win": ["5", "Order up"], "s-lose": ["5", "Time’s up"] };
   // the big button under the cabinet belongs to whichever screen is showing
   const CTA = { "s-idle": ["Tap to start", () => { sfx("start"); K.show("s-code"); }], "s-code": ["Continue", () => { if (code.length === 5) lookup(); else { sfx("error"); say(code.length < 3 ? "First, your 3 numbers." : "Now your 2 letters.", true); } }],
-    "s-how": ["Let’s play", () => { sfx("start"); startGame(); }], "s-play": ["Match the pairs", null], "s-win": ["Done", () => { sfx("coin"); goIdle(); }], "s-lose": ["Done", () => { sfx("coin"); goIdle(); }] };
+    "s-how": ["Let’s play", () => { sfx("start"); startGame(); }], "s-play": ["Match your order", null], "s-win": ["Done", () => { sfx("coin"); goIdle(); }], "s-lose": ["Done", () => { sfx("coin"); goIdle(); }] };
   let screen = "s-idle";
   document.addEventListener("screen", (e) => { const id = e.detail; if (!CTA[id]) return; screen = id; const st = STEPS[id]; $("stp-n").textContent = st[0]; $("stp-l").textContent = st[1];
     const b = $("cta"); b.textContent = CTA[id][0]; b.disabled = !CTA[id][1]; b.classList.toggle("pulse", !!CTA[id][1] && id !== "s-code"); if (id !== "s-idle") sfx("whoosh", .35); });
@@ -329,19 +334,25 @@
 
   // ---- the game
   let deck = [], open = [], matched = 0, lock = true, left = 0, tickT = null, lastT = 0, running = false, frosty = "choc", burger = "chicken", side = "fries", order = [], t0 = 0;
-  const srcOf = (k) => ITEMS[k === "frosty" ? frosty : k === "burger" ? burger : side];
+  const srcOf = (k) => ITEMS[k];
   // Tries (owner: "only 3 chances"): every pair the guest turns over uses one. With three pairs and three tries, a single wrong pair means the order cannot be completed.
   let tries = 3; function paintTries() { const n = Math.max(3, CFG.chances || 3); $("tries").innerHTML = Array.from({ length: n }, (_, i) => `<i class="${i < tries ? "" : "off"}"></i>`).join(""); }
   function startGame() {
-    frosty = pick(["choc", "vanilla"]); burger = pick(BURGERS); side = pick(SIDES); order = ["burger", "fries", "frosty"];
-    deck = [...order, ...order].sort(() => Math.random() - .5); for (let i = deck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [deck[i], deck[j]] = [deck[j], deck[i]]; }
+    frosty = pick(["choc", "vanilla"]); burger = pick(BURGERS); side = pick(SIDES); order = [burger, side, frosty];
+    // harder (owner): besides the three pairs of the order there are single items that are NOT in the order. Turning one over wastes a try.
+    const others = [...BURGERS.filter((b) => b !== burger), ...SIDES.filter((x) => x !== side), frosty === "choc" ? "vanilla" : "choc"]; for (let i = others.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [others[i], others[j]] = [others[j], others[i]]; }
+    deck = [...order, ...order, ...others.slice(0, Math.max(0, Math.min(3, CFG.decoys ?? 3)))]; for (let i = deck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [deck[i], deck[j]] = [deck[j], deck[i]]; }
     open = []; matched = 0; lock = true; left = CFG.durationMs; tries = Math.max(3, CFG.chances || 3); paintTries(); $("got").textContent = "0"; $("tray").innerHTML = ""; $("clock").classList.remove("low");
-    document.querySelectorAll(".ticket .it").forEach((el) => { el.classList.remove("ok"); el.querySelector("img").src = srcOf(el.dataset.k); });
-    $("slots").innerHTML = deck.map((k, i) => `<div class="slot up" data-i="${i}"><div class="f back">?</div><div class="f front"><img src="${srcOf(k)}" alt=""></div></div>`).join("");
+    document.querySelectorAll(".ticket .it").forEach((el, i) => { el.dataset.k = order[i]; el.classList.remove("ok"); el.querySelector("img").src = srcOf(order[i]); });
+    $("slots").innerHTML = deck.map((k, i) => `<div class="slot" data-i="${i}"><div class="f back">?</div><div class="f front"><img src="${srcOf(k)}" alt=""><span>${NAMES[k]}</span></div></div>`).join("");
     document.querySelectorAll(".slot").forEach((el) => (el.onclick = () => tapSlot(+el.dataset.i)));
     const rig = $("rig"); rig.classList.remove("grab"); rig.style.transition = "none"; rig.style.translate = "474px -420px"; void rig.offsetWidth; rig.style.transition = "";
-    paintClock(); $("hud").style.visibility = "hidden"; $("mem").style.display = "flex"; K.show("s-play"); K.resetIdle(0);
-    (async () => {   // everyone sees all six for a few seconds, then the doors close and the clock starts
+    paintClock(); $("hud").style.visibility = "hidden"; $("mem").style.display = "none"; const ord = $("ord"); ord.classList.remove("away"); ord.classList.add("on"); $("ord-row").innerHTML = order.map((k) => `<div><img src="${srcOf(k)}" alt="">${NAMES[k]}</div>`).join(""); K.show("s-play"); K.resetIdle(0);
+    (async () => {   // first the guest is told their order, then everyone sees all the slots for a few seconds, then the doors close and the clock starts
+      const on = Math.max(1, Math.round((CFG.orderMs ?? 5000) / 1000));
+      for (let s = on; s >= 1; s--) { if (screen !== "s-play") return; const c = $("ord-n"); c.textContent = s; c.classList.remove("pop"); void c.offsetWidth; c.classList.add("pop"); await wait((CFG.orderMs ?? 5000) / on); }
+      if (screen !== "s-play") return; sfx("whoosh", .5); $("hud").style.visibility = "visible"; ord.classList.add("away"); await wait(620); ord.classList.remove("on", "away"); $("hud").style.visibility = "hidden";
+      if (screen !== "s-play") return; $("mem").style.display = "flex"; document.querySelectorAll(".slot").forEach((el) => el.classList.add("up")); sfx("flip", .6);
       const n = Math.max(1, Math.round(CFG.memoriseMs / 1000));
       for (let s = n; s >= 1; s--) { if (screen !== "s-play") return; const c = $("mem-n"); c.textContent = s; c.classList.remove("pop"); void c.offsetWidth; c.classList.add("pop"); sfx("beep", .5); await wait(CFG.memoriseMs / n); }
       if (screen !== "s-play") return;
@@ -369,7 +380,7 @@
     sfx("clawmove", .6); await go(sx, sy - 190, 440); await go(sx, sy - 105, 320);
     const held = $("held"); held.src = srcOf(k); held.classList.add("half"); rig.classList.add("grab"); sfx("clawgrab", .7); [a, b].forEach((x) => slotEl(x).classList.add("gone")); await wait(260);
     const n = matched, tx = 190 + n * 290; held.classList.remove("half"); await go(sx, sy - 330, 820, "cubic-bezier(.3, 0, .3, 1)");   // lifted out of the slot: the whole item comes into view
-    sfx("clawmove", .5); await go(tx, 500, 620); await go(tx, 742, 900, "cubic-bezier(.2, .7, .3, 1)");   // across, then lowered slowly onto the tray
+    sfx("clawmove", .5); await go(tx, 500, 620); await go(tx, 690, 900, "cubic-bezier(.2, .7, .3, 1)");   // across, then lowered slowly onto the tray
     rig.classList.remove("grab"); const img = document.createElement("img"); img.src = srcOf(k); $("tray").appendChild(img); sfx("clawdrop", .7);
     matched++; $("got").textContent = matched; document.querySelector(`.ticket .it[data-k="${k}"]`).classList.add("ok");
     if (matched < 3 && CFG.bonusMs > 0) { left = Math.min(CFG.durationMs, left + CFG.bonusMs); const bn = $("bonus"); bn.textContent = `+${Math.round(CFG.bonusMs / 1000)}s`; bn.classList.remove("go"); void bn.offsetWidth; bn.classList.add("go"); paintClock(); }
@@ -395,7 +406,7 @@
       $("coupon").style.display = $("cp-big").style.display = c ? "" : "none"; if (c) { const pz = prizeText(c.label); $("cp-big").textContent = pz.big; $("cp-prize").textContent = pz.line; $("cp-code").textContent = c.code; $("cp-qr").src = `/api/qr?text=${encodeURIComponent(res.profileUrl || "")}`; }
       $("win-sub").textContent = res && res.couponPoolEmpty ? "You won! Please show this screen to our team for your reward." : `${name ? name + ", you" : "You"} grabbed the whole order with ${(msLeft / 1000).toFixed(1)} seconds to spare.`;
       K.show("s-win"); sfx("party", .7); setTimeout(() => sfx("jackpot", .7), 300); confetti(); }
-    else { $("lose-t").textContent = why === "tries" ? "Out of tries!" : "Time’s up!"; $("lose-chip").textContent = `${matched} / 3 matched`; const miss = order.filter((k) => !have.includes(srcOf(k))).map((k) => ({ burger: "the burger", fries: side === "bites" ? "the Chicken Bites" : "the fries", frosty: "the Frosty" }[k]));
+    else { $("lose-t").textContent = why === "tries" ? "Out of tries!" : "Time’s up!"; $("lose-chip").textContent = `${matched} / 3 matched`; const miss = order.filter((k) => !have.includes(srcOf(k))).map((k) => "the " + NAMES[k]);
       $("lose-sub").textContent = matched ? `So close${name ? ", " + name : ""}. You missed ${miss.join(" and ")}.` : `The order got away${name ? ", " + name : ""}. Better luck next time.`; K.show("s-lose"); sfx("aww", .6); }
     K.resetIdle(won ? 40000 : 25000, goIdle);
   }

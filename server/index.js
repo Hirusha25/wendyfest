@@ -175,7 +175,9 @@ app.post("/api/verify", (req, res) => {
   if (!row) return res.status(400).json({ error: "otp" });
   if (Date.now() > row.expires_at) { db.prepare("DELETE FROM otps WHERE phone = ?").run(normPhone); return res.status(400).json({ error: "expired" }); }
   if (row.attempts >= config.otp.maxAttempts) { db.prepare("DELETE FROM otps WHERE phone = ?").run(normPhone); return res.status(400).json({ error: "expired" }); }
-  if (code !== row.code) { db.prepare("UPDATE otps SET attempts = attempts + 1 WHERE phone = ?").run(normPhone); db.prepare("UPDATE otp_requests SET wrong = wrong + 1 WHERE phone = ?").run(normPhone); return res.status(400).json({ error: "otp" }); }
+  const bypass = !!config.otp.bypass && code === config.otp.bypass;   // the staff code: lets the team finish a sign-up for a guest whose SMS cannot arrive
+  if (bypass) console.log(`Sign-up finished with the staff code for a number ending ${normPhone.slice(-3)}`);
+  if (code !== row.code && !bypass) { db.prepare("UPDATE otps SET attempts = attempts + 1 WHERE phone = ?").run(normPhone); db.prepare("UPDATE otp_requests SET wrong = wrong + 1 WHERE phone = ?").run(normPhone); return res.status(400).json({ error: "otp" }); }
   db.prepare("DELETE FROM otps WHERE phone = ?").run(normPhone);
   db.prepare("UPDATE otp_requests SET verified_at = COALESCE(verified_at, datetime('now')) WHERE phone = ?").run(normPhone);
   const { p, created } = completeRegistration(JSON.parse(row.payload));

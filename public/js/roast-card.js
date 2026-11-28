@@ -182,8 +182,10 @@
   // Two looks: one at the whole photo to find the guest, then a close one at the head and shoulders, so hair is traced at about three
   // times the detail (the engine only sees 256 x 256 points, which is very little when the guest is small in the frame).
   const cuts = new Map();
-  async function cutout(img, key) {
-    if (cuts.has(key)) return cuts.get(key);
+  // One cut-out per photo, also while it is still being made: the kiosk starts it the moment the photo is taken, and the card joins that same job instead of starting a second one.
+  const cutting = new Map();
+  function cutout(img, key) { if (cuts.has(key)) return Promise.resolve(cuts.get(key)); if (!cutting.has(key)) { const p = cutout0(img, key); cutting.set(key, p); const done = () => cutting.delete(key); p.then(done, done); } return cutting.get(key); }
+  async function cutout0(img, key) {
     detector();   // starts loading beside the engine; never waited for more than a moment
     const seg = await within(segmenter(), 20000), iw = img.naturalWidth, ih = img.naturalHeight;
     const one = personMask(seg.segment(img).confidenceMasks); if (!one.head) throw new Error("no person found");

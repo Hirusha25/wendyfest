@@ -849,6 +849,7 @@
       R = await askRoast(image); R.localPhoto = image; prepCard();
       setCook(3); await talkDone(500); setCook(4);            // the roast is ready: Wendy stops within half a second
       await hereItComes();             // "Here comes the roast", then a drum roll, so heads turn before it appears
+      if (cardPre) await Promise.race([cardPre.url.catch(() => {}), wait(2500)]);   // the card is on the screen the moment it appears (owner, 28 Nov 2026: no "Plating your card" wait); never held longer than this
       reveal();
     } catch (e) { console.warn("roast", e); stopTalk(); sfx("error"); $("cook-line").textContent = "Sorry, that did not work. Please try again."; await wait(6000); goIdle(); }   // no browser pop-up: the guest is told, then the kiosk goes back to the start
   };

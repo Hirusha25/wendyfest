@@ -30,11 +30,19 @@ const clawSettings = () => ({ ...config.claw, ...getSetting("claw", {}) });
 const clawsFor = db.prepare("SELECT * FROM claw_attempts WHERE participant_id = ? ORDER BY id DESC");
 const wallSettings = () => ({ on: true, seconds: 15, ...getSetting("wall", {}) });   // the LED wall: showing or paused, and seconds per roast
 
+// PIN guessing: ten DIFFERENT wrong PINs from one address within ten minutes lock that address out until they age off.
+// The same wrong PIN sent again and again (an old kiosk tab after a PIN change) counts once, so it cannot lock a venue out.
+const pinTries = new Map();   // address -> Map(wrong PIN -> time)
+const pinAddr = (req) => String(req.headers["cf-connecting-ip"] || req.headers["x-forwarded-for"] || req.ip || "").split(",")[0].trim();
+function pinLocked(req) { const m = pinTries.get(pinAddr(req)); if (!m) return false; const now = Date.now(); for (const [k, t] of m) if (now - t > 10 * 60_000) m.delete(k); return m.size >= 10; }
+function pinWrong(req, v) { if (pinTries.size > 5000) pinTries.clear(); const a = pinAddr(req); let m = pinTries.get(a); if (!m) pinTries.set(a, m = new Map()); m.set(String(v).slice(0, 40), Date.now()); }
 const requirePin = (which) => (req, res, next) => {
   const c = cookies(req);
   const supplied = req.headers["x-pin"] || c[`wf_${which}`];
   const expected = which === "admin" ? config.adminPin : which === "redeem" ? config.redeemPin : config.kioskPin;
+  if (pinLocked(req)) return res.status(429).json({ error: "Too many wrong PINs. Try again in a few minutes." });
   if (supplied === expected || (which !== "admin" && supplied === config.adminPin)) return next();   // the admin PIN also opens the kiosks and the redeem page
+  if (supplied) pinWrong(req, supplied);
   res.status(401).json({ error: "PIN required", which });
 };
 
@@ -105,8 +113,9 @@ app.get("/api/config", (req, res) => {
 // QR as SVG
 app.get("/api/qr", async (req, res) => {
   const text = String(req.query.text || config.baseUrl).slice(0, 500);
-  const svg = await QRCode.toString(text, { type: "svg", margin: 1, color: { dark: req.query.dark ? `#${req.query.dark}` : "#252525", light: "#0000" }, errorCorrectionLevel: "M" });
-  res.type("image/svg+xml").send(svg);
+  const dark = /^([0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(String(req.query.dark || "")) ? `#${req.query.dark}` : "#252525";   // a bad colour used to crash the whole server
+  try { const svg = await QRCode.toString(text, { type: "svg", margin: 1, color: { dark, light: "#0000" }, errorCorrectionLevel: "M" }); res.type("image/svg+xml").send(svg); }
+  catch { res.status(400).json({ error: "Could not make that QR code" }); }
 });
 
 // ---------- registration + profile ----------
@@ -223,7 +232,9 @@ app.get("/api/roast/:token/photo", (req, res) => {
 // ---------- kiosk ----------
 app.post("/api/kiosk/login", (req, res) => {
   const pin = String(req.body?.pin || "");
+  if (pinLocked(req)) return res.status(429).json({ error: "Too many wrong PINs. Try again in a few minutes." });
   if (pin === config.kioskPin || pin === config.adminPin) { setCookie(res, "wf_kiosk", pin, 7); return res.json({ ok: true }); }
+  if (pin) pinWrong(req, pin);
   res.status(401).json({ error: "wrong pin" });
 });
 
@@ -417,7 +428,9 @@ app.get("/api/redeem/list", requirePin("redeem"), (req, res) => {
 
 // ---------- admin ----------
 app.post("/api/admin/login", (req, res) => {
+  if (pinLocked(req)) return res.status(429).json({ error: "Too many wrong PINs. Try again in a few minutes." });
   if (String(req.body?.pin || "") === config.adminPin) { setCookie(res, "wf_admin", config.adminPin, 7); return res.json({ ok: true }); }
+  if (req.body?.pin) pinWrong(req, req.body.pin);
   res.status(401).json({ error: "wrong pin" });
 });
 app.get("/api/admin/stats", requirePin("admin"), (req, res) => {

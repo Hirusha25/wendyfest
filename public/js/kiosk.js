@@ -2,9 +2,13 @@
 window.K = {
   pin: null,
   station: localStorage.getItem("wf_station") || "A",
-  show(id) { document.querySelectorAll(".screen").forEach((s) => s.classList.toggle("on", s.id === id)); document.dispatchEvent(new CustomEvent("screen", { detail: id })); },
-  async api(path, body) {
-    const r = await fetch(path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...body, station: K.station }) });
+  shownAt: 0,
+  // true for a moment after a screen appears: a tap aimed at the last screen's button must not press the new screen's button
+  fresh(ms = 1200) { return Date.now() - K.shownAt < ms; },
+  show(id) { K.shownAt = Date.now(); document.querySelectorAll(".screen").forEach((s) => s.classList.toggle("on", s.id === id)); document.dispatchEvent(new CustomEvent("screen", { detail: id })); },
+  async api(path, body, ms = 25000) {   // every request gives up after ms, so a stalled network can never leave a kiosk waiting for ever
+    let r; try { r = await fetch(path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...body, station: K.station }), signal: AbortSignal.timeout(ms) }); }
+    catch (e) { throw new Error(e.name === "TimeoutError" || e.name === "AbortError" ? "The network is slow. Please try again." : "No connection. Please try again."); }
     const data = await r.json().catch(() => ({}));
     if (r.status === 401) { K.show("s-pin"); throw new Error("PIN required"); }
     if (!r.ok) throw Object.assign(new Error(data.error || r.statusText), { status: r.status });

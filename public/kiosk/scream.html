@@ -840,7 +840,8 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   micSel.onchange = () => { localStorage.setItem("wf_mic_" + K.station, micSel.value); startAudio(true); };
   $("judge-mode").value = localStorage.getItem("wf_judge") || "auto"; $("judge-mode").onchange = () => localStorage.setItem("wf_judge", $("judge-mode").value);
   async function startAudio(restart) {
-    if (stream && !restart) return true;
+    if (audio && audio.state === "suspended") audio.resume().catch(() => {});
+    if (stream && !restart && stream.getAudioTracks().some((t) => t.readyState === "live")) return true;   // a mic that was unplugged or taken away is opened again
     if (stream) stream.getTracks().forEach((t) => t.stop());
     try {
       const id = localStorage.getItem("wf_mic_" + K.station);
@@ -1190,8 +1191,8 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   function paintBoxes() { const v = codeClean(codeEl.value); if (v.length === CODE_LEN && paintBoxes.n !== CODE_LEN) { SFX.ding(); autoGo(v); } paintBoxes.n = v.length;   /* a ding when the last box is filled */
     if (codeEl.value !== v) codeEl.value = v; $("kbd").dataset.mode = v.length < 3 ? "num" : "let"; $("code-hint").textContent = v.length < 3 ? "First, your 3 numbers." : "Now your 2 letters.";
     [...$("boxes").querySelectorAll("i")].forEach((b, i) => { b.textContent = v[i] || ""; b.classList.toggle("cur", i === v.length); b.classList.remove("err"); if (i === v.length - 1 && v.length > lastLen) { b.classList.remove("pop"); void b.offsetWidth; b.classList.add("pop"); } }); lastLen = v.length; }
-  codeEl.addEventListener("input", paintBoxes); codeEl.addEventListener("keydown", (e) => e.key === "Enter" && lookup(codeEl.value));
-  $("code-go").onclick = () => lookup(codeEl.value);
+  codeEl.addEventListener("input", paintBoxes); $("code-go").onclick = () => { if (codeClean(codeEl.value).length === CODE_LEN) lookup(codeEl.value); };   // a stray tap with a half-typed code is not a wrong code
+  codeEl.addEventListener("keydown", (e) => e.key === "Enter" && $("code-go").onclick());
   $("code-back").onclick = () => goIdle();   // a guest without a code can go back to the start (and its QR to register)
   $("miss-next").onclick = () => goIdle();
   paintBoxes();   // sets the pad to numbers before the first guest arrives
@@ -1205,19 +1206,22 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     $("code-msg").textContent = "Looking up…";
     if (Date.now() < lookup.lockUntil) { $("code-msg").textContent = "Too many wrong codes. Please wait a moment, or ask our crew."; shakeBoxes(); return; }
     try {
-      guest = await K.api("/api/kiosk/lookup", { code }); lookup.bad = 0;
+      if (code === lookup.lastBad) { $("code-msg").textContent = lookup.lastMsg; shakeBoxes(); return; }   // the same wrong code tapped again counts once
+      const g = await K.api("/api/kiosk/lookup", { code }, 12000); if (!$("s-code").classList.contains("on")) return;   // a late answer must not move a kiosk that has gone back to the start
+      guest = g; lookup.bad = 0;
       if (guest.screamsLeft <= 0) { $("code-msg").textContent = `${guest.firstName} has already used their attempt${guest.alreadyWon ? " (and won!)" : ""}.`; shakeBoxes(); return; }
       $("r-name").textContent = guest.firstName; mode = "ready"; $("mic-pill").classList.remove("heard-ok"); K.show("s-ready"); if (await startAudio()) { $("mic-status").textContent = "Mic connected · say “Hello”"; SFX.mic(); } resetVoiceCheck(); K.resetIdle(90000, goIdle);
-    } catch (e) { $("code-msg").textContent = e.message; shakeBoxes(); lookup.bad = (lookup.bad || 0) + 1;
+    } catch (e) { if (!$("s-code").classList.contains("on")) return; $("code-msg").textContent = e.message; shakeBoxes(); if (e.status !== 404) return;   // a slow network is not a wrong code
+      lookup.lastBad = code; lookup.lastMsg = e.message; lookup.bad = (lookup.bad || 0) + 1;
       if (lookup.bad >= 3) { lookup.bad = 0; lookup.lockUntil = Date.now() + 30000; $("code-msg").textContent = "Too many wrong codes. Try again in 30 seconds, or ask our crew."; } }   // three wrong codes lock the pad for half a minute
   }
   function shakeBoxes() { SFX.error(); [...$("boxes").querySelectorAll("i")].forEach((b) => { b.classList.add("err"); setTimeout(() => b.classList.remove("err"), 500); }); }
 
   // ---------- flow ----------
-  function goIdle() { missRetries = 0; winTimers.forEach(clearTimeout); stopSass(); K.resetIdle(0); stopRecog(); windowOpen = false; guest = null; codeEl.value = ""; paintBoxes(); $("code-msg").textContent = ""; mode = "idle"; document.querySelectorAll(".confetti").forEach((c) => c.remove()); K.show("s-idle"); }
+  function goIdle() { lookup.lastBad = null; missRetries = 0; winTimers.forEach(clearTimeout); stopSass(); K.resetIdle(0); stopRecog(); windowOpen = false; guest = null; codeEl.value = ""; paintBoxes(); $("code-msg").textContent = ""; mode = "idle"; document.querySelectorAll(".confetti").forEach((c) => c.remove()); K.show("s-idle"); }
   document.addEventListener("kiosk-home", goIdle);
   $("start").onclick = () => { K.show("s-code"); codeEl.focus({ preventScroll: true }); startAudio(); K.resetIdle(60000, goIdle); };
-  document.querySelector(".brand").onclick = () => { if (!$("s-pin").classList.contains("on")) goIdle(); };
+  document.querySelector(".brand").onclick = () => { if ($("s-pin").classList.contains("on")) return; if ((mode === "count" || mode === "scream") && Date.now() - roundAt < 30000) return;   /* a tap on the logo must not cut a round in half (the round would carry on unseen) */ goIdle(); };
   const STEPS = { "s-pin": ["•", "Host"], "s-idle": ["1", "Register"], "s-code": ["2", "Enter code"], "s-ready": ["3", "Mic check"], "s-go": ["4", "Countdown"], "s-judge": ["5", "Host call"], "s-result": ["6", "Result"] };
   function setStep(n, label) { $("step-n").textContent = n; $("step-l").textContent = label; const k = +n; $("track6").classList.add("hide"); [...$("track6").children].forEach((el, i) => { el.classList.toggle("done", i < k - 1); el.classList.toggle("now", i === k - 1); }); }
   function enter(box) { if (!box) return; box.classList.remove("enter"); [...box.children].forEach((el, i) => el.style.setProperty("--i", i)); void box.offsetWidth; box.classList.add("enter"); }
@@ -1225,8 +1229,8 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   document.addEventListener("screen", (e) => { if (e.detail !== "s-result") SFX.whoosh(); setTimeout(fitText, 0); const sc = $(e.detail); enter(e.detail === "s-go" ? $("go-count") : sc && sc.querySelector(".box")); if (STEPS[e.detail]) setStep(...STEPS[e.detail]); if (e.detail === "s-code") setTimeout(() => codeEl.focus({ preventScroll: true }), 50); });
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
   $("go").onclick = async () => {
-    if (mode !== "ready") return;
-    if (!(await startAudio())) return;
+    if (mode !== "ready" || K.fresh(1500)) return;   // a tap meant for Continue on the code screen must not start the countdown
+    if (!(await startAudio())) return; roundAt = Date.now();
     K.resetIdle(0); K.show("s-go"); $("go-count").style.display = "block"; $("go-meter").style.display = "none"; AMB = []; ambDb = null; mode = "count";
     const dots = [...$("dots").querySelectorAll("span")];
     for (let n = 3; n >= 1; n--) {
@@ -1268,7 +1272,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     // When the word could not be heard for a technical reason the guest gets one more go, which does not use their attempt;
     // if it happens again the scream is scored as it stands.
     if (judgeRoute !== "auto" && missRetries < 1) {
-      missRetries++; mode = "ready"; K.show("s-ready"); $("mic-pill").classList.remove("heard-ok"); $("mic-status").textContent = "We couldn’t hear you. Tap Let’s go and try again."; resetVoiceCheck(); SFX.error(); K.resetIdle(90000, goIdle); return;
+      missRetries++; mode = "ready"; K.show("s-ready"); $("mic-pill").classList.remove("heard-ok"); $("mic-status").textContent = "We couldn’t hear you. Try again."; resetVoiceCheck(); SFX.error(); K.resetIdle(90000, goIdle); return;
     }
     // Second miss. If the word check itself failed (the recording never got an answer, or this browser cannot hear at all), nothing is saved
     // and the attempt is not used: the guest is asked to tell the team. A scream that was checked and simply had no words is scored as it stands.
@@ -1277,12 +1281,13 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     if (judgeRoute !== "auto" && techFail) { K.api("/api/kiosk/miss", { speech: speechDiag() }).catch(() => {}); mode = "miss"; K.show("s-miss"); SFX.error(); K.resetIdle(25000, goIdle); return; }
     submitScream(null);
   };
+  let roundAt = 0;          // when the current round began
   let missRetries = 0;      // goes when the word could not be heard and the guest was sent back to try again
   let submitting = false;   // a double tap on a host button must not save the scream twice
   async function submitScream(accuracyOverride) {
     if (submitting || !guest) return; submitting = true;
     try { const r = await K.api("/api/kiosk/scream", { code: guest.code, peakDb, sustainedDb: susDb, ambientDb: ambDb, transcript, accuracyOverride, speech: { ...speechDiag(), amb: ambDb === null ? null : Math.round(ambDb * 10) / 10 } }); showResult(r); }
-    catch (e) { alert("Could not submit: " + e.message); goIdle(); }
+    catch (e) { console.warn("scream submit", e); mode = "miss"; K.show("s-miss"); SFX.error(); K.resetIdle(25000, goIdle); }   // no browser pop-up: the guest is told, and the kiosk goes back to the start by itself
   }
   // Confetti that bursts out of a point on the screen (by default the middle), flies outward, then falls and fades.
   function confettiBurst(n = 130, x = innerWidth / 2, y = innerHeight * .44) {

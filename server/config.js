@@ -55,7 +55,7 @@ export const config = {
   roast: {
     attemptsPerPerson: Number(env("ROAST_ATTEMPTS", 1)),
     model: env("ROAST_MODEL", "claude-opus-5-5"),
-    effort: env("ROAST_EFFORT", "medium"),
+    effort: env("ROAST_EFFORT", "low"),
   },
   // Roast voice-over (ElevenLabs). Needs both the key and a voice; without them the roast is shown with no sound.
   voice: {

@@ -354,7 +354,7 @@ app.get("/api/kiosk/lines-audio/:t", async (req, res) => {
 });
 
 app.post("/api/kiosk/roast", requirePin("kiosk"), async (req, res) => {
-  const { code, image, consent, station, heat } = req.body || {};
+  const { code, image, consent, station, heat, look } = req.body || {};
   const p = participantByCode.get(String(code || "").toUpperCase());
   if (!p) return res.status(404).json({ error: "code not found" });
   if (!consent) return res.status(400).json({ error: "consent required" });
@@ -365,7 +365,9 @@ app.post("/api/kiosk/roast", requirePin("kiosk"), async (req, res) => {
   if (!m) return res.status(400).json({ error: "image must be a data URL (jpeg/png/webp)" });
   const [, mediaType, b64] = m;
 
-  const result = await generateRoast({ imageBase64: b64, mediaType, name: p.name.split(" ")[0], lang: p.lang, heat: ["mild", "medium", "extra"].includes(heat) ? heat : "medium" });
+  // the kiosk also sends a small copy for Wendy to read (quicker than the full photo); the full photo is what gets saved
+  const lk = String(look || "").match(/^data:(image\/(?:jpeg|png|webp));base64,(.+)$/);
+  const result = await generateRoast({ imageBase64: lk ? lk[2] : b64, mediaType: lk ? lk[1] : mediaType, name: p.name.split(" ")[0], lang: p.lang, heat: ["mild", "medium", "extra"].includes(heat) ? heat : "medium" });
   const rtoken = token(12);
   const ext = mediaType.split("/")[1].replace("jpeg", "jpg");
   const file = `${rtoken}.${ext}`;

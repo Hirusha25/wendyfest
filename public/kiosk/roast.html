@@ -745,8 +745,10 @@
     // Both happen in the same instant as the snap, so there is no extra wait (owner, Nov 2026).
     const v = $("video"), c = $("shot"); const w = Math.min(1600, Math.max(1024, v.videoWidth || 1024)), h = Math.round(w * (v.videoHeight / v.videoWidth || .75));
     c.width = w; c.height = h; const ctx = c.getContext("2d"); ctx.imageSmoothingQuality = "high"; try { ctx.filter = "contrast(1.06) saturate(1.1) brightness(1.03)"; } catch {} ctx.drawImage(v, 0, 0, w, h); ctx.filter = "none";
-    return c.toDataURL("image/jpeg", .9);
+    lookImg = null; try { const k = 720 / w, s2 = document.createElement("canvas"); s2.width = 720; s2.height = Math.round(h * k); const x2 = s2.getContext("2d"); x2.imageSmoothingQuality = "high"; x2.drawImage(c, 0, 0, s2.width, s2.height); lookImg = s2.toDataURL("image/jpeg", .8); } catch {}   // what Wendy reads: a 720-wide copy (owner, 28 Nov 2026: the wait was too long)
+    return c.toDataURL("image/jpeg", .85);
   }
+  let lookImg = null;
 
   // ---------- flow ----------
   // voice-over of the English roast (when the server has a voice set up); it plays once, on the English tab
@@ -826,8 +828,8 @@
     const image = capture(); $("snap").disabled = false;
     $("ck-photo").src = image; paintHeatCap(); setCook(2); K.show("s-cooking"); cookLines(); personalLines(image);
     try {
-      R = await K.api("/api/kiosk/roast", { code: guest.code, image, consent: true, heat }); prepCard();
-      setCook(3); await talkDone(1300); setCook(4);            // let Wendy finish the sentence she is on
+      R = await K.api("/api/kiosk/roast", { code: guest.code, image, look: lookImg, consent: true, heat }); prepCard();
+      setCook(3); await talkDone(500); setCook(4);            // the roast is ready: Wendy stops within half a second
       await hereItComes();             // "Here comes the roast", then a drum roll, so heads turn before it appears
       reveal();
     } catch (e) { alert("Roast failed: " + e.message); goIdle(); }
@@ -891,13 +893,13 @@
   // the build-up: Wendy announces the roast, then a drum roll; the roast screen appears on the fanfare
   async function hereItComes() {
     stopTalk(); sizzleOn(false);
-    await new Promise((r) => { const a = $("vo-here"); $("cook-line").textContent = "Okay. Here comes the roast!"; const t = setTimeout(r, 3500); say(a, () => { clearTimeout(t); r(); }); });
-    sfx("reveal", .8); await wait(1050); setTimeout(() => sfx("card", .6), 250);   // the card swings in on its lanyard
+    await new Promise((r) => { const a = $("vo-here"); $("cook-line").textContent = "Okay. Here comes the roast!"; const t = setTimeout(r, 1500); say(a, () => { clearTimeout(t); r(); }); });   // at most a second and a half of "Here comes the roast"
+    sfx("reveal", .8); await wait(700); setTimeout(() => sfx("card", .6), 250);   // the card swings in on its lanyard
   }
   // Lines about this guest's own photo: they take over the bubble as soon as they arrive; if they never do, the general lines stay.
   function personalLines(image) {
     const who = guest.code;
-    K.api("/api/kiosk/roast-lines", { code: who, image, consent: true }).then((r) => {
+    K.api("/api/kiosk/roast-lines", { code: who, image: lookImg || image, consent: true }).then((r) => {
       const mine = (r && Array.isArray(r.lines) ? r.lines : []).filter(Boolean);
       if (mine.length < 3 || !guest || guest.code !== who || !talkOn || !$("s-cooking").classList.contains("on")) return;
       personal = { lines: mine.slice(0, r.spoken || 3), audio: r.audio || null };   // said after the line she is on

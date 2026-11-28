@@ -24,10 +24,25 @@
     const files = await FilesetResolver.forVisionTasks(MP + "/wasm");
     return ImageSegmenter.createFromOptions(files, { baseOptions: { modelAssetPath: MODEL, delegate: "CPU" }, runningMode: "IMAGE", outputCategoryMask: false, outputConfidenceMasks: true });
   })().catch((e) => { segP = null; throw e; }));
+  // A small face finder, used on the close look at the head to tell the guest's face from a smaller face beside it. Optional: without it the card is drawn as before.
+  const FACES = "https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite";
+  let detP = null;
+  const detector = () => detP || (detP = (async () => {
+    const { FilesetResolver, FaceDetector } = await import(MP + "/vision_bundle.mjs");
+    const files = await FilesetResolver.forVisionTasks(MP + "/wasm");
+    return FaceDetector.createFromOptions(files, { baseOptions: { modelAssetPath: FACES, delegate: "CPU" }, runningMode: "IMAGE", minDetectionConfidence: .3 });
+  })().catch((e) => { detP = null; console.warn("roast card: face finder not loaded,", e.message); return null; }));
+  // The guest's face (the biggest sure one) and the clearly smaller faces beside it, as parts of the picture (0 to 1).
+  function faceBoxes(dets, w, h) {
+    const b = dets.map((d) => { const q = d.boundingBox; return { x0: q.originX / w, y0: q.originY / h, x1: (q.originX + q.width) / w, y1: (q.originY + q.height) / h, a: q.width * q.height, s: d.categories[0].score }; });
+    let g = null; for (const q of b) if (q.s >= .5 && (!g || q.a > g.a)) g = q; if (!g) return null;
+    const out = (q) => { const cx = (q.x0 + q.x1) / 2, cy = (q.y0 + q.y1) / 2; return cx < g.x0 || cx > g.x1 || cy < g.y0 || cy > g.y1; };
+    return { g, others: b.filter((q) => q !== g && q.s >= .35 && q.a <= g.a * .45 && q.a >= g.a * .03 && out(q)) };
+  }
 
   // How sure the cut-out engine is that each point is the guest (hair counts even where it is thin), as a small see-through picture,
   // plus the box around the head (hair and face), in that picture's own points.
-  function personMask(masks) {
+  function personMask(masks, det, close) {
     const bg = masks[0], mw = bg.width, mh = bg.height, n = mw * mh, b = bg.getAsFloat32Array(), hair = masks[1].getAsFloat32Array(), face = masks[3].getAsFloat32Array(), skin = masks[2].getAsFloat32Array();
     const al = new Uint8ClampedArray(n), lab = new Int32Array(n), stack = new Int32Array(n);
     for (let i = 0; i < n; i++) { const p = Math.max(1 - b[i], Math.min(1, hair[i] * 1.35)), v = Math.min(1, Math.max(0, (p - .4) / .3)); al[i] = v * v * (3 - 2 * v) * 255; }
@@ -43,12 +58,12 @@
     }
     // The guest is the person at the FRONT: the one with the biggest head in the photo (owner, 28 Nov 2026). People behind have smaller heads, even when
     // the engine joins them to the guest in one shape, which used to widen the cut-out and push the guest to one side of the card.
-    const hl = new Uint8Array(n), heads = []; let H0 = null;
+    const hl = new Int32Array(n), heads = []; let H0 = null, hid = 0;
     for (let s0 = 0; s0 < n; s0++) {
-      if (hl[s0] || al[s0] < 110 || !(hair[s0] > .5 || face[s0] > .5)) continue; let top = 0, area = 0, x0 = mw, x1 = 0, y0 = mh, y1 = 0; stack[top++] = s0; hl[s0] = 1;
-      while (top) { const i = stack[--top], x = i % mw, y = (i - x) / mw; area++; if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y;
-        for (const j of [x > 0 ? i - 1 : -1, x < mw - 1 ? i + 1 : -1, i >= mw ? i - mw : -1, i < n - mw ? i + mw : -1]) if (j >= 0 && !hl[j] && al[j] >= 110 && (hair[j] > .5 || face[j] > .5)) { hl[j] = 1; stack[top++] = j; } }
-      if (area >= 12) { const h = { area, x0, x1, y0, y1, seed: s0 }; heads.push(h); if (!H0 || area > H0.area) H0 = h; }
+      if (hl[s0] || al[s0] < 110 || !(hair[s0] > .5 || face[s0] > .5)) continue; let top = 0, area = 0, fa = 0, x0 = mw, x1 = 0, y0 = mh, y1 = 0; hid++; stack[top++] = s0; hl[s0] = hid;
+      while (top) { const i = stack[--top], x = i % mw, y = (i - x) / mw; area++; if (face[i] > .5) fa++; if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y;
+        for (const j of [x > 0 ? i - 1 : -1, x < mw - 1 ? i + 1 : -1, i >= mw ? i - mw : -1, i < n - mw ? i + mw : -1]) if (j >= 0 && !hl[j] && al[j] >= 110 && (hair[j] > .5 || face[j] > .5)) { hl[j] = hid; stack[top++] = j; } }
+      if (area >= 12) { const h = { area, fa, x0, x1, y0, y1, seed: s0, id: hid }; heads.push(h); if (!H0 || area > H0.area) H0 = h; }
     }
     if (H0 && lab[H0.seed]) best = lab[H0.seed];
     // Background people the engine has joined to the guest are taken out, without ever slicing the guest (owner, 28 Nov 2026: a woman behind the guest's
@@ -58,6 +73,41 @@
     // past the guest's chin, without passing under the guest's face, is someone else's and goes too.
     if (best) {
       const nb = (i) => { const x = i % mw; return [x > 0 ? i - 1 : -1, x < mw - 1 ? i + 1 : -1, i >= mw ? i - mw : -1, i < n - mw ? i + mw : -1]; };
+      // how far each point is from a set of starting points, walking only inside the guest's joined-up shape (-1: cannot be reached)
+      const geo = (seed) => { const d = new Int32Array(n).fill(-1); let h = 0, t = 0; for (let i = 0; i < n; i++) if (lab[i] === best && seed(i)) { d[i] = 0; stack[t++] = i; }
+        while (h < t) { const i = stack[h++]; for (const j of nb(i)) if (j >= 0 && d[j] < 0 && lab[j] === best) { d[j] = d[i] + 1; stack[t++] = j; } } return d; };
+      // after a piece is taken out, what was left hanging off it (a body behind, a head at the frame edge) goes too: only the shape still joined to the guest stays
+      // The rest of a removed person's body often still hangs on to the guest by a thread a few points wide. So the shape is also thinned by a small amount (r, from
+      // the guest's face width fw): a large piece that only holds on through something that thin is not the guest's. Small pieces (fingers, wisps of hair) always stay.
+      const keepJoined = (seed, fw) => {
+        const d = geo(seed); let any = false; for (let i = 0; i < n && !any; i++) if (d[i] === 0) any = true; if (!any) return;
+        for (let i = 0; i < n; i++) if (lab[i] === best && d[i] < 0) lab[i] = -1;
+        const r = Math.max(2, Math.round(fw * .04)), dist = new Int32Array(n).fill(-1); let h = 0, t = 0;
+        for (let i = 0; i < n; i++) if (lab[i] !== best) { dist[i] = 0; stack[t++] = i; }
+        while (h < t) { const i = stack[h++]; if (dist[i] >= r) continue; for (const j of nb(i)) if (j >= 0 && dist[j] < 0) { dist[j] = dist[i] + 1; stack[t++] = j; } }   // dist stays -1 deeper than r inside the shape
+        const ok = new Int32Array(n).fill(-1); h = t = 0; for (let i = 0; i < n; i++) if (lab[i] === best && dist[i] < 0 && seed(i)) { ok[i] = 0; stack[t++] = i; }
+        if (!t) return;
+        while (h < t) { const i = stack[h++]; for (const j of nb(i)) if (j >= 0 && ok[j] < 0 && lab[j] === best && dist[j] < 0) { ok[j] = 0; stack[t++] = j; } }
+        h = 0; while (h < t) { const i = stack[h++]; if (ok[i] > r) continue; for (const j of nb(i)) if (j >= 0 && ok[j] < 0 && lab[j] === best) { ok[j] = ok[i] + 1; stack[t++] = j; } }   // the thinned edge grows back
+        const big = fw * fw * .5;
+        for (let s0 = 0; s0 < n; s0++) { if (lab[s0] !== best || ok[s0] >= 0) continue; const mem = [s0]; ok[s0] = 0; for (let q = 0; q < mem.length; q++) for (const j of nb(mem[q])) if (j >= 0 && ok[j] < 0 && lab[j] === best) { ok[j] = 0; mem.push(j); }
+          if (mem.length > big) for (const i of mem) lab[i] = -1; }
+      };
+      // Faces the face finder saw in the close look: det.g is the guest's, det.others are clearly smaller faces beside it (28 Nov 2026: a man peeking over the guest's
+      // shoulder). The engine often paints such a face as part of the guest's own face or hair, so only the face finder can tell the two apart. Everything nearer to
+      // the smaller face than to the guest's (along the shape, in face sizes) goes; nothing inside the guest's own face box is ever touched.
+      if (det && det.g && det.others.length) {
+        const box = (q, m) => (i) => { const x = i % mw, y = (i - x) / mw; return x >= q.x0 * mw - m && x <= q.x1 * mw + m && y >= q.y0 * mh - m && y <= q.y1 * mh + m; };
+        const gw = (det.g.x1 - det.g.x0) * mw, inG = box(det.g, gw * .08), dG = geo(inG); let gn = 0, cut = false; for (let i = 0; i < n; i++) if (dG[i] === 0) gn++;
+        if (gn > gw * gw * .3) for (const P of det.others) {
+          const pw = (P.x1 - P.x0) * mw, pb = box({ x0: P.x0, x1: P.x1, y0: P.y0 - (P.y1 - P.y0) * .35, y1: P.y1 }, 0), inP = (i) => pb(i) && !inG(i); let pn = 0, hf = 0;
+          for (let i = 0; i < n; i++) if (inP(i)) { pn++; if (lab[i] === best && (hair[i] > .5 || face[i] > .5)) hf++; }
+          if (hf < pn * .3) continue;   // not a head inside the guest's shape: a hand, a print on a shirt, or someone already left out
+          const d = geo(inP), reach = pw * 3;
+          for (let i = 0; i < n; i++) if (lab[i] === best && d[i] >= 0 && d[i] <= reach && !inG(i) && (dG[i] < 0 || d[i] / pw < dG[i] / gw)) { lab[i] = -1; cut = true; }
+        }
+        if (cut) keepJoined(inG, gw);
+      }
       const fl = new Int32Array(n), faces = []; let F0 = null;
       for (let s0 = 0; s0 < n; s0++) {
         if (fl[s0] || lab[s0] !== best || !(face[s0] > .5)) continue; const k = faces.length + 1; let top = 0, area = 0, x0 = mw, x1 = 0, y0 = mh, y1 = 0; stack[top++] = s0; fl[s0] = k;
@@ -65,8 +115,6 @@
           for (const j of nb(i)) if (j >= 0 && !fl[j] && lab[j] === best && face[j] > .5) { fl[j] = k; stack[top++] = j; } }
         const fc = { k, area, x0, x1, y0, y1, seed: s0 }; faces.push(fc); if (!F0 || area > F0.area) F0 = fc;
       }
-      const geo = (k) => { const d = new Int32Array(n).fill(-1); let h = 0, t = 0; for (let i = 0; i < n; i++) if (fl[i] === k && lab[i] === best) { d[i] = 0; stack[t++] = i; }
-        while (h < t) { const i = stack[h++]; for (const j of nb(i)) if (j >= 0 && d[j] < 0 && lab[j] === best) { d[j] = d[i] + 1; stack[t++] = j; } } return d; };
       let cutAny = false;
       if (F0 && F0.area >= 40) {
         // Sunglasses, a mask or a hand across the face split the guest's own face into pieces (28 Nov 2026: a guest in sunglasses lost their forehead, because
@@ -77,10 +125,10 @@
           if (ox < (fc.x1 - fc.x0 + 1) * .5 || gap > W0 * .7) continue;
           fc.own = true; for (let i = 0; i < n; i++) if (fl[i] === fc.k) fl[i] = F0.k;
         }
-        const d0 = geo(F0.k), z0 = Math.sqrt(F0.area);
+        const d0 = geo((i) => fl[i] === F0.k), z0 = Math.sqrt(F0.area);
         for (const fc of faces) {
           if (fc === F0 || fc.own || fc.area < 12 || fc.area < F0.area * .02 || fc.area > F0.area * .45 || fc.y0 > F0.y1) continue;
-          const d = geo(fc.k), z = Math.sqrt(fc.area), reach = 3 * Math.max(fc.x1 - fc.x0, fc.y1 - fc.y0) + 4, mine = []; let hairN = 0;
+          const d = geo((i) => fl[i] === fc.k), z = Math.sqrt(fc.area), reach = 3 * Math.max(fc.x1 - fc.x0, fc.y1 - fc.y0) + 4, mine = []; let hairN = 0;
           for (let i = 0; i < n; i++) if (lab[i] === best && fl[i] !== F0.k && d[i] >= 0 && d[i] <= reach && (d0[i] < 0 || d[i] / z < d0[i] / z0)) { mine.push(i); if (hair[i] > .5) hairN++; }
           if (hairN < fc.area * .4) continue;   // no hair of its own: the guest's ear or hand, not a person behind
           for (const i of mine) lab[i] = -1; cutAny = true;
@@ -92,11 +140,27 @@
             for (const j of nb(i)) if (j >= 0 && !sl[j] && lab[j] === best && skin[j] > .5) { sl[j] = 1; mem.push(j); } }
           if (edge && mem.length >= 20 && y0 < chin && !(x0 <= fcx && x1 >= fcx)) { for (const i of mem) lab[i] = -1; cutAny = true; }
         }
-        if (cutAny) {   // what is left hanging off the removed pieces (a body behind, a head at the frame edge) goes with them: only the shape still joined to the guest's face stays
-          const ok = new Uint8Array(n); let h = 0, t = 0; for (let i = 0; i < n; i++) if (fl[i] === F0.k && lab[i] === best) { ok[i] = 1; stack[t++] = i; }
-          while (h < t) { const i = stack[h++]; for (const j of nb(i)) if (j >= 0 && !ok[j] && lab[j] === best) { ok[j] = 1; stack[t++] = j; } }
-          for (let i = 0; i < n; i++) if (lab[i] === best && !ok[i]) lab[i] = -1;
+        if (cutAny) keepJoined((i) => fl[i] === F0.k, W0);
+      }
+      // A second head with no face showing (someone looking down at a phone, or turned away) is not posing with the guest, so that person goes too, measured the same
+      // way from head to head (28 Nov 2026: a man sitting beside the guest, looking at his phone). The head must stand clear of the guest's own (a bun or a ponytail
+      // is the guest's), and the guest gets the benefit of the doubt, so the guest's own arm or hand is not cut.
+      // Only when the guest's own head is read properly (a real head with a face, not a scrap: under coloured stage light the engine can read a whole head as clothes).
+      let bestN = 0; for (let i = 0; i < n; i++) if (lab[i] === best) bestN++;
+      // Not in the close look: there the edge of the picture cuts other heads in half, and a friend's hair without their face is not a stranger.
+      if (!close && H0 && lab[H0.seed] === best && H0.area > bestN * .015 && H0.fa > H0.area * .15) {
+        const dH = geo((i) => hl[i] === H0.id), zH = Math.sqrt(H0.area), zF = Math.sqrt(H0.fa), dF = H0.fa >= 40 ? geo((i) => hl[i] === H0.id && face[i] > .5) : null; let cut = false;
+        for (const h of heads) {
+          if (h === H0 || lab[h.seed] !== best || h.area < H0.area * .25 || h.area < n * .002 || h.fa > h.area * .12 || !(dH[h.seed] > zH * .2)) continue;
+          // the engine often leaves a seam between a person's hair and face, making them two pieces: a face anywhere inside this head's outline means the face is showing
+          let fb = 0; for (let y = h.y0; y <= h.y1; y++) for (let x = h.x0; x <= h.x1; x++) if (face[y * mw + x] > .5) fb++;
+          if (fb > h.area * .12) continue;
+          const d = geo((i) => hl[i] === h.id), z = Math.sqrt(h.area), reach = z * 5;
+          for (let i = 0; i < n; i++) { if (lab[i] !== best || d[i] < 0 || d[i] > reach) continue;
+            // that person's hair often runs into the guest's own: hair nearer to the other head than to the guest's face goes with it
+            if (hl[i] === H0.id ? dF && hair[i] > .5 && dF[i] > 0 && d[i] / z < dF[i] / zF * .8 : dH[i] < 0 || d[i] / z < dH[i] / zH * .8) { lab[i] = -1; cut = true; } }
         }
+        if (cut) keepJoined((i) => hl[i] === H0.id, Math.sqrt(H0.area) * .7);
       }
     }
     // The whole joined-up shape of the front person is kept, never sliced (owner, 28 Nov 2026: a guest peeking from behind a friend came out as a thin strip on the wall).
@@ -109,7 +173,10 @@
       if (lab[i] === best && (hair[i] > .5 || face[i] > .5) && (!H0 || (x >= H0.x0 - 2 && x <= H0.x1 + 2 && y >= H0.y0 - 2 && y <= H0.y1 + 2))) { if (x < hx0) hx0 = x; if (x > hx1) hx1 = x; if (y < hy0) hy0 = y; if (y > hy1) hy1 = y; }
     }
     mx.putImageData(im, 0, 0); masks.forEach((m) => m.close && m.close());
-    return { mk, mw, mh, head: hx1 > hx0 && hy1 - hy0 >= 8 ? { x0: hx0, x1: hx1 + 1, y0: hy0, y1: hy1 + 1 } : null };
+    // what was deliberately taken out of the guest's shape (the people behind), as a picture: the last check in cutout() uses it
+    let rm = null; for (let i = 0; i < n; i++) if (lab[i] === -1) { if (!rm) rm = mx.createImageData(mw, mh); rm.data[i * 4 + 3] = 255; }
+    if (rm) { const c = document.createElement("canvas"); c.width = mw; c.height = mh; c.getContext("2d").putImageData(rm, 0, 0); rm = c; }
+    return { rm, mk, mw, mh, head: hx1 > hx0 && hy1 - hy0 >= 8 ? { x0: hx0, x1: hx1 + 1, y0: hy0, y1: hy1 + 1 } : null };
   }
   // The guest cut out of the photo, with the box around the whole person and around the head.
   // Two looks: one at the whole photo to find the guest, then a close one at the head and shoulders, so hair is traced at about three
@@ -117,10 +184,13 @@
   const cuts = new Map();
   async function cutout(img, key) {
     if (cuts.has(key)) return cuts.get(key);
+    detector();   // starts loading beside the engine; never waited for more than a moment
     const seg = await within(segmenter(), 20000), iw = img.naturalWidth, ih = img.naturalHeight;
     const one = personMask(seg.segment(img).confidenceMasks); if (!one.head) throw new Error("no person found");
     const kx = iw / one.mw, ky = ih / one.mh; let H = { x0: one.head.x0 * kx, x1: one.head.x1 * kx, y0: one.head.y0 * ky, y1: one.head.y1 * ky };
     const al = document.createElement("canvas"); al.width = iw; al.height = ih; const ax = al.getContext("2d"); ax.imageSmoothingQuality = "high";
+    const gone = document.createElement("canvas"); gone.width = iw; gone.height = ih; const gx = gone.getContext("2d"); let anyGone = false; gx.filter = `blur(${Math.max(4, Math.round(iw * .006))}px)`;
+    if (one.rm) { gx.drawImage(one.rm, 0, 0, iw, ih); anyGone = true; }
     ax.filter = "blur(1.4px)"; ax.drawImage(one.mk, 0, 0, iw, ih); ax.filter = "none";
     try {
       const side = Math.max(H.x1 - H.x0, H.y1 - H.y0) * 2.2, mx0 = (H.x0 + H.x1) / 2;
@@ -128,8 +198,10 @@
       if (rw > 48 && rh > 48 && rw * rh < iw * ih * .7) {   // a guest who already fills the photo gains nothing from a second look
         const k = Math.max(1, 512 / Math.max(rw, rh)), cc = document.createElement("canvas"); cc.width = Math.round(rw * k); cc.height = Math.round(rh * k);
         const c2 = cc.getContext("2d"); c2.imageSmoothingQuality = "high"; c2.drawImage(img, rx0, ry0, rw, rh, 0, 0, cc.width, cc.height);
-        const two = personMask(seg.segment(cc).confidenceMasks);
+        let det = null; try { const fd = await within(detector(), 2500); if (fd) det = faceBoxes(fd.detect(cc).detections, cc.width, cc.height); } catch (e) {}
+        const two = personMask(seg.segment(cc).confidenceMasks, det, true);
         if (two.head) {
+          if (two.rm) { gx.drawImage(two.rm, rx0, ry0, rw, rh); anyGone = true; }
           // the close look replaces the first one inside its box, fading into it over the box's edge so no seam shows
           const fe = Math.round(Math.min(rw, rh) * .07), t = document.createElement("canvas"); t.width = rw; t.height = rh; const tx = t.getContext("2d"); tx.imageSmoothingQuality = "high";
           tx.filter = `blur(${Math.max(.6, 1.1 / k)}px)`; tx.drawImage(two.mk, 0, 0, rw, rh); tx.filter = "none";
@@ -141,6 +213,23 @@
         }
       }
     } catch (e) { console.warn("roast card: close look at the head failed,", e.message); }
+    // Last: the close look can take out a person behind whose head was the only thing joining their body to the guest's shape, which left a headless body
+    // standing beside the guest (28 Nov 2026). So a piece that is no longer joined to the guest's head, and sits against something that was taken out, goes too.
+    // A piece that touches nothing that was taken out (a friend posing beside the guest) stays, as before.
+    if (anyGone) try {
+      const id = ax.getImageData(0, 0, iw, ih), a = id.data, g = gx.getImageData(0, 0, iw, ih).data, n = iw * ih, ok = new Int8Array(n).fill(-1), q = new Int32Array(n); let h = 0, t = 0;
+      for (let y = Math.max(0, Math.round(H.y0)); y < Math.min(ih, H.y1); y++) for (let x = Math.max(0, Math.round(H.x0)); x < Math.min(iw, H.x1); x++) { const i = y * iw + x; if (a[i * 4 + 3] > 128) { ok[i] = 0; q[t++] = i; } }
+      if (t) {
+        const step = (i, f) => { const x = i % iw; if (x > 0) f(i - 1); if (x < iw - 1) f(i + 1); if (i >= iw) f(i - iw); if (i < n - iw) f(i + iw); };
+        while (h < t) { const i = q[h++]; step(i, (j) => { if (ok[j] < 0 && a[j * 4 + 3] > 48) { ok[j] = 0; q[t++] = j; } }); }
+        h = 0; while (h < t) { const i = q[h++]; if (ok[i] >= 5) continue; step(i, (j) => { if (ok[j] < 0 && a[j * 4 + 3] > 0) { ok[j] = ok[i] + 1; q[t++] = j; } }); }   // the guest's soft edge
+        let changed = false;
+        for (let s0 = 0; s0 < n; s0++) { if (ok[s0] >= 0 || !a[s0 * 4 + 3]) continue; let touch = 0; h = t = 0; q[t++] = s0; ok[s0] = 9;
+          while (h < t) { const i = q[h++]; if (g[i * 4 + 3] > 8) touch++; step(i, (j) => { if (ok[j] < 0 && a[j * 4 + 3]) { ok[j] = 9; q[t++] = j; } }); }
+          if (touch) { for (let k = 0; k < t; k++) a[q[k] * 4 + 3] = 0; changed = true; } }
+        if (changed) ax.putImageData(id, 0, 0);
+      }
+    } catch (e) { console.warn("roast card: last join check failed,", e.message); }
     const cut = document.createElement("canvas"); cut.width = iw; cut.height = ih; const cx = cut.getContext("2d");
     cx.drawImage(al, 0, 0); cx.globalCompositeOperation = "source-in"; cx.drawImage(img, 0, 0);
     const a = cx.getImageData(0, 0, iw, ih).data; let x0 = iw, x1 = 0, y0 = ih, y1 = 0;

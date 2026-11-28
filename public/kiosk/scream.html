@@ -700,7 +700,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
 
   <!-- The word check failed twice for a technical reason: nothing saved, attempt not used -->
   <section class="screen bx" id="s-miss"><div class="box">
-    <div class="crow" style="top:calc(31 * var(--u))"><span class="t" data-fit="859" data-fs="96" data-pfit="1000" data-pfs="170">Our ears <br class="up"><span class="rn">need a minute.</span></span></div>
+    <div class="crow" style="top:calc(31 * var(--u))"><span class="t" data-fit="859" data-fs="96" data-pfit="1000" data-pfs="170">Network <br class="up"><span class="rn">issue.</span></span></div>
     <div class="crow sub2"><span style="display:inline-block" data-fit="900" data-fs="34" data-pfit="980" data-pfs="58">That one does not count. <br class="up">Please tell our team and try again.</span></div>
     <button class="btn" id="miss-next">Next player</button>
   </div></section>
@@ -1164,13 +1164,13 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
       // The second copy always goes on the other connection; when the link watch already says the link is dead, the first copy does too and the second follows at once.
       // The venue uplink is slow (a 24 KB recording often needed more than 6 seconds, and starting again from nothing only made it worse), so the recording
       // is now about a third of the size (8 kbps: the word check hears it just as well) and each copy is given time to arrive instead of being restarted.
-      const dead = LINK.bad >= 2, first = send(1, 12000, dead), second = new Promise((res) => setTimeout(res, dead ? 400 : 2500)).then(() => (settled ? Promise.reject(new Error("not needed")) : send(2, 10000, !dead))); let settled = false;
+      const dead = LINK.bad >= 2, first = send(1, 14000, dead), second = new Promise((res) => setTimeout(res, dead ? 400 : 2500)).then(() => (settled ? Promise.reject(new Error("not needed")) : send(2, 12500, !dead))); let settled = false;
       first.then(() => { settled = true; }, () => {});
       try { STT.text = await Promise.any([first, second]); STT.err = ""; }
       catch {   // both uploads stalled (the venue network does this for a few seconds at a time): one more patient go before the guest is sent back
         settled = true; const quick = performance.now() - t0 < 7000;   // a third copy only when the first two failed fast (no link at all); after two long waits the guest is not kept longer
         if (quick) $("listen-l").textContent = "Still checking…";
-        try { if (!quick) throw new Error("slow"); STT.text = await send(3, 8000, true); STT.err = ""; } catch { STT.text = ""; STT.err = (STT.tries.find((x) => x.err) || { err: "failed" }).err; } }
+        try { if (!quick) throw new Error("slow"); STT.text = await send(3, 10000, true); STT.err = ""; } catch { STT.text = ""; STT.err = (STT.tries.find((x) => x.err) || { err: "failed" }).err; } }
       settled = true;
     } catch (e) { STT.err = STT.err || String(e.message || "failed").slice(0, 40); }
     STT.ms = Math.round(performance.now() - t0); rec = null;

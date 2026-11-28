@@ -853,6 +853,10 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     } catch (e) { $("mic-status").textContent = "Microphone blocked: " + e.message; $("mic-pill").classList.remove("ok"); return false; }
   }
   function currentDb() { if (!analyser) return -100; analyser.getFloatTimeDomainData(buf); let s = 0, c = 0; for (let i = 0; i < buf.length; i++) { s += buf[i] * buf[i]; if (buf[i] > .985 || buf[i] < -.985) c++; } clipNow = c / buf.length; const rms = Math.sqrt(s / buf.length); return rms > 0 ? Math.max(-100, 20 * Math.log10(rms)) : -100; }
+  // The room's level during the countdown: the mean power with the loudest fifth of the moments left out (so the countdown beeps do not count). The shout is scored with this taken out, the same sum as voiceDb() on the server.
+  let AMB = [], ambDb = null;
+  const roomDb = () => { if (AMB.length < 20) return null; const a = AMB.slice().sort((x, y) => x - y).slice(0, Math.ceil(AMB.length * .8)); return 10 * Math.log10(a.reduce((p, c) => p + c, 0) / a.length); };
+  const voiceOnly = (db) => { if (ambDb === null || ambDb < -60) return db; const ps = Math.pow(10, db / 10), pa = Math.pow(10, ambDb / 10); return 10 * Math.log10(Math.max(ps - pa, ps * .2)); };
   const dbToPct = (db) => Math.max(0, Math.min(100, ((db - CFG.scream.dbFloor) / (CFG.scream.dbCeil - CFG.scream.dbFloor)) * 100));
 
   // ---------- waveform ----------
@@ -1090,7 +1094,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     $("lvl-set").style.width = pct + "%"; $("db-set").textContent = db.toFixed(1) + " dB";
     if (mode === "idle") drawWave($("wave-idle"));
     if (mode === "ready") drawBars($("wave-ready"), { n: 54, env: ENV_MIC, level: analyser ? pct / 100 : .85, real: !!analyser, dotEnds: true }); if (analyser) voiceCheck(t, pct);
-    if (mode === "count") drawCountRing($("ring-count"), countPct);
+    if (mode === "count") { drawCountRing($("ring-count"), countPct); AMB.push(Math.pow(10, db / 10)); if (AMB.length > 400) AMB.shift(); }   // the room (music, announcer) is measured while the countdown runs
     if (mode === "scream") {
       if (windowOpen && db > peakDb) peakDb = db;
       if (windowOpen) { SD.frames++; if (clipNow > .01) SD.clip++; }
@@ -1098,7 +1102,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
       if (windowOpen) { SUS.push([t, Math.pow(10, db / 10)]); while (SUS.length > 1 && t - SUS[0][0] > SUS_MS) SUS.shift(); if (t - SUS[0][0] >= SUS_MS * .6) susDb = Math.max(susDb, 10 * Math.log10(SUS.reduce((a, b) => a + b[1], 0) / SUS.length)); }   // the loudest 0.6 s: a short hold at full voice, not a clap or a click
       gaugeShown += (pct - gaugeShown) * .25;
       drawLiveA($("live-cv"), gaugeShown / 100, t); $("pop-w").style.setProperty("--lv", Math.min(1, gaugeShown / 100).toFixed(2));
-      $("gauge-num").textContent = Math.round(dbToPct(susDb));
+      $("gauge-num").textContent = Math.round(dbToPct(voiceOnly(susDb)));
     }
   }
   requestAnimationFrame(loop);
@@ -1223,7 +1227,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   $("go").onclick = async () => {
     if (mode !== "ready") return;
     if (!(await startAudio())) return;
-    K.resetIdle(0); K.show("s-go"); $("go-count").style.display = "block"; $("go-meter").style.display = "none"; mode = "count";
+    K.resetIdle(0); K.show("s-go"); $("go-count").style.display = "block"; $("go-meter").style.display = "none"; AMB = []; ambDb = null; mode = "count";
     const dots = [...$("dots").querySelectorAll("span")];
     for (let n = 3; n >= 1; n--) {
       $("cnt").textContent = n; restart($("cnt"), "pop"); n > 1 ? SFX.tick() : SFX.last(); dots.forEach((d, i) => d.classList.toggle("on", i <= 3 - n));
@@ -1235,7 +1239,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
     // Shout / Hold it / Finish arrive first, then everything else follows in (owner)
     [...$("go-meter").children].forEach((el) => el.style.setProperty("--i", el.id === "beats" ? 0 : 9 + (+el.style.getPropertyValue("--i") || 0) * 1.5));
     SFX.go(); await wait(320);
-    peakDb = -100; SUS = []; susDb = -100; gaugeShown = 0; resetHold(); SD.frames = 0; SD.clip = 0; SFX.hush(); stopSass(); windowOpen = true; mode = "scream";
+    ambDb = roomDb(); peakDb = -100; SUS = []; susDb = -100; gaugeShown = 0; resetHold(); SD.frames = 0; SD.clip = 0; SFX.hush(); stopSass(); windowOpen = true; mode = "scream";
     const dur = CFG.scream.durationMs || 5000, t0 = performance.now(), OVER = 1500;
     $("tdur").textContent = Math.round(dur / 1000);
     // Wendy cheers the guest on by name in the Listening pill while they shout (on screen only: nothing is spoken while the mic is scoring)
@@ -1277,7 +1281,7 @@ body.tt4 .idle .h1 .amp, body.tt4 .idle .h1 .red { color:#FFC72C !important; tex
   let submitting = false;   // a double tap on a host button must not save the scream twice
   async function submitScream(accuracyOverride) {
     if (submitting || !guest) return; submitting = true;
-    try { const r = await K.api("/api/kiosk/scream", { code: guest.code, peakDb, sustainedDb: susDb, transcript, accuracyOverride, speech: speechDiag() }); showResult(r); }
+    try { const r = await K.api("/api/kiosk/scream", { code: guest.code, peakDb, sustainedDb: susDb, ambientDb: ambDb, transcript, accuracyOverride, speech: { ...speechDiag(), amb: ambDb === null ? null : Math.round(ambDb * 10) / 10 } }); showResult(r); }
     catch (e) { alert("Could not submit: " + e.message); goIdle(); }
   }
   // Confetti that bursts out of a point on the screen (by default the middle), flies outward, then falls and fades.

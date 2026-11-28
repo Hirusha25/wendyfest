@@ -264,7 +264,7 @@ app.post("/api/kiosk/miss", requirePin("kiosk"), (req, res) => {
 });
 
 app.post("/api/kiosk/scream", requirePin("kiosk"), async (req, res) => {
-  const { code, peakDb, sustainedDb, transcript, accuracyOverride, station, speech } = req.body || {};
+  const { code, peakDb, sustainedDb, transcript, accuracyOverride, station, speech, ambientDb } = req.body || {};
   let speechLog = null; try { if (speech && typeof speech === "object") speechLog = JSON.stringify(speech).slice(0, 800); } catch {}
   const p = participantByCode.get(String(code || "").toUpperCase());
   if (!p) return res.status(404).json({ error: "code not found" });
@@ -272,7 +272,7 @@ app.post("/api/kiosk/scream", requirePin("kiosk"), async (req, res) => {
   const used = screamsFor.all(p.id);
   if (!isDemo(p) && used.length >= s.attemptsPerPerson) return res.status(409).json({ error: "No attempts left for this guest", attempts: used.length });
 
-  const { loud, acc, score, won, reason } = judgeScream({ peakDb, sustainedDb, transcript, accuracyOverride }, s);
+  const { loud, acc, score, won, reason } = judgeScream({ peakDb, sustainedDb, transcript, accuracyOverride, ambientDb }, s);
 
   let coupon = null;
   if (won && isDemo(p)) {   // our test codes never take a real coupon from the pool: they get a made-up one with a real prize name

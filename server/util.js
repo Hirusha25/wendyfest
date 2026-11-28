@@ -168,8 +168,17 @@ export function loudnessScore(peakDb, floor, ceil) {
 
 // Full verdict. Loudness uses the loudest SUSTAINED half-second (a single clap or tap can't max it).
 // To win, all three must pass: overall score ≥ threshold, loudness ≥ minLoud, clarity ≥ minAcc.
-export function judgeScream({ peakDb, sustainedDb, transcript, accuracyOverride }, s) {
-  const db = sustainedDb !== undefined && sustainedDb !== null && !Number.isNaN(Number(sustainedDb)) ? Number(sustainedDb) : Number(peakDb);
+// The venue has music and an announcer the whole time (owner, 28 Nov 2026). The kiosk measures the room during the countdown (ambientDb) and that power is
+// taken out of the shout, so the score is the guest's own voice over the room: a shout no louder than the room loses up to 7 dB (about 17 points), a shout
+// well above the room keeps nearly all of its level. Without an ambient reading nothing changes.
+export function voiceDb(db, ambientDb) {
+  const a = Number(ambientDb); if (ambientDb === undefined || ambientDb === null || Number.isNaN(a) || a < -60 || Number.isNaN(Number(db))) return Number(db);
+  const ps = Math.pow(10, Number(db) / 10), pa = Math.pow(10, a / 10);
+  return 10 * Math.log10(Math.max(ps - pa, ps * 0.2));
+}
+export function judgeScream({ peakDb, sustainedDb, transcript, accuracyOverride, ambientDb }, s) {
+  const raw = sustainedDb !== undefined && sustainedDb !== null && !Number.isNaN(Number(sustainedDb)) ? Number(sustainedDb) : Number(peakDb);
+  const db = voiceDb(raw, ambientDb);
   const loud = loudnessScore(db, s.dbFloor, s.dbCeil);
   const check = accuracyOverride !== undefined && accuracyOverride !== null
     ? { accuracy: clamp(Number(accuracyOverride), 0, 100), reason: Number(accuracyOverride) >= (s.minAcc ?? 70) ? "ok" : Number(accuracyOverride) >= 30 ? "no_s" : "unclear", heard: "" }
